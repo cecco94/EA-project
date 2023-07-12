@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 
 import controller.Gamestate;
 import view.GamePanel;
+import view.ViewUtils;
 
 
 public class StartTitle {
@@ -23,11 +24,17 @@ public class StartTitle {
 	public StartTitle() {
 		titoli = new BufferedImage[2];
 		getImages();
+		setImgDimensions();
 		scritta1X = GamePanel.GAME_WIDTH/2 - titoli[0].getWidth()/2;
 		scritta1Y = GamePanel.GAME_HEIGHT/2 - titoli[0].getHeight()/2;
 		scritta2X = GamePanel.GAME_WIDTH/2 - titoli[1].getWidth()/2;
 		scritta2Y = GamePanel.GAME_HEIGHT/2 - titoli[1].getHeight()/2;
 		
+	}
+
+	private void setImgDimensions() {
+		titoli[0] = ViewUtils.scaleImage(titoli[0], titoli[0].getWidth()*GamePanel.SCALE, titoli[0].getHeight()*GamePanel.SCALE);
+		titoli[1] = ViewUtils.scaleImage(titoli[1], titoli[1].getWidth()*GamePanel.SCALE, titoli[0].getHeight()*GamePanel.SCALE/1.5f);
 	}
 
 	private void getImages() {

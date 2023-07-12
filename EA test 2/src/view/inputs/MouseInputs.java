@@ -70,11 +70,12 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		case PLAYING:
 			//gamePanel.getGame().getPlaying().mousePressed(e);
 			break;
+		case SELECT_AVATAR:
+			view.getAvatarMenu().mousePressed(e);
+			break;
 		default:
 			break;
-
 		}
-
 	}
 
 	@Override
@@ -86,11 +87,12 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		case PLAYING:
 			//gamePanel.getGame().getPlaying().mouseReleased(e);
 			break;
+		case SELECT_AVATAR:
+			view.getAvatarMenu().mouseReleased(e);
+			break;
 		default:
 			break;
-
 		}
-
 	}
 
 	@Override

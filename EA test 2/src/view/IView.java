@@ -83,10 +83,16 @@ public class IView {
 			break;
 		case QUIT:
 			System.exit(0);
-		default:
 			break;
+		case PLAYING:
+			System.out.println("play");
+			break;			
 		}
 	//	disegnaMessaggioSubliminale(g2);
+	}
+	
+	public void changeGameState(Gamestate newState) {
+		Gamestate.state = newState;
 	}
 	
 	private void disegnaMessaggioSubliminale(Graphics2D g2) {
@@ -107,10 +113,6 @@ public class IView {
 	
 	public AvatarMenu getAvatarMenu(){
 		return this.avatar;
-	}
-	
-	public void changeGameState(Gamestate newState) {
-		Gamestate.state = newState;
 	}
 	
 	public void playSE() {
