@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import controller.Gamestate;
-import view.IView;
+import view.main.IView;
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
 
@@ -20,6 +20,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		switch (Gamestate.state) {
 		case PLAYING:
 			
+			break;
+			
+		case OPTIONS:
+		//	view.getOptions().mouseDragged(e);
 			break;
 		default:
 			break;
@@ -39,6 +43,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			break;
 		case SELECT_AVATAR:
 			view.getAvatarMenu().mouseMoved(e);
+			break;
+		case OPTIONS:
+			view.getOptions().mouseMoved(e);
+			break;
 		default:
 			break;
 
@@ -73,6 +81,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		case SELECT_AVATAR:
 			view.getAvatarMenu().mousePressed(e);
 			break;
+		case OPTIONS:
+			view.getOptions().mousePressed(e);
+			break;
 		default:
 			break;
 		}
@@ -89,6 +100,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			break;
 		case SELECT_AVATAR:
 			view.getAvatarMenu().mouseReleased(e);
+			break;
+		case OPTIONS:
+			view.getOptions().mouseReleased(e);
 			break;
 		default:
 			break;

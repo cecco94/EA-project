@@ -10,9 +10,7 @@ import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
 	private float volume = 0.5f;
-//	private boolean soungMute, effectMute;
-	private Clip music;
-	private Clip soundEffect;
+	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[10];
 	private int musicId;
 	public static final int MENU_MUSIC = 0;
@@ -31,7 +29,7 @@ public class SoundManager {
 		
 	}
 	
-	public void setClip(int i) {
+	public void setMusic(int i) {
 		try {								
 			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
 			music = AudioSystem.getClip();
@@ -42,33 +40,53 @@ public class SoundManager {
 		}
 	}
 	
-	public void play(int i) {
+	public void setSE(int i) {
+		try {								
+			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
+			soundEffect = AudioSystem.getClip();
+			soundEffect.open(ais);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void playMusic(int i) {
 		musicId = i;
-		setClip(i);
+		setMusic(i);
 		music.start();	
 	}
 	
-	public void loop(int i) {
+	public void loopMusic(int i) {
 		musicId = i;
-		setClip(i);
+		setMusic(i);
 		music.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
-	public void stop() {
+	public void stopMusic() {
 		music.stop();
 	}
 	
 	public void playSE(int i) {
-		setClip(i);
+		setSE(i);
 		soundEffect.start();
 	}
 	
-	public void setVolume(float v, Clip c) {
+	public void setMusicVolume(float v) {	  //v in percentuale da 0 a 1
 		volume = v;
-		FloatControl control = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
+		FloatControl control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
 		float range  = control.getMaximum() - control.getMinimum();
 		float gain = (range * volume) + control.getMinimum();
 		control.setValue(gain);
 	}
+	
+	public void setSEVolume(float v) {
+		volume = v;
+		FloatControl control = (FloatControl) soundEffect.getControl(FloatControl.Type.MASTER_GAIN);
+		float range  = control.getMaximum() - control.getMinimum();
+		float gain = (range * volume) + control.getMinimum();
+		control.setValue(gain);
+	}
+	
 	
 }

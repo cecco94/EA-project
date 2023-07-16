@@ -1,31 +1,37 @@
 package view.selectAvatar;
 
+import static view.main.GamePanel.GAME_HEIGHT;
+import static view.main.GamePanel.GAME_WIDTH;
+import static view.main.GamePanel.SCALE;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.Gamestate;
-import static view.GamePanel.SCALE;
-import static view.GamePanel.GAME_WIDTH;
-import static view.GamePanel.GAME_HEIGHT;
-
-import view.IView;
 import view.ViewUtils;
-import view.mainMenu.GeneralButton;
+import view.main.IView;
+import view.menuIniziale.MainMenuButton;
+import view.menuIniziale.Menu;
+import view.menuIniziale.MenuButton;
 
-public class AvatarMenu {
+public class AvatarMenu extends Menu{
 	private IView view;
 	private int scrittaAvatarX, scrittaAvatarY;
 	private BufferedImage scrittaAvatar;
-	private AvatarButton ragazzo, ragazza;
-	private GeneralButton indietro;
+	private final int RAGAZZO = 0, RAGAZZA = 1, INDIETRO = 2;
+	private int buttonIndex = RAGAZZO;	
+	private String[] caratteristichePersonaggi;
 	
 	public AvatarMenu(IView v) {
 		view = v;
 		loadAvatarChoiceText();
 		loadButtons();
+		loadCharacterSkills();
 	}
 
 	private void loadAvatarChoiceText() {
@@ -46,21 +52,29 @@ public class AvatarMenu {
 		String[] percorsoIndietro = {"/menuiniziale/indietro1.png", "/menuiniziale/indietro2.png", "/menuiniziale/indietro3.png"};
 		int y = GAME_HEIGHT/6;
 		int x = GAME_WIDTH/2 + GAME_WIDTH/15;
-		ragazza = new AvatarButton(percorsoRagazza, x, y, (int)(200*SCALE), (int)(300*SCALE));
+		buttons = new MenuButton[3];
+		buttons[0] = new AvatarButton(percorsoRagazza, x, y, (int)(200*SCALE), (int)(300*SCALE), view);
 		x = GAME_WIDTH/2 - GAME_WIDTH/15 - (int)(200*SCALE);
-		ragazzo = new AvatarButton(percorsoRagazzo, x, y, (int)(200*SCALE), (int)(300*SCALE));
+		buttons[1] = new AvatarButton(percorsoRagazzo, x, y, (int)(200*SCALE), (int)(300*SCALE), view);
 		y = GAME_HEIGHT - (int)(50*SCALE);
-		indietro = new GeneralButton(percorsoIndietro, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU);
+		buttons[2] = new MainMenuButton(percorsoIndietro, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU, view);	
+	}
+	
+	private void loadCharacterSkills() {
+		caratteristichePersonaggi = new String[2];
+		caratteristichePersonaggi[0] = "Mario, viene dallo scientifico, crede di sapare già tutto";
+		caratteristichePersonaggi[1] = "Giulia, viene dal classico, la notte piange sempre";
 	}
 
 	public void drawAvatarMenu(Graphics2D g2) {
 		drawBackground(g2);
 		drawAvatarChoiceText(g2);
-		indietro.draw(g2);
-		ragazzo.draw(g2);
-		ragazza.draw(g2);
+		drawCharacterSkills(g2);
+		drawButtons(g2);
 	}
- 
+
+
+
 	private void drawBackground(Graphics2D g2) {
 		view.getMenu().drawBackground(g2);
 	}
@@ -69,56 +83,70 @@ public class AvatarMenu {
 		g2.drawImage(scrittaAvatar, scrittaAvatarX, scrittaAvatarY, null);
 	}
 	
-	public void mousePressed(MouseEvent e) {
-		if (ragazzo.checkIfMouseIsIn(e)) 
-			ragazzo.setMousePressed(true);
-		
-		if(ragazza.checkIfMouseIsIn(e))
-			ragazza.setMousePressed(true);
-		
-		if(indietro.checkIfMouseIsIn(e))
-			indietro.setMousePressed(true);
-		
-	}
-
-	public void mouseReleased(MouseEvent e) {
-		
-		if (indietro.checkIfMouseIsIn(e) && indietro.isMousePressed()) 
-			view.changeGameState(indietro.getButtonState());
-		
-		else if (ragazzo.checkIfMouseIsIn(e) && ragazzo.isMousePressed()) {
-			view.changeGameState(ragazzo.getButtonState());
-			view.playSE();
+	private void drawCharacterSkills(Graphics2D g2) {
+		if(buttons[1].getMouseOver() == true) {
+			g2.setColor(Color.red);
+			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[0], g2);
+			g2.drawString(caratteristichePersonaggi[0], x, (int)(buttons[1].getBounds().getHeight()+buttons[1].getBounds().getY()+10*SCALE));
 		}
-		
-		else if (ragazza.checkIfMouseIsIn(e) && ragazza.isMousePressed()) {
-			view.changeGameState(ragazza.getButtonState());
-			view.playSE();
+		else if (buttons[0].getMouseOver() == true) {
+			g2.setColor(Color.red);
+			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[1], g2);
+			g2.drawString(caratteristichePersonaggi[1], x, (int)(buttons[0].getBounds().getHeight()+buttons[0].getBounds().getY()+ 10*SCALE));
 		}
-		
-		resetButtons();
 	}
+	
+	
+	public void keyReleased(int tasto) {
+		
+		switch(buttonIndex) {
+		case RAGAZZO:
+			if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_LEFT) 
+				view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
 
-	private void resetButtons() {
-		ragazzo.resetBooleans();
-		ragazza.resetBooleans();
-		indietro.resetBooleans();
+			if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
+				view.setCursorPosition(GAME_WIDTH/2, GAME_HEIGHT - (int)(50*SCALE));
+				buttonIndex = INDIETRO;
+				}
+			if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
+				view.setCursorPosition((int)(GAME_WIDTH/2 + GAME_WIDTH/4), GAME_HEIGHT/2);
+				buttonIndex = RAGAZZA;
+				}
+			if(tasto == KeyEvent.VK_ENTER) {
+				view.stopMusic();
+				view.changeGameState(buttons[1].getButtonState());
+				}
+			break;
+			
+		case RAGAZZA:
+			if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
+				view.setCursorPosition(GAME_WIDTH/2, GAME_HEIGHT - (int)(50*SCALE));
+				buttonIndex = INDIETRO;
+				}
+			if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
+				view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
+				buttonIndex = RAGAZZO;
+				}
+			if(tasto == KeyEvent.VK_ENTER) {
+				view.changeGameState(buttons[0].getButtonState());
+				view.stopMusic();
+				}
+			break;
+			
+		case INDIETRO:
+			if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
+				view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
+				buttonIndex = RAGAZZO;
+				}
+			if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
+				view.setCursorPosition((int)(GAME_WIDTH/2 + GAME_WIDTH/4), GAME_HEIGHT/2);
+				buttonIndex = RAGAZZA;
+				}
+			if(tasto == KeyEvent.VK_ENTER) 
+				view.changeGameState(buttons[2].getButtonState());
+			break;	
+		}	
 	}
-
-	public void mouseMoved(MouseEvent e) {
-		ragazzo.setMouseOver(false);	
-		ragazza.setMouseOver(false);
-		indietro.setMouseOver(false);
-		
-		if(ragazzo.checkIfMouseIsIn(e)) 
-			ragazzo.setMouseOver(true);
-		
-		if(ragazza.checkIfMouseIsIn(e)) 
-			ragazza.setMouseOver(true);
-		
-		if(indietro.checkIfMouseIsIn(e))
-			indietro.setMouseOver(true);
-	}
-
+	
 }
 

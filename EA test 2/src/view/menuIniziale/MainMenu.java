@@ -1,28 +1,35 @@
-package view.mainMenu;
+package view.menuIniziale;
 
+import static view.main.GamePanel.GAME_HEIGHT;
+import static view.main.GamePanel.GAME_WIDTH;
+import static view.main.GamePanel.SCALE;
+
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.Gamestate;
-import static view.GamePanel.SCALE;
-import static view.GamePanel.GAME_HEIGHT;
-import static view.GamePanel.GAME_WIDTH;
-import view.IView;
 import view.ViewUtils;
+import view.main.IView;
 
-public class MainMenu {
-	private int indexBackground, counterbackground;
-	private GeneralButton[] bottoni;
+public class MainMenu extends Menu{
+	private IView view;
+	
+	private int indexBackground, counterbackground, counterTitle;
+	private int timer = 120*10;
+	
+	private String credits = "©GNgame Production";
 	private BufferedImage[] sfondoAnimato;
 	private BufferedImage titolo;
 	private int titoloX, titoloY;
 	private int altezzaBottoni, distanzaBottoni;
-	private IView view;
-	private String credits = "©GNgame Production";
+	
+	private final int PLAY = 0, LOAD = 1, OPTION = 2, EXIT = 3;
+	private int buttonIndex = PLAY;
 	
 	public MainMenu(IView v) {
 		view = v;
@@ -114,18 +121,18 @@ public class MainMenu {
 		String[] percorsoRiprendi = {"/menuiniziale/riprendi1.png", "/menuiniziale/riprendi2.png", "/menuiniziale/riprendi3.png"};
 		String[] percorsoOpzioni = {"/menuiniziale/opzioni1.png", "/menuiniziale/opzioni2.png", "/menuiniziale/opzioni3.png"};	
 		String[] percorsoQuit = {"/menuiniziale/rinuncia1.png", "/menuiniziale/rinuncia2.png", "/menuiniziale/rinuncia3.png"};
-		bottoni = new GeneralButton[4];
-		bottoni[0] = new GeneralButton(percorsoIscriviti, altezzaBottoni,(int)(110*SCALE),(int)(16*SCALE), Gamestate.SELECT_AVATAR);
-		bottoni[1] = new GeneralButton(percorsoRiprendi, altezzaBottoni + distanzaBottoni, (int)(300*SCALE), (int)(17*SCALE), Gamestate.LOAD_GAME);
-		bottoni[2] = new GeneralButton(percorsoOpzioni, altezzaBottoni + distanzaBottoni*2, (int)(270*SCALE), (int)(16*SCALE), Gamestate.OPTIONS);
-		bottoni[3] = new GeneralButton(percorsoQuit, altezzaBottoni + distanzaBottoni*3, (int)(270*SCALE), (int)(14*SCALE), Gamestate.QUIT);
+		buttons = new MainMenuButton[4];
+		buttons[0] = new MainMenuButton(percorsoIscriviti, altezzaBottoni,(int)(110*SCALE),(int)(16*SCALE), Gamestate.SELECT_AVATAR, view);
+		buttons[1] = new MainMenuButton(percorsoRiprendi, altezzaBottoni + distanzaBottoni, (int)(300*SCALE), (int)(17*SCALE), Gamestate.LOAD_GAME, view);
+		buttons[2] = new MainMenuButton(percorsoOpzioni, altezzaBottoni + distanzaBottoni*2, (int)(270*SCALE), (int)(16*SCALE), Gamestate.OPTIONS, view);
+		buttons[3] = new MainMenuButton(percorsoQuit, altezzaBottoni + distanzaBottoni*3, (int)(250*SCALE), (int)(14*SCALE), Gamestate.QUIT, view);
 	}	
 
 	public void drawYourself(Graphics2D g2) {
 		drawBackground(g2);
-		drawTitle(g2);
 		drawCredits(g2);
-		drawButtons(g2);	
+		drawButtons(g2);
+		drawTitle(g2);
 	}
 
 	public void drawBackground(Graphics2D g2) {
@@ -138,53 +145,86 @@ public class MainMenu {
 		if(indexBackground == 23)
 			indexBackground = 0;	
 	}
-	
-	private void drawTitle(Graphics2D g2) {
-		g2.drawImage(titolo, titoloX, titoloY, null);	
-	}
-	
+
 	private void drawCredits(Graphics2D g2) {
 		g2.setColor(Color.red);
-		g2.drawString(credits, GAME_WIDTH/2 - (int)(50*SCALE), GAME_HEIGHT - (int)(2*SCALE));	
+		int x = ViewUtils.getXforCenterText(credits, g2);
+		g2.drawString(credits, x, GAME_HEIGHT - (int)(2*SCALE));
 	}
-
-	private void drawButtons(Graphics2D g2) {
-		for (GeneralButton gb : bottoni)
-			gb.draw(g2);	
-		}
 	
-	public void mousePressed(MouseEvent e) {
-		for (GeneralButton mb : bottoni) {
-			if (mb.checkIfMouseIsIn(e)) {
-				mb.setMousePressed(true);
-			}
+	private void drawTitle(Graphics2D g2) {
+		counterTitle++;
+		if(counterTitle < timer) {
+			float alPhaValue = (float) counterTitle/(timer);
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alPhaValue));	
+		}
+		g2.drawImage(titolo, titoloX, titoloY, null);
+	}
+	
+	public void keyReleased(int tasto) {
+		switch(buttonIndex) {
+		case PLAY:
+			comportamentoPlay(tasto);
+			break;
+		case LOAD:
+			comportamentoLoad(tasto);
+			break;
+		case OPTION:
+			comportamentoOpzioni(tasto);
+			break;	
+		case EXIT:
+			comportamentoEsci(tasto);
+			break;
 		}
 	}
-
-	public void mouseReleased(MouseEvent e) {
-		for (GeneralButton mb : bottoni) {
-			if (mb.checkIfMouseIsIn(e) && mb.isMousePressed()) {
-				view.changeGameState(mb.getButtonState());
-				//view.stopMusic();
-				view.playSE();
-				break;
-			}
-		}
-		resetButtons();
-	}
-
-	private void resetButtons() {
-		for (GeneralButton gb : bottoni)
-			gb.resetBooleans();
-	}
-
-	public void mouseMoved(MouseEvent e) {
-		for (GeneralButton gb : bottoni)
-			gb.setMouseOver(false);
+	
+	private void comportamentoPlay(int tasto) {
+		if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP)
+			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + SCALE));
 		
-		for (GeneralButton gb : bottoni)
-			if (gb.checkIfMouseIsIn(e)) 
-				gb.setMouseOver(true);		
+		else if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
+			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni + SCALE));
+			buttonIndex = LOAD;
+		}
+		else if(tasto == KeyEvent.VK_ENTER)
+			view.changeGameState(buttons[PLAY].getButtonState());
+	}
+	
+	private void comportamentoLoad(int tasto) {
+		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
+			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni*2 + SCALE));
+			buttonIndex = OPTION;
+		}
+		else if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
+			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + SCALE));
+			buttonIndex = PLAY;
+		}
+		else if(tasto == KeyEvent.VK_ENTER) 
+			view.changeGameState(buttons[LOAD].getButtonState());
 	}
 
+	private void comportamentoOpzioni(int tasto) {
+		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
+			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni*3 + SCALE));
+			buttonIndex = EXIT;
+		}
+		else if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
+			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni + SCALE));
+			buttonIndex = LOAD;
+			}
+		else if(tasto == KeyEvent.VK_ENTER) 
+			view.changeGameState(buttons[OPTION].getButtonState());
+	}
+
+	private void comportamentoEsci(int tasto) {
+		if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
+			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni*2 + SCALE));
+			buttonIndex = OPTION;
+			}
+		else if(tasto == KeyEvent.VK_ENTER) 
+			view.changeGameState(buttons[EXIT].getButtonState());		
+	}
+
+	
+	
 }

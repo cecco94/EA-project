@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import controller.Gamestate;
-import view.IView;
+import view.main.IView;
 
 
 public class KeyboardInputs implements KeyListener {
@@ -24,8 +24,21 @@ public class KeyboardInputs implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (Gamestate.state) {
+		case START_TITLE:
+			if(e.getKeyCode() == KeyEvent.VK_ENTER) 
+				view.getStart().skipTitle();
+			break;
+		case MAIN_MENU:
+			view.getMenu().keyReleased(e.getKeyCode());
+			break;
+		case SELECT_AVATAR:
+			view.getAvatarMenu().keyReleased(e.getKeyCode());
+			break;
 		case PLAYING:
 			//gamePanel.getGame().getPlaying().keyReleased(e);
+			break;
+		case OPTIONS:
+			view.getOptions().keyReleased(e.getKeyCode());
 			break;
 		default:
 			break;
@@ -33,14 +46,6 @@ public class KeyboardInputs implements KeyListener {
 	}
 
 	@Override
-	public void keyPressed(KeyEvent e) {
-		switch (Gamestate.state) {
-		case START_TITLE:
-			if(e.getKeyCode() == KeyEvent.VK_ENTER) 
-				view.getStart().skipTitle();
-			break;
-		default:
-			break;
-		}			
+	public void keyPressed(KeyEvent e) {		
 	}
 }

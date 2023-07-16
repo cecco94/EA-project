@@ -8,8 +8,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.Gamestate;
-import view.GamePanel;
 import view.ViewUtils;
+import view.main.GamePanel;
+import view.main.IView;
 
 
 public class StartTitle {
@@ -17,11 +18,13 @@ public class StartTitle {
 	private BufferedImage[] titoli;
 	private int timer = 120*10;
 	private int timerPrimaScritta = 120*5;
-	private int counter = 0;
+	private int counter;
 	private int scritta1X, scritta1Y, scritta2X, scritta2Y;
 	private float alPhaValue;
+	private IView view;
 	
-	public StartTitle() {
+	public StartTitle(IView v) {
+		view = v;
 		titoli = new BufferedImage[2];
 		getImages();
 		setImgDimensions();
@@ -68,7 +71,7 @@ public class StartTitle {
 	}
 	
 	public void skipTitle() {
-		Gamestate.state = Gamestate.MAIN_MENU;
+		view.changeGameState(Gamestate.MAIN_MENU);
 	}
 	
 	

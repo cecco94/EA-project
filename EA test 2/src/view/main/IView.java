@@ -1,22 +1,21 @@
-package view;
+package view.main;
 
+import java.awt.AWTException;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
-import javax.imageio.ImageIO;
+import java.awt.Robot;
 
 import controller.Gamestate;
 import view.inputs.MouseInputs;
-import view.mainMenu.MainMenu;
+import view.menuIniziale.MainMenu;
+import view.menuOpzioni.OptionMenu;
 import view.selectAvatar.AvatarMenu;
 import view.sound.SoundManager;
 import view.startTitle.StartTitle;
 
 public class IView {
-
-	private int frequenzaMessaggioSubliminale;
-	private BufferedImage messaggioSubliminale;
 	
+//	private MessaggioSubliminale ms = new MessaggioSubliminale();
+	private Robot robot;
 	private MouseInputs mi;
 	private GamePanel gp;
 	private GameWindow gw;
@@ -24,40 +23,34 @@ public class IView {
 	private StartTitle start;
 	private MainMenu menu;
 	private AvatarMenu avatar;
+	private OptionMenu opzioni;
 	
 	public IView() {
-		caricaMessaggioSubliminale();
 		initViewClasses();
 		setStartMusic();
 	}
-	
-	private void caricaMessaggioSubliminale() {
-		messaggioSubliminale = null;
-		BufferedImage temp = null;
-		try {
-			temp = ImageIO.read(getClass().getResourceAsStream("/subliminale.png"));
-			messaggioSubliminale = ViewUtils.scaleImage(temp, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT);
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private void initViewClasses() {
-		this.sound = new SoundManager();
-		this.mi = new MouseInputs(this);
-		this.gp = new GamePanel(this, mi);
-		this.menu = new MainMenu(this);
-		this.start = new StartTitle();
-		this.avatar = new AvatarMenu(this);
-		this.gw = new GameWindow(gp);
+		sound = new SoundManager();
+		mi = new MouseInputs(this);
+		gp = new GamePanel(this, mi);
+		menu = new MainMenu(this);
+		start = new StartTitle(this);
+		avatar = new AvatarMenu(this);
+		opzioni = new OptionMenu(this);
+		gw = new GameWindow(gp);
+		try {
+			robot = new Robot();
+		} 
+		catch (AWTException e) {
+			e.printStackTrace();
+		}
 		gp.setFocusable(true);
 		gp.requestFocus();
-		
 	}
 
 	private void setStartMusic(){
-		sound.play(SoundManager.MENU_MUSIC);
+		sound.playMusic(SoundManager.MENU_MUSIC);
 	}
 
 	public void draw() {
@@ -79,7 +72,7 @@ public class IView {
 			System.out.println("load game");
 			break;
 		case OPTIONS:
-			System.out.println("opzioni");
+			opzioni.draw(g2);
 			break;
 		case QUIT:
 			System.exit(0);
@@ -88,21 +81,21 @@ public class IView {
 			System.out.println("play");
 			break;			
 		}
-	//	disegnaMessaggioSubliminale(g2);
+	//	ms.disegnaMessaggioSubliminale(g2);
 	}
 	
 	public void changeGameState(Gamestate newState) {
 		Gamestate.state = newState;
 	}
-	
-	private void disegnaMessaggioSubliminale(Graphics2D g2) {
-		frequenzaMessaggioSubliminale++;
-		if(frequenzaMessaggioSubliminale == 90) {
-			g2.drawImage(messaggioSubliminale, 0, 0, null);
-			frequenzaMessaggioSubliminale = 0;
-		}			
-	}
 
+	public void setCursorPosition(int X, int Y) {
+		robot.mouseMove(gp.getLocationOnScreen().x + X, gp.getLocationOnScreen().y + Y);
+	}
+	
+	public GamePanel getGamePanel() {
+		return gp;
+	}
+	
 	public MainMenu getMenu() {
 		return this.menu;
 	}
@@ -115,12 +108,28 @@ public class IView {
 		return this.avatar;
 	}
 	
-	public void playSE() {
-		sound.play(SoundManager.COIN);
+	public OptionMenu getOptions() {
+		return this.opzioni;
+	}
+	
+	public void playMusic(int i) {
+		sound.playMusic(i);
 	}
 	
 	public void stopMusic() {
-		sound.stop();
+		sound.stopMusic();
+	}
+	
+	public void playSE(int i) {
+		sound.playSE(i);
+	}
+
+	public void setMusicVolume(float v) {
+		sound.setMusicVolume((float)v);
+	}
+
+	public void setSEVolume(float v) {
+		sound.setSEVolume((float)v);
 	}
 	
 }

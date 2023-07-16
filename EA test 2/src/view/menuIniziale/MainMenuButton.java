@@ -1,19 +1,22 @@
-package view.mainMenu;
+package view.menuIniziale;
 
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.Gamestate;
 import view.ViewUtils;
+import view.main.IView;
 
-public class GeneralButton extends MenuButton {
+public class MainMenuButton extends MenuButton {
 	
-	public GeneralButton(String[] percorsoIcone, int y, int width, int height, Gamestate state) {
+	public MainMenuButton(String[] percorsoIcone, int y, int width, int height, Gamestate state, IView v) {
 		loadIcons(percorsoIcone, width, height);
 		super.setBounds(ViewUtils.getCenteredXPos(width), y, width, height);
 		newState = state;
+		view = v;
 	}
 
 	private void loadIcons(String[] percorsoIcone, int width, int height) {
@@ -37,6 +40,11 @@ public class GeneralButton extends MenuButton {
 			g2.drawImage(mouseOverImage, (int)bounds.getX(), (int)bounds.getY(), null);
 		if(mousePressed)
 			g2.drawImage(mousePressedImage, (int)bounds.getX(), (int)bounds.getY(), null);		
+	}
+
+	@Override
+	public void reactToMouse(MouseEvent e) {
+		view.changeGameState(newState);	
 	}
 
 }

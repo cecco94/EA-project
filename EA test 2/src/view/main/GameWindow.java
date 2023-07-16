@@ -1,4 +1,4 @@
-package view;
+package view.main;
 
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -16,11 +16,12 @@ public class GameWindow extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	public GameWindow(GamePanel gp) {
+		setTitle("ENGINEERING ADVENTURE");
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("res/cursor.png").getImage(),new Point(0,0),"custom cursor"));
-		add(gp);
+		getContentPane().add(gp);
 		pack();
 		setLocationRelativeTo(null);
 		addWindowFocusListener(new WindowFocusListener() {

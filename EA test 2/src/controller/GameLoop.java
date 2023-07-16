@@ -1,6 +1,6 @@
 package controller;
 
-import view.IView;
+import view.main.IView;
 
 public class GameLoop implements Runnable{
 
@@ -55,7 +55,7 @@ public class GameLoop implements Runnable{
 
 			if (System.currentTimeMillis() - lastCheck >= 1000) {
 				lastCheck = System.currentTimeMillis();
-				System.out.println("FPS: " + frames + " | UPS: " + updates);
+			//	System.out.println("FPS: " + frames + " | UPS: " + updates);
 				frames = 0;
 				updates = 0;
 
@@ -64,8 +64,7 @@ public class GameLoop implements Runnable{
 	}
 
 	private void render() {
-		view.draw();
-		
+		view.draw();	
 	}
 
 	private void update() {
