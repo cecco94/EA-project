@@ -27,6 +27,8 @@ public class SoundManager {
 		soundURL[7] = getClass().getResource("/sound/cursor.wav");
 		soundURL[8] = getClass().getResource("/sound/receivedamage.wav");	*/
 		
+		setMusic(MENU_MUSIC);
+		setSE(COIN);
 	}
 	
 	public void setMusic(int i) {
@@ -72,13 +74,13 @@ public class SoundManager {
 		soundEffect.start();
 	}
 	
-	public void setMusicVolume(float v) {	  //v in percentuale da 0 a 1
-		volume = v;
-		FloatControl control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
-		float range  = control.getMaximum() - control.getMinimum();
-		float gain = (range * volume) + control.getMinimum();
-		control.setValue(gain);
-	}
+//	public void setMusicVolume(float v) {	  //v in percentuale da 0 a 1
+//		volume = v;
+//		FloatControl control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
+//		float range  = control.getMaximum() - control.getMinimum();
+//		float gain = (range * volume) + control.getMinimum();
+//		control.setValue(gain);
+//	}
 	
 	public void setSEVolume(float v) {
 		volume = v;
@@ -88,5 +90,12 @@ public class SoundManager {
 		control.setValue(gain);
 	}
 	
+	public void setMusicVolume(float volume) {
+	    if (volume > 0f || volume < 1f) {
+	      //  throw new IllegalArgumentException("Volume not valid: " + volume);
+	    FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);        
+	    gainControl.setValue(20f * (float) Math.log10(volume));
+	    }
+	}
 	
 }

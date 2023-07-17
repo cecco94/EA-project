@@ -5,8 +5,9 @@ import java.awt.Graphics2D;
 import java.awt.Robot;
 
 import controller.Gamestate;
+import controller.mappa.MapManager;
 import view.inputs.MouseInputs;
-import view.menuIniziale.MainMenu;
+import view.menuIniziale.MenuIniziale;
 import view.menuOpzioni.OptionMenu;
 import view.selectAvatar.AvatarMenu;
 import view.sound.SoundManager;
@@ -21,9 +22,10 @@ public class IView {
 	private GameWindow gw;
 	private SoundManager sound;
 	private StartTitle start;
-	private MainMenu menu;
+	private MenuIniziale menu;
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
+	private MapManager map;
 	
 	public IView() {
 		initViewClasses();
@@ -34,10 +36,11 @@ public class IView {
 		sound = new SoundManager();
 		mi = new MouseInputs(this);
 		gp = new GamePanel(this, mi);
-		menu = new MainMenu(this);
+		menu = new MenuIniziale(this);
 		start = new StartTitle(this);
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
+		map = new MapManager();
 		gw = new GameWindow(gp);
 		try {
 			robot = new Robot();
@@ -51,6 +54,7 @@ public class IView {
 
 	private void setStartMusic(){
 		sound.playMusic(SoundManager.MENU_MUSIC);
+		sound.setMusicVolume(0.5f);
 	}
 
 	public void draw() {
@@ -78,7 +82,7 @@ public class IView {
 			System.exit(0);
 			break;
 		case PLAYING:
-			System.out.println("play");
+			map.draw(g2);
 			break;			
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
@@ -96,7 +100,7 @@ public class IView {
 		return gp;
 	}
 	
-	public MainMenu getMenu() {
+	public MenuIniziale getMenu() {
 		return this.menu;
 	}
 	

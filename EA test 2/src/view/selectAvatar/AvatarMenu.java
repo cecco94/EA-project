@@ -7,7 +7,6 @@ import static view.main.GamePanel.SCALE;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -15,7 +14,7 @@ import javax.imageio.ImageIO;
 import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
-import view.menuIniziale.MainMenuButton;
+import view.menuIniziale.InitialMenuButton;
 import view.menuIniziale.Menu;
 import view.menuIniziale.MenuButton;
 
@@ -57,7 +56,7 @@ public class AvatarMenu extends Menu{
 		x = GAME_WIDTH/2 - GAME_WIDTH/15 - (int)(200*SCALE);
 		buttons[1] = new AvatarButton(percorsoRagazzo, x, y, (int)(200*SCALE), (int)(300*SCALE), view);
 		y = GAME_HEIGHT - (int)(50*SCALE);
-		buttons[2] = new MainMenuButton(percorsoIndietro, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU, view);	
+		buttons[2] = new InitialMenuButton(percorsoIndietro, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU, view);	
 	}
 	
 	private void loadCharacterSkills() {
@@ -101,51 +100,65 @@ public class AvatarMenu extends Menu{
 		
 		switch(buttonIndex) {
 		case RAGAZZO:
-			if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_LEFT) 
-				view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
-
-			if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
-				view.setCursorPosition(GAME_WIDTH/2, GAME_HEIGHT - (int)(50*SCALE));
-				buttonIndex = INDIETRO;
-				}
-			if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
-				view.setCursorPosition((int)(GAME_WIDTH/2 + GAME_WIDTH/4), GAME_HEIGHT/2);
-				buttonIndex = RAGAZZA;
-				}
-			if(tasto == KeyEvent.VK_ENTER) {
-				view.stopMusic();
-				view.changeGameState(buttons[1].getButtonState());
-				}
-			break;
-			
+			comportamentoRagazzo(tasto);
+			break;		
 		case RAGAZZA:
-			if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
-				view.setCursorPosition(GAME_WIDTH/2, GAME_HEIGHT - (int)(50*SCALE));
-				buttonIndex = INDIETRO;
-				}
-			if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
-				view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
-				buttonIndex = RAGAZZO;
-				}
-			if(tasto == KeyEvent.VK_ENTER) {
-				view.changeGameState(buttons[0].getButtonState());
-				view.stopMusic();
-				}
-			break;
-			
+			comportamentoRagazza(tasto);
+			break;		
 		case INDIETRO:
-			if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
-				view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
-				buttonIndex = RAGAZZO;
-				}
-			if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
-				view.setCursorPosition((int)(GAME_WIDTH/2 + GAME_WIDTH/4), GAME_HEIGHT/2);
-				buttonIndex = RAGAZZA;
-				}
-			if(tasto == KeyEvent.VK_ENTER) 
-				view.changeGameState(buttons[2].getButtonState());
+			comportamentoIndietro(tasto);
 			break;	
 		}	
+	}
+
+	private void comportamentoRagazzo(int tasto) {
+		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_LEFT) 
+			view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
+
+		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
+			view.setCursorPosition(GAME_WIDTH/2, GAME_HEIGHT - (int)(50*SCALE));
+			buttonIndex = INDIETRO;
+			}
+		if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
+			view.setCursorPosition((int)(GAME_WIDTH/2 + GAME_WIDTH/4), GAME_HEIGHT/2);
+			buttonIndex = RAGAZZA;
+			}
+		if(tasto == KeyEvent.VK_ENTER) {
+			view.stopMusic();
+			resetButtons();
+			view.changeGameState(buttons[1].getButtonState());
+			}		
+	}
+
+	private void comportamentoRagazza(int tasto) {
+		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
+			view.setCursorPosition(GAME_WIDTH/2, GAME_HEIGHT - (int)(50*SCALE));
+			buttonIndex = INDIETRO;
+			}
+		if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
+			view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
+			buttonIndex = RAGAZZO;
+			}
+		if(tasto == KeyEvent.VK_ENTER) {
+			resetButtons();
+			view.changeGameState(buttons[RAGAZZA].getButtonState());
+			view.stopMusic();
+			}		
+	}
+
+	private void comportamentoIndietro(int tasto) {
+		if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
+			view.setCursorPosition((int)(GAME_WIDTH/2 - GAME_WIDTH/4), GAME_HEIGHT/2);
+			buttonIndex = RAGAZZO;
+			}
+		if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
+			view.setCursorPosition((int)(GAME_WIDTH/2 + GAME_WIDTH/4), GAME_HEIGHT/2);
+			buttonIndex = RAGAZZA;
+			}
+		if(tasto == KeyEvent.VK_ENTER) {
+			resetButtons();
+			view.changeGameState(buttons[INDIETRO].getButtonState());
+		}		
 	}
 	
 }

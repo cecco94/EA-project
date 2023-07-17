@@ -10,9 +10,9 @@ import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
 
-public class MainMenuButton extends MenuButton {
+public class InitialMenuButton extends MenuButton {
 	
-	public MainMenuButton(String[] percorsoIcone, int y, int width, int height, Gamestate state, IView v) {
+	public InitialMenuButton(String[] percorsoIcone, int y, int width, int height, Gamestate state, IView v) {
 		loadIcons(percorsoIcone, width, height);
 		super.setBounds(ViewUtils.getCenteredXPos(width), y, width, height);
 		newState = state;

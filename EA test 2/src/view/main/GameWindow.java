@@ -1,10 +1,13 @@
 package view.main;
 
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -20,7 +23,14 @@ public class GameWindow extends JFrame{
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("res/cursor.png").getImage(),new Point(0,0),"custom cursor"));
+		Image mouseIcon = null;
+		try {
+			mouseIcon = ImageIO.read(getClass().getResourceAsStream("/cursor.png"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(mouseIcon,new Point(gp.getX(),gp.getY()),"custom cursor"));
 		getContentPane().add(gp);
 		pack();
 		setLocationRelativeTo(null);

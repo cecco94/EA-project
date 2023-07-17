@@ -16,7 +16,7 @@ import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
 
-public class MainMenu extends Menu{
+public class MenuIniziale extends Menu{
 	private IView view;
 	
 	private int indexBackground, counterbackground, counterTitle;
@@ -31,7 +31,7 @@ public class MainMenu extends Menu{
 	private final int PLAY = 0, LOAD = 1, OPTION = 2, EXIT = 3;
 	private int buttonIndex = PLAY;
 	
-	public MainMenu(IView v) {
+	public MenuIniziale(IView v) {
 		view = v;
 		setDimensions();
 		loadBackgroundImages();
@@ -121,11 +121,11 @@ public class MainMenu extends Menu{
 		String[] percorsoRiprendi = {"/menuiniziale/riprendi1.png", "/menuiniziale/riprendi2.png", "/menuiniziale/riprendi3.png"};
 		String[] percorsoOpzioni = {"/menuiniziale/opzioni1.png", "/menuiniziale/opzioni2.png", "/menuiniziale/opzioni3.png"};	
 		String[] percorsoQuit = {"/menuiniziale/rinuncia1.png", "/menuiniziale/rinuncia2.png", "/menuiniziale/rinuncia3.png"};
-		buttons = new MainMenuButton[4];
-		buttons[0] = new MainMenuButton(percorsoIscriviti, altezzaBottoni,(int)(110*SCALE),(int)(16*SCALE), Gamestate.SELECT_AVATAR, view);
-		buttons[1] = new MainMenuButton(percorsoRiprendi, altezzaBottoni + distanzaBottoni, (int)(300*SCALE), (int)(17*SCALE), Gamestate.LOAD_GAME, view);
-		buttons[2] = new MainMenuButton(percorsoOpzioni, altezzaBottoni + distanzaBottoni*2, (int)(270*SCALE), (int)(16*SCALE), Gamestate.OPTIONS, view);
-		buttons[3] = new MainMenuButton(percorsoQuit, altezzaBottoni + distanzaBottoni*3, (int)(250*SCALE), (int)(14*SCALE), Gamestate.QUIT, view);
+		buttons = new InitialMenuButton[4];
+		buttons[0] = new InitialMenuButton(percorsoIscriviti, altezzaBottoni,(int)(110*SCALE),(int)(16*SCALE), Gamestate.SELECT_AVATAR, view);
+		buttons[1] = new InitialMenuButton(percorsoRiprendi, altezzaBottoni + distanzaBottoni, (int)(300*SCALE), (int)(17*SCALE), Gamestate.LOAD_GAME, view);
+		buttons[2] = new InitialMenuButton(percorsoOpzioni, altezzaBottoni + distanzaBottoni*2, (int)(270*SCALE), (int)(16*SCALE), Gamestate.OPTIONS, view);
+		buttons[3] = new InitialMenuButton(percorsoQuit, altezzaBottoni + distanzaBottoni*3, (int)(250*SCALE), (int)(14*SCALE), Gamestate.QUIT, view);
 	}	
 
 	public void drawYourself(Graphics2D g2) {
@@ -186,8 +186,10 @@ public class MainMenu extends Menu{
 			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni + SCALE));
 			buttonIndex = LOAD;
 		}
-		else if(tasto == KeyEvent.VK_ENTER)
+		else if(tasto == KeyEvent.VK_ENTER) {
+			resetButtons();
 			view.changeGameState(buttons[PLAY].getButtonState());
+		}
 	}
 	
 	private void comportamentoLoad(int tasto) {
@@ -199,8 +201,10 @@ public class MainMenu extends Menu{
 			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + SCALE));
 			buttonIndex = PLAY;
 		}
-		else if(tasto == KeyEvent.VK_ENTER) 
+		else if(tasto == KeyEvent.VK_ENTER) {
+			resetButtons();
 			view.changeGameState(buttons[LOAD].getButtonState());
+		}
 	}
 
 	private void comportamentoOpzioni(int tasto) {
@@ -212,8 +216,10 @@ public class MainMenu extends Menu{
 			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni + SCALE));
 			buttonIndex = LOAD;
 			}
-		else if(tasto == KeyEvent.VK_ENTER) 
+		else if(tasto == KeyEvent.VK_ENTER) {
+			resetButtons();
 			view.changeGameState(buttons[OPTION].getButtonState());
+		}
 	}
 
 	private void comportamentoEsci(int tasto) {
@@ -221,8 +227,10 @@ public class MainMenu extends Menu{
 			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni*2 + SCALE));
 			buttonIndex = OPTION;
 			}
-		else if(tasto == KeyEvent.VK_ENTER) 
-			view.changeGameState(buttons[EXIT].getButtonState());		
+		else if(tasto == KeyEvent.VK_ENTER) {
+			resetButtons();
+			view.changeGameState(buttons[EXIT].getButtonState());	
+		}
 	}
 
 	
