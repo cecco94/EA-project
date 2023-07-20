@@ -16,7 +16,8 @@ import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
 
-public class MenuIniziale extends Menu{
+//il menu che si vede all'inizio del gioco, con play, riprendi, opzioni...
+public class MenuIniziale extends AbstractMenu {	
 	private IView view;
 	
 	private int indexBackground, counterbackground, counterTitle;
@@ -26,24 +27,22 @@ public class MenuIniziale extends Menu{
 	private BufferedImage[] sfondoAnimato;
 	private BufferedImage titolo;
 	private int titoloX, titoloY;
-	private int altezzaBottoni, distanzaBottoni;
+	private int altezzaBottoni = (int)(250 * SCALE), 
+				distanzaBottoni = (int)(30 * SCALE);
 	
+	// questi servono per muoversi con i tsti direzionali. index indica il tasto selezionato
+	// il tasto cioè dove si trova il cursore
 	private final int PLAY = 0, LOAD = 1, OPTION = 2, EXIT = 3;
 	private int buttonIndex = PLAY;
 	
 	public MenuIniziale(IView v) {
 		view = v;
-		setDimensions();
 		loadBackgroundImages();
 		loadTitle();
 		loadButtons();
 	}
-	
-	private void setDimensions() {
-		altezzaBottoni = (int)(250 * SCALE);
-		distanzaBottoni = (int)(30 * SCALE);
-	}
-	
+
+	//sono le immagini che insieme formano l'animazione sullo sfondo
 	private void loadBackgroundImages() {
 		sfondoAnimato = new BufferedImage[24];
 		BufferedImage temp = null;
@@ -96,7 +95,6 @@ public class MenuIniziale extends Menu{
 			sfondoAnimato[22] = ViewUtils.scaleImage(temp, GAME_WIDTH, GAME_HEIGHT);
 			temp = ImageIO.read(getClass().getResourceAsStream("/menuiniziale/sfondoMenuIniziale-23.png"));
 			sfondoAnimato[23] = ViewUtils.scaleImage(temp, GAME_WIDTH, GAME_HEIGHT);
-			
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -135,6 +133,7 @@ public class MenuIniziale extends Menu{
 		drawTitle(g2);
 	}
 
+	//ogni tot centesimi di secondo, cambia l'immagine. in questo modo sembra che lo schermo sia in movimento
 	public void drawBackground(Graphics2D g2) {
 		counterbackground++;
 		g2.drawImage(sfondoAnimato[indexBackground], 0, 0, null);
@@ -152,19 +151,21 @@ public class MenuIniziale extends Menu{
 		g2.drawString(credits, x, GAME_HEIGHT - (int)(2*SCALE));
 	}
 	
+	// il titolo diventa piano piano meno trasparente, il valore alpha è quello che indica la trasparenza e varia tra 0 e 1
 	private void drawTitle(Graphics2D g2) {
 		counterTitle++;
 		if(counterTitle < timer) {
-			float alPhaValue = (float) counterTitle/(timer);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alPhaValue));	
+			float alPhaValue = (float) counterTitle/(timer);	//quando il counter = timer il titolo è completamente visibile
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alPhaValue));	//setta il valore di trasparenza
 		}
 		g2.drawImage(titolo, titoloX, titoloY, null);
 	}
 	
+	// in base a quale tasto è selezionato, cambia ciò che deve fare
 	public void keyReleased(int tasto) {
 		switch(buttonIndex) {
 		case PLAY:
-			comportamentoPlay(tasto);
+			comportamentoPlay(tasto);	
 			break;
 		case LOAD:
 			comportamentoLoad(tasto);
@@ -180,10 +181,10 @@ public class MenuIniziale extends Menu{
 	
 	private void comportamentoPlay(int tasto) {
 		if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP)
-			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + SCALE));
+			view.setCursorPosition(buttons[PLAY].getBounds().x, buttons[PLAY].getBounds().y);
 		
 		else if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
-			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni + SCALE));
+			view.setCursorPosition(buttons[LOAD].getBounds().x, buttons[LOAD].getBounds().y);
 			buttonIndex = LOAD;
 		}
 		else if(tasto == KeyEvent.VK_ENTER) {
@@ -194,11 +195,11 @@ public class MenuIniziale extends Menu{
 	
 	private void comportamentoLoad(int tasto) {
 		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
-			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni*2 + SCALE));
+			view.setCursorPosition(buttons[OPTION].getBounds().x, buttons[OPTION].getBounds().y);
 			buttonIndex = OPTION;
 		}
 		else if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
-			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + SCALE));
+			view.setCursorPosition(buttons[PLAY].getBounds().x, buttons[PLAY].getBounds().y);
 			buttonIndex = PLAY;
 		}
 		else if(tasto == KeyEvent.VK_ENTER) {
@@ -209,11 +210,11 @@ public class MenuIniziale extends Menu{
 
 	private void comportamentoOpzioni(int tasto) {
 		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
-			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni*3 + SCALE));
+			view.setCursorPosition(buttons[EXIT].getBounds().x, buttons[EXIT].getBounds().y);
 			buttonIndex = EXIT;
 		}
 		else if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
-			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni + SCALE));
+			view.setCursorPosition(buttons[LOAD].getBounds().x, buttons[LOAD].getBounds().y);
 			buttonIndex = LOAD;
 			}
 		else if(tasto == KeyEvent.VK_ENTER) {
@@ -224,7 +225,7 @@ public class MenuIniziale extends Menu{
 
 	private void comportamentoEsci(int tasto) {
 		if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
-			view.setCursorPosition(GAME_WIDTH/2, (int)(altezzaBottoni + distanzaBottoni*2 + SCALE));
+			view.setCursorPosition(buttons[OPTION].getBounds().x, buttons[OPTION].getBounds().y);
 			buttonIndex = OPTION;
 			}
 		else if(tasto == KeyEvent.VK_ENTER) {

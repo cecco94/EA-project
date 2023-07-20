@@ -15,6 +15,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		this.view = v;
 	}
 
+	//lui sente solo che il mouse ha fatto qualcosa, poi delega la gestione dell'evento ai vari gamestate
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		switch (Gamestate.state) {
@@ -23,11 +24,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			break;
 			
 		case OPTIONS:
-		//	view.getOptions().mouseDragged(e);
+			view.getOptions().mouseDragged(e);
 			break;
 		default:
 			break;
-
 		}
 
 	}
@@ -57,14 +57,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		switch (Gamestate.state) {
-		case PLAYING:
-			//gamePanel.getGame().getPlaying().mouseClicked(e);
-			break;
 		case START_TITLE:
 			view.getStart().skipTitle();
 			break;
 		default:
-			
 			break;
 		}
 	}
@@ -111,13 +107,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-
 	}
 
 }

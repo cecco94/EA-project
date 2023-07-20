@@ -5,13 +5,16 @@ import java.awt.Graphics2D;
 import java.awt.Robot;
 
 import controller.Gamestate;
-import controller.mappa.MapManager;
 import view.inputs.MouseInputs;
 import view.menuIniziale.MenuIniziale;
 import view.menuOpzioni.OptionMenu;
 import view.selectAvatar.AvatarMenu;
 import view.sound.SoundManager;
 import view.startTitle.StartTitle;
+
+// per ora la classe più importante, gestisce tutte le altre classi della view, che fanno riferimento 
+// a lei per cambiare cose importanti come il volume o il gamestate. permette inoltre alle altre classi 
+// di comunicare in modo indiretto
 
 public class IView {
 	
@@ -25,7 +28,7 @@ public class IView {
 	private MenuIniziale menu;
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
-	private MapManager map;
+//	private MapManager map;
 	
 	public IView() {
 		initViewClasses();
@@ -40,24 +43,29 @@ public class IView {
 		start = new StartTitle(this);
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
-		map = new MapManager();
+	//	map = new MapManager();
 		gw = new GameWindow(gp);
+		setCursorManager();
+		gp.setFocusable(true);
+		gp.requestFocus();
+	}
+
+	private void setCursorManager() {
 		try {
 			robot = new Robot();
 		} 
 		catch (AWTException e) {
 			e.printStackTrace();
 		}
-		gp.setFocusable(true);
-		gp.requestFocus();
 	}
 
 	private void setStartMusic(){
 		sound.playMusic(SoundManager.MENU_MUSIC);
-		sound.setMusicVolume(0.5f);
+		sound.setMusicVolume(0.2f);
 	}
 
-	public void draw() {
+	//chiede al pannello di creare il suo ambiente grafico, g, che poi userà per disegnare il frame successivo
+	public void draw() {	
 		gp.repaint();	
 	}
 
@@ -73,7 +81,7 @@ public class IView {
 			avatar.drawAvatarMenu(g2);
 			break;
 		case LOAD_GAME: 
-			System.out.println("load game");
+		//	System.out.println("load game");
 			break;
 		case OPTIONS:
 			opzioni.draw(g2);
@@ -82,7 +90,7 @@ public class IView {
 			System.exit(0);
 			break;
 		case PLAYING:
-			map.draw(g2);
+		//	map.draw(g2);
 			break;			
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
@@ -92,10 +100,15 @@ public class IView {
 		Gamestate.state = newState;
 	}
 
+	// per usare i tasti direzionali nei vari menu, ho fatto in modo che, usando i tasti,
+	// si possa spostare la freccina e quindi i bottoni reagiscono allo spostamento della freccina.
+	// in questo modo ho riciclato i metodi dei bottoni che gestiscono il mouse per 
+	// gestire anche i tasti
 	public void setCursorPosition(int X, int Y) {
 		robot.mouseMove(gp.getLocationOnScreen().x + X, gp.getLocationOnScreen().y + Y);
 	}
 	
+	// questi metodi servono per far comunicare tra loro le varie classi
 	public GamePanel getGamePanel() {
 		return gp;
 	}

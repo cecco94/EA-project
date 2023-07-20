@@ -12,10 +12,10 @@ public class SoundManager {
 	private float volume = 0.5f;
 	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[10];
-	private int musicId;
 	public static final int MENU_MUSIC = 0;
 	public static final int COIN = 1;
 	
+	// tutti i percorsi dei file dei suoni vengono inseriti in un array
 	public SoundManager() {
 		soundURL[0] = getClass().getResource("/sound/tema.wav");
 		soundURL[1] = getClass().getResource("/sound/coin.wav");
@@ -31,6 +31,7 @@ public class SoundManager {
 		setSE(COIN);
 	}
 	
+	// per suonare una musica, prima bisogna dire alla clip quale file prendere
 	public void setMusic(int i) {
 		try {								
 			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
@@ -42,6 +43,7 @@ public class SoundManager {
 		}
 	}
 	
+	//idem per gli effetti
 	public void setSE(int i) {
 		try {								
 			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
@@ -54,13 +56,11 @@ public class SoundManager {
 	}
 	
 	public void playMusic(int i) {
-		musicId = i;
 		setMusic(i);
 		music.start();	
 	}
 	
 	public void loopMusic(int i) {
-		musicId = i;
 		setMusic(i);
 		music.loop(Clip.LOOP_CONTINUOUSLY);
 	}
@@ -82,6 +82,7 @@ public class SoundManager {
 //		control.setValue(gain);
 //	}
 	
+	//metodo obsoleto
 	public void setSEVolume(float v) {
 		volume = v;
 		FloatControl control = (FloatControl) soundEffect.getControl(FloatControl.Type.MASTER_GAIN);
@@ -90,11 +91,13 @@ public class SoundManager {
 		control.setValue(gain);
 	}
 	
+	// metodo che funziona bene
 	public void setMusicVolume(float volume) {
 	    if (volume > 0f || volume < 1f) {
-	      //  throw new IllegalArgumentException("Volume not valid: " + volume);
 	    FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);        
-	    gainControl.setValue(20f * (float) Math.log10(volume));
+	    gainControl.setValue(20f * (float) Math.log10(volume));	// siccome il suono è in decibel, bisogna convertirlo in lineare
+	    if(volume < 0.015f)
+	    	 gainControl.setValue(gainControl.getMinimum());
 	    }
 	}
 	

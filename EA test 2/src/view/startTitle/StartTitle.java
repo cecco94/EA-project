@@ -12,7 +12,7 @@ import view.ViewUtils;
 import view.main.GamePanel;
 import view.main.IView;
 
-
+// sarebbero le due scritte iniziali, "gngames" e "presenta"
 public class StartTitle {
 	
 	private BufferedImage[] titoli;

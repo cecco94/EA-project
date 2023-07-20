@@ -2,7 +2,7 @@ package controller;
 
 import view.main.IView;
 
-public class GameLoop implements Runnable{
+public class GameLoop implements Runnable {
 
 	private Thread gameThread;
 	private int FPS_SET = 120;
@@ -19,8 +19,10 @@ public class GameLoop implements Runnable{
 		gameThread.start();
 	}
 
+	// è l'istruzione che viene eseguita in un altro thread, in questo modo tutto il gioco 
+	// viene eseguito in un altro thread
 	@Override
-	public void run() {
+	public void run() {		
 
 		double timePerFrame = 1000000000.0 / FPS_SET;
 		double timePerUpdate = 1000000000.0 / UPS_SET;
@@ -55,7 +57,7 @@ public class GameLoop implements Runnable{
 
 			if (System.currentTimeMillis() - lastCheck >= 1000) {
 				lastCheck = System.currentTimeMillis();
-			//	System.out.println("FPS: " + frames + " | UPS: " + updates);
+			//	System.out.println("FPS: " + frames + " | UPS: " + updates);  per debugging
 				frames = 0;
 				updates = 0;
 
@@ -68,7 +70,7 @@ public class GameLoop implements Runnable{
 	}
 
 	private void update() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub		ancora non fa nulla
 		
 	}
 }

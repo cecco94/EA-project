@@ -16,11 +16,7 @@ public class KeyboardInputs implements KeyListener {
 		this.view = v;
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
+	//lui sente solo che un tasto è stato rilasciato, poi delega la gestione del fatto ai vari gamestate
 	@Override
 	public void keyReleased(KeyEvent e) {
 		switch (Gamestate.state) {
@@ -45,6 +41,10 @@ public class KeyboardInputs implements KeyListener {
 		}					
 	}
 
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {		
 	}

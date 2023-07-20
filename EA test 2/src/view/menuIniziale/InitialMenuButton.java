@@ -10,7 +10,8 @@ import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
 
-public class InitialMenuButton extends MenuButton {
+//sono i bottoni play, riprendi, opzioni ed esci
+public class InitialMenuButton extends AbstractMenuButton {	 
 	
 	public InitialMenuButton(String[] percorsoIcone, int y, int width, int height, Gamestate state, IView v) {
 		loadIcons(percorsoIcone, width, height);
@@ -42,6 +43,7 @@ public class InitialMenuButton extends MenuButton {
 			g2.drawImage(mousePressedImage, (int)bounds.getX(), (int)bounds.getY(), null);		
 	}
 
+	// passa al gamestate successivo, per es se clicca play va sul gamestate dove si sceglie l'avatar
 	@Override
 	public void reactToMouse(MouseEvent e) {
 		view.changeGameState(newState);	
