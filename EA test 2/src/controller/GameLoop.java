@@ -1,19 +1,38 @@
 package controller;
 
+import model.IModel;
+import view.loadingScreeen.SplashScreenGame;
 import view.main.IView;
 
 public class GameLoop implements Runnable {
-
+	private SplashScreenGame caricamento;
+	
 	private Thread gameThread;
 	private int FPS_SET = 120;
 	private int UPS_SET = 200;
+	
 	private IView view;
+	private IController controller;
+	private IModel model;
 
 	public GameLoop() {
-		this.view = new IView();
+		
+		System.out.println("thread di caricamento  " + Thread.currentThread().getId());
+		initClasses();
 		startGameLoop();
 	}
-	
+
+	private void initClasses() {
+		
+		caricamento = new SplashScreenGame();	
+		controller = new IController();
+		caricamento.showProgress(50);
+		view = new IView();
+		caricamento.showProgress(80);
+		model = new IModel();
+		caricamento.dispose();
+	}
+
 	private void startGameLoop() {
 		gameThread = new Thread(this);
 		gameThread.start();
