@@ -5,12 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.Robot;
 
 import controller.Gamestate;
+import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
-import view.menuIniziale.MenuIniziale;
-import view.menuOpzioni.OptionMenu;
-import view.selectAvatar.AvatarMenu;
+import view.menu.avatarSelection.AvatarMenu;
+import view.menu.mainMenu.MainMenu;
+import view.menu.optionMenu.OptionMenu;
 import view.sound.SoundManager;
-import view.startTitle.StartTitle;
 
 // per ora la classe più importante, gestisce tutte le altre classi della view, che fanno riferimento 
 // a lei per cambiare cose importanti come il volume o il gamestate. permette inoltre alle altre classi 
@@ -25,7 +25,7 @@ public class IView {
 	private GameWindow gw;
 	private SoundManager sound;
 	private StartTitle start;
-	private MenuIniziale menu;
+	private MainMenu menu;
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
 //	private MapManager map;
@@ -39,7 +39,7 @@ public class IView {
 		sound = new SoundManager();
 		mi = new MouseInputs(this);
 		gp = new GamePanel(this, mi);
-		menu = new MenuIniziale(this);
+		menu = new MainMenu(this);
 		start = new StartTitle(this);
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
@@ -113,7 +113,7 @@ public class IView {
 		return gp;
 	}
 	
-	public MenuIniziale getMenu() {
+	public MainMenu getMenu() {
 		return this.menu;
 	}
 	

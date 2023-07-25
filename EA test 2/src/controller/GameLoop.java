@@ -1,7 +1,7 @@
 package controller;
 
 import model.IModel;
-import view.loadingScreeen.SplashScreenGame;
+import view.gameBegin.SplashScreenGame;
 import view.main.IView;
 
 public class GameLoop implements Runnable {
@@ -17,7 +17,7 @@ public class GameLoop implements Runnable {
 
 	public GameLoop() {
 		
-		System.out.println("thread di caricamento  " + Thread.currentThread().getId());
+	//	System.out.println("thread di caricamento  " + Thread.currentThread().getId());
 		initClasses();
 		startGameLoop();
 	}
