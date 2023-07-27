@@ -1,4 +1,4 @@
-package view.selectAvatar;
+package view.menu.avatarSelection;
 
 import static view.main.GamePanel.GAME_HEIGHT;
 import static view.main.GamePanel.GAME_WIDTH;
@@ -14,9 +14,9 @@ import javax.imageio.ImageIO;
 import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
-import view.menuIniziale.InitialMenuButton;
-import view.menuIniziale.AbstractMenu;
-import view.menuIniziale.AbstractMenuButton;
+import view.menu.AbstractMenu;
+import view.menu.AbstractMenuButton;
+import view.menu.mainMenu.InitialMenuButton;
 
 //menu dove scegli l'avatar
 public class AvatarMenu extends AbstractMenu{

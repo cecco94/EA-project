@@ -1,4 +1,4 @@
-package view.menuIniziale;
+package view.menu.mainMenu;
 
 import static view.main.GamePanel.GAME_HEIGHT;
 import static view.main.GamePanel.GAME_WIDTH;
@@ -15,9 +15,10 @@ import javax.imageio.ImageIO;
 import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
+import view.menu.AbstractMenu;
 
 //il menu che si vede all'inizio del gioco, con play, riprendi, opzioni...
-public class MenuIniziale extends AbstractMenu {	
+public class MainMenu extends AbstractMenu {	
 	private IView view;
 	
 	private int indexBackground, counterbackground, counterTitle;
@@ -35,7 +36,7 @@ public class MenuIniziale extends AbstractMenu {
 	private final int PLAY = 0, LOAD = 1, OPTION = 2, EXIT = 3;
 	private int buttonIndex = PLAY;
 	
-	public MenuIniziale(IView v) {
+	public MainMenu(IView v) {
 		view = v;
 		loadBackgroundImages();
 		loadTitle();

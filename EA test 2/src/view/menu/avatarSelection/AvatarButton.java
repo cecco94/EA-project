@@ -1,4 +1,4 @@
-package view.selectAvatar;
+package view.menu.avatarSelection;
 
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 import controller.Gamestate;
 import view.ViewUtils;
 import view.main.IView;
-import view.menuIniziale.AbstractMenuButton;
+import view.menu.AbstractMenuButton;
 
 // sarebbero le immagini con mario e peach
 public class AvatarButton extends AbstractMenuButton {
