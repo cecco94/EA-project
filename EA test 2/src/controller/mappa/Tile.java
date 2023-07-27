@@ -12,7 +12,7 @@ public class Tile {
 	
 	
 	private void syso() {
-		// TODO Auto-generated method stub
+		ciao nicco mi vedi?
 
 	}
 	
