@@ -12,7 +12,7 @@ public class Tile {
 	
 	
 	private void syso() {
-		ciao nicco mi vedi?
+		ciao nicco mi vedi? siiii
 
 	}
 	
