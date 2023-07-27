@@ -24,6 +24,7 @@ public class IView {
 	private GamePanel gp;
 	private GameWindow gw;
 	private SoundManager sound;
+	//stati del gioco
 	private StartTitle start;
 	private MainMenu menu;
 	private AvatarMenu avatar;
@@ -48,6 +49,7 @@ public class IView {
 		setCursorManager();
 		gp.setFocusable(true);
 		gp.requestFocus();
+	//	gw.requestFocus();
 	}
 
 	private void setCursorManager() {

@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import view.main.GamePanel;
 
 // classe che contiene alcuni metodi comodi a un po' tutte le altre classi
-public class ViewUtils {
+	public class ViewUtils {
 
 	public static BufferedImage scaleImage(BufferedImage original, float width, float height) {
 		BufferedImage scaledImage = new BufferedImage((int)width, (int)height, original.getType());
@@ -43,6 +43,5 @@ public class ViewUtils {
 	
 	public static int getStringHeight(String text, Graphics2D g2) {
 		return (int)g2.getFontMetrics().getStringBounds(text, g2).getHeight();
-
 	}
 }
