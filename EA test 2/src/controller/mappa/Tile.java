@@ -10,6 +10,12 @@ public class Tile {
 	private Rectangle hitbox;
 	private boolean solid = false;
 	
+	
+	private void syso() {
+		// TODO Auto-generated method stub
+
+	}
+	
 	public Tile(BufferedImage img, Rectangle hb, Boolean isSolid) {
 		image = img;
 		hitbox = hb;
