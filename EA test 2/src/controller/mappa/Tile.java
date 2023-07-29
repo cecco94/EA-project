@@ -10,6 +10,12 @@ public class Tile {
 	private Rectangle hitbox;
 	private boolean solid = false;
 	
+	
+	private void syso() {
+		ciao nicco mi vedi? siiii
+
+	}
+	
 	public Tile(BufferedImage img, Rectangle hb, Boolean isSolid) {
 		image = img;
 		hitbox = hb;
