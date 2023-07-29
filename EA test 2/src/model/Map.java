@@ -68,12 +68,12 @@ public class Map {
 			}
 			br.close();
 			
-		/* System.out.println(maxRow + ", " + maxCol);
+		 System.out.println(maxRow + ", " + maxCol);
 			for(int i = 0; i < maxRow; i++) {
 				for(int j = 0; j < maxCol; j++) 
 					System.out.print(stanza[2][i][j] + " ");
 			System.out.println();						
-			}				*/
+			}				
 			
 		}
 		catch(Exception e) {
