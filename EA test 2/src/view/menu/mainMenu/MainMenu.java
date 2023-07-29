@@ -130,8 +130,8 @@ public class MainMenu extends AbstractMenu {
 	public void drawYourself(Graphics2D g2) {
 		drawBackground(g2);
 		drawCredits(g2);
-		drawButtons(g2);
 		drawTitle(g2);
+		drawButtons(g2);
 	}
 
 	//ogni tot centesimi di secondo, cambia l'immagine. in questo modo sembra che lo schermo sia in movimento
