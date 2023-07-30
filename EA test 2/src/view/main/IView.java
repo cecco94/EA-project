@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Robot;
 
 import controller.Gamestate;
+import model.Map;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
 import view.menu.avatarSelection.AvatarMenu;
@@ -83,7 +84,7 @@ public class IView {
 			avatar.drawAvatarMenu(g2);
 			break;
 		case LOAD_GAME: 
-		//	System.out.println("load game");
+			
 			break;
 		case OPTIONS:
 			opzioni.draw(g2);

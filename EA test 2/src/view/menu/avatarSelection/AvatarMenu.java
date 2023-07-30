@@ -39,7 +39,7 @@ public class AvatarMenu extends AbstractMenu{
 	// è la scritta "scegli il tuo avatar"
 	private void loadAvatarChoiceText() {
 		try {
-			scrittaAvatar = ImageIO.read(getClass().getResourceAsStream("/playerSprites/scritta1.png"));
+			scrittaAvatar = ImageIO.read(getClass().getResourceAsStream("/avatarSelection/scritta1.png"));
 			scrittaAvatar = ViewUtils.scaleImage(scrittaAvatar, scrittaAvatar.getWidth()*SCALE/1.5f, scrittaAvatar.getHeight()*SCALE/1.5f);
 		} 
 		catch (IOException e) {
@@ -50,8 +50,8 @@ public class AvatarMenu extends AbstractMenu{
 	}
 	
 	public void loadButtons() {
-		String percorsoRagazzo = "/playerSprites/boyAvatar1.png";
-		String percorsoRagazza = "/playerSprites/girl.png";
+		String percorsoRagazzo = "/avatarSelection/boyAvatar1.png";
+		String percorsoRagazza = "/avatarSelection/girl.png";
 		String[] percorsoIndietro = {"/menuiniziale/indietro1.png", "/menuiniziale/indietro2.png", "/menuiniziale/indietro3.png"};
 		int y = GAME_HEIGHT/6;
 		int x = GAME_WIDTH/2 + GAME_WIDTH/15;
