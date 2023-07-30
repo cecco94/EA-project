@@ -1,4 +1,4 @@
-package model;
+package model.mappa;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -46,7 +46,7 @@ public class Tile {
 			", " + hitbox.width + ", " + hitbox.height + " )";
 		}
 		else 
-			s = "" +this.solid;
+			s = "" + this.solid;
 		
 		return s;
 	}

@@ -1,4 +1,4 @@
-package model;
+package model.mappa;
 
 import java.util.List;
 import java.io.IOException;

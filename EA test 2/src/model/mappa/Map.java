@@ -1,49 +1,36 @@
-package model;
+package model.mappa;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-
-import view.ViewUtils;
-import view.main.GamePanel;
 
 public class Map {
 
+	//primo campo = stanza, secondo campo = strato, terzo e quarto = posizione x,y
+	private int[][][][] mappa;	
+	
+	//primo campo = stanza, secondo campo = larghezza, terzo campo = altezza
+	private int[][] dimensioniStanze;
+	
 	public static final int NUM_STANZE = 1, NUM_STRATI = 3;
 	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2;
 	public static final int BIBLIOTECA = 0, SALA = 1, LABORATORIO = 2, DORMITORIO = 3;
 	String[] percorsiStanze = {"/mappe/provaMappa.txt"};
-	String percorsoTileset = "/mappe/inizializzaTileset.txt";
-	private BufferedImage sourceImage;
-	private static final int numTilePrimoStrato = 5;
-	
-	//primo campo = stanza, secondo campo = strato, terzo e quarto = posizione x,y
-	private int[][][][] mappa;
-	private static ArrayList<Tile> tileStrato1;
-	private static ArrayList<Tile> tileStrato2;
-	private static ArrayList<Tile> tileStrato3;
+
 	
 	public Map() {	
-		initMap();		
-		inizializzaTipiDiTile();
-	}
-
-	private void initMap() {
 		mappa = new int[NUM_STANZE][NUM_STRATI][][];
-		for(int i = 0; i < NUM_STANZE; i++)
-			mappa[i] = loadStanza(percorsiStanze[i]);	
+		dimensioniStanze = new int[NUM_STANZE][2];
+		
+		for(int stanzaAttuale = 0; stanzaAttuale < NUM_STANZE; stanzaAttuale++)
+			mappa[stanzaAttuale] = loadStanza(percorsiStanze[stanzaAttuale], stanzaAttuale);		
 	}
 
-	private int[][][] loadStanza(String percorsiStanze) {	
+	private int[][][] loadStanza(String percorsiStanze, int stanzaAttuale) {	
 		int[][][] stanza = null;
 		int numeroStrato = 0;
 		int riga = 0;
-		
 		try {
 			InputStream	is = getClass().getResourceAsStream(percorsiStanze);				//approfondire
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -54,6 +41,8 @@ public class Map {
 			String[] dimensioni = s.split(",");
 			int maxRow = Integer.parseInt(dimensioni[0]);
 			int maxCol = Integer.parseInt(dimensioni[1]);
+			dimensioniStanze[stanzaAttuale][0] = maxCol;
+			dimensioniStanze[stanzaAttuale][1] = maxRow;
 			stanza = new int[NUM_STRATI][maxRow][maxCol];
 			
 			//serve per caricare i numeri usando la funzione split
@@ -72,14 +61,10 @@ public class Map {
 					riga = 0;
 				}
 			}
-			br.close();	
 			
-//			System.out.println(maxRow + ", " + maxCol);
-//			for(int i = 0; i < maxRow; i++) {
-//				for(int j = 0; j < maxCol; j++) 
-//					System.out.print(stanza[2][i][j] + " ");
-//				System.out.println();						
-//				}					
+			br.close();	
+	//		printStanza(maxRow, maxCol, stanza);
+			
 			}
 		catch(Exception e) {
 			e.printStackTrace();			
@@ -87,56 +72,25 @@ public class Map {
 		return stanza;
 	}
 	
-	private void inizializzaTipiDiTile() {
-		
-		tileStrato1 = new ArrayList<Tile>();
-		tileStrato2 = new ArrayList<Tile>();
-		tileStrato3 = new ArrayList<Tile>();
-		int stratoAttuale = 1;
-		
-		InputStream	is = getClass().getResourceAsStream(percorsoTileset);				
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String s = null;
-		String[] datiDaInserire = new String[2];
-		
-		try {
-			while((s = br.readLine()) != null) {
-				if(!s.isEmpty() && s.contains("; ") && stratoAttuale == 1)	{	
-					datiDaInserire = s.split("; ");
-					tileStrato1.add(new Tile(datiDaInserire[0], datiDaInserire[1]));
-				}
-				
-				else if(!s.isEmpty() && s.contains("; ") && stratoAttuale == 2) {
-					datiDaInserire = s.split("; ");
-					tileStrato2.add(new Tile(datiDaInserire[0], datiDaInserire[1]));
-				}
-				
-				else if(!s.isEmpty() && s.contains("; ") && stratoAttuale == 3) {
-					datiDaInserire = s.split("; ");
-					tileStrato3.add(new Tile(datiDaInserire[0], datiDaInserire[1]));
-				}
-				
-				else if(!s.isEmpty() && s.contains("/")) {
-					stratoAttuale++;
-				}
-			}
-			br.close();
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-			}	
-		
-		for(Tile t : tileStrato1)
-			System.out.println(t.toString());
-		
-		for(Tile t : tileStrato2)
-			System.out.println(t.toString());
-		
-		for(Tile t : tileStrato3)
-			System.out.println(t.toString());
+	public void printStanza(int maxRow, int maxCol, int[][][] stanza){			//for debugging
+		System.out.println(dimensioniStanze[0][1] + ", " + dimensioniStanze[0][0]);
+		for(int strato = 0; strato < NUM_STRATI; strato++) {		
+			for(int y = 0; y < maxRow; y++) {
+				for(int x = 0; x < maxCol; x++) 
+					System.out.print(stanza[strato][y][x] + " ");
+				System.out.println();						
+				}		
+			System.out.println();		
+		}
 	}
 	
+	public int[] getDimensioniStanza(int stanza){
+		return dimensioniStanze[stanza];
+	}
 	
+	public int[][] getStrato(int stanza, int strato){
+		return mappa[stanza][strato];
+	}
 }	
 
 

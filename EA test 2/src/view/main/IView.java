@@ -3,11 +3,15 @@ package view.main;
 import java.awt.AWTException;
 import java.awt.Graphics2D;
 import java.awt.Robot;
+import java.awt.image.BufferedImage;
 
 import controller.Gamestate;
-import model.Map;
+import controller.IController;
+import model.IModel;
+import model.mappa.Map;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
+import view.mappa.Tileset;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
 import view.menu.optionMenu.OptionMenu;
@@ -18,7 +22,8 @@ import view.sound.SoundManager;
 // di comunicare in modo indiretto
 
 public class IView {
-	
+	private IController controller;
+	private IModel model;
 //	private MessaggioSubliminale ms = new MessaggioSubliminale();
 	private Robot robot;
 	private MouseInputs mi;
@@ -30,9 +35,11 @@ public class IView {
 	private MainMenu menu;
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
-//	private MapManager map;
+	//mappa e tiles
+	private Tileset tileset;
 	
-	public IView() {
+	public IView(IController control) {
+		controller = control;
 		initViewClasses();
 		setStartMusic();
 	}
@@ -45,12 +52,13 @@ public class IView {
 		start = new StartTitle(this);
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
-	//	map = new MapManager();
+		tileset = new Tileset();
+		
+		//inizializza le cose più delicate
 		gw = new GameWindow(gp);
 		setCursorManager();
 		gp.setFocusable(true);
 		gp.requestFocus();
-	//	gw.requestFocus();
 	}
 
 	private void setCursorManager() {
@@ -84,7 +92,8 @@ public class IView {
 			avatar.drawAvatarMenu(g2);
 			break;
 		case LOAD_GAME: 
-			
+		//	drawFirstLayer(g2);
+			drawTileset(g2);
 			break;
 		case OPTIONS:
 			opzioni.draw(g2);
@@ -93,14 +102,36 @@ public class IView {
 			System.exit(0);
 			break;
 		case PLAYING:
-		//	map.draw(g2);
+			//g2.drawImage(tileset.getTile(1).getImage(), 0, 0, null);
 			break;			
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
 	}
 	
+	private void drawTileset(Graphics2D g2) {
+		for(int i = 0; i < 7; i++) {
+			g2.drawImage(tileset.getTile(i).getImage(), 0, i*GamePanel.TILES_SIZE, null);
+		}
+		
+	}
+
+	private void drawFirstLayer(Graphics2D g2) {
+		int[][] strato = model.getMappa().getStrato(0, 2);
+		for(int i = 0; i < strato.length; i++) {
+			for(int j = 0; j < strato[i].length; j++) {
+				int numeroTile = strato[i][j];
+				if(numeroTile != 0) {
+					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile).getImage();
+					g2.drawImage(tileDaDisegnare, j* GamePanel.TILES_SIZE , i*GamePanel.TILES_SIZE, null);
+				}
+			}
+		}
+			
+		
+	}
+
 	public void changeGameState(Gamestate newState) {
-		Gamestate.state = newState;
+		controller.setGameState(newState);
 	}
 
 	// per usare i tasti direzionali nei vari menu, ho fatto in modo che, usando i tasti,
@@ -150,6 +181,10 @@ public class IView {
 
 	public void setSEVolume(float v) {
 		sound.setSEVolume((float)v);
+	}
+	
+	public void setModel(IModel mod) {
+		model = mod;
 	}
 	
 }

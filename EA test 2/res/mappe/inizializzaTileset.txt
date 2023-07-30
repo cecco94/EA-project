@@ -1,20 +1,36 @@
-prato1
+0 valore nullo di default di tiled
+
+1 prato1
 false; 0,0,0,0
 
-prato2 
+2 prato2 
 false; 0,0,0,0
 
+3 prato 3
+false; 0,0,0,0
+
+4 biblioteca
+false; 0,0,0,0
+
+5 sala studio
+false; 0,0,0,0
+
+6 laboratorio
+false; 0,0,0,0
+
+7 dormitorio
+false; 0,0,0,0
 /
 
-armadio dormitorio
+3 armadio dormitorio
 true; 0,0,10,2
 
-letto dormitorio
+4 letto dormitorio
 true; 0,0,20,23
 
 /
 
-libro
-false; 
+5 libro
+false; 0,0,0,0
 
 
