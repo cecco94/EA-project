@@ -1,0 +1,20 @@
+prato1
+false; 0,0,0,0
+
+prato2 
+false; 0,0,0,0
+
+/
+
+armadio dormitorio
+true; 0,0,10,2
+
+letto dormitorio
+true; 0,0,20,23
+
+/
+
+libro
+false; 
+
+
