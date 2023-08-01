@@ -20,13 +20,375 @@ false; 0,0,0,0
 
 7 dormitorio
 false; 0,0,0,0
+
 /
 
-3 armadio dormitorio
-true; 0,0,10,2
+8 tavolone sopra sinistra
+true; 0,20,32,12
 
-4 letto dormitorio
-true; 0,0,20,23
+9 tavolone sopra centro
+true; 0,20,32,12
+
+10 tavolone sapora destra
+true; 0,20,32,12
+
+11 tavolone centro sinistra1
+true; 0,0,32,32
+
+12 tavolone sotto centro
+true; 0,0,32,30
+
+13 tavolone centro destra
+true; 0,0,32,32
+
+14 panca alto
+true; 0,20,32,12
+
+15 tavolone centro sinistra2
+true; 0,0,32,32
+
+16 tavolone alto 2
+true; 0,20,32,12
+
+17 tavolone centro destra
+true; 0,0,32,32
+
+18 panca centro
+true; 0,0,32,32
+
+19 tavolone sotto sinistra
+true; 0,0,32,30
+
+20 tavolone sotto centro
+true; 0,0,32,30
+
+21tavolone sotto destra
+true; 0,0,32,30
+
+22 panca sotto
+true; 0,0,32,30
+
+23 pc sopra1		//da mettere sotto
+true; 4,0,24,22
+
+24 pc sotto1				//da mettere sotto
+true; 4,0,24,30
+
+25 pc sopra2		//da mettere sotto
+true; 4,0,24,22
+
+26 pc sotto2			//da mettere sotto
+true; 4,0,24,30
+
+27 tv sopra sinistra    //da mettere sotto
+true; 4,6,28,26
+
+28 tv sopra destra		//da mettere sotto
+true; 0,6,28,26
+
+29 tv sotto sinistra 
+true; 4,0,28,28
+
+30 tv sotto destra 
+true; 0,0,28,28
+
+31 libreria sopra
+true; 2,2,28,30
+
+32 libreria centro
+true; 2,0,28,32
+
+33 libreria sotto
+true; 2,0,28,30
+
+34 libreria sopra sinistra
+true; 0,0,32,32
+
+35 libreria sotto sinistra
+true; 0,0,32,30
+
+36 libreria sopra destra
+true; 0,0,30,32
+
+37 libreria sotto destra
+true; 0,0,30,30
+
+38 libreria sopra1
+true; 2,0,28,32
+
+39 libreria sotto2
+true; 2,0,28,30
+
+40 libreria sopra sinistra2
+true; 0,12,32,20
+
+41 libreria sopra destra2
+true; 0,12,30,20
+
+42 libreria centro sinistra
+true; 0,0,32,32
+
+43 libreria centro destra
+true; 0,0,30,32
+
+44 libreria sopra2
+true; 2,228,30
+
+45 libreria sotto2
+true; 2,0,28,32
+
+46 albero sopra
+true; 0,0,32,32
+
+47 albero sotto
+true; 2,0,28,26
+
+48 frigo sopra
+true; 2,6,28,26
+
+49 frigo sotto
+true; 2,0,28,30
+
+50 letto sopra sinistra
+true; 8,16,24,16
+
+51 letto sopra destra
+true; 0,16,20,16
+
+52 letto centro sinistra
+true; 4,0,28,32
+
+53 letto centro destra
+true; 0,0,24,32
+
+54 letto sotto sinistra
+true; 4,0,28,26
+
+55 letto sotto destra
+true; 0,0,24,26
+
+divano sopra sinistra
+true; 0,6,32,26
+
+divano sotto sinistra
+true; 0,0,32,26
+
+divano copra centro
+true; 0,6,32,26
+
+divano sotto cento
+true; 0,0,32,26
+
+divano sopra destra
+true; 0,6,32,26
+
+divano sotto destra
+true; 0,0,32,26
+
+sgabello 
+true; 2,4,28,24
+
+tavolone2 sopra sinistra
+true; 2,6,30,26
+
+tavolone2 sopra centro
+true; 0,6,32,26
+
+tavolone2 centro sinistra
+true; 0,0,32,32
+
+tavolone2 centro centro
+true; 0,0,32,32
+
+tavolone2 centro destra 
+true; 0,0,30,32
+
+tavolone2 sotto sinistra
+true; 2,0,30,30
+
+tavolone2 sotto centro
+true; 0,0,32,22
+
+tavolone2 sotto destra
+true; 0,0,30,30
+
+panca2 sopra
+true; 2,6,28,26
+
+panca2 centro
+true; 2,0,28,32
+
+panca2 sotto
+true; 2,0,28,30
+
+banco sopra sinistra
+true; 0,12,32,20
+
+banco sopra sinistra
+true; 0,12,32,20
+
+banco sotto sinistra
+true; 0,0,32,18
+
+banco sotto destra
+true; 0,0, 32,18
+
+armadio rosa sopra
+true; 1,2,28,30
+
+armadio rosa centro
+true; 1,0,28,32
+
+armadio rosa sotto
+true; 10,28,30
+
+armadietto rosa sopra
+true; 2,4,28,28
+
+armadietto rosa sotto
+true; 2,0,28,30
+
+statua
+true; 9,0,15,32
+
+muro davanti sinistra
+true; 32,32,32,32
+
+muro davanti centro
+true; 32,32,32,32
+
+muro davanti destra
+true; 32,32,32,32
+
+muro lato sinistra
+true; 0,0,8,32
+
+muro dietro sinistra
+true; 32,32,32,32
+
+muro centro destra
+true; 32,32,32,32
+
+muro lato destra
+true; 24,0,8,32
+
+pc rosso sopra
+true; 1,0,30,32
+
+pc rosso sotto
+true; 1,0,30,26
+
+aggeggio misterioso sopra sinistra
+true; 0,1,32,31
+
+aggeggio misterioso sopra destra
+true; 0,2,30,30
+
+aggeggio misterioso sotto sinisra
+true; 0,0,32,32
+
+aggeggio misterioso sotto destra
+true; 0,0,30,32
+
+oscilloscopio sopra
+true; 0,4,32,28
+
+oscilloscopio sotto
+true; 0,0,32,16
+
+distributore rosso sopra
+true; 0,0,32,32
+
+distributore rosso sotto
+true; 0,0,32,32
+
+supercomputer sopra
+true; 0,0,32,32
+
+supercomputer sotto
+true; 0,0,32,32
+
+distributore blu sopra
+true; 0,0,32,32
+
+distributore blu sotto
+true; 0,0,32,32
+
+tavolo gioco sopra sinistra
+true; 0,0,32,32
+
+tavolo gioco sopra destra
+true; 0,0,32,32
+
+tavolo gioco centro sinistra
+true; 0,0,32,32
+
+tavolo gioco centro destra
+true; 0,0,32,32
+
+tavolo gioco sotto sinistra
+true; 0,0,32,30
+
+tavolo gioco sotto destra
+true; 0,0,32,30
+
+comodino sopra
+true; 0,7,32,25
+
+comodino sotto
+true; 0,0,32,32
+
+tenda sopra sinistra
+true; 0,0,32,32
+
+tenda sopra centro
+true; 0,0,32,32
+
+tenda sopra destra
+true; 0,0,32,32
+
+tenda centro sinistra
+true; 0,0,32,32
+
+tenda centro centro
+true; 0,0,32,32
+
+tenda centro destra
+true; 0,0,32,32
+
+tenda sotto sinistra
+true; 0,0,32,32
+
+tenda sotto destra
+true; 0,0,32,32
+
+piano sopra sinistra
+true; 0,0,32,32
+
+piano sopra destra
+true; 0,0,32,32
+
+piano centro sinistra
+true; 0,0,32,32
+
+piano centro destra
+true; 0,0,32,32
+
+piano sotto sinistra
+true; 0,0,32,32
+
+piano sotto destra
+true; 0,0,32,32
+
+divano2 sopra
+true; 0,0,32,32
+
+divano2 centro
+true; 0,0,32,32
+
+divano2 sotto
+true; 0,0,32,32
+
 
 /
 
