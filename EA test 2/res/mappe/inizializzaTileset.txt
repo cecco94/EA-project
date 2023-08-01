@@ -6,7 +6,7 @@ false; 0,0,0,0
 2 prato2 
 false; 0,0,0,0
 
-3 prato 3
+3 prato3
 false; 0,0,0,0
 
 4 biblioteca
@@ -29,370 +29,556 @@ true; 0,20,32,12
 9 tavolone sopra centro
 true; 0,20,32,12
 
-10 tavolone sapora destra
+10 tavolone sopra destra
 true; 0,20,32,12
 
-11 tavolone centro sinistra1
+11 tavolone centro sinistra con allungamento in alto a destra
 true; 0,0,32,32
 
 12 tavolone sotto centro
 true; 0,0,32,30
 
-13 tavolone centro destra
+13 panca alto
+true; 0,20,32,12 
+
+14 tavolone centro sinistra con allungamento in basso a destra
 true; 0,0,32,32
 
-14 panca alto
+15 tavolone alto centro
 true; 0,20,32,12
 
-15 tavolone centro sinistra2
+16 tavolone centro destra con allungamento in basso a sinistra
 true; 0,0,32,32
 
-16 tavolone alto 2
-true; 0,20,32,12
-
-17 tavolone centro destra
+17 panca centro
 true; 0,0,32,32
 
-18 panca centro
-true; 0,0,32,32
+18 tavolone basso sinistra
+true; true; 0,0,32,30
 
-19 tavolone sotto sinistra
+19 tavolone sotto centro
 true; 0,0,32,30
 
-20 tavolone sotto centro
+20 tavolone sotto sinistra
 true; 0,0,32,30
 
-21tavolone sotto destra
+21 panca sotto
 true; 0,0,32,30
 
-22 panca sotto
-true; 0,0,32,30
-
-23 pc sopra1		//da mettere sotto
-true; 4,0,24,22
-
-24 pc sotto1				//da mettere sotto
-true; 4,0,24,30
-
-25 pc sopra2		//da mettere sotto
-true; 4,0,24,22
-
-26 pc sotto2			//da mettere sotto
-true; 4,0,24,30
-
-27 tv sopra sinistra    //da mettere sotto
-true; 4,6,28,26
-
-28 tv sopra destra		//da mettere sotto
-true; 0,6,28,26
-
-29 tv sotto sinistra 
-true; 4,0,28,28
-
-30 tv sotto destra 
-true; 0,0,28,28
-
-31 libreria sopra
+22 libreria tutta marrone sopra
 true; 2,2,28,30
 
-32 libreria centro
+23 libreria tutta marrone centro
 true; 2,0,28,32
 
-33 libreria sotto
+24 libreria tutta marrone sotto
 true; 2,0,28,30
 
-34 libreria sopra sinistra
+25 libreria larga con libri sopra sinistra
 true; 0,0,32,32
 
-35 libreria sotto sinistra
+26 libreria larga con libri sotto sinistra
 true; 0,0,32,30
 
-36 libreria sopra destra
+27 libreria larga con libri, sopra destra
 true; 0,0,30,32
 
-37 libreria sotto destra
+28 libreria larga con libri, sotto destra
 true; 0,0,30,30
 
-38 libreria sopra1
+29 libreria stretta con libri, sopra
 true; 2,0,28,32
 
-39 libreria sotto2
+30 libreria stretta con libri, sotto
 true; 2,0,28,30
 
-40 libreria sopra sinistra2
+31 libreria larga con libri2, sopra sinistra
 true; 0,12,32,20
 
-41 libreria sopra destra2
+32 libreria larga con libri2, sopra destra
 true; 0,12,30,20
 
-42 libreria centro sinistra
+33 libreria larga con libri2, centro sinistra
 true; 0,0,32,32
 
-43 libreria centro destra
+34 libreria larga con libri2, centro destra
 true; 0,0,30,32
 
-44 libreria sopra2
+35 libreria tutta marrone2, sopra
 true; 2,228,30
 
-45 libreria sotto2
+36 libreria tutta marrone2, sotto
 true; 2,0,28,32
 
-46 albero sopra
+37 albero sopra
 true; 0,0,32,32
 
-47 albero sotto
+38 albero sotto
 true; 2,0,28,26
 
-48 frigo sopra
+39 frigo sopra
 true; 2,6,28,26
 
-49 frigo sotto
+40 frigo sotto
 true; 2,0,28,30
 
-50 letto sopra sinistra
+41 letto sopra sinistra
 true; 8,16,24,16
 
-51 letto sopra destra
+42 letto sopra destra
 true; 0,16,20,16
 
-52 letto centro sinistra
+43 letto centro sinistra
 true; 4,0,28,32
 
-53 letto centro destra
+44 letto centro destra
 true; 0,0,24,32
 
-54 letto sotto sinistra
+45 letto sotto sinistra
 true; 4,0,28,26
 
-55 letto sotto destra
+46 letto sotto destra
 true; 0,0,24,26
 
-divano sopra sinistra
+47 divano sopra sinistra
 true; 0,6,32,26
 
-divano sotto sinistra
+48 divano sotto sinistra
 true; 0,0,32,26
 
-divano copra centro
+49 divano copra centro
 true; 0,6,32,26
 
-divano sotto cento
+50 divano sotto cento
 true; 0,0,32,26
 
-divano sopra destra
+51 divano sopra destra
 true; 0,6,32,26
 
-divano sotto destra
+52 divano sotto destra
 true; 0,0,32,26
 
-sgabello 
+53 sgabello 
 true; 2,4,28,24
 
-tavolone2 sopra sinistra
+54 tavolone2, sopra sinistra
 true; 2,6,30,26
 
-tavolone2 sopra centro
+55 tavolone2, sopra centro
 true; 0,6,32,26
 
-tavolone2 centro sinistra
+56 tavolone2, centro sinistra
 true; 0,0,32,32
 
-tavolone2 centro centro
+57 tavolone2, centro centro
 true; 0,0,32,32
 
-tavolone2 centro destra 
+58 tavolone2, centro destra 
 true; 0,0,30,32
 
-tavolone2 sotto sinistra
+59 tavolone2, sotto sinistra
 true; 2,0,30,30
 
-tavolone2 sotto centro
+60 tavolone2, sotto centro
 true; 0,0,32,22
 
-tavolone2 sotto destra
+61 tavolone2, sotto destra
 true; 0,0,30,30
 
-panca2 sopra
+62 panca verticale, sopra
 true; 2,6,28,26
 
-panca2 centro
+63 panca verticale, centro
 true; 2,0,28,32
 
-panca2 sotto
+64 panca verticale, sotto
 true; 2,0,28,30
 
-banco sopra sinistra
+65 banco sopra sinistra
 true; 0,12,32,20
 
-banco sopra sinistra
+66 banco sopra sinistra
 true; 0,12,32,20
 
-banco sotto sinistra
+67 banco sotto sinistra
 true; 0,0,32,18
 
-banco sotto destra
+68 banco sotto destra
 true; 0,0, 32,18
 
-armadio rosa sopra
+69 armadio rosa sopra
 true; 1,2,28,30
 
-armadio rosa centro
+70 armadio rosa centro
 true; 1,0,28,32
 
-armadio rosa sotto
+71 armadio rosa sotto
 true; 10,28,30
 
-armadietto rosa sopra
+72 armadietto rosa sopra
 true; 2,4,28,28
 
-armadietto rosa sotto
+73 armadietto rosa sotto
 true; 2,0,28,30
 
-statua
+74 statua allo studente caduto
 true; 9,0,15,32
 
-muro davanti sinistra
+75 muro davanti sinistra
 true; 32,32,32,32
 
-muro davanti centro
+76 muro davanti centro
 true; 32,32,32,32
 
-muro davanti destra
+77 muro davanti destra
 true; 32,32,32,32
 
-muro lato sinistra
+78 muro lato sinistra
 true; 0,0,8,32
 
-muro dietro sinistra
+79 muro dietro sinistra
 true; 32,32,32,32
 
-muro centro destra
+80 muro centro destra
 true; 32,32,32,32
 
-muro lato destra
+81 muro lato destra
 true; 24,0,8,32
 
-pc rosso sopra
-true; 1,0,30,32
-
-pc rosso sotto
-true; 1,0,30,26
-
-aggeggio misterioso sopra sinistra
-true; 0,1,32,31
-
-aggeggio misterioso sopra destra
-true; 0,2,30,30
-
-aggeggio misterioso sotto sinisra
+82 distributore rosso sopra
 true; 0,0,32,32
 
-aggeggio misterioso sotto destra
-true; 0,0,30,32
-
-oscilloscopio sopra
-true; 0,4,32,28
-
-oscilloscopio sotto
-true; 0,0,32,16
-
-distributore rosso sopra
+83 distributore rosso sotto
 true; 0,0,32,32
 
-distributore rosso sotto
+84 distributore blu sopra
 true; 0,0,32,32
 
-supercomputer sopra
+85 distributore blu sotto
 true; 0,0,32,32
 
-supercomputer sotto
+86 tavolo gioco sopra sinistra
 true; 0,0,32,32
 
-distributore blu sopra
+87 tavolo gioco sopra destra
 true; 0,0,32,32
 
-distributore blu sotto
+88 tavolo gioco centro sinistra
 true; 0,0,32,32
 
-tavolo gioco sopra sinistra
+89 tavolo gioco centro destra
 true; 0,0,32,32
 
-tavolo gioco sopra destra
-true; 0,0,32,32
-
-tavolo gioco centro sinistra
-true; 0,0,32,32
-
-tavolo gioco centro destra
-true; 0,0,32,32
-
-tavolo gioco sotto sinistra
+90 tavolo gioco sotto sinistra
 true; 0,0,32,30
 
-tavolo gioco sotto destra
+91 tavolo gioco sotto destra
 true; 0,0,32,30
 
-comodino sopra
+92 comodino sopra
 true; 0,7,32,25
 
-comodino sotto
+93 comodino sotto
 true; 0,0,32,32
 
-tenda sopra sinistra
+94 tenda sopra sinistra
 true; 0,0,32,32
 
-tenda sopra centro
+95 tenda sopra centro
 true; 0,0,32,32
 
-tenda sopra destra
+96 tenda sopra destra
 true; 0,0,32,32
 
-tenda centro sinistra
+97 tenda centro sinistra
 true; 0,0,32,32
 
-tenda centro centro
+98 tenda centro centro
 true; 0,0,32,32
 
-tenda centro destra
+99 tenda centro destra
 true; 0,0,32,32
 
-tenda sotto sinistra
+100 tenda sotto sinistra
 true; 0,0,32,32
 
-tenda sotto destra
+101 tenda sotto destra
 true; 0,0,32,32
 
-piano sopra sinistra
+102 piano sopra sinistra
 true; 0,0,32,32
 
-piano sopra destra
+103 piano sopra destra
+true; 2,0,30,32
+
+104 piano centro sinistra
+true; 0,10,32,22
+
+105 piano centro destra
+true; 0,2,30,32
+
+106 piano sotto sinistra
+true; 0,2,30,32
+
+107 piano sotto destra
 true; 0,0,32,32
 
-piano centro sinistra
+108 divano vertivale, sopra
+true; 2,0,30,32
+
+109 divano vertivale, centro
+true; 2,0,30,32
+
+110 divano vertivale, sotto
+true; 2,0,30,28
+
+111 tavolone centro destra con allungato in alto a sinistra
 true; 0,0,32,32
 
-piano centro destra
+112 tavolone2 centro snistra
+true; 2,0,30,32
+
+113 pc giallo sopra
+true; 4,0,24,22
+
+114 pc bianco sopra
+true; 4,0,24,22
+
+115 pc rosso sotto
+true; 1,0,30,26
+
+116 oscilloscopio sotto
+true; 0,0,32,16
+
+117 supercomputer sopra
 true; 0,0,32,32
 
-piano sotto sinistra
+118 tv sopra sinistra    
+true; 4,6,28,26
+
+119 tv sopra destra		
+true; 0,6,28,26
+
+120 tv sotto sinistra 
+true; 4,0,28,28
+
+121 tv sotto destra 
+true; 0,0,28,28
+
+122 pc giallo sotto			
+true; 4,0,24,30
+
+123 pc bianco sotto			
+true; 4,0,24,30
+
+124 pc rosso sopra
+true; 1,0,30,32
+
+125 supercomputer sotto
 true; 0,0,32,32
 
-piano sotto destra
-true; 0,0,32,32
+126 oscilloscopio sopra
+true; 0,4,32,28
 
-divano2 sopra
-true; 0,0,32,32
+ /
 
-divano2 centro
-true; 0,0,32,32
-
-divano2 sotto
-true; 0,0,32,32
-
-
-/
-
-5 libro
+127 lavagna alto sinistra
 false; 0,0,0,0
 
+128 lavagna alto centro1
+false; 0,0,0,0
 
+129 lavagna alto centro2
+false; 0,0,0,0
+
+130 lavagna alto destra
+false; 0,0,0,0
+
+131 lavagna basso sinistra
+false; 0,0,0,0
+
+132 lavagna basso centro1
+false; 0,0,0,0
+
+133 lavagna basso centro2
+false; 0,0,0,0
+
+134 lavagna basso destra
+false; 0,0,0,0
+
+135 comunicazione
+false; 0,0,0,0
+
+136 porta marrone alto sinistra
+false; 0,0,0,0
+
+137 porta marrone alto centro 
+false; 0,0,0,0
+
+138 porta marrone alto destra
+false; 0,0,0,0
+
+139 porta marrone basso sinistra 
+false; 0,0,0,0
+
+140 porta marrone basso centro
+false; 0,0,0,0
+
+141 porta marrone basso destra
+false; 0,0,0,0
+
+142 porta nera alto sinistra 
+false; 0,0,0,0
+
+143 porta nera alto centro 
+false; 0,0,0,0
+
+144 porta nera alto destra 
+false; 0,0,0,0
+
+145 porta nera basso sinistra 
+false; 0,0,0,0
+
+146 porta nera basso centro 
+false; 0,0,0,0
+
+147 porta nera basso destra 
+false; 0,0,0,0
+
+148 porta vetro alto sinistra 
+false; 0,0,0,0
+
+149 porta vetro alto destra
+false; 0,0,0,0
+
+150 porta vetro basso sinistra 
+false; 0,0,0,0
+
+151 porta vetro basso destra
+false; 0,0,0,0
+
+152 scala rossa alto sinistra
+false; 0,0,0,0
+
+153 scala rossa alto destra
+false; 0,0,0,0
+
+154 scala rossa centro lato sinistra
+false; 0,0,0,0
+
+155 scala rossa centro centro
+false; 0,0,0,0
+
+156 scala rossa centro lato destro
+false; 0,0,0,0
+
+157 scala rossa basso lato sinistro
+false; 0,0,0,0
+
+158 scala rossa centro basso
+false; 0,0,0,0
+
+159 scala rossa basso lato destro
+false; 0,0,0,0
+
+160 scala grigia alto sinistra
+false; 0,0,0,0
+
+161 scala grigia alto centro
+false; 0,0,0,0
+
+162 scala grigia centro sinistra
+false; 0,0,0,0
+
+163 scala grigia centro
+false; 0,0,0,0
+
+164 scala grigia basso sinistra
+false; 0,0,0,0
+
+165 scala grigia centro basso
+false; 0,0,0,0
+
+166 finestra sinistra 
+false; 0,0,0,0
+
+167 finestra centro 
+false; 0,0,0,0
+
+168 finestra destra
+false; 0,0,0,0
+
+169 portatile blu
+false; 0,0,0,0
+
+170 libro aperto
+false; 0,0,0,0
+
+171 caffè
+false; 0,0,0,0
+
+172 tappeto alto sinistra
+false; 0,0,0,0
+
+173 tappeto alto centro
+false; 0,0,0,0
+
+174 tappeto alto destra
+false; 0,0,0,0
+
+175 tappeto centro sinistra
+false; 0,0,0,0
+
+176 tappeto centro centro
+false; 0,0,0,0
+
+177 tappeto centro destra 
+false; 0,0,0,0
+
+178 tappeto basso sinistra
+false; 0,0,0,0
+
+179 tappeto basso centro
+false; 0,0,0,0
+
+180 tappeto basso destra
+false; 0,0,0,0
+
+181 albero alto sinistra 
+false; 0,0,0,0
+
+182 albero alto destra 
+false; 0,0,0,0
+
+183 albero basso sinistra 
+false; 0,0,0,0
+
+184 albero basso destra 
+false; 0,0,0,0
+
+185 albero da un tile
+false; 0,0,0,0
+
+186 sporco verde 
+false; 0,0,0,0
+
+187 sporco marrone 
+false; 0,0,0,0
+
+188 pc diagonale sinistra 
+false; 0,0,0,0
+
+189 pc diagonale destra 
+false; 0,0,0,0
+
+190 pila di libri
+false; 0,0,0,0
+
+191 libro arancione
+false; 0,0,0,0
+
+192 portatile grigio aperto
+false; 0,0,0,0
+
+193 schemi
+false; 0,0,0,0
