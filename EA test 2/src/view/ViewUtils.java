@@ -8,8 +8,11 @@ import view.main.GamePanel;
 // classe che contiene alcuni metodi comodi a un po' tutte le altre classi
 	public class ViewUtils {
 
-	public static BufferedImage scaleImage(BufferedImage original, float width, float height) {
-		BufferedImage scaledImage = new BufferedImage((int)width, (int)height, original.getType());
+	public static BufferedImage scaleImage(BufferedImage original, float width, float height) {	
+		int imageType = original.getType();
+		if(imageType == 0) 
+			imageType = BufferedImage.TYPE_4BYTE_ABGR;
+		BufferedImage scaledImage = new BufferedImage((int)width, (int)height, imageType);			//==0?5:original.getType());
 		Graphics2D g2 = scaledImage.createGraphics();
 		g2.drawImage(original, 0, 0, (int)width, (int)height, null);
 		g2.dispose();	

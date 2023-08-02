@@ -10,14 +10,13 @@ public class Map {
 	//primo campo = stanza, secondo campo = strato, terzo e quarto = posizione x,y
 	private int[][][][] mappa;	
 	
-	//primo campo = stanza, secondo campo = larghezza, terzo campo = altezza
+	//primo campo = stanza, secondo campo = larghezza/altezza
 	private int[][] dimensioniStanze;
 	
 	public static final int NUM_STANZE = 1, NUM_STRATI = 3;
 	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2;
 	public static final int BIBLIOTECA = 0, SALA = 1, LABORATORIO = 2, DORMITORIO = 3;
-	String[] percorsiStanze = {"/mappe/provaMappa.txt"};
-
+	private String[] percorsiStanze = {"/mappe/provaMappa.txt"};
 	
 	public Map() {	
 		mappa = new int[NUM_STANZE][NUM_STRATI][][];
@@ -27,7 +26,7 @@ public class Map {
 			mappa[stanzaAttuale] = loadStanza(percorsiStanze[stanzaAttuale], stanzaAttuale);		
 	}
 
-	private int[][][] loadStanza(String percorsiStanze, int stanzaAttuale) {	
+	private int[][][] loadStanza(String percorsiStanze, int stanzaDaCaricare) {	
 		int[][][] stanza = null;
 		int numeroStrato = 0;
 		int riga = 0;
@@ -38,22 +37,24 @@ public class Map {
 			
 			//legge la prima riga e carica le dimensioni
 			s = br.readLine();
-			String[] dimensioni = s.split(",");
+			String[] dimensioni = s.trim().split("x");
 			int maxRow = Integer.parseInt(dimensioni[0]);
 			int maxCol = Integer.parseInt(dimensioni[1]);
-			dimensioniStanze[stanzaAttuale][0] = maxCol;
-			dimensioniStanze[stanzaAttuale][1] = maxRow;
+			dimensioniStanze[stanzaDaCaricare][0] = maxCol;
+			dimensioniStanze[stanzaDaCaricare][1] = maxRow;
 			stanza = new int[NUM_STRATI][maxRow][maxCol];
 			
 			//serve per caricare i numeri usando la funzione split
 			String[] numeriNellaRiga = new String[maxCol];
 			
 			while((s = br.readLine()) != null) {
-				if(!s.isEmpty() && s.contains(" "))	{		//da cambiare con ",  "
-					numeriNellaRiga = s.split(" ");
-					for(int j = 0; j < maxCol; j++)
-						//inserisci i valori nell'array
+				
+				if(!s.isEmpty() && s.contains(", "))	{		
+					numeriNellaRiga = s.trim().split(", ");
+					
+					for(int j = 0; j < maxCol; j++) 
 						stanza[numeroStrato][riga][j] = Integer.parseInt(numeriNellaRiga[j]);
+
 					riga++;
 				}
 				else if(s.contains("/")) {		//serve per capire quando è finito lo strato
@@ -63,7 +64,7 @@ public class Map {
 			}
 			
 			br.close();	
-	//		printStanza(maxRow, maxCol, stanza);
+		//	printStanza(maxRow, maxCol, stanza);
 			
 			}
 		catch(Exception e) {
@@ -75,9 +76,9 @@ public class Map {
 	public void printStanza(int maxRow, int maxCol, int[][][] stanza){			//for debugging
 		System.out.println(dimensioniStanze[0][1] + ", " + dimensioniStanze[0][0]);
 		for(int strato = 0; strato < NUM_STRATI; strato++) {		
-			for(int y = 0; y < maxRow; y++) {
-				for(int x = 0; x < maxCol; x++) 
-					System.out.print(stanza[strato][y][x] + " ");
+			for(int riga = 0; riga < maxRow; riga++) {
+				for(int colonna = 0; colonna < maxCol; colonna++) 
+					System.out.print(stanza[strato][riga][colonna] + " ");
 				System.out.println();						
 				}		
 			System.out.println();		

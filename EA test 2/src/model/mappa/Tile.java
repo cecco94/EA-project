@@ -1,13 +1,6 @@
 package model.mappa;
 
 import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
-import view.ViewUtils;
-import view.main.GamePanel;
 
 public class Tile {
 	
@@ -15,14 +8,14 @@ public class Tile {
 	private Rectangle hitbox;
 	
 	public Tile(String solid, String hitbox) {
-		this.solid = Boolean.parseBoolean(solid);
+		this.solid = Boolean.parseBoolean(solid.trim());
 		if(this.solid == true)
 			inizializzaHitbox(hitbox);	
 	}
 
 	private void inizializzaHitbox(String hitbox) {
 		String[] valori = null;
-		valori = hitbox.split(",");
+		valori = hitbox.trim().split(",");
 		int x = Integer.parseInt(valori[0]);
 		int y = Integer.parseInt(valori[1]);
 		int w = Integer.parseInt(valori[2]);

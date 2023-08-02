@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import controller.Gamestate;
 import controller.IController;
 import model.IModel;
-import model.mappa.Map;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
 import view.mappa.Tileset;
@@ -41,7 +40,7 @@ public class IView {
 	public IView(IController control) {
 		controller = control;
 		initViewClasses();
-		setStartMusic();
+	//	setStartMusic();
 	}
 
 	private void initViewClasses() {
@@ -92,8 +91,9 @@ public class IView {
 			avatar.drawAvatarMenu(g2);
 			break;
 		case LOAD_GAME: 
-		//	drawFirstLayer(g2);
-			drawTileset(g2);
+			drawFirstLayer(g2);
+			drawSecondLayer(g2);
+		//	drawTileset(g2);
 			break;
 		case OPTIONS:
 			opzioni.draw(g2);
@@ -102,27 +102,43 @@ public class IView {
 			System.exit(0);
 			break;
 		case PLAYING:
-			//g2.drawImage(tileset.getTile(1).getImage(), 0, 0, null);
+			//g2.drawImage(tileset.getTile(7).getImage(), 0, 0, null);
 			break;			
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
 	}
 	
-	private void drawTileset(Graphics2D g2) {
-		for(int i = 0; i < 7; i++) {
-			g2.drawImage(tileset.getTile(i).getImage(), 0, i*GamePanel.TILES_SIZE, null);
+	private void drawSecondLayer(Graphics2D g2) {
+		int[][] strato = model.getMappa().getStrato(0, 1);
+		for(int riga = 0; riga < strato.length; riga++) {
+			for(int colonna = 0; colonna < strato[riga].length; colonna++) {
+				int numeroTile = strato[riga][colonna];
+				if(numeroTile != 0) {
+					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile -1 ).getImage();
+					g2.drawImage(tileDaDisegnare, colonna* GamePanel.TILES_SIZE , riga*GamePanel.TILES_SIZE, null);
+				}
+			}
 		}
 		
 	}
 
-	private void drawFirstLayer(Graphics2D g2) {
-		int[][] strato = model.getMappa().getStrato(0, 2);
-		for(int i = 0; i < strato.length; i++) {
-			for(int j = 0; j < strato[i].length; j++) {
-				int numeroTile = strato[i][j];
+	private void drawTileset(Graphics2D g2) {		//for debug
+	//	int yPosition = 0;
+		for(int i = 6; i < 10; i++) {
+			g2.drawImage(tileset.getTile(i).getImage(), 0, i*GamePanel.TILES_SIZE, null);
+		//	yPosition++;
+		}
+		
+	}
+
+	private void drawFirstLayer(Graphics2D g2) {		//for debug
+		int[][] strato = model.getMappa().getStrato(0, 0);
+		for(int riga = 0; riga < strato.length; riga++) {
+			for(int colonna = 0; colonna < strato[riga].length; colonna++) {
+				int numeroTile = strato[riga][colonna];
 				if(numeroTile != 0) {
-					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile).getImage();
-					g2.drawImage(tileDaDisegnare, j* GamePanel.TILES_SIZE , i*GamePanel.TILES_SIZE, null);
+					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile -1 ).getImage();
+					g2.drawImage(tileDaDisegnare, colonna* GamePanel.TILES_SIZE , riga*GamePanel.TILES_SIZE, null);
 				}
 			}
 		}

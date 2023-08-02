@@ -17,7 +17,7 @@ public class Tileset {
 		inizializzaTipiDiTile();
 	}
 	
-	private void inizializzaTipiDiTile() {
+	private void inizializzaTipiDiTile() {		//per renderlo più funzionale, può leggere solo i tile dello strato 2
 		
 		tileStrato1 = new ArrayList<Tile>();
 		tileStrato2 = new ArrayList<Tile>();
@@ -62,12 +62,12 @@ public class Tileset {
 	
 	private void printTileset() {		//for debugging
 		for(Tile t : tileStrato1)
-			System.out.println(t.toString());
+			System.out.println(t.toString() + " strato 1");
 		
 		for(Tile t : tileStrato2)
-			System.out.println(t.toString());
+			System.out.println(t.toString() + " strato 2");
 		
 		for(Tile t : tileStrato3)
-			System.out.println(t.toString());	
+			System.out.println(t.toString() + " strato 3");	
 	}
 }

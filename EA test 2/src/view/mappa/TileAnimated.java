@@ -1,16 +1,23 @@
 package view.mappa;
 
 import java.awt.image.BufferedImage;
+import java.util.concurrent.ThreadLocalRandom;
+
+import view.ViewUtils;
+import view.main.GamePanel;
 
 public class TileAnimated extends Tile {
 
 	private BufferedImage secondImage;
 	private int counter, frequenza, immagineAttule = 1;
 	
-	public TileAnimated(BufferedImage img1, BufferedImage img2, int freq) {
+	public TileAnimated(BufferedImage img1, BufferedImage img2) {
 		super(img1);
 		secondImage = img2;	
-		frequenza = freq;
+		img2 = ViewUtils.scaleImage(img2, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
+		int min = 120;	//un secondo, perchè il gioco ha 120 fps
+		int max = 360;	//tre secondi
+		frequenza = ThreadLocalRandom.current().nextInt(min, max + 1);	//numero casuale
 	}
 
 	public BufferedImage getImage() {
