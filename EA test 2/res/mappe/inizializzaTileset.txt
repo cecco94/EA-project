@@ -110,10 +110,10 @@ true; 2,2,28,30
 36 libreria tutta marrone2, sotto
 true; 2,0,28,32
 
-37 albero sopra
+37 pianta sopra
 true; 0,0,32,32
 
-38 albero sotto
+38 pianta sotto
 true; 2,0,28,26
 
 39 frigo sopra
@@ -356,6 +356,8 @@ true; 0,0,32,16
 118 supercomputer sopra
 true; 0,0,32,32
 
+
+
 questi sono qelli animati
 
 119 tv sopra sinistra    
@@ -370,21 +372,23 @@ true; 4,0,28,28
 122 tv sotto destra 
 true; 0,0,28,28
 
-123 pc giallo sotto			
-true; 4,0,24,30
-
-124 pc bianco sotto			
-true; 4,0,24,30
-
-125 pc rosso sopra
-true; 1,0,30,32
-
-126 supercomputer sotto
-true; 0,0,32,32
-
-127 oscilloscopio sopra
+123 oscilloscopio sopra
 true; 0,4,32,28
 
+124 pc giallo sotto			
+true; 4,0,24,30
+
+125 pc bianco sotto			
+true; 4,0,24,30
+
+126 pc rosso sopra
+true; 1,0,30,32
+
+127 supercomputer sotto
+true; 0,0,32,32
+
+
+strato tre
 //////////////////////////////////////////
 
 128 lavagna alto sinistra

@@ -26,12 +26,13 @@ public class GameLoop implements Runnable {
 		
 		caricamento = new SplashScreenGame();	
 		controller = new IController();
-		caricamento.showProgress(50);
+		caricamento.showProgress(30);
+		
 		model = new IModel();
 		controller.setModel(model);
-		caricamento.showProgress(80);
-		view = new IView(controller);
-		view.setModel(model);
+		caricamento.showProgress(70);
+		
+		view = new IView(controller, model);
 		controller.setView(view);
 		caricamento.dispose();
 	}

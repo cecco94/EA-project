@@ -19,6 +19,11 @@ public class Tileset {
 	
 	private void inizializzaTipiDiTile() {		//per renderlo più funzionale, può leggere solo i tile dello strato 2
 		
+		//int tilestratouno=0;
+		//int tilestratodue=0;
+		//int tilestratodueanimati=0;
+		//int tilestratotre=0;
+		
 		tileStrato1 = new ArrayList<Tile>();
 		tileStrato2 = new ArrayList<Tile>();
 		tileStrato3 = new ArrayList<Tile>();
@@ -34,16 +39,19 @@ public class Tileset {
 				if(!s.isEmpty() && s.contains("; ") && stratoAttuale == 1)	{	
 					datiDaInserire = s.split("; ");
 					tileStrato1.add(new Tile(datiDaInserire[0], datiDaInserire[1]));
+				//	tilestratouno++;
 				}
 				
 				else if(!s.isEmpty() && s.contains("; ") && stratoAttuale == 2) {
 					datiDaInserire = s.split("; ");
 					tileStrato2.add(new Tile(datiDaInserire[0], datiDaInserire[1]));
+				//	tilestratodue++;
 				}
 				
 				else if(!s.isEmpty() && s.contains("; ") && stratoAttuale == 3) {
 					datiDaInserire = s.split("; ");
 					tileStrato3.add(new Tile(datiDaInserire[0], datiDaInserire[1]));
+				//	tilestratotre++;
 				}
 				
 				else if(!s.isEmpty() && s.contains("/")) {
@@ -56,6 +64,10 @@ public class Tileset {
 			e.printStackTrace();
 			}	
 		
+	//	System.out.println(tilestratouno);
+//		System.out.println(tilestratodue);
+//		System.out.println(tilestratotre);
+//		System.out.println();
 	//	printTileset();
 		
 	}

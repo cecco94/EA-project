@@ -13,8 +13,10 @@ public class TileAnimated extends Tile {
 	
 	public TileAnimated(BufferedImage img1, BufferedImage img2) {
 		super(img1);
+		image = ViewUtils.scaleImage(img1, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
 		secondImage = img2;	
-		img2 = ViewUtils.scaleImage(img2, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
+		secondImage = ViewUtils.scaleImage(img2, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
+		
 		int min = 120;	//un secondo, perchè il gioco ha 120 fps
 		int max = 360;	//tre secondi
 		frequenza = ThreadLocalRandom.current().nextInt(min, max + 1);	//numero casuale

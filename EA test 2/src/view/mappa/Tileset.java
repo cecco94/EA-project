@@ -13,7 +13,7 @@ public class Tileset {
 
 	private String percorsoPrimoStrato =   "/mappe/strato1.png";	
 	private String percorsoSecondoStrato = "/mappe/strato2NONanimato.png";
-	private String percorsoSecondoStratoAnimato = "/mappe/strato2animato.png";
+	private String percorsoSecondoStratoAnimato = "/mappe/strato2SoloAnimato.png";
 	private String percorsoTerzoStrato =   "/mappe/strato3.png";
 
 	//private final int numTilePrimoStrato = 7;
@@ -35,6 +35,7 @@ public class Tileset {
 	
 	private void salvaImmaginiPrimoStrato() {
 		BufferedImage sourceImgStrato = null;
+		BufferedImage temp = null;
 		try {
 			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoPrimoStrato));
 		}
@@ -42,15 +43,21 @@ public class Tileset {
 			e.printStackTrace();			
 		}
 		int numTilePrimoStrato = sourceImgStrato.getHeight()/32;
-		System.out.println(numTilePrimoStrato);
+	//	System.out.println(numTilePrimoStrato);
 		
-		for(int i = 0; i < numTilePrimoStrato; i++)
-			tiles.add(new Tile(sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE)));
+	//	int contatiletrato = 0;
+		for(int i = 0; i < numTilePrimoStrato; i++) {
+			temp = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+			tiles.add(new Tile(temp));
+	//		contatiletrato++;
+		}
+	//	System.out.println(contatiletrato);
 	}
 
 	
 	private void salvaImmaginiSecondoStrato() {
 		BufferedImage sourceImgStrato = null;	
+		BufferedImage temp = null;
 		try {
 			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoSecondoStrato));	
 		}
@@ -58,26 +65,39 @@ public class Tileset {
 			e.printStackTrace();			
 		}
 		int numTileSecondoStrato = sourceImgStrato.getHeight()/32;
-		System.out.println(numTileSecondoStrato);
+	//	System.out.println(numTileSecondoStrato);
 		
-		for(int i = 0; i < numTileSecondoStrato; i++)
-			tiles.add(new Tile(sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE)));	
+	//	int contatilestrato = 0;
+		for(int i = 0; i < numTileSecondoStrato; i++) {
+			temp = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+			tiles.add(new Tile(temp));
+		//	contatilestrato++;
+		}
+	//	System.out.println(contatilestrato);
 	}
 	
 	private void salvaImmaginiSecondoStratoAnimato() {
 		BufferedImage sourceImgStrato = null;
+		BufferedImage temp1 = null;
+		BufferedImage temp2 = null;
+
 		try {
 			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoSecondoStratoAnimato));
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		int numTileSecondoStratoAnimato = sourceImgStrato.getHeight()/32;
-		System.out.println(numTileSecondoStratoAnimato);
+		int numTileSecondoStratoAnimato = sourceImgStrato.getHeight()/64;		//non 32 come prima, perchè ogni tile ha due immagini, sono 9 tile
+	//	System.out.println(numTileSecondoStratoAnimato);
 		
-		for(int i = 0; i < numTileSecondoStratoAnimato - 1; i += 2)
-			tiles.add(new TileAnimated(sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE),
-								sourceImgStrato.getSubimage(0, (i+1) * GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE)) );	
+	//	int contatilestrato = 0;
+		for(int i = 0; i < numTileSecondoStratoAnimato*2; i += 2) {
+			temp1 = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+			temp2 = sourceImgStrato.getSubimage(0, (i+1)*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+			tiles.add(new TileAnimated(temp1, temp2));
+		//	contatilestrato++;
+		}
+	//	System.out.println(contatilestrato);
 	}
 	
 	private void salvaImmaginiTerzoStrato() {
@@ -85,15 +105,20 @@ public class Tileset {
 		try {
 			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoTerzoStrato));
 			int numTileTerzoStrato = sourceImgStrato.getHeight()/32;
-			System.out.println(numTileTerzoStrato);
+		//	System.out.println(numTileTerzoStrato);
 			
-			for(int i = 0; i < numTileTerzoStrato; i++)
+		//	int contatilestrato = 0;
+			for(int i = 0; i < numTileTerzoStrato; i++) {
 				tiles.add(new Tile(sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE)));
+		//		contatilestrato++;
+			}
+		//	System.out.println(contatilestrato);
 		}
 		catch(Exception e) {
-			e.printStackTrace();			
+			e.printStackTrace();	
+			
 		}
-		
+	//	System.out.println(tiles.size());
 	}
 	
 }

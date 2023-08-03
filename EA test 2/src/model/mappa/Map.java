@@ -13,10 +13,11 @@ public class Map {
 	//primo campo = stanza, secondo campo = larghezza/altezza
 	private int[][] dimensioniStanze;
 	
-	public static final int NUM_STANZE = 1, NUM_STRATI = 3;
+	public static final int NUM_STANZE = 2, NUM_STRATI = 3;
 	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2;
-	public static final int BIBLIOTECA = 0, SALA = 1, LABORATORIO = 2, DORMITORIO = 3;
-	private String[] percorsiStanze = {"/mappe/provaMappa.txt"};
+	public static final int BIBLIOTECA = 0, LABORATORIO = 2, DORMITORIO = 1, SALA = 3;
+	
+	private String[] percorsiStanze = {"/mappe/provaMappa.txt", "/mappe/dormitorio.txt"};
 	
 	public Map() {	
 		mappa = new int[NUM_STANZE][NUM_STRATI][][];
@@ -52,9 +53,18 @@ public class Map {
 				if(!s.isEmpty() && s.contains(", "))	{		
 					numeriNellaRiga = s.trim().split(", ");
 					
-					for(int j = 0; j < maxCol; j++) 
-						stanza[numeroStrato][riga][j] = Integer.parseInt(numeriNellaRiga[j]);
-
+					if(numeriNellaRiga[maxCol -1].contains(",")) {		//capita spesso che l'ultimo numero abbia una virgola a destra
+						String numeroDaSistemare = numeriNellaRiga[maxCol -1].split(",")[0];	//prendiamo solo l'ultimo numero
+						int ultimoNumero = Integer.parseInt(numeroDaSistemare);
+						
+						for(int j = 0; j < maxCol -1; j++) 						//aggiunge tutti tranne l'ultimo
+							stanza[numeroStrato][riga][j] = Integer.parseInt(numeriNellaRiga[j]);
+						stanza[numeroStrato][riga][maxCol -1] = ultimoNumero;		//aggiunge l'ultimo
+					}
+					else {	
+						for(int j = 0; j < maxCol; j++) 
+							stanza[numeroStrato][riga][j] = Integer.parseInt(numeriNellaRiga[j]);
+					}
 					riga++;
 				}
 				else if(s.contains("/")) {		//serve per capire quando è finito lo strato

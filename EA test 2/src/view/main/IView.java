@@ -8,12 +8,14 @@ import java.awt.image.BufferedImage;
 import controller.Gamestate;
 import controller.IController;
 import model.IModel;
+import model.mappa.Map;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
 import view.mappa.Tileset;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
 import view.menu.optionMenu.OptionMenu;
+import view.playState.PlayState;
 import view.sound.SoundManager;
 
 // per ora la classe più importante, gestisce tutte le altre classi della view, che fanno riferimento 
@@ -34,11 +36,13 @@ public class IView {
 	private MainMenu menu;
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
+	private PlayState play;
 	//mappa e tiles
 	private Tileset tileset;
 	
-	public IView(IController control) {
+	public IView(IController control, IModel mod) {
 		controller = control;
+		model = mod;
 		initViewClasses();
 	//	setStartMusic();
 	}
@@ -52,6 +56,7 @@ public class IView {
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
 		tileset = new Tileset();
+		play = new PlayState(this, model, tileset);
 		
 		//inizializza le cose più delicate
 		gw = new GameWindow(gp);
@@ -91,9 +96,7 @@ public class IView {
 			avatar.drawAvatarMenu(g2);
 			break;
 		case LOAD_GAME: 
-			drawFirstLayer(g2);
-			drawSecondLayer(g2);
-		//	drawTileset(g2);
+		
 			break;
 		case OPTIONS:
 			opzioni.draw(g2);
@@ -102,50 +105,12 @@ public class IView {
 			System.exit(0);
 			break;
 		case PLAYING:
-			//g2.drawImage(tileset.getTile(7).getImage(), 0, 0, null);
+			play.drawMap(g2, Map.BIBLIOTECA);
 			break;			
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
-	}
+	}	
 	
-	private void drawSecondLayer(Graphics2D g2) {
-		int[][] strato = model.getMappa().getStrato(0, 1);
-		for(int riga = 0; riga < strato.length; riga++) {
-			for(int colonna = 0; colonna < strato[riga].length; colonna++) {
-				int numeroTile = strato[riga][colonna];
-				if(numeroTile != 0) {
-					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile -1 ).getImage();
-					g2.drawImage(tileDaDisegnare, colonna* GamePanel.TILES_SIZE , riga*GamePanel.TILES_SIZE, null);
-				}
-			}
-		}
-		
-	}
-
-	private void drawTileset(Graphics2D g2) {		//for debug
-	//	int yPosition = 0;
-		for(int i = 6; i < 10; i++) {
-			g2.drawImage(tileset.getTile(i).getImage(), 0, i*GamePanel.TILES_SIZE, null);
-		//	yPosition++;
-		}
-		
-	}
-
-	private void drawFirstLayer(Graphics2D g2) {		//for debug
-		int[][] strato = model.getMappa().getStrato(0, 0);
-		for(int riga = 0; riga < strato.length; riga++) {
-			for(int colonna = 0; colonna < strato[riga].length; colonna++) {
-				int numeroTile = strato[riga][colonna];
-				if(numeroTile != 0) {
-					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile -1 ).getImage();
-					g2.drawImage(tileDaDisegnare, colonna* GamePanel.TILES_SIZE , riga*GamePanel.TILES_SIZE, null);
-				}
-			}
-		}
-			
-		
-	}
-
 	public void changeGameState(Gamestate newState) {
 		controller.setGameState(newState);
 	}
@@ -198,9 +163,6 @@ public class IView {
 	public void setSEVolume(float v) {
 		sound.setSEVolume((float)v);
 	}
-	
-	public void setModel(IModel mod) {
-		model = mod;
-	}
+
 	
 }

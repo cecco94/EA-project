@@ -11,7 +11,6 @@ public class Tile {
 	
 	public Tile(BufferedImage img) {
 		image = img;
-		//scala l'immagine
 		image = ViewUtils.scaleImage(image, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
 	}
 
