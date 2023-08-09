@@ -15,7 +15,7 @@ public class Map {
 	
 	public static final int NUM_STANZE = 2, NUM_STRATI = 3;
 	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2;
-	public static final int BIBLIOTECA = 0, LABORATORIO = 2, DORMITORIO = 1, SALA = 3;
+	public static final int BIBLIOTECA = 0,  DORMITORIO = 1, LABORATORIO = 2, SALA = 3;
 	
 	private String[] percorsiStanze = {"/mappe/provaMappa.txt", "/mappe/dormitorio.txt"};
 	
@@ -29,16 +29,14 @@ public class Map {
 
 	private int[][][] loadStanza(String percorsiStanze, int stanzaDaCaricare) {	
 		int[][][] stanza = null;
-		int numeroStrato = 0;
-		int riga = 0;
 		try {
-			InputStream	is = getClass().getResourceAsStream(percorsiStanze);				//approfondire
+			InputStream	is = getClass().getResourceAsStream(percorsiStanze);			
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			String s = null;
+			String rigaLetta = null;
 			
 			//legge la prima riga e carica le dimensioni
-			s = br.readLine();
-			String[] dimensioni = s.trim().split("x");
+			rigaLetta = br.readLine();
+			String[] dimensioni = rigaLetta.trim().split("x");
 			int maxRow = Integer.parseInt(dimensioni[0]);
 			int maxCol = Integer.parseInt(dimensioni[1]);
 			dimensioniStanze[stanzaDaCaricare][0] = maxCol;
@@ -47,13 +45,15 @@ public class Map {
 			
 			//serve per caricare i numeri usando la funzione split
 			String[] numeriNellaRiga = new String[maxCol];
-			
-			while((s = br.readLine()) != null) {
+			int numeroStrato = 0;
+			int riga = 0;
+			while((rigaLetta = br.readLine()) != null) {
 				
-				if(!s.isEmpty() && s.contains(", "))	{		
-					numeriNellaRiga = s.trim().split(", ");
+				if(!rigaLetta.isEmpty() && rigaLetta.contains(", "))	{		
+					numeriNellaRiga = rigaLetta.trim().split(", ");
 					
 					if(numeriNellaRiga[maxCol -1].contains(",")) {		//capita spesso che l'ultimo numero abbia una virgola a destra
+						
 						String numeroDaSistemare = numeriNellaRiga[maxCol -1].split(",")[0];	//prendiamo solo l'ultimo numero
 						int ultimoNumero = Integer.parseInt(numeroDaSistemare);
 						
@@ -67,12 +67,11 @@ public class Map {
 					}
 					riga++;
 				}
-				else if(s.contains("/")) {		//serve per capire quando è finito lo strato
+				else if(rigaLetta.contains("/")) {		//serve per capire quando è finito lo strato
 					numeroStrato++;
 					riga = 0;
 				}
-			}
-			
+			}	
 			br.close();	
 		//	printStanza(maxRow, maxCol, stanza);
 			
@@ -82,9 +81,8 @@ public class Map {
 		}										
 		return stanza;
 	}
-	
+		
 	public void printStanza(int maxRow, int maxCol, int[][][] stanza){			//for debugging
-		System.out.println(dimensioniStanze[0][1] + ", " + dimensioniStanze[0][0]);
 		for(int strato = 0; strato < NUM_STRATI; strato++) {		
 			for(int riga = 0; riga < maxRow; riga++) {
 				for(int colonna = 0; colonna < maxCol; colonna++) 

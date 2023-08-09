@@ -19,10 +19,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		switch (Gamestate.state) {
-		case PLAYING:
-			
-			break;
-			
 		case OPTIONS:
 			view.getOptions().mouseDragged(e);
 			break;
@@ -37,9 +33,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		switch (Gamestate.state) {
 		case MAIN_MENU:
 			view.getMenu().mouseMoved(e);
-			break;
-		case PLAYING:
-			//gamePanel.getGame().getPlaying().mouseMoved(e);
 			break;
 		case SELECT_AVATAR:
 			view.getAvatarMenu().mouseMoved(e);
@@ -71,9 +64,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		case MAIN_MENU:
 			view.getMenu().mousePressed(e);
 			break;
-		case PLAYING:
-			//gamePanel.getGame().getPlaying().mousePressed(e);
-			break;
 		case SELECT_AVATAR:
 			view.getAvatarMenu().mousePressed(e);
 			break;
@@ -90,9 +80,6 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		switch (Gamestate.state) {
 		case MAIN_MENU:
 			view.getMenu().mouseReleased(e);
-			break;
-		case PLAYING:
-			//gamePanel.getGame().getPlaying().mouseReleased(e);
 			break;
 		case SELECT_AVATAR:
 			view.getAvatarMenu().mouseReleased(e);

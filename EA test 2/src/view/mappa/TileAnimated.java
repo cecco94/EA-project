@@ -6,6 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import view.ViewUtils;
 import view.main.GamePanel;
 
+//ha due immagini che cambiano creando una animazione, estende il tile in modo da poter fare una lista unica di tile
 public class TileAnimated extends Tile {
 
 	private BufferedImage secondImage;
@@ -22,6 +23,17 @@ public class TileAnimated extends Tile {
 		frequenza = ThreadLocalRandom.current().nextInt(min, max + 1);	//numero casuale
 	}
 
+	public TileAnimated(BufferedImage img1, BufferedImage img2, int freq) {
+		super(img1);
+		image = ViewUtils.scaleImage(img1, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
+		secondImage = img2;	
+		secondImage = ViewUtils.scaleImage(img2, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
+		
+		int min = 120;	//un secondo, perchè il gioco ha 120 fps
+		int max = 360;	//tre secondi
+		frequenza = freq;	//numero casuale
+	}
+	
 	public BufferedImage getImage() {
 		selectImageToShow();
 		

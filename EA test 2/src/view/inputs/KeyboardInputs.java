@@ -31,7 +31,7 @@ public class KeyboardInputs implements KeyListener {
 			view.getAvatarMenu().keyReleased(e.getKeyCode());
 			break;
 		case PLAYING:
-			//gamePanel.getGame().getPlaying().keyReleased(e);
+			view.getController().getPlay().getPlayer().resetBooleans();
 			break;
 		case OPTIONS:
 			view.getOptions().keyReleased(e.getKeyCode());
@@ -46,6 +46,14 @@ public class KeyboardInputs implements KeyListener {
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent e) {		
+	public void keyPressed(KeyEvent e) {
+		switch (Gamestate.state) {
+		case PLAYING:
+			view.getController().getPlay().getPlayer().choiceDirection(e);
+			break;
+			
+		default:
+			break;
+		}
 	}
 }

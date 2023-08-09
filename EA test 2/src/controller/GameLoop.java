@@ -30,7 +30,7 @@ public class GameLoop implements Runnable {
 		
 		model = new IModel();
 		controller.setModel(model);
-		caricamento.showProgress(70);
+		caricamento.showProgress(60);
 		
 		view = new IView(controller, model);
 		controller.setView(view);
@@ -93,7 +93,7 @@ public class GameLoop implements Runnable {
 	}
 
 	private void update() {
-		// TODO Auto-generated method stub		ancora non fa nulla
-		
+		controller.updateGame();	
 	}
+	
 }

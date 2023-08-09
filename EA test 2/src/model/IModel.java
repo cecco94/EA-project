@@ -1,25 +1,25 @@
 package model;
 
 import model.mappa.Map;
-import model.mappa.Tileset;
+import model.mappa.TilesetModel;
 
 public class IModel {
 
 	private Map mappa;
-	private Tileset tiles;
+	private TilesetModel tiles;
 	
 	
 	
 	public IModel() {
 		mappa = new Map();
-		tiles = new Tileset();
+		tiles = new TilesetModel();
 	}
 
 	public Map getMappa() {
 		return mappa;
 	}
 
-	public Tileset getTiles() {
+	public TilesetModel getTilesetModel() {
 		return tiles;
 	}
 }

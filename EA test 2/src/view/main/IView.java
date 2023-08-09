@@ -3,7 +3,6 @@ package view.main;
 import java.awt.AWTException;
 import java.awt.Graphics2D;
 import java.awt.Robot;
-import java.awt.image.BufferedImage;
 
 import controller.Gamestate;
 import controller.IController;
@@ -11,7 +10,7 @@ import model.IModel;
 import model.mappa.Map;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
-import view.mappa.Tileset;
+import view.mappa.TilesetView;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
 import view.menu.optionMenu.OptionMenu;
@@ -38,7 +37,7 @@ public class IView {
 	private OptionMenu opzioni;
 	private PlayState play;
 	//mappa e tiles
-	private Tileset tileset;
+	private TilesetView tileset;
 	
 	public IView(IController control, IModel mod) {
 		controller = control;
@@ -51,13 +50,13 @@ public class IView {
 		sound = new SoundManager();
 		mi = new MouseInputs(this);
 		gp = new GamePanel(this, mi);
+		
 		menu = new MainMenu(this);
 		start = new StartTitle(this);
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
-		tileset = new Tileset();
-		play = new PlayState(this, model, tileset);
-		
+		tileset = new TilesetView();
+		play = new PlayState(model, tileset, this);
 		//inizializza le cose più delicate
 		gw = new GameWindow(gp);
 		setCursorManager();
@@ -96,13 +95,9 @@ public class IView {
 			avatar.drawAvatarMenu(g2);
 			break;
 		case LOAD_GAME: 
-		
 			break;
 		case OPTIONS:
 			opzioni.draw(g2);
-			break;
-		case QUIT:
-			System.exit(0);
 			break;
 		case PLAYING:
 			play.drawMap(g2, Map.BIBLIOTECA);
@@ -110,7 +105,7 @@ public class IView {
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
 	}	
-	
+		
 	public void changeGameState(Gamestate newState) {
 		controller.setGameState(newState);
 	}
@@ -124,6 +119,10 @@ public class IView {
 	}
 	
 	// questi metodi servono per far comunicare tra loro le varie classi
+	public IController getController() {
+		return controller;
+	}
+	
 	public GamePanel getGamePanel() {
 		return gp;
 	}

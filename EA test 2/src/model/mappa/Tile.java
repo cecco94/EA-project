@@ -2,6 +2,8 @@ package model.mappa;
 
 import java.awt.Rectangle;
 
+import view.main.GamePanel;
+
 public class Tile {
 	
 	private boolean solid;
@@ -11,15 +13,17 @@ public class Tile {
 		this.solid = Boolean.parseBoolean(solid.trim());
 		if(this.solid == true)
 			inizializzaHitbox(hitbox);	
+		else 
+			this.hitbox = new Rectangle(0,0,0,0);
 	}
 
 	private void inizializzaHitbox(String hitbox) {
 		String[] valori = null;
 		valori = hitbox.trim().split(",");
-		int x = Integer.parseInt(valori[0]);
-		int y = Integer.parseInt(valori[1]);
-		int w = Integer.parseInt(valori[2]);
-		int h = Integer.parseInt(valori[3]);
+		int x = (int)(Integer.parseInt(valori[0]) * GamePanel.SCALE );
+		int y = (int)(Integer.parseInt(valori[1]) * GamePanel.SCALE );
+		int w = (int)(Integer.parseInt(valori[2]) * GamePanel.SCALE );
+		int h = (int)(Integer.parseInt(valori[3]) * GamePanel.SCALE );
 		this.hitbox = new Rectangle(x,y,w,h);
 	}
 
@@ -32,14 +36,9 @@ public class Tile {
 	}
 
 	public String toString() {
-		String s = null;
-		if (solid == true) {
-			s = this.solid + "," +
+		String s = this.solid + "," +
 			"( " + hitbox.x + ", " + hitbox.y +
 			", " + hitbox.width + ", " + hitbox.height + " )";
-		}
-		else 
-			s = "" + this.solid;
 		
 		return s;
 	}
