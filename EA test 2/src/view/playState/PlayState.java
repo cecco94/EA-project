@@ -34,6 +34,7 @@ public class PlayState {
 		for (int layer = 0; layer < Map.NUM_STRATI; layer++)
 			drawLayer(g2, stanza, layer);
 		
+		disegnaGriglia(g2, stanza);
 		disegnaHitbox(g2, stanza);
 		player.draw(g2);
 	}
@@ -44,7 +45,7 @@ public class PlayState {
 			for(int colonna = 0; colonna < strato[riga].length; colonna++) {
 				int numeroTile = strato[riga][colonna];
 				if(numeroTile > 0) {
-					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile -1).getImage();
+					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile).getImage();
 					g2.drawImage(tileDaDisegnare, colonna* GamePanel.TILES_SIZE, riga*GamePanel.TILES_SIZE, null);
 				}
 			}			
@@ -56,11 +57,20 @@ public class PlayState {
 			for(int colonna = 0; colonna < stratoDue[riga].length; colonna++) {
 				int numeroTile = stratoDue[riga][colonna];
 					if (numeroTile > 0) {
-					Rectangle hitbox = model.getTilesetModel().getTile(numeroTile - 1).getHitbox();
+					Rectangle hitbox = model.getTilesetModel().getTile(numeroTile).getHitbox();
 					g2.setColor(Color.red);
 					g2.drawRect(colonna*GamePanel.TILES_SIZE + hitbox.x, riga*GamePanel.TILES_SIZE + hitbox.y, hitbox.width, hitbox.height);
 					}
 				}
+	}
+	
+	private void disegnaGriglia(Graphics2D g2, int stanza) {
+		int[][] stratoUno = model.getMappa().getStrato(stanza, 0);
+		for(int riga = 0; riga < stratoUno.length; riga++)
+			g2.drawLine(0, riga*GamePanel.TILES_SIZE, GamePanel.GAME_WIDTH, riga*GamePanel.TILES_SIZE);
+		
+		for(int colonna = 0; colonna < stratoUno[0].length; colonna++)
+			g2.drawLine(colonna*GamePanel.TILES_SIZE, 0, colonna*GamePanel.TILES_SIZE, GamePanel.GAME_HEIGHT);
 	}
 		
 	

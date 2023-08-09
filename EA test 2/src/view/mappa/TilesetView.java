@@ -29,14 +29,20 @@ public class TilesetView {
 	}
 	
 	private void salvaImmaginiPrimoStrato() {
+		BufferedImage imgZero = null;		//in questo modo la numerazione coincide con quella di tiled
+		
 		BufferedImage sourceImgStrato = null;
 		BufferedImage temp = null;
 		try {
+			imgZero = ImageIO.read(getClass().getResourceAsStream("/mappe/000.png"));
+			
 			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoPrimoStrato));
 		}
 		catch(Exception e) {
 			e.printStackTrace();			
 		}
+		tiles.add(new Tile(imgZero));
+		
 		int numTilePrimoStrato = sourceImgStrato.getHeight()/32;
 		for(int i = 0; i < numTilePrimoStrato; i++) {
 			temp = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);

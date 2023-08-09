@@ -7,14 +7,15 @@ import view.main.GamePanel;
 
 public class PlayerController {
 
-	private Rectangle hitbox, hitBoxPerControllareCollisione;
-	private int speed = (int)(GamePanel.SCALE*1.5);
+	private Rectangle hitbox, tempHitboxForCheck ;
+	private int speed = (int)(GamePanel.SCALE*1.3);
 	private boolean moving, left, right, up, down;
 	private Collisions collisionCheck;
 	
 	public PlayerController(Collisions collcheck) {
-		hitbox = new Rectangle(100, 100, GamePanel.TILES_SIZE/2, GamePanel.TILES_SIZE/2);
-		hitBoxPerControllareCollisione = new Rectangle(100, 100, GamePanel.TILES_SIZE/2, GamePanel.TILES_SIZE/2);
+		
+		hitbox = new Rectangle(100, 100, GamePanel.TILES_SIZE/2, GamePanel.TILES_SIZE/2);	
+		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		collisionCheck = collcheck;
 	}
 	
@@ -37,30 +38,41 @@ public class PlayerController {
 	
 	void updatePos() {
 		moving = false;
-
+		
 		if (left && !right) {
-			hitBoxPerControllareCollisione.x -= speed;
-			if(collisionCheck.canMoveHere(hitBoxPerControllareCollisione, Collisions.SINISTRA)) {
+			tempHitboxForCheck.x = hitbox.x - speed;
+			tempHitboxForCheck.y = hitbox.y;
+			if(collisionCheck.canMoveLeft(tempHitboxForCheck)) {
 				hitbox.x -= speed;
 				moving = true;
 			}
-			hitBoxPerControllareCollisione.x = hitbox.x;
 		} 
 		else if (right && !left) {
-			
-			hitbox.x += speed;
-			moving = true;
+			tempHitboxForCheck.x = hitbox.x + speed;
+			tempHitboxForCheck.y = hitbox.y;
+			if(collisionCheck.canMoveRight(tempHitboxForCheck)) {
+				hitbox.x += speed;
+				moving = true;
+			}
 		}
 		if (up && !down) {
-			
-			hitbox.y -= speed;
-			moving = true;	
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y - speed;
+			if(collisionCheck.canMoveUp(tempHitboxForCheck)) {
+				hitbox.y -= speed;
+				moving = true;
+			}
 		} 
 		else if (down && !up) {
-			
-			hitbox.y += speed;
-			moving = true;
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y + speed;
+			if(collisionCheck.canMoveDown(tempHitboxForCheck)) {
+				hitbox.y += speed;
+				moving = true;
+			}
 		}
+		tempHitboxForCheck.x = hitbox.x;
+		tempHitboxForCheck.y = hitbox.y;
 	}
 
 	public void resetBooleans() {

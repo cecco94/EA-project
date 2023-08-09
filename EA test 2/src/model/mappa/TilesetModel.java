@@ -18,10 +18,9 @@ public class TilesetModel {
 		inizializzaTipiDiTile();
 	}
 	
-	private void inizializzaTipiDiTile() {		//per renderlo più funzionale, può leggere solo i tile dello strato 2
+	private void inizializzaTipiDiTile() {		
 		
 		tileset = new ArrayList<Tile>();
-		
 //		tileStrato1 = new ArrayList<Tile>();
 //		tileStrato2 = new ArrayList<Tile>();
 //		tileStrato3 = new ArrayList<Tile>();
@@ -30,7 +29,7 @@ public class TilesetModel {
 		InputStream	is = getClass().getResourceAsStream(percorsoTileset);				
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String s = null;
-		String[] datiDaInserire = new String[2];
+		String[] datiDaInserire = new String[3];
 		
 		try {
 			while((s = br.readLine()) != null) {
@@ -55,12 +54,12 @@ public class TilesetModel {
 				
 				if(!s.isEmpty() && s.contains("; ")){
 					datiDaInserire = s.split("; ");
-					tileset.add(new Tile(datiDaInserire[0], datiDaInserire[1]));
+					tileset.add(new Tile(datiDaInserire[0], datiDaInserire[1], datiDaInserire[2]) );
 				}
 				
 			}
 			br.close();
-	//		printTileset();
+			printTileset();
 		} 
 		catch (IOException e) {
 			e.printStackTrace();

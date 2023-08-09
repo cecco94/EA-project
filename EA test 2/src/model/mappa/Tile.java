@@ -8,8 +8,10 @@ public class Tile {
 	
 	private boolean solid;
 	private Rectangle hitbox;
+	private String name;
 	
-	public Tile(String solid, String hitbox) {
+	public Tile(String name, String solid, String hitbox) {
+		this.name = name;
 		this.solid = Boolean.parseBoolean(solid.trim());
 		if(this.solid == true)
 			inizializzaHitbox(hitbox);	
@@ -36,7 +38,7 @@ public class Tile {
 	}
 
 	public String toString() {
-		String s = this.solid + "," +
+		String s = this.name + this.solid + "," +
 			"( " + hitbox.x + ", " + hitbox.y +
 			", " + hitbox.width + ", " + hitbox.height + " )";
 		
