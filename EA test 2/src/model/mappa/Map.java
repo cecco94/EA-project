@@ -13,11 +13,12 @@ public class Map {
 	//primo campo = stanza, secondo campo = larghezza/altezza
 	private int[][] dimensioniStanze;
 	
-	public static final int NUM_STANZE = 2, NUM_STRATI = 3;
-	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2;
+	public static final int NUM_STANZE = 1, NUM_STRATI = 4;
+	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2, QUARTO_STRATO = 3;
 	public static final int BIBLIOTECA = 0,  DORMITORIO = 1, LABORATORIO = 2, SALA = 3;
+	private int MappaAttuale = BIBLIOTECA;
 	
-	private String[] percorsiStanze = {"/mappe/provaMappa.txt", "/mappe/dormitorio.txt"};
+	private String[] percorsiStanze = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt"};
 	
 	public Map() {	
 		mappa = new int[NUM_STANZE][NUM_STRATI][][];
@@ -100,51 +101,13 @@ public class Map {
 	public int[][] getStrato(int stanza, int strato){
 		return mappa[stanza][strato];
 	}
-}	
 
-
-
-
-
-
-
-
-/*	public static int[][] loadLayer(String fileName){
-		
-		List<String> righe = readLines(fileName);			//prende tutte le righe
-		String[][] righeArray = new String[righe.size()][];
-		int[][] righeInt = new int[righe.size()][];
-		
-		for(int i = 0; i < righe.size(); i++) {
-			
-			righeArray[i] = righe.get(i).split(" ");		//le splitta
-			righeInt[i] = new int[righeArray[i].length];
-			
-			for(int j = 0; j < righeArray[i].length; j++)	//trasforma il contenuto in int
-				righeInt[i][j] = Integer.parseInt(righeArray[i][j]);
-		}
-		
-		return righeInt;				*/
-		
-/*		for(int i = 0; i < righeArray.length; i++)
-			for(int j = 0; j < righeArray[i].length; j++) {
-				System.out.print(righeInt[i][j]);
-				if(j == righeArray[i].length -1)
-					System.out.println("");
-			}													
+	public int getMappaAttuale() {
+		return MappaAttuale;
 	}
-				*/
-	    
-/*	 public static List<String> readLines(String fileName){
-		File file = new File(fileName);
-		List<String> righe = null;
-		try {
-			righe = Files.readAllLines(file.toPath());
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return righe;
-	 }
-	 
-	 */	
+
+	public void setMappaAttuale(int mappaAttuale) {
+		MappaAttuale = mappaAttuale;
+	}
+}	
+	

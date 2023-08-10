@@ -142,7 +142,7 @@
 
 70 armadio rosa centro ; true; 1,0,28,32
 
-71 armadio rosa sotto ; true; 0,10,28,30
+71 armadio rosa sotto ; true; 0,0,28,30
 
 72 armadietto rosa sopra ; true; 2,4,28,28
 

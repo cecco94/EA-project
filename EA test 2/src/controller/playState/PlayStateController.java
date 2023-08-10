@@ -20,7 +20,8 @@ public class PlayStateController {
 	}
 	
 	public void update() {
-		player.updatePos();
+		int stanza = control.getModel().getMappa().getMappaAttuale();
+		player.updatePos(stanza);
 	}
 	
 	

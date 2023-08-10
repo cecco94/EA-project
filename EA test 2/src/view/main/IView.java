@@ -100,7 +100,7 @@ public class IView {
 			opzioni.draw(g2);
 			break;
 		case PLAYING:
-			play.drawMap(g2, Map.BIBLIOTECA);
+			play.draw(g2, model.getMappa().getMappaAttuale());
 			break;			
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
