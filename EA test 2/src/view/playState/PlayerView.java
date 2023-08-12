@@ -35,8 +35,8 @@ public class PlayerView extends SortableElement{
 		yOffset = down1.getHeight()/2 - 10;
 		
 		//servono per ordinare il personaggio
-		xPos = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
-		yPos = view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
+		xPosMap = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
+		yPosMap = view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
 		this.typeElemtToSort = 4;
 		
 		xOnScreen = GamePanel.GAME_WIDTH/2 - GamePanel.TILES_SIZE/2;
@@ -44,8 +44,8 @@ public class PlayerView extends SortableElement{
 	}
 	
 	public void setDrawPosition() {
-		xPos = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
-		yPos = view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
+		xPosMap = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
+		yPosMap = view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
 	}
 	
 	public int getXOnScreen() {
@@ -57,13 +57,14 @@ public class PlayerView extends SortableElement{
 	}
 
 	@Override
-	public void draw(Graphics2D g2, int xOffsetRespectTheCenterOfScreen, int yOffsetRespectTheCenterOfScreen) {
-		Rectangle hitbox = view.getController().getPlay().getPlayer().getHitbox();
+	public void draw(Graphics2D g2, int xOffsetRespectTheCenterOfScreen, int yOffsetRespectTheCenterOfScreen, int x, int y) {
+		
 		g2.drawImage(down1, xOnScreen, yOnScreen, null);
 		
-		g2.setColor(Color.yellow);										//for debug
-		g2.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
-		g2.drawRect(xOnScreen, yOnScreen, down1.getWidth(), down1.getHeight());
+//		Rectangle hitbox = view.getController().getPlay().getPlayer().getHitbox();		//for debug
+//		g2.setColor(Color.yellow);										
+//		g2.drawRect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+//		g2.drawRect(xOnScreen, yOnScreen, down1.getWidth(), down1.getHeight());
 	}
 	
 }

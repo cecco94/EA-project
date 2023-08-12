@@ -16,20 +16,25 @@ public class SortableTile extends SortableElement{
 	public SortableTile(TilesetView t, int tipoTyle, int strato, int col, int row) {
 		tileset = t;
 		tileCorrispondenteAlNumero = tipoTyle;
-		typeElemtToSort = strato;						//più è basso lo strato di questo tile, prima dovrà essere disegnato
-		xPos = col*GamePanel.TILES_SIZE;
-		yPos = row*GamePanel.TILES_SIZE;
+		typeElemtToSort = strato;				//più è basso lo strato di questo tile, prima dovrà essere disegnato
+		xPosMap = col*GamePanel.TILES_SIZE;		//posizione nella mappa = num colonna * grandezza quadratino
+		yPosMap = row*GamePanel.TILES_SIZE;
 	}
 	
 	@Override
-	public void draw(Graphics2D g2, int xOffsetRespectTheCenterOfScreen,  int yOffsetRespectTheCenterOfScreen) {	
+	public void draw(Graphics2D g2, int playerScreenPositionX,  int playerScreenPositionY, int playerMapPositionX, int playerMapPositionY) {	
 		
-		int xPosOnScreen = xPos + xOffsetRespectTheCenterOfScreen;
-		int yPosOnScreen = yPos + yOffsetRespectTheCenterOfScreen;
+		int distanzaX = playerMapPositionX - xPosMap;
+		int distanzaY = playerMapPositionY - yPosMap;
+		
+//		int xPosOnScreen = xPos + 10*GamePanel.TILES_SIZE;
+//		int yPosOnScreen = yPos + 7*GamePanel.TILES_SIZE;
+		
+//		int xPosOnScreen = xPos - xOffsetRespectTheCenterOfScreen + 20;
+//		int yPosOnScreen = yPos - yOffsetRespectTheCenterOfScreen + 15;
 		
 		BufferedImage img = tileset.getTile(tileCorrispondenteAlNumero).getImage();
-		g2.drawImage(img, xPosOnScreen, yPosOnScreen, null);
-	//	g2.drawRect(xPos, yPos, img.getWidth(), img.getHeight());
+		g2.drawImage(img, playerScreenPositionX - distanzaX, playerScreenPositionY - distanzaY, null);
 	}
 
 }

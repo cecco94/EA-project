@@ -24,7 +24,7 @@ public class GameWindow extends JFrame {
 	//	setUndecorated(true);		per togliere il sopra della finestra
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setResizable(false);
+		setResizable(true);
 		setGameCursor(gp);
 		getContentPane().add(gp);
 		pack();

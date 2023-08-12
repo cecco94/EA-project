@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 //loro tipo. Ogni elemento della mappa estenderà questa classe molto astratta che implementa una relazione di uguaglianza/disuguaglianza
 public abstract class SortableElement implements Comparable<SortableElement> {
 
-	protected int xPos;	//la posizione x non è strettamente necessaria, è utile per disegnare l'elemento dopo
-	protected int yPos;
+	protected int xPosMap;	//la posizione x non è strettamente necessaria, è utile per disegnare l'elemento dopo
+	protected int yPosMap;
 	protected int typeElemtToSort;	//2 = terzo strato, 3 = quarto strato, 4 = npc/player
 	
 	@Override
@@ -17,13 +17,13 @@ public abstract class SortableElement implements Comparable<SortableElement> {
 			return 0;
 		
 		else {
-			if(this.yPos < e.yPos) //se si trova più in alto deve essere disegnato prima
+			if(this.yPosMap < e.yPosMap) //se si trova più in alto deve essere disegnato prima
 				return -1;
 			
-			else if(this.yPos > e.yPos) //se si trova più in basso deve essere disegnato dopo
+			else if(this.yPosMap > e.yPosMap) //se si trova più in basso deve essere disegnato dopo
 				return 1;
 			
-			else if(this.yPos == e.yPos) {	//se si trova nella stessa posizione, prima si disegnano
+			else if(this.yPosMap == e.yPosMap) {	//se si trova nella stessa posizione, prima si disegnano
 				if(this.typeElemtToSort < e.typeElemtToSort)	    //gli oggetti con tipo più basso
 					return -1;	
 				else 
@@ -34,7 +34,7 @@ public abstract class SortableElement implements Comparable<SortableElement> {
 		return 0;	//non dovremmo mai arrivare qui
 	}
 	
-	public abstract void draw(Graphics2D g2, int xOffsetRespectTheCenterOfScreen, int yOffsetRespectTheCenterOfScreen);
+	public abstract void draw(Graphics2D g2, int xOffsetRespectTheCenterOfScreen, int yOffsetRespectTheCenterOfScreen, int xPlayerMap, int yPlayerMap);
 	
 	
 }

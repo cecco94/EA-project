@@ -56,12 +56,12 @@ public class PlayState {
 		//collections è una classe di utilità che implementa un algoritmo veloce di ordinamento
 		Collections.sort(drawOrder);
 		
-		//richiama il metodo draw su ogni elemento in ordine
-		int x =  player.getXOnScreen();
-		int y =  player.getYOnScreen();
+		//richiama il metodo draw su ogni elemento in ordine	
+		int xPlayerMap = view.getController().getPlay().getPlayer().getHitbox().x;
+		int yPlayerMap = view.getController().getPlay().getPlayer().getHitbox().y;
 		
 		for(int i = 0; i < drawOrder.size(); i++)
-			drawOrder.get(i).draw(g2, x, y);
+			drawOrder.get(i).draw(g2, player.getXOnScreen(), player.getYOnScreen(), xPlayerMap, yPlayerMap);
 		
 		//svuota la lista per ricominciare il frame successivo
 		drawOrder.clear();
@@ -85,8 +85,8 @@ public class PlayState {
 		for(int layer = Map.TERZO_STRATO; layer <= Map.QUARTO_STRATO; layer++) {
 			
 			int[][] strato = model.getMappa().getStrato(stanza, layer);
-			for(int riga = yMappaIniziale; riga < yMappaIniziale + GamePanel.TILES_IN_HEIGHT; riga++) 
-				for(int colonna = xMappaIniziale; colonna < xMappaIniziale + GamePanel.TILES_IN_WIDTH; colonna++) {
+			for(int riga = yMappaIniziale; riga <= yMappaIniziale + GamePanel.TILES_IN_HEIGHT; riga++) 
+				for(int colonna = xMappaIniziale; colonna <= xMappaIniziale + GamePanel.TILES_IN_WIDTH; colonna++) {
 					int numeroTile = 0;
 					try {
 						numeroTile = strato[riga][colonna];
@@ -95,7 +95,7 @@ public class PlayState {
 						numeroTile = 0;
 					}	
 					if(numeroTile > 0) 
-						drawOrder.add(new SortableTile(tileset, numeroTile, layer, colonna, riga));		 
+						drawOrder.add(new SortableTile(tileset, numeroTile, layer, colonna, riga));			
 				}
 		}
 		
