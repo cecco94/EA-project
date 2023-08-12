@@ -2,16 +2,18 @@ package view.playState;
 
 import java.awt.Graphics2D;
 
-public abstract class SortableElement implements Comparable<SortableElement>{
+//per disegnare tutti gli elementi della mappa dall'alto verso il basso, li ordiniamo secondo la loro posizione y e secondo il 
+//loro tipo. Ogni elemento della mappa estenderà questa classe molto astratta che implementa una relazione di uguaglianza/disuguaglianza
+public abstract class SortableElement implements Comparable<SortableElement> {
 
-	protected int xPos;
+	protected int xPos;	//la posizione x non è strettamente necessaria, è utile per disegnare l'elemento dopo
 	protected int yPos;
-	protected int type;	//2 = terzo strato, 3 = quarto strato, 4 = npc, 5 = player
+	protected int typeElemtToSort;	//2 = terzo strato, 3 = quarto strato, 4 = npc/player
 	
 	@Override
 	public int compareTo(SortableElement e) {
 		//se sono tile dello stesso tipo non ha senso ordinarli
-		if(this.type == e.type && (this.type == 0 || this.type == 1))
+		if(this.typeElemtToSort == e.typeElemtToSort && (this.typeElemtToSort == 0 || this.typeElemtToSort == 1))
 			return 0;
 		
 		else {
@@ -22,7 +24,7 @@ public abstract class SortableElement implements Comparable<SortableElement>{
 				return 1;
 			
 			else if(this.yPos == e.yPos) {	//se si trova nella stessa posizione, prima si disegnano
-				if(this.type < e.type)	    //gli oggetti con tipo più basso
+				if(this.typeElemtToSort < e.typeElemtToSort)	    //gli oggetti con tipo più basso
 					return -1;	
 				else 
 					return 1;
@@ -32,6 +34,7 @@ public abstract class SortableElement implements Comparable<SortableElement>{
 		return 0;	//non dovremmo mai arrivare qui
 	}
 	
-	public abstract void draw(Graphics2D g2);
+	public abstract void draw(Graphics2D g2, int xOffsetRespectTheCenterOfScreen, int yOffsetRespectTheCenterOfScreen);
+	
 	
 }

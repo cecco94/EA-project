@@ -14,7 +14,7 @@ public class PlayerController {
 	
 	public PlayerController(Collisions collcheck) {
 		
-		hitbox = new Rectangle(100, 100, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE/2);	
+		hitbox = new Rectangle(2*GamePanel.TILES_SIZE, 2*GamePanel.TILES_SIZE, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE/2);	
 		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		collisionCheck = collcheck;
 	}

@@ -13,10 +13,10 @@ public class Map {
 	//primo campo = stanza, secondo campo = larghezza/altezza
 	private int[][] dimensioniStanze;
 	
-	public static final int NUM_STANZE = 1, NUM_STRATI = 4;
+	public static final int NUM_STANZE = 2, NUM_STRATI = 4;
 	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2, QUARTO_STRATO = 3;
 	public static final int BIBLIOTECA = 0,  DORMITORIO = 1, LABORATORIO = 2, SALA = 3;
-	private int MappaAttuale = BIBLIOTECA;
+	private int MappaAttuale = DORMITORIO;
 	
 	private String[] percorsiStanze = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt"};
 	
