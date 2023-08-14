@@ -228,7 +228,7 @@
 
 113 tavolone2, alto destra ; true; 0,0,32,32
 
-114 pc giallo sopra ; true; 4,0,24,22
+114 pc giallo sopra ; true; 4,10,24,22
 
 115 pc bianco sopra ; true; 4,10,24,22
 

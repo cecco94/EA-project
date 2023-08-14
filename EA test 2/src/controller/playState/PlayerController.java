@@ -14,7 +14,13 @@ public class PlayerController {
 	
 	public PlayerController(Collisions collcheck) {
 		
-		hitbox = new Rectangle(2*GamePanel.TILES_SIZE, 2*GamePanel.TILES_SIZE, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE/2);	
+		int hitboxX = 12*GamePanel.TILES_SIZE;
+		int hitboxY = 9*GamePanel.TILES_SIZE;
+		
+		int hitboxWidth = (int)(GamePanel.TILES_SIZE*0.75);
+		int hitboxHeight = GamePanel.TILES_SIZE/2;
+		
+		hitbox = new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);	
 		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		collisionCheck = collcheck;
 	}
@@ -106,11 +112,28 @@ public class PlayerController {
 	public boolean isMoving() {
 		return moving;
 	}
+	
+	public boolean isRight() {
+		return right;
+	}
+	
+	public boolean isLeft() {
+		return left;
+	}
+	
+	public boolean isDown() {
+		return down;
+	}
+	
+	public boolean isUp() {
+		return up;
+	}
 
 	
 	public void setMoving(boolean moving) {
 		this.moving = moving;
 	}
+	
 	
 	
 }

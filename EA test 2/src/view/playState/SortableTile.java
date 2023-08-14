@@ -10,31 +10,35 @@ import view.mappa.TilesetView;
 //è molto leggero è può essere istanziato/eliminato più velocemente di un tile normale
 public class SortableTile extends SortableElement{
 
-	private int tileCorrispondenteAlNumero;
+	private int numberInTileset;
 	private TilesetView tileset;
 	
 	public SortableTile(TilesetView t, int tipoTyle, int strato, int col, int row) {
 		tileset = t;
-		tileCorrispondenteAlNumero = tipoTyle;
+		numberInTileset = tipoTyle;
+		
 		typeElemtToSort = strato;				//più è basso lo strato di questo tile, prima dovrà essere disegnato
-		xPosMap = col*GamePanel.TILES_SIZE;		//posizione nella mappa = num colonna * grandezza quadratino
-		yPosMap = row*GamePanel.TILES_SIZE;
+		
+		xPosMapForSort = col*GamePanel.TILES_SIZE;		//posizione nella mappa = num colonna * grandezza quadratino
+		yPosMapForSort = row*GamePanel.TILES_SIZE;
 	}
 	
 	@Override
-	public void draw(Graphics2D g2, int playerScreenPositionX,  int playerScreenPositionY, int playerMapPositionX, int playerMapPositionY) {	
+	public void draw(Graphics2D g2, int playerMapPositionX, int playerMapPositionY) {	
 		
-		int distanzaX = playerMapPositionX - xPosMap;
-		int distanzaY = playerMapPositionY - yPosMap;
+		//la distanza tra il player e il tile è la stessa, sia nella mappa che nella finestra di gioco
+		//prendendo la distanza nella mappa rispetto al giocatore, possiamo capire dove disegnare il tile
+		//rispetto alla posizione del giocatore nella finestra (che è sempre al centro)
+		int distanzaX = playerMapPositionX - xPosMapForSort;
+		int distanzaY = playerMapPositionY - yPosMapForSort;
 		
-//		int xPosOnScreen = xPos + 10*GamePanel.TILES_SIZE;
-//		int yPosOnScreen = yPos + 7*GamePanel.TILES_SIZE;
+		//ci serve un offset perchè la distanza del tile nella mappa rispetto al player è riferita al punto in
+		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
+		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + PlayerView.xOffset;	
+		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + PlayerView.yOffset;
 		
-//		int xPosOnScreen = xPos - xOffsetRespectTheCenterOfScreen + 20;
-//		int yPosOnScreen = yPos - yOffsetRespectTheCenterOfScreen + 15;
-		
-		BufferedImage img = tileset.getTile(tileCorrispondenteAlNumero).getImage();
-		g2.drawImage(img, playerScreenPositionX - distanzaX, playerScreenPositionY - distanzaY, null);
+		BufferedImage img = tileset.getTile(numberInTileset).getImage();
+		g2.drawImage(img, xPosOnScreen, yPosOnScreen, null);
 	}
 
 }
