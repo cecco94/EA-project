@@ -7,12 +7,12 @@ public class PlayStateController {
 	
 	private PlayerController player;
 	private Collisions collisionCheck;
-	private IController control;
+	private IController controller;
 	
 	public PlayStateController(IController c) {
-		control = c;
+		controller = c;
 		collisionCheck = new Collisions(c); 
-		player = new PlayerController(collisionCheck);
+		player = new PlayerController(collisionCheck, controller);
 	}
 
 	public PlayerController getPlayer() {
@@ -20,8 +20,25 @@ public class PlayStateController {
 	}
 	
 	public void update() {
-		int stanza = control.getModel().getMappa().getMappaAttuale();
+		int stanza = controller.getModel().getMappa().getMappaAttuale();
 		player.updatePos(stanza);
+		player.isAbovePassaggio();
+	}
+	
+	public void setPlayerPos(int x, int y) {
+		player.getHitbox().x = x;
+		player.getHitbox().y = y;	
+	}
+	
+	public void setMap(int newMap) {
+		controller.getModel().getMappa().setMappaAttuale(newMap);
+	}
+
+	public void resumeGameAfterTransition() {
+		controller.getModel().setNewRoom();
+		player.getHitbox().x = controller.getModel().getNewXPos();
+		player.getHitbox().y = controller.getModel().getNewYPos();	
+		player.resetBooleans();
 	}
 	
 	

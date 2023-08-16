@@ -22,7 +22,6 @@ public class GameWindow extends JFrame {
 	public GameWindow(GamePanel gp) {
 		setTitle("ENGINEERING ADVENTURE");
 	//	setUndecorated(true);		per togliere il sopra della finestra
-		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setGameCursor(gp);

@@ -21,6 +21,10 @@ public class IController {
 		view = v;
 	}
 	
+	public IView getView() {
+		return view;
+	}
+	
 	public void setModel(IModel m) {
 		model = m;
 	}

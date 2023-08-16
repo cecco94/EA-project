@@ -2,14 +2,22 @@ package view.playState;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.imageio.ImageIO;
+
 import model.IModel;
 import model.mappa.Map;
+import view.ViewUtils;
 import view.main.GamePanel;
 import view.main.IView;
 import view.mappa.TilesetView;
+import view.playState.drawOrder.SortableElement;
+import view.playState.drawOrder.SortableTile;
+import view.playState.mappe.Dormitorio;
+import view.playState.player.PlayerView;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
 public class PlayState {
@@ -18,17 +26,34 @@ public class PlayState {
 	private TilesetView tileset;
 	private PlayerView player;
 	private IView view;
+	private Dormitorio dormitorio;
 	
 	//per disegnarli dall'alto verso il basso, mettiamo tutti gli elementi della mappa in una lista
 	//che poi ordineremo
 	private ArrayList<SortableElement> drawOrder;
 	
+	private BufferedImage effettoBuio;
+	private PlayUI ui;
+	
 	public PlayState(IModel m, TilesetView t, IView v) {
 		view = v;
 		model = m;
 		tileset = t;
+		
+		ui = new PlayUI(this);
+		
 		player = new PlayerView(view);
 		drawOrder = new ArrayList<>();
+		dormitorio = new Dormitorio(view);
+		
+		try {
+			effettoBuio = ImageIO.read(getClass().getResourceAsStream("/mappe/effettoBuio2.png"));
+			effettoBuio = ViewUtils.scaleImage(effettoBuio, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT);
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	//prima disegna il pavimento, poi ci disegna sopra tutti gli oggetti partendo dall'alto, in modo il player che sta sotto
@@ -61,6 +86,9 @@ public class PlayState {
 		
 		//svuota la lista per ricominciare il frame successivo
 		drawOrder.clear();
+		
+		
+	//	g2.drawImage(effettoBuio, 0, 0, null);
 	}
 
 	public void drawFloor(Graphics2D g2, int stanza, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {
@@ -123,6 +151,17 @@ public class PlayState {
 			drawOrder.get(i).draw(g2, posizPlayerX, posizPlayerY);
 	}
 	
+	public PlayerView getPlayer() {
+		return player;
+	}
+	
+	public IView getView() {
+		return view;
+	}
+	
+	public PlayUI getUI() {
+		return ui;
+	}
 	
 }
 

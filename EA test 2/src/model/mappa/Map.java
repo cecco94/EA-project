@@ -106,6 +106,7 @@ public class Map {
 		return MappaAttuale;
 	}
 
+	//cambia la mappa attuale
 	public void setMappaAttuale(int mappaAttuale) {
 		MappaAttuale = mappaAttuale;
 	}

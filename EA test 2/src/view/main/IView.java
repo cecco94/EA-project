@@ -7,7 +7,7 @@ import java.awt.Robot;
 import controller.Gamestate;
 import controller.IController;
 import model.IModel;
-import model.mappa.Map;
+import view.Transition;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
 import view.mappa.TilesetView;
@@ -36,6 +36,7 @@ public class IView {
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
 	private PlayState play;
+	private Transition transition;
 	//mappa e tiles
 	private TilesetView tileset;
 	
@@ -43,7 +44,7 @@ public class IView {
 		controller = control;
 		model = mod;
 		initViewClasses();
-	//	setStartMusic();
+		setStartMusic();
 	}
 
 	private void initViewClasses() {
@@ -57,8 +58,10 @@ public class IView {
 		opzioni = new OptionMenu(this);
 		tileset = new TilesetView();
 		play = new PlayState(model, tileset, this);
+		transition = new Transition(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
 		//inizializza le cose più delicate
 		gw = new GameWindow(gp);
+		gw.setVisible(true);
 		setCursorManager();
 		gp.setFocusable(true);
 		gp.requestFocus();
@@ -101,6 +104,14 @@ public class IView {
 			break;
 		case PLAYING:
 			play.draw(g2, model.getMappa().getMappaAttuale());
+			break;
+		case TRANSITION:
+			transition.draw(g2);
+			break;
+		case TRANSITION_ROOM:
+			play.draw(g2, model.getMappa().getMappaAttuale());
+			play.getUI().drawTransition(g2);
+		default:
 			break;			
 		}
 	//	ms.disegnaMessaggioSubliminale(g2);
@@ -143,6 +154,10 @@ public class IView {
 		return this.opzioni;
 	}
 	
+	public PlayState getPlay() {
+		return play;
+	}
+	
 	public void playMusic(int i) {
 		sound.playMusic(i);
 	}
@@ -163,5 +178,8 @@ public class IView {
 		sound.setSEVolume((float)v);
 	}
 
+	public float getMusicVolume() {
+		return sound.getVolume();
+	}
 	
 }

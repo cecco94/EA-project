@@ -27,9 +27,7 @@ public class MainMenu extends AbstractMenu {
 	private String credits = "©GNgame Production";
 	private BufferedImage[] sfondoAnimato;
 	private BufferedImage titolo;
-	private int titoloX, titoloY;
-	private int altezzaBottoni = (int)(250 * SCALE), 
-				distanzaBottoni = (int)(30 * SCALE);
+	private int titoloX, titoloY;	
 	
 	// questi servono per muoversi con i tsti direzionali. index indica il tasto selezionato
 	// il tasto cioè dove si trova il cursore
@@ -116,12 +114,14 @@ public class MainMenu extends AbstractMenu {
 	}
 
 	private void loadButtons() {
+		buttons = new InitialMenuButton[4];
 		String[] percorsoIscriviti = {"/menuiniziale/iscriviti1.png", "/menuiniziale/iscriviti2.png", "/menuiniziale/iscriviti3.png"};
 		String[] percorsoRiprendi = {"/menuiniziale/riprendi1.png", "/menuiniziale/riprendi2.png", "/menuiniziale/riprendi3.png"};
 		String[] percorsoOpzioni = {"/menuiniziale/opzioni1.png", "/menuiniziale/opzioni2.png", "/menuiniziale/opzioni3.png"};	
 		String[] percorsoQuit = {"/menuiniziale/rinuncia1.png", "/menuiniziale/rinuncia2.png", "/menuiniziale/rinuncia3.png"};
-		buttons = new InitialMenuButton[4];
-		buttons[0] = new InitialMenuButton(percorsoIscriviti, altezzaBottoni,(int)(110*SCALE),(int)(16*SCALE), Gamestate.SELECT_AVATAR, view);
+		int altezzaBottoni = (int)(250 * SCALE);
+		int distanzaBottoni = (int)(30 * SCALE);
+		buttons[0] = new InitialMenuButton(percorsoIscriviti, altezzaBottoni, (int)(110*SCALE), (int)(16*SCALE), Gamestate.SELECT_AVATAR, view);
 		buttons[1] = new InitialMenuButton(percorsoRiprendi, altezzaBottoni + distanzaBottoni, (int)(300*SCALE), (int)(17*SCALE), Gamestate.LOAD_GAME, view);
 		buttons[2] = new InitialMenuButton(percorsoOpzioni, altezzaBottoni + distanzaBottoni*2, (int)(270*SCALE), (int)(16*SCALE), Gamestate.OPTIONS, view);
 		buttons[3] = new InitialMenuButton(percorsoQuit, altezzaBottoni + distanzaBottoni*3, (int)(250*SCALE), (int)(14*SCALE), Gamestate.QUIT, view);

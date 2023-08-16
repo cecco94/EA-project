@@ -3,17 +3,21 @@ package controller.playState;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
+import controller.Gamestate;
+import controller.IController;
 import view.main.GamePanel;
 
 public class PlayerController {
 
+	private IController controller;
 	private Rectangle hitbox, tempHitboxForCheck ;
 	private int speed = (int)(GamePanel.SCALE*1.3);
 	private boolean moving, left, right, up, down;
 	private Collisions collisionCheck;
 	
-	public PlayerController(Collisions collcheck) {
-		
+	
+	public PlayerController(Collisions collcheck, IController c) {
+		controller = c;
 		int hitboxX = 12*GamePanel.TILES_SIZE;
 		int hitboxY = 9*GamePanel.TILES_SIZE;
 		
@@ -134,6 +138,21 @@ public class PlayerController {
 		this.moving = moving;
 	}
 	
-	
+	public String toString() {
+		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
+	}
+
+	public void isAbovePassaggio() {
+		// vedi in che stanza sei, vedi la lista dei passaggi, controllali
+		// se si, cambia mappa e posiz del player
+		
+			if(controller.getModel().checkPassaggio(hitbox) >= 0) {
+				controller.getModel().memorizzaDatiNuovaStanza();
+				
+				controller.setGameState(Gamestate.TRANSITION_ROOM);
+			}
+		
+		
+	}
 	
 }

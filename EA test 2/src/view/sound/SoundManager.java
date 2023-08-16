@@ -9,18 +9,18 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
-	private float volume = 0.5f;
+	private float volume = 0.2f;
 	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[10];
-	public static final int MENU_MUSIC = 0;
+	public static final int MENU_MUSIC = 0, PLAY_MUSIC = 2;
 	public static final int COIN = 1;
 	
 	// tutti i percorsi dei file dei suoni vengono inseriti in un array
 	public SoundManager() {
 		soundURL[0] = getClass().getResource("/sound/tema.wav");
 		soundURL[1] = getClass().getResource("/sound/coin.wav");
-	/*	soundURL[2] = getClass().getResource("/sound/coin.wav");
-		soundURL[3] = getClass().getResource("/sound/unlock.wav");
+		soundURL[2] = getClass().getResource("/sound/ZeldaMainThemeSong.wav");
+	/*	soundURL[3] = getClass().getResource("/sound/unlock.wav");
 		soundURL[4] = getClass().getResource("/sound/powerup.wav");
 		soundURL[5] = getClass().getResource("/sound/blocked.wav");
 		soundURL[6] = getClass().getResource("/sound/fanfare.wav");
@@ -74,14 +74,6 @@ public class SoundManager {
 		soundEffect.start();
 	}
 	
-//	public void setMusicVolume(float v) {	  //v in percentuale da 0 a 1
-//		volume = v;
-//		FloatControl control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
-//		float range  = control.getMaximum() - control.getMinimum();
-//		float gain = (range * volume) + control.getMinimum();
-//		control.setValue(gain);
-//	}
-	
 	//metodo obsoleto
 	public void setSEVolume(float v) {
 		volume = v;
@@ -93,12 +85,23 @@ public class SoundManager {
 	
 	// metodo che funziona bene
 	public void setMusicVolume(float volume) {
-	    if (volume > 0f || volume < 1f) {
-	    FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);        
-	    gainControl.setValue(20f * (float) Math.log10(volume));	// siccome il suono è in decibel, bisogna convertirlo in lineare
-	    if(volume < 0.015f)
-	    	 gainControl.setValue(gainControl.getMinimum());
+	    if (volume > 0f && volume < 1f) {
+			this.volume = volume;
+	    	
+	    	FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);   
+	    	
+	    	float controlValue = 20f * (float) Math.log10(volume); // siccome il suono è in decibel, bisogna convertirlo in lineare
+	    	
+	    	if(controlValue > -80)		//per controllo, sennò viene un numero troppo basso
+	    		gainControl.setValue(controlValue);	
+	    	
+	    	if(volume < 0.015f)
+	    		gainControl.setValue(gainControl.getMinimum());
 	    }
+	}
+
+	public float getVolume() {
+		return volume;
 	}
 	
 }

@@ -6,6 +6,7 @@ import static view.main.GamePanel.SCALE;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import view.main.IView;
 import view.menu.AbstractMenu;
 import view.menu.AbstractMenuButton;
 import view.menu.mainMenu.InitialMenuButton;
+import view.playState.player.Avatar;
 
 //menu dove scegli l'avatar
 public class AvatarMenu extends AbstractMenu{
@@ -26,7 +28,7 @@ public class AvatarMenu extends AbstractMenu{
 	private String[] caratteristichePersonaggi;
 	
 	//servono per usare i tasti per muoversi nel menu
-	private final int RAGAZZO = 1, RAGAZZA = 0, INDIETRO = 2;
+	private final int RAGAZZO = 2, RAGAZZA = 1, INDIETRO = 0;
 	private int buttonIndex = RAGAZZO;	
 
 	public AvatarMenu(IView v) {
@@ -50,24 +52,26 @@ public class AvatarMenu extends AbstractMenu{
 	}
 	
 	public void loadButtons() {
-		String percorsoRagazzo = "/avatarSelection/boyAvatar1.png";
-		String percorsoRagazza = "/avatarSelection/girl.png";
-		String[] percorsoIndietro = {"/menuiniziale/indietro1.png", "/menuiniziale/indietro2.png", "/menuiniziale/indietro3.png"};
-		int y = GAME_HEIGHT/6;
 		int x = GAME_WIDTH/2 + GAME_WIDTH/15;
+		int y = GAME_HEIGHT - (int)(50*SCALE); 	
 		buttons = new AbstractMenuButton[3];
-		buttons[0] = new AvatarButton(percorsoRagazza, x, y, (int)(200*SCALE), (int)(300*SCALE), view);
-		x = GAME_WIDTH/2 - GAME_WIDTH/15 - (int)(200*SCALE);
-		buttons[1] = new AvatarButton(percorsoRagazzo, x, y, (int)(200*SCALE), (int)(300*SCALE), view);
-		y = GAME_HEIGHT - (int)(50*SCALE);
-		buttons[2] = new InitialMenuButton(percorsoIndietro, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU, view);	
+		
+		String[] percorsoIndietro = {"/menuiniziale/indietro1.png", "/menuiniziale/indietro2.png", "/menuiniziale/indietro3.png"};
+		buttons[0] = new InitialMenuButton(percorsoIndietro, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU, view);
+		
+		y = GAME_HEIGHT/3;
+		Rectangle dimensions = new Rectangle(x, y, (int)(100*SCALE), (int)(150*SCALE));
+		buttons[1] = new AvatarButton(Avatar.RAGAZZA, dimensions, view);
+		
+		dimensions.x = GAME_WIDTH/2 - GAME_WIDTH/15 - (int)(100*SCALE);
+		buttons[2] = new AvatarButton(Avatar.RAGAZZO, dimensions, view);	
 	}
 	
 	//sarebbero le scritte che appaiono se passi sopra a un personaggio
 	private void loadCharacterSkills() {
 		caratteristichePersonaggi = new String[2];
-		caratteristichePersonaggi[0] = "Mario, viene dallo scientifico, crede di sapare già tutto";
-		caratteristichePersonaggi[1] = "Giulia, viene dal classico, la notte piange sempre";
+		caratteristichePersonaggi[0] = "Giulia, viene dal classico, la notte piange sempre";
+		caratteristichePersonaggi[1] = "Mario, viene dallo scientifico, crede di sapare già tutto";
 	}
 
 	public void drawAvatarMenu(Graphics2D g2) {
@@ -87,15 +91,17 @@ public class AvatarMenu extends AbstractMenu{
 	}
 	
 	private void drawCharacterSkills(Graphics2D g2) {
-		if(buttons[1].getMouseOver() == true) {
+		if(buttons[RAGAZZO].getMouseOver() == true) {
 			g2.setColor(Color.red);
-			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[0], g2);
-			g2.drawString(caratteristichePersonaggi[0], x, (int)(buttons[1].getBounds().getHeight()+buttons[1].getBounds().getY()+10*SCALE));
+			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[RAGAZZO -1], g2);
+			int y = (int)(buttons[RAGAZZO].getBounds().getHeight() + buttons[RAGAZZO].getBounds().getY() + 30*SCALE);
+			g2.drawString(caratteristichePersonaggi[RAGAZZO -1], x, y);
 		}
-		else if (buttons[0].getMouseOver() == true) {
+		else if (buttons[RAGAZZA].getMouseOver() == true) {
 			g2.setColor(Color.red);
-			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[1], g2);
-			g2.drawString(caratteristichePersonaggi[1], x, (int)(buttons[0].getBounds().getHeight()+buttons[0].getBounds().getY()+ 10*SCALE));
+			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[RAGAZZA -1], g2);
+			int y = (int)(buttons[RAGAZZA].getBounds().getHeight() + buttons[RAGAZZA].getBounds().getY() + 30*SCALE);
+			g2.drawString(caratteristichePersonaggi[RAGAZZA -1], x, y);
 		}
 	}
 	
@@ -127,9 +133,8 @@ public class AvatarMenu extends AbstractMenu{
 			buttonIndex = RAGAZZA;
 			}
 		if(tasto == KeyEvent.VK_ENTER) {
-			view.stopMusic();
 			resetButtons();
-			view.changeGameState(buttons[RAGAZZO].getButtonState());
+			buttons[RAGAZZO].reactToMouse(null);
 			}		
 	}
 
@@ -144,8 +149,7 @@ public class AvatarMenu extends AbstractMenu{
 			}
 		if(tasto == KeyEvent.VK_ENTER) {
 			resetButtons();
-			view.changeGameState(buttons[RAGAZZA].getButtonState());
-			view.stopMusic();
+			buttons[RAGAZZA].reactToMouse(null);
 			}		
 	}
 
