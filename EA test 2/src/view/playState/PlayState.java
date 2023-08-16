@@ -16,6 +16,7 @@ import view.main.IView;
 import view.mappa.TilesetView;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
+import view.playState.entity.Cat;
 import view.playState.mappe.Dormitorio;
 import view.playState.player.PlayerView;
 
@@ -26,7 +27,7 @@ public class PlayState {
 	private TilesetView tileset;
 	private PlayerView player;
 	private IView view;
-	private Dormitorio dormitorio;
+	private Cat cat;
 	
 	//per disegnarli dall'alto verso il basso, mettiamo tutti gli elementi della mappa in una lista
 	//che poi ordineremo
@@ -40,11 +41,13 @@ public class PlayState {
 		model = m;
 		tileset = t;
 		
+		cat = new Cat(v);
+		
 		ui = new PlayUI(this);
 		
 		player = new PlayerView(view);
 		drawOrder = new ArrayList<>();
-		dormitorio = new Dormitorio(view);
+		
 		
 		try {
 			effettoBuio = ImageIO.read(getClass().getResourceAsStream("/mappe/effettoBuio2.png"));
@@ -89,6 +92,8 @@ public class PlayState {
 		
 		
 	//	g2.drawImage(effettoBuio, 0, 0, null);
+		
+		cat.draw(g2, playerMapX, playerMapY);
 	}
 
 	public void drawFloor(Graphics2D g2, int stanza, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {

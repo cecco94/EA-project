@@ -101,7 +101,7 @@ public class PlayerView extends SortableElement{
 		
 		playerAnimation[RAGAZZA][IDLE] = new BufferedImage[4][4];
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/idleGirl.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/IdleGirl.png"));
 			
 			for(int i = 0; i < 4; i++) {
 				temp = image.getSubimage(i*23, 0, 23, 32);
