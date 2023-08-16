@@ -16,23 +16,23 @@ public class Cat extends SortableElement {
 	private static BufferedImage[][][][] catAnimation; // primo campo = colore gatto , secondo campo = azione ,terzo campo = direzione , quarto campo = num sprite
 	private final static int IDLE = 0, RUN = 1, DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	private int currentAction = RUN;
-	private int previousAction = RUN;
+//	private int previousAction = RUN;
 	private int currentDirection = DOWN;
 	public static final int BIANCO = 0, NERO = 1;
-	private IView view;
+//	private IView view;
 	
 	private int animationCounter;
 	private int animationSpeed = 40;
 	private int numSprite;
 	
-	private int directionCounter;
-	private int direzioni;
+//	private int directionCounter;
+//	private int direzioni;
 
 
 	public Cat(IView v) {
 		
 		this.typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
-		view = v;
+	//	view = v;
 		
 		loadImages();	
 
@@ -164,18 +164,18 @@ public class Cat extends SortableElement {
 	}
 
 
-	private void setDirection() {
-		directionCounter++;
-		if (directionCounter > animationSpeed*3) {
-			direzioni ++;
-			currentDirection = direzioni;
-			if(direzioni > 3) {
-				direzioni = 0;
-			 	currentDirection = 0;
-			}
-			directionCounter = 0;
-		}	
-	}
+//	private void setDirection() {
+//		directionCounter++;
+//		if (directionCounter > animationSpeed*3) {
+//			direzioni ++;
+//			currentDirection = direzioni;
+//			if(direzioni > 3) {
+//				direzioni = 0;
+//			 	currentDirection = 0;
+//			}
+//			directionCounter = 0;
+//		}	
+//	}
 
 
 }
