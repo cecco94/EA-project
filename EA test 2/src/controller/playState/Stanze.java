@@ -15,4 +15,4 @@ public enum Stanze {
 	public static Stanze stanzaAttuale = DORMITORIO;
 	
 	public int indiceNellaMappa, indiceMusica;
-}
+} 

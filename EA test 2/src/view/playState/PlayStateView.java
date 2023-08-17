@@ -17,7 +17,7 @@ import view.main.IView;
 import view.mappa.TilesetView;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
-import view.playState.entity.Cat;
+import view.playState.entity.CatView;
 import view.playState.player.PlayerView;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
@@ -27,7 +27,7 @@ public class PlayStateView {
 	private TilesetView tileset;
 	private PlayerView player;
 	private IView view;
-	private Cat cat;
+	private CatView cat;
 	
 	//per disegnarli dall'alto verso il basso, mettiamo tutti gli elementi della mappa in una lista
 	//che poi ordineremo
@@ -41,7 +41,7 @@ public class PlayStateView {
 		model = m;
 		tileset = t;
 		
-		cat = new Cat(v);
+		cat = new CatView(v);
 		
 		ui = new PlayUI(this);
 		

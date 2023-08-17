@@ -11,7 +11,7 @@ import view.main.GamePanel;
 import view.main.IView;
 import view.playState.drawOrder.SortableElement;
 
-public class Cat extends SortableElement {
+public class CatView extends SortableElement {
 
 	private static BufferedImage[][][][] catAnimation; // primo campo = colore gatto , secondo campo = azione ,terzo campo = direzione , quarto campo = num sprite
 	private final static int IDLE = 0, RUN = 1, DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
@@ -29,7 +29,7 @@ public class Cat extends SortableElement {
 //	private int direzioni;
 
 
-	public Cat(IView v) {
+	public CatView(IView v) {
 		
 		this.typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 	//	view = v;
