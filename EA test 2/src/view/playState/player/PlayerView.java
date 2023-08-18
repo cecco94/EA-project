@@ -15,10 +15,13 @@ public class PlayerView extends SortableElement{
 
 	//per l'animazione
 	private int animationCounter = 0;
-	private int animationSpeed = 20;
+	private int animationSpeed = 20;		//dopo che ha bevuto il caffè diventa 1
 	private int numSprite = 0;
+	private boolean endAttackAnimation = true;
+	
 	private static BufferedImage[][][][] playerAnimation;	//campo 0 = gender, primo campo = azione, secondo = direzione, terzo = immagine
-	private final static int IDLE = 0, RUN = 1, DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
+	private final static int IDLE = 0, RUN = 1, ATTACK = 2;
+	private final static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	private int currentAction = IDLE;
 	private int previousAction = RUN;
 	private int currentDirection = DOWN;
@@ -36,7 +39,7 @@ public class PlayerView extends SortableElement{
 	private IView view;
 	
 	public PlayerView(IView v) {
-		
+				
 		this.typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		view = v;
 		
@@ -59,11 +62,79 @@ public class PlayerView extends SortableElement{
 		BufferedImage temp = null;
 		
 		playerAnimation = new BufferedImage[2][][][];
-		playerAnimation[RAGAZZO] = new BufferedImage[2][][];			//per ogni personaggio per ora abbiamo due azioni
-		playerAnimation[RAGAZZA] = new BufferedImage[2][][];
+		playerAnimation[RAGAZZO] = new BufferedImage[3][][];			//per ogni personaggio per ora abbiamo due azioni
+		playerAnimation[RAGAZZA] = new BufferedImage[3][][];
 
 		loadIdleImages(image, temp);
 		loadRunImages(image, temp);	
+		loadAttackImages(image, temp);
+	}
+
+	private void loadAttackImages(BufferedImage image, BufferedImage temp) {
+		playerAnimation[RAGAZZO][ATTACK] = new BufferedImage[4][5];		//ci sono 4 direzioni, ogni direzione ha 5 immagini	
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/ThrowBoy.png"));
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*26, 0, 26, 40);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][ATTACK][DOWN][i] = temp;
+			}
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*35, 40, 35, 33);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][ATTACK][RIGHT][i] = temp;
+			}
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*35, 40 + 33, 35, 33);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][ATTACK][LEFT][i] = temp;
+			}
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*24, 40 + 33 + 33, 24, 36);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][ATTACK][UP][i] = temp;
+			}
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		playerAnimation[RAGAZZA][ATTACK] = new BufferedImage[4][5];
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/ThrowGirl.png"));
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*25, 0, 25, 41);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][ATTACK][DOWN][i] = temp;
+			}
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*37, 41, 37, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][ATTACK][RIGHT][i] = temp;
+			}
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*37, 41 + 32, 37, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][ATTACK][LEFT][i] = temp;
+			}
+			
+			for(int i = 0; i < 5; i++) {
+				temp = image.getSubimage(i*29, 41 + 32 + 32, 29, 36);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][ATTACK][UP][i] = temp;
+			}
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void loadIdleImages(BufferedImage image, BufferedImage temp) {
@@ -216,35 +287,40 @@ public class PlayerView extends SortableElement{
 	@Override
 	public void draw(Graphics2D g2, int x, int y) {	
 		animationCounter++;
-		setDirection();
+		setActionAndDirection(numSprite);
 
 		if (animationCounter > animationSpeed) {
 			numSprite++;	
-			if(numSprite >= getAnimationLenght())
+			if(numSprite >= getAnimationLenght()) {
 				numSprite = 0;	
-			
+				endAttackAnimation = true;
+			}				
 			animationCounter = 0;
 		}
 		
 		g2.drawImage(playerAnimation[avatarType][currentAction][currentDirection][numSprite], xOnScreen, yOnScreen, null);
 	//	g2.drawRect(xOnScreen + xOffset, yOnScreen + yOffset, view.getController().getPlay().getPlayer().getHitbox().width, view.getController().getPlay().getPlayer().getHitbox().height);
 	}
-
-	public int getAnimationLenght() {
-		if(currentAction == IDLE)
-			return 4;
-		else if(currentAction == RUN)
-			return 6;
-		
-		return 0;
-	}
 	
-	public void setDirection() {
-		if(view.getController().getPlay().getPlayer().isMoving()) 
-			currentAction = RUN;
+	public void setActionAndDirection(int spriteIndex) {
 		
-		else 
+		// se il giocatore preme il mouse, l'animazione di attacco continua fino alla fine
+		// anche se il giocatore ha lasciato il mouse
+		if(view.getController().getPlay().getPlayer().isAttacking()) {
+			currentAction = ATTACK;
+			animationSpeed = 12;
+			endAttackAnimation = false;
+		}
+		
+		else if(view.getController().getPlay().getPlayer().isMoving() && endAttackAnimation) {
+			currentAction = RUN;
+			animationSpeed = 20;
+		}
+		
+		else if(endAttackAnimation){
 			currentAction = IDLE;
+			animationSpeed = 20;
+		}
 		
 		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
 		if(currentAction != previousAction) {
@@ -252,6 +328,7 @@ public class PlayerView extends SortableElement{
 			previousAction = currentAction;
 			}
 		
+		//decisa l'azione, deve capire la direzione
 		if(view.getController().getPlay().getPlayer().isLeft())
 			currentDirection = LEFT;
 		
@@ -266,6 +343,18 @@ public class PlayerView extends SortableElement{
 		
 	}
 	
+	public int getAnimationLenght() {
+		if(currentAction == IDLE)
+			return 4;
+		else if(currentAction == RUN)
+			return 6;
+		else if(currentAction == ATTACK)
+			return 5;
+		
+		return 0;
+	}
+	
+	//for avatar menu
 	public static BufferedImage getAnimation(Avatar avatar, int action, int direction, int index) {
 		if (avatar == Avatar.RAGAZZA)
 			return playerAnimation[RAGAZZA][action][direction][index];
@@ -299,7 +388,10 @@ public class PlayerView extends SortableElement{
 		numSprite = 0;
 		currentAction = IDLE;
 		currentDirection = DOWN;
+		endAttackAnimation = true;
 	}
+
+	
 }
 
 

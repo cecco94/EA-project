@@ -1,0 +1,1 @@
+;passaggio dormitorio, 20, 8, 32, 42, 27, 23, 1

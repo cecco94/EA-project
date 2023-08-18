@@ -15,5 +15,7 @@ public abstract class EntityController {
 	
 	public abstract void update(PlayerController player);
 
-	
+	public String toString() {
+		return type + ", " + xPos + ", " + yPos;
+	}
 }
