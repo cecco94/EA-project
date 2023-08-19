@@ -78,6 +78,9 @@ public class PlayStateController {
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE)
 			playerController.setParry(true);
 			
+		else if(e.getKeyCode() == KeyEvent.VK_P)
+			playerController.setThrowing(true);
+			
 		else
 			playerController.choiceDirection(e);
 	}
@@ -90,6 +93,9 @@ public class PlayStateController {
 			playerController.setParry(false);
 			controller.getView().getPlay().getPlayer().resetParry();
 		}
+		
+		else if(e.getKeyCode() == KeyEvent.VK_P)
+			playerController.setThrowing(false);
 		
 		else
 			playerController.resetDirection(e);

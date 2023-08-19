@@ -1,5 +1,5 @@
-/mostro, 1, 12, 19
+/mostro, 1, 12, 19, 10, 10
 
--gatto, 1, 12, 18
+-gatto, 1, 12, 18, 10, 10
 
-;passaggio alla biblioteca, 25, 23, 32, 32, 21, 10, 0
+;passaggio all'aula studio, 25, 23, 32, 32, 34, 40, 2

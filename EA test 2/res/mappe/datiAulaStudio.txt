@@ -1,0 +1,3 @@
+;passaggio alla biblioteca, 34, 7, 32, 32, 27, 10, 0
+
+;passaggio al dormitorio, 34, 42, 64, 32, 28, 24, 1

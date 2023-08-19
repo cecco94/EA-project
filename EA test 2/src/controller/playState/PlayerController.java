@@ -12,7 +12,7 @@ public class PlayerController {
 	private IController controller;
 	private Rectangle hitbox, tempHitboxForCheck ;
 	private int speed = (int)(GamePanel.SCALE*1.3);
-	private boolean moving, attacking, parry, left, right, up, down;
+	private boolean moving, attacking, parry, throwing,left, right, up, down;
 	private Collisions collisionCheck;
 	
 	private boolean isAttackAnimation;
@@ -193,6 +193,14 @@ public class PlayerController {
 
 	public boolean isParring() {
 		return parry;
+	}
+
+	public boolean isThrowing() {
+		return throwing;
+	}
+
+	public void setThrowing(boolean throwing) {
+		this.throwing = throwing;
 	}
 	
 }

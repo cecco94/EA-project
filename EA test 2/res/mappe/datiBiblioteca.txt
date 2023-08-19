@@ -1,1 +1,1 @@
-;passaggio dormitorio, 20, 8, 32, 42, 27, 23, 1
+;passaggio all'aula studio, 26, 9, 16, 16, 34, 8, 2

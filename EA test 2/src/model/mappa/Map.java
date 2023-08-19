@@ -11,21 +11,21 @@ public class Map {
 	private int[][][][] mappa;	
 	
 	//primo campo = stanza, secondo campo = larghezza/altezza
-	private int[][] dimensioniStanze;
+//	private int[][] dimensioniStanze;
 	
-	public static final int NUM_STANZE = 2, NUM_STRATI = 4;
+	public static final int NUM_STANZE = 3, NUM_STRATI = 4;
 	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2, QUARTO_STRATO = 3;
-	public static final int BIBLIOTECA = 0,  DORMITORIO = 1, LABORATORIO = 2, SALA = 3;
-	private int MappaAttuale = DORMITORIO;
+	public static final int BIBLIOTECA = 0,  DORMITORIO = 1, AULA_STUDIO = 2;
+	private int MappaAttuale = AULA_STUDIO;
 	
-	private String[] percorsiStanze = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt"};
+	private String[] percorsiStanze = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt", "/mappe/aulaStudio.txt"};
 	
 	public Map() {	
 		mappa = new int[NUM_STANZE][NUM_STRATI][][];
-		dimensioniStanze = new int[NUM_STANZE][2];
+	//	dimensioniStanze = new int[NUM_STANZE][2];
 		
-		for(int stanzaAttuale = 0; stanzaAttuale < NUM_STANZE; stanzaAttuale++)
-			mappa[stanzaAttuale] = loadStanza(percorsiStanze[stanzaAttuale], stanzaAttuale);		
+		for(int stanzaDaCaricare = 0; stanzaDaCaricare < NUM_STANZE; stanzaDaCaricare++)
+			mappa[stanzaDaCaricare] = loadStanza(percorsiStanze[stanzaDaCaricare], stanzaDaCaricare);		
 	}
 
 	private int[][][] loadStanza(String percorsiStanze, int stanzaDaCaricare) {	
@@ -40,8 +40,8 @@ public class Map {
 			String[] dimensioni = rigaLetta.trim().split("x");
 			int maxRow = Integer.parseInt(dimensioni[0]);
 			int maxCol = Integer.parseInt(dimensioni[1]);
-			dimensioniStanze[stanzaDaCaricare][0] = maxCol;
-			dimensioniStanze[stanzaDaCaricare][1] = maxRow;
+	//		dimensioniStanze[stanzaDaCaricare][0] = maxCol;
+	//		dimensioniStanze[stanzaDaCaricare][1] = maxRow;
 			stanza = new int[NUM_STRATI][maxRow][maxCol];
 			
 			//serve per caricare i numeri usando la funzione split
@@ -74,7 +74,7 @@ public class Map {
 				}
 			}	
 			br.close();	
-		//	printStanza(maxRow, maxCol, stanza);
+			printStanza(maxRow, maxCol, stanza);
 			
 			}
 		catch(Exception e) {
@@ -94,10 +94,10 @@ public class Map {
 		}
 	}
 	
-	public int[] getDimensioniStanza(int stanza){
-		return dimensioniStanze[stanza];
-	}
-	
+//	public int[] getDimensioniStanza(int stanza){
+//		return dimensioniStanze[stanza];
+//	}
+
 	public int[][] getStrato(int stanza, int strato){
 		return mappa[stanza][strato];
 	}

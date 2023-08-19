@@ -34,10 +34,11 @@ public class PlayerView extends SortableElement{
 	private int numSprite = 0;
 	
 	private boolean endAttackAnimation = true;
+//	private boolean endThrowAnimation = true;
 	private boolean firstParry = true;
 	
 	private static BufferedImage[][][][] playerAnimation;	//campo 0 = gender, primo campo = azione, secondo = direzione, terzo = immagine
-	private final static int IDLE = 0, RUN = 1, ATTACK = 2, PARRY = 3, DIE = 4, SLEEP = 5;
+	private final static int IDLE = 0, RUN = 1, ATTACK = 2, PARRY = 3, DIE = 4, THROW = 5, SLEEP = 6;
 	private final static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	private int currentAction = IDLE;
 	private int previousAction = RUN;
@@ -79,8 +80,8 @@ public class PlayerView extends SortableElement{
 		BufferedImage temp = null;
 		
 		playerAnimation = new BufferedImage[2][][][];
-		playerAnimation[RAGAZZO] = new BufferedImage[6][][];			//per ogni personaggio per ora abbiamo due azioni
-		playerAnimation[RAGAZZA] = new BufferedImage[6][][];
+		playerAnimation[RAGAZZO] = new BufferedImage[7][][];			//per ogni personaggio per ora abbiamo due azioni
+		playerAnimation[RAGAZZA] = new BufferedImage[7][][];
 
 		loadIdleImages(image, temp);
 		loadRunImages(image, temp);	
@@ -88,9 +89,75 @@ public class PlayerView extends SortableElement{
 		loadDeathImages(image, temp);
 		loadSleepImages(image, temp);
 		loadParryImages(image, temp);
-			
+		loadThrowImages(image, temp);
 	}
 
+	private void loadThrowImages(BufferedImage image, BufferedImage temp) {
+		playerAnimation[RAGAZZO][THROW] = new BufferedImage[4][2];		//ci sono 4 direzioni, ogni direzione ha 2 immagini	
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/SpearBoy.png"));
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*25, 0, 25, 38);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][THROW][DOWN][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*32, 38, 32, 34);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][THROW][RIGHT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*32, 38 + 34, 32, 34);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][THROW][LEFT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*26, 38 + 34 + 34, 26, 34);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][THROW][UP][i] = temp;
+			}
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		playerAnimation[RAGAZZA][THROW] = new BufferedImage[4][2];
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/SpellGirl.png"));
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*28, 0, 28, 30);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][THROW][DOWN][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*25, 30, 25, 29);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][THROW][RIGHT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*25, 30 + 29, 25, 29);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][THROW][LEFT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*24, 30 + 29 + 29, 24, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][THROW][UP][i] = temp;
+			}
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+	
+		}
+	}
 	
 	private void loadParryImages(BufferedImage image, BufferedImage temp) {
 		playerAnimation[RAGAZZO][PARRY] = new BufferedImage[4][2];		//ci sono 1 direzioni, ogni direzione ha 6 immagini	
@@ -514,6 +581,11 @@ public class PlayerView extends SortableElement{
 			animationSpeed = 10;
 		}
 		
+		else if(view.getController().getPlay().getPlayer().isThrowing() && endAttackAnimation) {
+			currentAction = THROW;
+			animationSpeed = 18;
+		}
+		
 		else if(endAttackAnimation){
 			currentAction = IDLE;
 			animationSpeed = 20;
@@ -551,6 +623,8 @@ public class PlayerView extends SortableElement{
 			return 9;
 		else if(currentAction == PARRY)
 			return 2;
+		else if(currentAction == THROW)
+			return 2;
 			
 		return 0;
 	}
@@ -560,6 +634,9 @@ public class PlayerView extends SortableElement{
 			xOnScreen -= (int)GamePanel.SCALE*20;	
 		
 		else if(avatarType == RAGAZZA && currentAction == RUN && currentDirection == UP) 
+			xOnScreen -= (int)GamePanel.SCALE*10;
+		
+		else if(avatarType == RAGAZZO && currentAction == THROW && currentDirection == LEFT)
 			xOnScreen -= (int)GamePanel.SCALE*10;
 	}
 	
@@ -602,6 +679,7 @@ public class PlayerView extends SortableElement{
 		currentAction = IDLE;
 		currentDirection = DOWN;
 		endAttackAnimation = true;
+	//	endThrowAnimation = true;
 		firstParry = false;
 	}
 

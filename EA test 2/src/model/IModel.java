@@ -17,7 +17,7 @@ public class IModel {
 	private TilesetModel tiles;
 	
 	private RoomModel[] stanze;
-	public final int BIBLIOTECA = 0, DORMITORIO = 1;
+	public final int BIBLIOTECA = 0, DORMITORIO = 1, AULA_STUDIO = 2;
 	
 	// memorizza dove andrà il giocatore dopo la transizione tra stanze
 	private int newXPos;
@@ -25,15 +25,17 @@ public class IModel {
 	private Stanze newRoom;
 	String percorsoDatiDormitorio = "/mappe/datiDormitorio.txt";
 	String percorsoDatiBiblioteca = "/mappe/datiBiblioteca.txt";
+	String percorsoDatiAlaStudio = "/mappe/datiAulaStudio.txt";
 	
 	public IModel() {
 		mappa = new Map();
 		tiles = new TilesetModel();
 
-		stanze = new RoomModel[2];
+		stanze = new RoomModel[Map.NUM_STANZE];
 		
 		stanze[BIBLIOTECA] = new RoomModel(percorsoDatiBiblioteca);		
 		stanze[DORMITORIO] = new RoomModel(percorsoDatiDormitorio);
+		stanze[AULA_STUDIO] = new RoomModel(percorsoDatiAlaStudio);
 	}
 
 	public Map getMappa() {
@@ -75,7 +77,9 @@ public class IModel {
 	public static Stanze getStanzaAssociataAlNumero(int i) {
 		if(i == Map.BIBLIOTECA)
 			return Stanze.BIBLIOTECA;
-		else 
+		else if(i == Map.AULA_STUDIO)
+			return Stanze.AULA_STUDIO;
+		else
 			return Stanze.DORMITORIO;
 	}
 	
