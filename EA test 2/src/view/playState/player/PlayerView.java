@@ -12,19 +12,37 @@ import view.playState.drawOrder.SortableElement;
 
 //classe che contiene la parte grafica del giocatore
 public class PlayerView extends SortableElement{
-
+	
+//	private enum Animation {
+//		
+//		IDLE(0), RUN(1), ATTACK(2), DIE(3), SEEP(4);
+//		public static Animation currentAnimation = IDLE;
+//		int index;
+//		
+//		Animation (int i) {
+//			index = i;
+//		}
+//		
+//		int getIndex() {
+//			return index;
+//		}	
+//	}
+	
 	//per l'animazione
 	private int animationCounter = 0;
 	private int animationSpeed = 20;		//dopo che ha bevuto il caffè diventa 1
 	private int numSprite = 0;
+	
 	private boolean endAttackAnimation = true;
+	private boolean firstParry = true;
 	
 	private static BufferedImage[][][][] playerAnimation;	//campo 0 = gender, primo campo = azione, secondo = direzione, terzo = immagine
-	private final static int IDLE = 0, RUN = 1, ATTACK = 2;
+	private final static int IDLE = 0, RUN = 1, ATTACK = 2, PARRY = 3, DIE = 4, SLEEP = 5;
 	private final static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	private int currentAction = IDLE;
 	private int previousAction = RUN;
 	private int currentDirection = DOWN;
+	
 	public static final int RAGAZZO = 0, RAGAZZA = 1;
 	private int avatarType = RAGAZZO;
 	
@@ -33,25 +51,24 @@ public class PlayerView extends SortableElement{
 	public static int xOffset, yOffset;		
 	
 	//la posizione del player è sempre al centro della finestra di gioco
-	public static final int xOnScreen = GamePanel.GAME_WIDTH/2 - GamePanel.TILES_SIZE/2;
+	public static final int xOnScreenOriginal = GamePanel.GAME_WIDTH/2 - GamePanel.TILES_SIZE/2;
 	public static final int yOnScreen = GamePanel.GAME_HEIGHT/2 - GamePanel.TILES_SIZE/2;
+	public static int xOnScreen = xOnScreenOriginal;	//alcune animazioni hanno offset diversi
 	
 	private IView view;
 	
 	public PlayerView(IView v) {
-				
-		this.typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		view = v;
-		
-		loadImages();	
-		
-		//difference between xitbox and image of player
-		xOffset = (int)(GamePanel.TILES_SIZE*0.10);		// = 4, perchè la hitboxX è il 75% di un tile
-		yOffset = GamePanel.TILES_SIZE/2;  				// = 24, perchè la hitboxY è metà di un tile
-		
 		//servono per poter comparare il player con gli altri elementi grafici da ordinare
 		xPosMapForSort = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
 		yPosMapForSort = view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
+		this.typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
+		
+		loadImages();	
+		//difference between xitbox and image of player
+		xOffset = (int)(GamePanel.TILES_SIZE*0.10);		// = 4, perchè la hitboxX è il 75% di un tile
+		yOffset = GamePanel.TILES_SIZE/2;  				// = 24, perchè la hitboxY è metà di un tile
+
 
 	}
 	
@@ -62,12 +79,163 @@ public class PlayerView extends SortableElement{
 		BufferedImage temp = null;
 		
 		playerAnimation = new BufferedImage[2][][][];
-		playerAnimation[RAGAZZO] = new BufferedImage[3][][];			//per ogni personaggio per ora abbiamo due azioni
-		playerAnimation[RAGAZZA] = new BufferedImage[3][][];
+		playerAnimation[RAGAZZO] = new BufferedImage[6][][];			//per ogni personaggio per ora abbiamo due azioni
+		playerAnimation[RAGAZZA] = new BufferedImage[6][][];
 
 		loadIdleImages(image, temp);
 		loadRunImages(image, temp);	
 		loadAttackImages(image, temp);
+		loadDeathImages(image, temp);
+		loadSleepImages(image, temp);
+		loadParryImages(image, temp);
+			
+	}
+
+	
+	private void loadParryImages(BufferedImage image, BufferedImage temp) {
+		playerAnimation[RAGAZZO][PARRY] = new BufferedImage[4][2];		//ci sono 1 direzioni, ogni direzione ha 6 immagini	
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/BowBoy.png"));
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*25, 0, 25, 34);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][PARRY][DOWN][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*28, 34, 28, 33);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][PARRY][RIGHT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*28, 34 + 33, 28, 33);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][PARRY][LEFT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*32, 34 + 33 + 33, 32, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][PARRY][UP][i] = temp;
+			}
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		playerAnimation[RAGAZZA][PARRY] = new BufferedImage[4][2];
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/BowGirl.png"));
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*26, 0, 26, 34);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][PARRY][DOWN][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*32, 34, 32, 33);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][PARRY][RIGHT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*32, 34 + 33, 32, 33);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][PARRY][LEFT][i] = temp;
+			}
+			
+			for(int i = 0; i < 2; i++) {
+				temp = image.getSubimage(i*31, 34 + 33 + 33, 31, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][PARRY][UP][i] = temp;
+			}
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}		
+
+	private void loadSleepImages(BufferedImage image, BufferedImage temp) {
+		playerAnimation[RAGAZZO][SLEEP] = new BufferedImage[1][6];		//ci sono 1 direzioni, ogni direzione ha 6 immagini	
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/SleepingBoy.png"));
+	
+			for(int i = 0; i < 6; i++) {
+				temp = image.getSubimage(i*31, 0, 31, 37);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][SLEEP][DOWN][i] = temp;
+			}
+			
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		playerAnimation[RAGAZZA][SLEEP] = new BufferedImage[1][6];		//ci sono 1 direzioni, ogni direzione ha 6 immagini	
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/SleepingGirl.png"));
+	
+			for(int i = 0; i < 6; i++) {
+				temp = image.getSubimage(i*28, 0, 28, 36);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][SLEEP][DOWN][i] = temp;
+			}
+			
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private void loadDeathImages(BufferedImage image, BufferedImage temp) {
+		playerAnimation[RAGAZZO][DIE] = new BufferedImage[2][9];		//ci sono 4 direzioni, ogni direzione ha 5 immagini	
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/deathBoyCorr.png"));
+	
+			for(int i = 0; i < 9; i++) {
+				temp = image.getSubimage(i*36, 0, 36, 37);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][DIE][0][i] = temp;
+			}
+			
+			for(int i = 0; i < 9; i++) {
+				temp = image.getSubimage(i*36, 37, 36, 37);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZO][DIE][1][i] = temp;
+			}
+			
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		playerAnimation[RAGAZZA][DIE] = new BufferedImage[2][9];
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/player/deadGirl.png"));
+			
+			for(int i = 0; i < 9; i++) {
+				temp = image.getSubimage(i*43, 0, 43, 38);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][DIE][0][i] = temp;
+			}
+			
+			for(int i = 0; i < 9; i++) {
+				temp = image.getSubimage(i*43, 38, 43, 38);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
+				playerAnimation[RAGAZZA][DIE][1][i] = temp;
+			}
+			
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 	private void loadAttackImages(BufferedImage image, BufferedImage temp) {
@@ -287,23 +455,47 @@ public class PlayerView extends SortableElement{
 	@Override
 	public void draw(Graphics2D g2, int x, int y) {	
 		animationCounter++;
-		setActionAndDirection(numSprite);
 
+		setAction();		
+		setDirection();
+		
 		if (animationCounter > animationSpeed) {
-			numSprite++;	
-			if(numSprite >= getAnimationLenght()) {
+			numSprite++;
+			// perchè la prima slide si deve vedere solo una volta
+			setParryAniIndex();
+			
+			if(numSprite >= getAnimationLenght() && currentAction != PARRY) {
 				numSprite = 0;	
 				endAttackAnimation = true;
 			}				
 			animationCounter = 0;
 		}
 		
+		//alcune slide sono un pò sfasate
+		sistemaSlideSfasate();	
+		
 		g2.drawImage(playerAnimation[avatarType][currentAction][currentDirection][numSprite], xOnScreen, yOnScreen, null);
+		//se una slide era sfasata, resettiamo il valore dell'offset
+		xOnScreen = xOnScreenOriginal;
+		
 	//	g2.drawRect(xOnScreen + xOffset, yOnScreen + yOffset, view.getController().getPlay().getPlayer().getHitbox().width, view.getController().getPlay().getPlayer().getHitbox().height);
 	}
-	
-	public void setActionAndDirection(int spriteIndex) {
+
+	// in questo modo solleva lo scudo e lo tiene alzato finchè il giocatore non toglie il dito
+	private void setParryAniIndex() {
+		if(currentAction == PARRY) {
+			if(firstParry) {
+				numSprite--;
+				firstParry = false;
+			}
+			else {
+				numSprite = getAnimationLenght() - 1;
+			}
+		}
 		
+	}
+
+	public void setAction() {
 		// se il giocatore preme il mouse, l'animazione di attacco continua fino alla fine
 		// anche se il giocatore ha lasciato il mouse
 		if(view.getController().getPlay().getPlayer().isAttacking()) {
@@ -317,18 +509,24 @@ public class PlayerView extends SortableElement{
 			animationSpeed = 20;
 		}
 		
+		else if(view.getController().getPlay().getPlayer().isParring() && endAttackAnimation) {
+			currentAction = PARRY;
+			animationSpeed = 10;
+		}
+		
 		else if(endAttackAnimation){
 			currentAction = IDLE;
 			animationSpeed = 20;
 		}
-		
+				
 		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
 		if(currentAction != previousAction) {
 			numSprite = 0;
 			previousAction = currentAction;
 			}
-		
-		//decisa l'azione, deve capire la direzione
+	}
+	
+	public void setDirection() {
 		if(view.getController().getPlay().getPlayer().isLeft())
 			currentDirection = LEFT;
 		
@@ -339,8 +537,7 @@ public class PlayerView extends SortableElement{
 			currentDirection = DOWN;
 		
 		else if(view.getController().getPlay().getPlayer().isUp())
-			currentDirection = UP;
-		
+			currentDirection = UP;	
 	}
 	
 	public int getAnimationLenght() {
@@ -350,8 +547,20 @@ public class PlayerView extends SortableElement{
 			return 6;
 		else if(currentAction == ATTACK)
 			return 5;
-		
+		else if(currentAction == DIE)
+			return 9;
+		else if(currentAction == PARRY)
+			return 2;
+			
 		return 0;
+	}
+	
+	private void sistemaSlideSfasate() {
+		if(currentAction == ATTACK && currentDirection == LEFT)
+			xOnScreen -= (int)GamePanel.SCALE*20;	
+		
+		else if(avatarType == RAGAZZA && currentAction == RUN && currentDirection == UP) 
+			xOnScreen -= (int)GamePanel.SCALE*10;
 	}
 	
 	//for avatar menu
@@ -383,12 +592,17 @@ public class PlayerView extends SortableElement{
 			avatarType = RAGAZZO;
 	}
 	
+	public void resetParry() {
+		firstParry = true;
+	}
+	
 	public void resetAnimation() {		//potrebbe servire
 		animationCounter = 0;
 		numSprite = 0;
 		currentAction = IDLE;
 		currentDirection = DOWN;
 		endAttackAnimation = true;
+		firstParry = false;
 	}
 
 	
