@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import controller.Gamestate;
-import view.main.IView;
+import view.IView;
 
 public class MouseInputs implements MouseListener, MouseMotionListener {
 

@@ -13,8 +13,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.Gamestate;
+import view.IView;
 import view.ViewUtils;
-import view.main.IView;
 import view.menu.AbstractMenu;
 import view.menu.AbstractMenuButton;
 import view.menu.mainMenu.InitialMenuButton;

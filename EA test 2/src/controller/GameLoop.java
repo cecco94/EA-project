@@ -1,8 +1,8 @@
 package controller;
 
 import model.IModel;
+import view.IView;
 import view.gameBegin.SplashScreenGame;
-import view.main.IView;
 
 public class GameLoop implements Runnable {
 	private SplashScreenGame caricamento;

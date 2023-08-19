@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
-import view.main.IView;
+import view.IView;
 import view.menu.AbstractMenuButton;
 
 public class SoundBar extends AbstractMenuButton {
@@ -13,10 +13,9 @@ public class SoundBar extends AbstractMenuButton {
 	private float volumeSetted;
 	private float maxVolume;
 	int type;
-	public final static int MUSIC = 0;
-	public static final int SE = 1;
+	public final static int MUSIC = 0, SE = 1;
 	
-	public  SoundBar(OptionMenu op, Rectangle r, IView v, int tipo) {
+	public SoundBar(OptionMenu op, Rectangle r, IView v, int tipo) {
 		super.setBounds(r.x, r.y, r.width, r.height);
 		maxVolume = r.width;
 		volumeSetted = (int)(maxVolume*0.2);

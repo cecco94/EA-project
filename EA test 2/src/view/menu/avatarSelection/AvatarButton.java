@@ -7,8 +7,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import controller.Gamestate;
+import view.IView;
 import view.ViewUtils;
-import view.main.IView;
 import view.menu.AbstractMenuButton;
 import view.playState.player.Avatar;
 import view.playState.player.PlayerView;

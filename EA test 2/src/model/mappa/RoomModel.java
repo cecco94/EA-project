@@ -6,11 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import controller.playState.Stanze;
 import controller.playState.entityController.EnemyController;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.NPCcontroller;
-import model.IModel;
 
 public class RoomModel {
 
@@ -100,7 +98,7 @@ public class RoomModel {
 						int newX = Integer.parseInt(datiNellaRiga[5]);
 						int newY = Integer.parseInt(datiNellaRiga[6]);
 						int newRoom = Integer.parseInt(datiNellaRiga[7]);
-						passaggi.add(new Passaggio(prewX, prewY, width, height, newX, newY, IModel.getStanzaAssociataAlNumero(newRoom)));
+						passaggi.add(new Passaggio(prewX, prewY, width, height, newX, newY, Stanze.getStanzaAssociataAlNumero(newRoom)));
 					}	
 					
 				}

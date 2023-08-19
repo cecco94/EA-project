@@ -8,12 +8,12 @@ import java.util.Collections;
 
 import javax.imageio.ImageIO;
 
-import controller.playState.Stanze;
 import model.IModel;
 import model.mappa.Map;
+import model.mappa.Stanze;
+import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.main.IView;
 import view.mappa.TilesetView;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;

@@ -2,11 +2,11 @@ package controller.playState;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-
 import javax.swing.SwingUtilities;
 
 import controller.Gamestate;
 import controller.IController;
+import model.mappa.Stanze;
 
 //controlla ciò che accade nel gioco durante il play state
 public class PlayStateController {
@@ -40,6 +40,8 @@ public class PlayStateController {
 			break;
 		case BIBLIOTECA:
 			break;
+		default:
+			break;
 		}
 	}
 	
@@ -47,23 +49,13 @@ public class PlayStateController {
 		playerController.getHitbox().x = x;
 		playerController.getHitbox().y = y;	
 	}
-	
-	public void setMap(int newMap) {
-		controller.getModel().getMappa().setMappaAttuale(newMap);
-	}
 
 	public void resumeGameAfterTransition() {
-		
-		setStanza(controller.getModel().getNewRoom());
 		controller.getModel().setNewRoom();
 		
 		playerController.getHitbox().x = controller.getModel().getNewXPos();
 		playerController.getHitbox().y = controller.getModel().getNewYPos();	
 		playerController.resetBooleans();
-	}
-	
-	public void setStanza(Stanze nextRoom) {
-		Stanze.stanzaAttuale = nextRoom;
 	}
 	
 	public void handleKeyPressed(KeyEvent e) {

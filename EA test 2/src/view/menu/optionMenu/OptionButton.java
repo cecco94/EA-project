@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import view.IView;
 import view.ViewUtils;
-import view.main.IView;
 import view.menu.AbstractMenuButton;
 
 public class OptionButton extends AbstractMenuButton {

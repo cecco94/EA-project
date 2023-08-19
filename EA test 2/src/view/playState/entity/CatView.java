@@ -6,9 +6,9 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.main.IView;
 import view.playState.drawOrder.SortableElement;
 
 public class CatView extends SortableElement {

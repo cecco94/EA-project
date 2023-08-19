@@ -37,7 +37,6 @@ public class PlayerController {
 		//durante l'intervallo dove attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
 		
-		
 		setMoving(false);
 		
 		if (left && !right && !parry) {
@@ -73,7 +72,8 @@ public class PlayerController {
 			}
 		}
 	}
-
+	
+	// durante l'attacco, il giocatore rallenta
 	private void setPlayerSpeedDuringAttack() {
 		if(isAttackAnimation) {
 			attackCounter++;
@@ -182,10 +182,6 @@ public class PlayerController {
 				controller.setGameState(Gamestate.TRANSITION_ROOM);
 			}		
 	}
-	
-	public String toString() {
-		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
-	}
 
 	public void setParry(boolean b) {
 		parry = b;	
@@ -201,6 +197,10 @@ public class PlayerController {
 
 	public void setThrowing(boolean throwing) {
 		this.throwing = throwing;
+	}
+	
+	public String toString() {
+		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
 	}
 	
 }

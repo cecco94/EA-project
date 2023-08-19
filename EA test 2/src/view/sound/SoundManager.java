@@ -9,10 +9,10 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
-	private float volume = 0.2f;
+	private float musicVolume = 0.2f, seVolume = 0.2f;
 	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[10];
-	public static final int MENU_MUSIC = 0, SALA_STUDIO = 1, DORMITORIO = 2, BIBLIOTECA = 3;
+	public static final int MENU_MUSIC = 0, SALA_STUDIO = 1, DORMITORIO = 2, BIBLIOTECA = 3, COLPO = 4;
 	
 	// tutti i percorsi dei file dei suoni vengono inseriti in un array
 	public SoundManager() {
@@ -20,13 +20,13 @@ public class SoundManager {
 		soundURL[1] = getClass().getResource("/sound/salaStudioLeggera.wav");
 		soundURL[2] = getClass().getResource("/sound/dormitorioLeggera.wav");
 		soundURL[3] = getClass().getResource("/sound/bibliotecaLeggera.wav");
-	/*	soundURL[5] = getClass().getResource("/sound/blocked.wav");
-		soundURL[6] = getClass().getResource("/sound/fanfare.wav");
+		soundURL[4] = getClass().getResource("/sound/hitmonster.wav");
+	/*	soundURL[6] = getClass().getResource("/sound/fanfare.wav");
 		soundURL[7] = getClass().getResource("/sound/cursor.wav");
 		soundURL[8] = getClass().getResource("/sound/receivedamage.wav");	*/
 		
 		setMusic(MENU_MUSIC);
-		setSE(SALA_STUDIO);
+		setSE(COLPO);
 	}
 	
 	// per suonare una musica, prima bisogna dire alla clip quale file prendere
@@ -70,36 +70,44 @@ public class SoundManager {
 	public void playSE(int i) {
 		setSE(i);
 		soundEffect.start();
+		setSEVolume(seVolume);
 	}
 	
-	//metodo obsoleto
 	public void setSEVolume(float v) {
-		volume = v;
-		FloatControl control = (FloatControl) soundEffect.getControl(FloatControl.Type.MASTER_GAIN);
-		float range  = control.getMaximum() - control.getMinimum();
-		float gain = (range * volume) + control.getMinimum();
-		control.setValue(gain);
-	}
-	
-	// metodo che funziona bene
-	public void setMusicVolume(float volume) {
-	    if (volume > 0f && volume < 1f) {
-			this.volume = volume;
+		if (v > 0f && v < 1f) {
+			this.seVolume = v;
 	    	
-	    	FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);   
+	    	FloatControl gainControl = (FloatControl) soundEffect.getControl(FloatControl.Type.MASTER_GAIN);   
 	    	
-	    	float controlValue = 20f * (float) Math.log10(volume); // siccome il suono è in decibel, bisogna convertirlo in lineare
+	    	float controlValue = 20f * (float) Math.log10(v); // siccome il suono è in decibel, bisogna convertirlo in lineare
 	    	
 	    	if(controlValue > -80)		//per controllo, sennò viene un numero troppo basso
 	    		gainControl.setValue(controlValue);	
 	    	
-	    	if(volume < 0.015f)
+	    	if(v < 0.015f)
+	    		gainControl.setValue(gainControl.getMinimum());
+	    }
+	}
+	
+	// metodo che funziona bene
+	public void setMusicVolume(float v) {
+	    if (v > 0f && v < 1f) {
+			this.musicVolume = v;
+	    	
+	    	FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);   
+	    	
+	    	float controlValue = 20f * (float) Math.log10(v); // siccome il suono è in decibel, bisogna convertirlo in lineare
+	    	
+	    	if(controlValue > -80)		//per controllo, sennò viene un numero troppo basso
+	    		gainControl.setValue(controlValue);	
+	    	
+	    	if(v < 0.015f)
 	    		gainControl.setValue(gainControl.getMinimum());
 	    }
 	}
 
 	public float getVolume() {
-		return volume;
+		return musicVolume;
 	}
 	
 }

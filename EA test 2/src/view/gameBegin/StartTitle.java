@@ -8,9 +8,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.Gamestate;
+import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.main.IView;
 
 // sarebbero le due scritte iniziali, "gngames" e "presenta"
 public class StartTitle {

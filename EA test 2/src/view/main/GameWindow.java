@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+import view.IView;
 import view.ViewUtils;
 
 public class GameWindow extends JFrame {

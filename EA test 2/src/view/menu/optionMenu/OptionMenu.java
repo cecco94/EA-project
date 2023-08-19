@@ -18,8 +18,8 @@ import static view.main.GamePanel.SCALE;
 import static view.menu.optionMenu.SoundBar.SE;
 import static view.menu.optionMenu.SoundBar.MUSIC;
 
+import view.IView;
 import view.ViewUtils;
-import view.main.IView;
 import view.menu.AbstractMenu;
 import view.menu.AbstractMenuButton;
 import view.menu.mainMenu.InitialMenuButton;

@@ -5,10 +5,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.main.IView;
 import view.playState.drawOrder.SortableElement;
+import view.sound.SoundManager;
 
 //classe che contiene la parte grafica del giocatore
 public class PlayerView extends SortableElement{
@@ -565,10 +566,11 @@ public class PlayerView extends SortableElement{
 	public void setAction() {
 		// se il giocatore preme il mouse, l'animazione di attacco continua fino alla fine
 		// anche se il giocatore ha lasciato il mouse
-		if(view.getController().getPlay().getPlayer().isAttacking()) {
+		if(view.getController().getPlay().getPlayer().isAttacking() && endAttackAnimation) {
 			currentAction = ATTACK;
 			animationSpeed = 12;
 			endAttackAnimation = false;
+			view.playSE(SoundManager.COLPO);
 		}
 		
 		else if(view.getController().getPlay().getPlayer().isMoving() && endAttackAnimation) {

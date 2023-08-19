@@ -4,8 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 
 import controller.Gamestate;
-import controller.playState.Stanze;
-import view.main.IView;
+import model.mappa.Stanze;
 import view.sound.SoundManager;
 
 //per non passare bruscamente da uno stato all'altro, disegna sfumandolo il vecchio stato 

@@ -2,7 +2,7 @@ package controller;
 
 import controller.playState.PlayStateController;
 import model.IModel;
-import view.main.IView;
+import view.IView;
 
 public class IController {
 

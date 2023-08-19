@@ -1,4 +1,4 @@
-package view.main;
+package view;
 
 import java.awt.AWTException;
 import java.awt.Graphics2D;
@@ -7,9 +7,10 @@ import java.awt.Robot;
 import controller.Gamestate;
 import controller.IController;
 import model.IModel;
-import view.Transition;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
+import view.main.GamePanel;
+import view.main.GameWindow;
 import view.mappa.TilesetView;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
@@ -59,6 +60,7 @@ public class IView {
 		tileset = new TilesetView();
 		play = new PlayStateView(model, tileset, this);
 		transition = new Transition(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
+		
 		//inizializza le cose più delicate
 		gw = new GameWindow(gp, this);
 		gw.setVisible(true);
@@ -79,6 +81,7 @@ public class IView {
 	private void setStartMusic(){
 		sound.loopMusic(SoundManager.MENU_MUSIC);
 		sound.setMusicVolume(0.2f);
+		sound.setSEVolume(0.2f);
 	}
 
 	//chiede al pannello di creare il suo ambiente grafico, g, che poi userà per disegnare il frame successivo

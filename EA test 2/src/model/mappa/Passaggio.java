@@ -2,7 +2,6 @@ package model.mappa;
 
 import java.awt.Rectangle;
 
-import controller.playState.Stanze;
 import view.main.GamePanel;
 
 public class Passaggio {

@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 
 import controller.IController;
 import model.mappa.Map;
+import model.mappa.Stanze;
 import view.main.GamePanel;
 
 public class Collisions {

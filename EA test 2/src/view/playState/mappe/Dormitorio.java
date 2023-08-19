@@ -1,6 +1,6 @@
 package view.playState.mappe;
 
-import view.main.IView;
+import view.IView;
 import view.sound.SoundManager;
 
 public class Dormitorio {

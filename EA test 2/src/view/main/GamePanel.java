@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 
 import javax.swing.JPanel;
 
+import view.IView;
 import view.inputs.KeyboardInputs;
 import view.inputs.MouseInputs;
 
