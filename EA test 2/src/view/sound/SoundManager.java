@@ -12,23 +12,21 @@ public class SoundManager {
 	private float volume = 0.2f;
 	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[10];
-	public static final int MENU_MUSIC = 0, PLAY_MUSIC = 2;
-	public static final int COIN = 1;
+	public static final int MENU_MUSIC = 0, SALA_STUDIO = 1, DORMITORIO = 2, BIBLIOTECA = 3;
 	
 	// tutti i percorsi dei file dei suoni vengono inseriti in un array
 	public SoundManager() {
-		soundURL[0] = getClass().getResource("/sound/tema.wav");
-		soundURL[1] = getClass().getResource("/sound/coin.wav");
-		soundURL[2] = getClass().getResource("/sound/ZeldaMainThemeSong.wav");
-	/*	soundURL[3] = getClass().getResource("/sound/unlock.wav");
-		soundURL[4] = getClass().getResource("/sound/powerup.wav");
-		soundURL[5] = getClass().getResource("/sound/blocked.wav");
+		soundURL[0] = getClass().getResource("/sound/menuLeggera.wav");
+		soundURL[1] = getClass().getResource("/sound/salaStudioLeggera.wav");
+		soundURL[2] = getClass().getResource("/sound/dormitorioLeggera.wav");
+		soundURL[3] = getClass().getResource("/sound/bibliotecaLeggera.wav");
+	/*	soundURL[5] = getClass().getResource("/sound/blocked.wav");
 		soundURL[6] = getClass().getResource("/sound/fanfare.wav");
 		soundURL[7] = getClass().getResource("/sound/cursor.wav");
 		soundURL[8] = getClass().getResource("/sound/receivedamage.wav");	*/
 		
 		setMusic(MENU_MUSIC);
-		setSE(COIN);
+		setSE(SALA_STUDIO);
 	}
 	
 	// per suonare una musica, prima bisogna dire alla clip quale file prendere

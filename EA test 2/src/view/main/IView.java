@@ -14,7 +14,7 @@ import view.mappa.TilesetView;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
 import view.menu.optionMenu.OptionMenu;
-import view.playState.PlayState;
+import view.playState.PlayStateView;
 import view.sound.SoundManager;
 
 // per ora la classe più importante, gestisce tutte le altre classi della view, che fanno riferimento 
@@ -35,7 +35,7 @@ public class IView {
 	private MainMenu menu;
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
-	private PlayState play;
+	private PlayStateView play;
 	private Transition transition;
 	//mappa e tiles
 	private TilesetView tileset;
@@ -57,10 +57,10 @@ public class IView {
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
 		tileset = new TilesetView();
-		play = new PlayState(model, tileset, this);
+		play = new PlayStateView(model, tileset, this);
 		transition = new Transition(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
 		//inizializza le cose più delicate
-		gw = new GameWindow(gp);
+		gw = new GameWindow(gp, this);
 		gw.setVisible(true);
 		setCursorManager();
 		gp.setFocusable(true);
@@ -77,7 +77,7 @@ public class IView {
 	}
 
 	private void setStartMusic(){
-		sound.playMusic(SoundManager.MENU_MUSIC);
+		sound.loopMusic(SoundManager.MENU_MUSIC);
 		sound.setMusicVolume(0.2f);
 	}
 
@@ -103,18 +103,18 @@ public class IView {
 			opzioni.draw(g2);
 			break;
 		case PLAYING:
-			play.draw(g2, model.getMappa().getMappaAttuale());
+			play.draw(g2);
 			break;
 		case TRANSITION:
 			transition.draw(g2);
 			break;
 		case TRANSITION_ROOM:
-			play.draw(g2, model.getMappa().getMappaAttuale());
+			play.draw(g2);
 			play.getUI().drawTransition(g2);
 		default:
 			break;			
 		}
-	//	ms.disegnaMessaggioSubliminale(g2);
+//		ms.disegnaMessaggioSubliminale(g2);
 	}	
 		
 	public void changeGameState(Gamestate newState) {
@@ -154,12 +154,12 @@ public class IView {
 		return this.opzioni;
 	}
 	
-	public PlayState getPlay() {
+	public PlayStateView getPlay() {
 		return play;
 	}
 	
 	public void playMusic(int i) {
-		sound.playMusic(i);
+		sound.loopMusic(i);
 	}
 	
 	public void stopMusic() {
@@ -171,7 +171,7 @@ public class IView {
 	}
 
 	public void setMusicVolume(float v) {
-		sound.setMusicVolume((float)v);
+		sound.setMusicVolume(v);
 	}
 
 	public void setSEVolume(float v) {
@@ -180,6 +180,10 @@ public class IView {
 
 	public float getMusicVolume() {
 		return sound.getVolume();
+	}
+	
+	public Transition getTransition() {
+		return transition;
 	}
 	
 }

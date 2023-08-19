@@ -12,8 +12,11 @@ public class PlayerController {
 	private IController controller;
 	private Rectangle hitbox, tempHitboxForCheck ;
 	private int speed = (int)(GamePanel.SCALE*1.3);
-	private boolean moving, left, right, up, down;
+	private boolean moving, attacking, parry, left, right, up, down;
 	private Collisions collisionCheck;
+	
+	private boolean isAttackAnimation;
+	private int attackCounter;
 	
 	
 	public PlayerController(Collisions collcheck, IController c) {
@@ -29,41 +32,62 @@ public class PlayerController {
 		collisionCheck = collcheck;
 	}
 	
-	void updatePos(int stanza) {
+	void updatePos() {
+			
+		//durante l'intervallo dove attacca, la velocità del personaggio diminuisce
+		setPlayerSpeedDuringAttack();
+		
+		
 		setMoving(false);
 		
-		if (left && !right) {
+		if (left && !right && !parry) {
 			tempHitboxForCheck.x = hitbox.x - speed;
 			tempHitboxForCheck.y = hitbox.y;
-			if(collisionCheck.canMoveLeft(tempHitboxForCheck, stanza)) {
+			if(collisionCheck.canMoveLeft(tempHitboxForCheck)) {
 				hitbox.x -= speed;
 				setMoving(true);
 			}
 		} 
-		else if (right && !left) {
+		else if (right && !left && !parry) {
 			tempHitboxForCheck.x = hitbox.x + speed;
 			tempHitboxForCheck.y = hitbox.y;
-			if(collisionCheck.canMoveRight(tempHitboxForCheck, stanza)) {
+			if(collisionCheck.canMoveRight(tempHitboxForCheck)) {
 				hitbox.x += speed;
 				setMoving(true);
 			}
 		}
-		if (up && !down) {
+		if (up && !down  && !parry) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y - speed;
-			if(collisionCheck.canMoveUp(tempHitboxForCheck, stanza)) {
+			if(collisionCheck.canMoveUp(tempHitboxForCheck)) {
 				hitbox.y -= speed;
 				setMoving(true);
 			}
 		} 
-		else if (down && !up) {
+		else if (down && !up && !parry) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y + speed;
-			if(collisionCheck.canMoveDown(tempHitboxForCheck, stanza)) {
+			if(collisionCheck.canMoveDown(tempHitboxForCheck)) {
 				hitbox.y += speed;
 				setMoving(true);
 			}
 		}
+	}
+
+	private void setPlayerSpeedDuringAttack() {
+		if(isAttackAnimation) {
+			attackCounter++;
+			
+			if(attackCounter < 100)
+				speed = (int)(0.5);
+			
+			else {
+				speed = (int)(GamePanel.SCALE*1.3);
+				isAttackAnimation = false;
+				attackCounter = 0;
+			}
+		}
+		
 	}
 
 	public void resetBooleans() {
@@ -72,6 +96,8 @@ public class PlayerController {
 		left = false;
 		right = false;	
 		setMoving(false);
+		setAttacking(false);
+		setParry(false);
 	}
 	
 	public Rectangle getHitbox() {
@@ -112,7 +138,6 @@ public class PlayerController {
 		}	
 	}
 
-	
 	public boolean isMoving() {
 		return moving;
 	}
@@ -133,26 +158,41 @@ public class PlayerController {
 		return up;
 	}
 
-	
 	public void setMoving(boolean moving) {
 		this.moving = moving;
+	}
+	
+	public boolean isAttacking() {
+		return attacking;
+	}
+
+	public void setAttacking(boolean attacking) {
+		this.attacking = attacking;
+		if(attacking) {
+			isAttackAnimation = true;
+		}
+	}
+
+	public void isAbovePassaggio() {
+		// vedi in che stanza sei, vedi la lista dei passaggi, controllali
+		// se si, cambia mappa e posiz del player
+			if(controller.getModel().checkPassaggio(hitbox) >= 0) {
+				controller.getModel().memorizzaDatiNuovaStanza();
+				
+				controller.setGameState(Gamestate.TRANSITION_ROOM);
+			}		
 	}
 	
 	public String toString() {
 		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
 	}
 
-	public void isAbovePassaggio() {
-		// vedi in che stanza sei, vedi la lista dei passaggi, controllali
-		// se si, cambia mappa e posiz del player
-		
-			if(controller.getModel().checkPassaggio(hitbox) >= 0) {
-				controller.getModel().memorizzaDatiNuovaStanza();
-				
-				controller.setGameState(Gamestate.TRANSITION_ROOM);
-			}
-		
-		
+	public void setParry(boolean b) {
+		parry = b;	
+	}
+
+	public boolean isParring() {
+		return parry;
 	}
 	
 }

@@ -2,9 +2,9 @@ package model;
 
 import java.awt.Rectangle;
 
-import controller.Gamestate;
+import controller.playState.Stanze;
 import model.mappa.Map;
-import model.mappa.Room;
+import model.mappa.RoomModel;
 import model.mappa.TilesetModel;
 import view.main.GamePanel;
 
@@ -16,25 +16,24 @@ public class IModel {
 	private Map mappa;
 	private TilesetModel tiles;
 	
-	private Room[] stanze;
+	private RoomModel[] stanze;
 	public final int BIBLIOTECA = 0, DORMITORIO = 1;
 	
 	// memorizza dove andrà il giocatore dopo la transizione tra stanze
 	private int newXPos;
 	private int newYPos;
-	private int newRoom;
+	private Stanze newRoom;
+	String percorsoDatiDormitorio = "/mappe/datiDormitorio.txt";
+	String percorsoDatiBiblioteca = "/mappe/datiBiblioteca.txt";
 	
 	public IModel() {
 		mappa = new Map();
 		tiles = new TilesetModel();
 
-		stanze = new Room[2];
+		stanze = new RoomModel[2];
 		
-		stanze[BIBLIOTECA] = new Room(this);
-		stanze[BIBLIOTECA].addNewPassaggio(20, 8, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE + 10, 27, 23, Map.DORMITORIO);
-		
-		stanze[DORMITORIO] = new Room(this);
-		stanze[DORMITORIO].addNewPassaggio(25, 23, GamePanel.TILES_SIZE/2, GamePanel.TILES_SIZE/2, 21, 10, Map.BIBLIOTECA);
+		stanze[BIBLIOTECA] = new RoomModel(percorsoDatiBiblioteca);		
+		stanze[DORMITORIO] = new RoomModel(percorsoDatiDormitorio);
 	}
 
 	public Map getMappa() {
@@ -58,7 +57,7 @@ public class IModel {
 	}
 	
 	public void setNewRoom() {
-		mappa.setMappaAttuale(newRoom);
+		mappa.setMappaAttuale(newRoom.indiceNellaMappa);
 	}
 
 	public int getNewXPos() {
@@ -69,6 +68,15 @@ public class IModel {
 		return newYPos;
 	}
 	
+	public Stanze getNewRoom() {
+		return newRoom;
+	}
 	
+	public static Stanze getStanzaAssociataAlNumero(int i) {
+		if(i == Map.BIBLIOTECA)
+			return Stanze.BIBLIOTECA;
+		else 
+			return Stanze.DORMITORIO;
+	}
 	
 }

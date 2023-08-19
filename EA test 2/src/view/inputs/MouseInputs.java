@@ -70,6 +70,8 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		case OPTIONS:
 			view.getOptions().mousePressed(e);
 			break;
+		case PLAYING:
+			view.getController().getPlay().handleMousePressed(e);
 		default:
 			break;
 		}
@@ -87,6 +89,8 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		case OPTIONS:
 			view.getOptions().mouseReleased(e);
 			break;
+		case PLAYING:
+			view.getController().getPlay().handleMouseReleased(e);
 		default:
 			break;
 		}

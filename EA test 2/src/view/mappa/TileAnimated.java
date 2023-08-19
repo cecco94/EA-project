@@ -28,10 +28,8 @@ public class TileAnimated extends Tile {
 		image = ViewUtils.scaleImage(img1, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
 		secondImage = img2;	
 		secondImage = ViewUtils.scaleImage(img2, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
-		
-		int min = 120;	//un secondo, perchè il gioco ha 120 fps
-		int max = 360;	//tre secondi
-		frequenza = freq;	//numero casuale
+	
+		frequenza = freq;	//numero dato
 	}
 	
 	public BufferedImage getImage() {

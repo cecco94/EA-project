@@ -14,7 +14,7 @@ public class Dormitorio {
 	
 	
 	public void playMusic() {
-		view.playMusic(SoundManager.PLAY_MUSIC);
+		view.playMusic(SoundManager.SALA_STUDIO);
 	}
 	
 	public void draw() {

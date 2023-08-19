@@ -184,33 +184,33 @@ public class OptionMenu extends AbstractMenu{
 
 	private void comportamentoMusica(int tasto) {
 		if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
-			view.setCursorPosition(soundbarsX + musicBar.getVolume(), firstButtonHeigh);
+			view.setCursorPosition(soundbarsX + (int)musicBar.getVolume(), firstButtonHeigh);
 		}
 		
 		else if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
 			musicBar.reactToKeyRight();
-			view.setCursorPosition(soundbarsX + musicBar.getVolume() + maxBarWidth/20, firstButtonHeigh);
+			view.setCursorPosition(soundbarsX +(int)musicBar.getVolume() + maxBarWidth/20, firstButtonHeigh);
 		}
 		
 		else if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
 			musicBar.reactToKeyLeft();
-			view.setCursorPosition(soundbarsX + musicBar.getVolume() - maxBarWidth/20, firstButtonHeigh);
+			view.setCursorPosition(soundbarsX + (int)musicBar.getVolume() - maxBarWidth/20, firstButtonHeigh);
 		}
 		
 		else if((tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN)) {
 			buttonIndex = SUONI;
-			view.setCursorPosition(soundbarsX + effectBar.getVolume(), (int)(firstButtonHeigh + 40*SCALE));
+			view.setCursorPosition(soundbarsX + (int)effectBar.getVolume(), (int)(firstButtonHeigh + 40*SCALE));
 		}
 	}
 
 	private void comportamentoSuoni(int tasto) {
 		if(tasto == KeyEvent.VK_D || tasto == KeyEvent.VK_RIGHT) {
 			effectBar.reactToKeyRight();
-			view.setCursorPosition(soundbarsX + effectBar.getVolume() + maxBarWidth/20, (int)(firstButtonHeigh + 40*SCALE));
+			view.setCursorPosition(soundbarsX + (int)effectBar.getVolume() + maxBarWidth/20, (int)(firstButtonHeigh + 40*SCALE));
 		}
 		else if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
 			effectBar.reactToKeyLeft();
-			view.setCursorPosition(soundbarsX + effectBar.getVolume() - maxBarWidth/20, (int)(firstButtonHeigh + 40*SCALE));
+			view.setCursorPosition(soundbarsX + (int)effectBar.getVolume() - maxBarWidth/20, (int)(firstButtonHeigh + 40*SCALE));
 		}
 		else if((tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN)) {
 			buttonIndex = MATRICOLA;
@@ -218,7 +218,7 @@ public class OptionMenu extends AbstractMenu{
 		}
 		else if((tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP)) {
 			buttonIndex = MUSICA;
-			view.setCursorPosition(soundbarsX + musicBar.getVolume(), firstButtonHeigh);
+			view.setCursorPosition(soundbarsX + (int)musicBar.getVolume(), firstButtonHeigh);
 		}
 	}
 
@@ -228,7 +228,7 @@ public class OptionMenu extends AbstractMenu{
 			buttonIndex = FUORISEDE;
 			}
 		else if(tasto == KeyEvent.VK_W || tasto == KeyEvent.VK_UP) {
-			view.setCursorPosition(soundbarsX + effectBar.getVolume(), (int)(firstButtonHeigh + 40*SCALE));
+			view.setCursorPosition(soundbarsX + (int)effectBar.getVolume(), (int)(firstButtonHeigh + 40*SCALE));
 			buttonIndex = SUONI;
 			}
 		else if(tasto == KeyEvent.VK_ENTER) {

@@ -1,7 +1,6 @@
 package controller;
 
 import controller.playState.PlayStateController;
-import controller.playState.PlayerController;
 import model.IModel;
 import view.main.IView;
 
@@ -9,9 +8,7 @@ public class IController {
 
 	private IView view;
 	private IModel model;
-	private PlayStateController play;
-	private PlayerController player;
-	
+	private PlayStateController play;	
 	
 	public IController() {
 		play = new PlayStateController(this);
@@ -44,6 +41,8 @@ public class IController {
 			break;
 		case PLAYING:
 			play.update();
+			break;
+		default:
 			break;			
 		}
 

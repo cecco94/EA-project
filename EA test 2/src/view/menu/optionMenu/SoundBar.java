@@ -10,8 +10,8 @@ import view.menu.AbstractMenuButton;
 
 public class SoundBar extends AbstractMenuButton {
 	
-	private int volumeSetted;
-	private int maxVolume;
+	private float volumeSetted;
+	private float maxVolume;
 	int type;
 	public final static int MUSIC = 0;
 	public static final int SE = 1;
@@ -33,7 +33,7 @@ public class SoundBar extends AbstractMenuButton {
 		else 
 			g2.setColor(Color.white);
 		
-		g2.fillRoundRect(bounds.x, bounds.y, volumeSetted, bounds.height, 10, 10);
+		g2.fillRoundRect(bounds.x, bounds.y, (int)volumeSetted, bounds.height, 10, 10);
 	}
 
 	private void drawCornice(Graphics2D g2) {
@@ -66,7 +66,7 @@ public class SoundBar extends AbstractMenuButton {
 			volumeSetted = x;
 	}
 	
-	private void changeVolume(int x) {
+	private void changeVolume(float x) {
 		float volumePercentuale = (float)x/maxVolume;
 		
 		if(type == MUSIC)
@@ -76,16 +76,16 @@ public class SoundBar extends AbstractMenuButton {
 	}
 	
 	public void reactToKeyRight() {
-		changeRectDimension(volumeSetted + maxVolume/20);
+		changeRectDimension((int)volumeSetted + (int)(maxVolume/20));
 		changeVolume(volumeSetted + maxVolume/20);
 	}
 	
 	public void reactToKeyLeft() {
-		changeRectDimension(volumeSetted - maxVolume/20);
+		changeRectDimension((int)volumeSetted - (int)(maxVolume/20));
 		changeVolume(volumeSetted - maxVolume/20);
 	}
 	
-	public int getVolume() {
+	public float getVolume() {
 		return volumeSetted;
 	}
 

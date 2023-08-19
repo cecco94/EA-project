@@ -52,8 +52,8 @@ public class GameLoop implements Runnable {
 
 		long previousTime = System.nanoTime();
 
-		int frames = 0;
-		int updates = 0;
+//		int frames = 0;
+//		int updates = 0;
 		long lastCheck = System.currentTimeMillis();
 
 		double deltaU = 0;
@@ -68,21 +68,21 @@ public class GameLoop implements Runnable {
 
 			if (deltaU >= 1) {
 				update();
-				updates++;
+			//	updates++;
 				deltaU--;
 			}
 
 			if (deltaF >= 1) {
 				render();
-				frames++;
+			//	frames++;
 				deltaF--;
 			}
 
 			if (System.currentTimeMillis() - lastCheck >= 1000) {
 				lastCheck = System.currentTimeMillis();
 			//	System.out.println("FPS: " + frames + " | UPS: " + updates);  per debugging
-				frames = 0;
-				updates = 0;
+//				frames = 0;
+//				updates = 0;
 
 			}
 		}

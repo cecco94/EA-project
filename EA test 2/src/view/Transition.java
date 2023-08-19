@@ -4,7 +4,9 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 
 import controller.Gamestate;
+import controller.playState.Stanze;
 import view.main.IView;
+import view.sound.SoundManager;
 
 //per non passare bruscamente da uno stato all'altro, disegna sfumandolo il vecchio stato 
 //per tre secondi e sfuma il valore della musica
@@ -18,6 +20,8 @@ public class Transition {
 	private Gamestate prev;
 	private Gamestate next;
 	private IView view;
+	private float volumeBeforeTransition;
+	private boolean saved = false;
 	
 	public Transition(Gamestate p, Gamestate n, IView v) {
 		setPrev(p);
@@ -27,14 +31,19 @@ public class Transition {
 	}
 	
 	public void draw(Graphics2D g2) {
-		//diventa sempre più trasparente e la musica diminuisce
 		counter--;
+		saveOldVolume();
+		
 		if (counter > 0) {
+			
+			//diventa sempre più trasparente 
 			opacity = counter/transitionDuration;
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+			
 			//disegna il vecchio stato
 			view.changeGameState(prev);
 			view.prepareNewFrame(g2);
+			
 			//sfuma il volume della musica
 			volume = volume*opacity + 0.01f;
 			view.setMusicVolume(volume);
@@ -43,13 +52,44 @@ public class Transition {
 			
 		}
 		else {
-			view.stopMusic();
-			view.changeGameState(next);
-		}
+			//ripristina lo stato iniziale della classe
+			counter = 360;
+			saved = false;
 			
-		
+			//cambia la musica
+			view.stopMusic();
+			if(next == Gamestate.MAIN_MENU) 
+				view.playMusic(SoundManager.MENU_MUSIC);
+			
+			else 
+				view.playMusic(Stanze.stanzaAttuale.indiceMusica);
+			
+			view.setMusicVolume(volumeBeforeTransition);
+			
+			//cambia il gamestate
+			view.changeGameState(next);
+			resetNextPrev();
+			
+			
+			
+		}
+	
 	}
 
+	private void saveOldVolume() {
+		if (!saved) {
+			volumeBeforeTransition = view.getMusicVolume();
+			saved = true;
+		}
+	}
+
+	private void resetNextPrev() {
+		if(next == Gamestate.MAIN_MENU) {
+			next = Gamestate.PLAYING;
+			prev = Gamestate.SELECT_AVATAR;
+		}
+	}
+	
 	public Gamestate getPrev() {
 		return prev;
 	}
@@ -65,4 +105,5 @@ public class Transition {
 	public void setNext(Gamestate next) {
 		this.next = next;
 	}
+	
 }

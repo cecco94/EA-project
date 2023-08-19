@@ -18,8 +18,10 @@ public class GameWindow extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private IView view;
 
-	public GameWindow(GamePanel gp) {
+	public GameWindow(GamePanel gp, IView v) {
+		view = v;
 		setTitle("ENGINEERING ADVENTURE");
 	//	setUndecorated(true);		per togliere il sopra della finestra
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,12 +33,13 @@ public class GameWindow extends JFrame {
 		gestisciPerditaFocus();
 	}
 
-	//questo metodo serve per quando il gioco perde il focus
+	//questo metodo serve per quando la finestra di gioco perde il focus
+	//resetta i booleandella direzione del personaggiodd
 	private void gestisciPerditaFocus() {
 		addWindowFocusListener(new WindowFocusListener() { 
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				//gamePanel.getGame().windowFocusLost();	resetta i booleandella direzione del personaggio
+				view.getController().getPlay().getPlayer().resetBooleans(); 	
 			}
 			@Override
 			public void windowGainedFocus(WindowEvent e) {
