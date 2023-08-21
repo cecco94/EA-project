@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import controller.Gamestate;
+import controller.main.Gamestate;
 import view.IView;
 
 //classe astratta che contiene tutti i meetodi e le risorse comuni a tutti i tipi di bottone

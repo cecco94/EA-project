@@ -80,7 +80,7 @@ public class RoomModel {
 						int yPos = Integer.parseInt(datiNellaRiga[3]);
 						int width = Integer.parseInt(datiNellaRiga[4]);
 						int height = Integer.parseInt(datiNellaRiga[5]);
-						nemici.add(new EnemyController(type, xPos, yPos, width, height));
+					//	nemici.add(new EnemyController(type, xPos, yPos, width, height));
 					}
 					else if(rigaLetta.contains("-")) {		//il trattino indica npc
 						int type = Integer.parseInt(datiNellaRiga[1]);	
@@ -88,7 +88,7 @@ public class RoomModel {
 						int yPos = Integer.parseInt(datiNellaRiga[3]);
 						int width = Integer.parseInt(datiNellaRiga[4]);
 						int height = Integer.parseInt(datiNellaRiga[5]);
-						nemici.add(new NPCcontroller(type, xPos, yPos, width, height));
+					//	NPC.add(new NPCcontroller(type, xPos, yPos, width, height));
 					}
 					else if(rigaLetta.contains(";")) {		//il ; indica i passaggi
 						int prewX = Integer.parseInt(datiNellaRiga[1]);	

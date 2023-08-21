@@ -10,7 +10,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import controller.Gamestate;
+
+import controller.main.Gamestate;
 
 import static view.main.GamePanel.GAME_HEIGHT;
 import static view.main.GamePanel.GAME_WIDTH;

@@ -1,11 +1,13 @@
 package controller.playState.entityController;
 
-import controller.playState.PlayerController;
+import java.awt.Rectangle;
+
+import controller.playState.PlayStateController;
 
 public class EnemyController extends EntityController{
 
-	public EnemyController(int t, int x, int y, int w, int h) {
-		super(t, x, y, w, h);
+	public EnemyController(Rectangle r, PlayStateController p) {
+		super(r,p);
 		
 	}
 

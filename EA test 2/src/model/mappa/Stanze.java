@@ -6,7 +6,8 @@ public enum Stanze {
 
 	BIBLIOTECA(Map.BIBLIOTECA, SoundManager.BIBLIOTECA), 
 	DORMITORIO(Map.DORMITORIO, SoundManager.DORMITORIO), 
-	AULA_STUDIO(Map.AULA_STUDIO, SoundManager.SALA_STUDIO);
+	AULA_STUDIO(Map.AULA_STUDIO, SoundManager.AULA_STUDIO),
+	TENDA(Map.TENDA, SoundManager.TENDA);
 	
 	Stanze(int i, int music) {
 		indiceNellaMappa = i;
@@ -22,6 +23,8 @@ public enum Stanze {
 			return Stanze.BIBLIOTECA;
 		else if(i == Map.AULA_STUDIO)
 			return Stanze.AULA_STUDIO;
+		else if(i == Map.TENDA)
+			return Stanze.TENDA;
 		else
 			return Stanze.DORMITORIO;
 	}

@@ -4,8 +4,8 @@ import java.awt.AWTException;
 import java.awt.Graphics2D;
 import java.awt.Robot;
 
-import controller.Gamestate;
 import controller.IController;
+import controller.main.Gamestate;
 import model.IModel;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;

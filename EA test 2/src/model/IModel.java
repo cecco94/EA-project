@@ -20,11 +20,12 @@ public class IModel {
 	private TilesetModel tiles;
 	
 	private RoomModel[] stanze;
-	public final int BIBLIOTECA = 0, DORMITORIO = 1, AULA_STUDIO = 2;
 		
 	String percorsoDatiDormitorio = "/mappe/datiDormitorio.txt";
 	String percorsoDatiBiblioteca = "/mappe/datiBiblioteca.txt";
 	String percorsoDatiAlaStudio = "/mappe/datiAulaStudio.txt";
+	String percorsoDatiTenda = "/mappe/datiTenda.txt";
+		
 	
 	public IModel() {
 		mappa = new Map();
@@ -32,9 +33,11 @@ public class IModel {
 
 		stanze = new RoomModel[Map.NUM_STANZE];
 		
-		stanze[BIBLIOTECA] = new RoomModel(percorsoDatiBiblioteca);		
-		stanze[DORMITORIO] = new RoomModel(percorsoDatiDormitorio);
-		stanze[AULA_STUDIO] = new RoomModel(percorsoDatiAlaStudio);
+		stanze[Map.BIBLIOTECA] = new RoomModel(percorsoDatiBiblioteca);		
+		stanze[Map.DORMITORIO] = new RoomModel(percorsoDatiDormitorio);
+		stanze[Map.AULA_STUDIO] = new RoomModel(percorsoDatiAlaStudio);
+		stanze[Map.TENDA] = new RoomModel(percorsoDatiTenda);
+		
 	}
 
 	public Map getMappa() {

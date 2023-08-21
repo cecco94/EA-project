@@ -4,7 +4,7 @@ package view.inputs;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import controller.Gamestate;
+import controller.main.Gamestate;
 import view.IView;
 
 

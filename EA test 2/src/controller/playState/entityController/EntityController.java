@@ -3,26 +3,26 @@ package controller.playState.entityController;
 import java.awt.Rectangle;
 
 import controller.playState.Collisions;
-import controller.playState.PlayerController;
+import controller.playState.PlayStateController;
 
 public abstract class EntityController {
 
-	protected int type;
 	protected int xPos, yPos;
 	protected Rectangle hitbox;
 	protected int speed;
-	protected Collisions collisionChecker;
+	protected PlayStateController play;
 	
-	public EntityController (int t, int x, int y, int w, int h) {
-		type = t;
-		xPos = x;
-		yPos = y;
-		hitbox = new Rectangle(x, y, w, h);
+	public EntityController (Rectangle r, PlayStateController p) {
+		play = p;
+		
+		xPos = r.x;
+		yPos = r.y;
+		hitbox = new Rectangle(r.x, r.y, r.width, r.height);
 	}
 	
 	public abstract void update(PlayerController player);
 
 	public String toString() {
-		return type + ", " + xPos + ", " + yPos;
+		return xPos + ", " + yPos;
 	}
 }

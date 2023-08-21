@@ -94,7 +94,11 @@ public class PlayStateView {
 	//	g2.drawImage(effettoBuio, 0, 0, null);
 		
 		cat.draw(g2, playerMapX, playerMapY);
-	}
+		
+	//disegna proiettili
+		player.drawProjectiles(g2, playerMapX, playerMapY);
+	}			
+		
 
 	public void drawFloor(Graphics2D g2, int stanza, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {
 		for (int layer = 0; layer < Map.TERZO_STRATO; layer++)	//disegna i primi due strati

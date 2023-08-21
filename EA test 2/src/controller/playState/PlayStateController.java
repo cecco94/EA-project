@@ -4,8 +4,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
-import controller.Gamestate;
 import controller.IController;
+import controller.main.Gamestate;
+import controller.playState.entityController.PlayerController;
 import model.mappa.Stanze;
 
 //controlla ciò che accade nel gioco durante il play state
@@ -27,8 +28,7 @@ public class PlayStateController {
 	
 	public void update() {
 		//aggiorna il personaggio
-		playerController.updatePos();
-		playerController.isAbovePassaggio();
+		playerController.update();		
 		
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
 		//possiamo creare un array di room. ogni room contiene una lista di esseri ed oggetti
@@ -70,8 +70,9 @@ public class PlayStateController {
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE)
 			playerController.setParry(true);
 			
-		else if(e.getKeyCode() == KeyEvent.VK_P)
+		else if(e.getKeyCode() == KeyEvent.VK_P) {
 			playerController.setThrowing(true);
+		}
 			
 		else
 			playerController.choiceDirection(e);
@@ -86,8 +87,11 @@ public class PlayStateController {
 			controller.getView().getPlay().getPlayer().resetParry();
 		}
 		
-		else if(e.getKeyCode() == KeyEvent.VK_P)
+		else if(e.getKeyCode() == KeyEvent.VK_P) {
 			playerController.setThrowing(false);
+			playerController.addProjectile();
+			controller.getView().getPlay().getPlayer().addProjectile();
+		}
 		
 		else
 			playerController.resetDirection(e);
@@ -98,6 +102,9 @@ public class PlayStateController {
 			playerController.setAttacking(true);
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(true);
+		else if(SwingUtilities.isMiddleMouseButton(e)) {
+			playerController.setThrowing(true);
+		}
 	}
 
 	public void handleMouseReleased(MouseEvent e) {
@@ -105,6 +112,16 @@ public class PlayStateController {
 			playerController.setAttacking(false);
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(false);
+		else if(SwingUtilities.isMiddleMouseButton(e))
+			playerController.setThrowing(false);
+			playerController.addProjectile();
 	}
 	
+	public Collisions getCollisionChecker() {
+		return collisionCheck;
+	}
+	
+	public IController getController() {
+		return controller;
+	}
 }

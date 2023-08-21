@@ -12,7 +12,8 @@ public class SoundManager {
 	private float musicVolume = 0.2f, seVolume = 0.2f;
 	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[10];
-	public static final int MENU_MUSIC = 0, SALA_STUDIO = 1, DORMITORIO = 2, BIBLIOTECA = 3, COLPO = 4;
+	public static final int MENU_MUSIC = 0, AULA_STUDIO = 1, DORMITORIO = 2, BIBLIOTECA = 3,
+							COLPO = 4, TENDA = 5;
 	
 	// tutti i percorsi dei file dei suoni vengono inseriti in un array
 	public SoundManager() {
@@ -21,8 +22,8 @@ public class SoundManager {
 		soundURL[2] = getClass().getResource("/sound/dormitorioLeggera.wav");
 		soundURL[3] = getClass().getResource("/sound/bibliotecaLeggera.wav");
 		soundURL[4] = getClass().getResource("/sound/hitmonster.wav");
-	/*	soundURL[6] = getClass().getResource("/sound/fanfare.wav");
-		soundURL[7] = getClass().getResource("/sound/cursor.wav");
+		soundURL[5] = getClass().getResource("/sound/tenda.wav");
+		/*	soundURL[7] = getClass().getResource("/sound/cursor.wav");
 		soundURL[8] = getClass().getResource("/sound/receivedamage.wav");	*/
 		
 		setMusic(MENU_MUSIC);

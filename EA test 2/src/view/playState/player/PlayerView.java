@@ -1,14 +1,18 @@
 package view.playState.player;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
+import controller.playState.entityController.PlayerController;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
 import view.playState.drawOrder.SortableElement;
+import view.playState.entity.ProjectileView;
 import view.sound.SoundManager;
 
 //classe che contiene la parte grafica del giocatore
@@ -59,6 +63,10 @@ public class PlayerView extends SortableElement{
 	
 	private IView view;
 	
+	private ProjectileView[] appuntiVolanti;
+	//private int proiettiliInGiro;
+
+	
 	public PlayerView(IView v) {
 		view = v;
 		//servono per poter comparare il player con gli altri elementi grafici da ordinare
@@ -91,8 +99,37 @@ public class PlayerView extends SortableElement{
 		loadSleepImages(image, temp);
 		loadParryImages(image, temp);
 		loadThrowImages(image, temp);
+		
+		appuntiVolanti = new ProjectileView[5];
 	}
 
+	public void addProjectile() {
+		if(PlayerController.proiettiliInGiro < appuntiVolanti.length) {
+			Rectangle projectileBorders = new Rectangle(xOnScreen, yOnScreen, 32, 32);
+			appuntiVolanti[PlayerController.proiettiliInGiro] = new ProjectileView(projectileBorders, PlayerController.proiettiliInGiro, view);
+			PlayerController.proiettiliInGiro++;
+		}
+	}
+	
+	public void removeProjectile(int indexElementToRemove) {
+		//invece di eliminare l'oggetto basta far scorrere una casella indietro tutti quelli dopo
+		for(int i = indexElementToRemove; i < PlayerController.proiettiliInGiro; i++) {
+			//bisogna anche aggiornare l'indice dentro al proiettile
+			if(i == PlayerController.proiettiliInGiro - 1)
+				appuntiVolanti[i] = null;
+			else {
+				appuntiVolanti[i] = appuntiVolanti[i + 1];
+			}
+		}	
+		PlayerController.proiettiliInGiro--;
+	}
+	
+	public void drawProjectiles(Graphics2D g2, int px, int py) {
+		for (int i = 0; i < PlayerController.proiettiliInGiro; i++)
+			appuntiVolanti[i].draw(g2, px, py);
+	}
+	
+	
 	private void loadThrowImages(BufferedImage image, BufferedImage temp) {
 		playerAnimation[RAGAZZO][THROW] = new BufferedImage[4][2];		//ci sono 4 direzioni, ogni direzione ha 2 immagini	
 		try {
@@ -685,7 +722,7 @@ public class PlayerView extends SortableElement{
 		firstParry = false;
 	}
 
-	
+
 }
 
 

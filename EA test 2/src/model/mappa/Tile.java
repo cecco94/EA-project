@@ -8,7 +8,7 @@ public class Tile {
 	
 	private boolean solid;
 	private Rectangle hitbox;
-	private String name;
+	private String name;	//molto utile nel debugging
 	
 	public Tile(String name, String solid, String hitbox) {
 		this.name = name;

@@ -3,7 +3,7 @@ package view;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 
-import controller.Gamestate;
+import controller.main.Gamestate;
 import model.mappa.Stanze;
 import view.sound.SoundManager;
 
