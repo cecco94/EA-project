@@ -1,18 +1,15 @@
 package view.playState.player;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import controller.playState.entityController.PlayerController;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
 import view.playState.drawOrder.SortableElement;
-import view.playState.entity.ProjectileView;
 import view.sound.SoundManager;
 
 //classe che contiene la parte grafica del giocatore
@@ -44,7 +41,7 @@ public class PlayerView extends SortableElement{
 	
 	private static BufferedImage[][][][] playerAnimation;	//campo 0 = gender, primo campo = azione, secondo = direzione, terzo = immagine
 	private final static int IDLE = 0, RUN = 1, ATTACK = 2, PARRY = 3, DIE = 4, THROW = 5, SLEEP = 6;
-	private final static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
+	public final static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	private int currentAction = IDLE;
 	private int previousAction = RUN;
 	private int currentDirection = DOWN;
@@ -63,9 +60,6 @@ public class PlayerView extends SortableElement{
 	
 	private IView view;
 	
-	private ProjectileView[] appuntiVolanti;
-	//private int proiettiliInGiro;
-
 	
 	public PlayerView(IView v) {
 		view = v;
@@ -100,35 +94,7 @@ public class PlayerView extends SortableElement{
 		loadParryImages(image, temp);
 		loadThrowImages(image, temp);
 		
-		appuntiVolanti = new ProjectileView[5];
 	}
-
-	public void addProjectile() {
-		if(PlayerController.proiettiliInGiro < appuntiVolanti.length) {
-			Rectangle projectileBorders = new Rectangle(xOnScreen, yOnScreen, 32, 32);
-			appuntiVolanti[PlayerController.proiettiliInGiro] = new ProjectileView(projectileBorders, PlayerController.proiettiliInGiro, view);
-			PlayerController.proiettiliInGiro++;
-		}
-	}
-	
-	public void removeProjectile(int indexElementToRemove) {
-		//invece di eliminare l'oggetto basta far scorrere una casella indietro tutti quelli dopo
-		for(int i = indexElementToRemove; i < PlayerController.proiettiliInGiro; i++) {
-			//bisogna anche aggiornare l'indice dentro al proiettile
-			if(i == PlayerController.proiettiliInGiro - 1)
-				appuntiVolanti[i] = null;
-			else {
-				appuntiVolanti[i] = appuntiVolanti[i + 1];
-			}
-		}	
-		PlayerController.proiettiliInGiro--;
-	}
-	
-	public void drawProjectiles(Graphics2D g2, int px, int py) {
-		for (int i = 0; i < PlayerController.proiettiliInGiro; i++)
-			appuntiVolanti[i].draw(g2, px, py);
-	}
-	
 	
 	private void loadThrowImages(BufferedImage image, BufferedImage temp) {
 		playerAnimation[RAGAZZO][THROW] = new BufferedImage[4][2];		//ci sono 4 direzioni, ogni direzione ha 2 immagini	

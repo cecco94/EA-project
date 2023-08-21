@@ -2,11 +2,14 @@ package controller.playState;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
 import javax.swing.SwingUtilities;
 
 import controller.IController;
 import controller.main.Gamestate;
 import controller.playState.entityController.PlayerController;
+import controller.playState.entityController.Projectile;
 import model.mappa.Stanze;
 
 //controlla ciò che accade nel gioco durante il play state
@@ -15,11 +18,17 @@ public class PlayStateController {
 	private PlayerController playerController;
 	private Collisions collisionCheck;
 	private IController controller;
+
+	private ArrayList<Projectile> appuntiLanciati;
+	
+	
 	
 	public PlayStateController(IController c) {
 		controller = c;
 		collisionCheck = new Collisions(c); 
 		playerController = new PlayerController(collisionCheck, controller);
+		
+		appuntiLanciati = new ArrayList<>();
 	}
 
 	public PlayerController getPlayer() {
@@ -29,6 +38,10 @@ public class PlayStateController {
 	public void update() {
 		//aggiorna il personaggio
 		playerController.update();		
+		
+		//aggiorna i proiettili
+		for(int index = 0; index < appuntiLanciati.size(); index++)
+			appuntiLanciati.get(index).update(playerController);
 		
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
 		//possiamo creare un array di room. ogni room contiene una lista di esseri ed oggetti
@@ -89,8 +102,8 @@ public class PlayStateController {
 		
 		else if(e.getKeyCode() == KeyEvent.VK_P) {
 			playerController.setThrowing(false);
-			playerController.addProjectile();
-			controller.getView().getPlay().getPlayer().addProjectile();
+			addProjectile();
+			controller.getView().getPlay().addProjectile();
 		}
 		
 		else
@@ -100,8 +113,10 @@ public class PlayStateController {
 	public void handleMousePressed(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e))
 			playerController.setAttacking(true);
+		
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(true);
+		
 		else if(SwingUtilities.isMiddleMouseButton(e)) {
 			playerController.setThrowing(true);
 		}
@@ -110,11 +125,15 @@ public class PlayStateController {
 	public void handleMouseReleased(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e))
 			playerController.setAttacking(false);
+		
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(false);
-		else if(SwingUtilities.isMiddleMouseButton(e))
+		
+		else if(SwingUtilities.isMiddleMouseButton(e)) {
 			playerController.setThrowing(false);
-			playerController.addProjectile();
+			addProjectile();
+			controller.getView().getPlay().addProjectile();
+		}
 	}
 	
 	public Collisions getCollisionChecker() {
@@ -124,4 +143,22 @@ public class PlayStateController {
 	public IController getController() {
 		return controller;
 	}
+	
+	public void addProjectile() {
+		appuntiLanciati.add(new Projectile(playerController.getHitbox(), this, appuntiLanciati.size()));
+	}
+	
+	public void removeProjectile(int index) {
+		//siccome tutti quelli a destra di index si spostano a sinistra di uno, l'indice deve 
+		//essere aggiornato
+		for(int i = index + 1; i < appuntiLanciati.size(); i++)
+			appuntiLanciati.get(i).abbassaIndice();
+		
+		appuntiLanciati.remove(index);
+	}
+	
+	public ArrayList<Projectile> getAppuntiLanciati(){
+		return appuntiLanciati;
+	}
+	
 }

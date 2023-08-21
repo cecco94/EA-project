@@ -1,57 +1,116 @@
 package view.playState.entity;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import view.IView;
+import view.ViewUtils;
+import view.main.GamePanel;
 import view.playState.player.PlayerView;
 
 public class ProjectileView { 
 
-	public Rectangle borders;
 	public int index;
 	private IView view;
-//	private BufferedImage[] animazione;
+	private BufferedImage[] animazione;
 	
 	private int counter;
 	private int animationIndex;
-	private final int animationSpeed = 120;
+	private final int animationSpeed = 20;
+	private int direction;
+	private int xoffset, yoffset;
 	
-	public ProjectileView(Rectangle hit, int index, IView v) {
-		borders = hit;
+	public ProjectileView(int index, IView v) {
 		this.index = index;
 		view = v;
+		direction = v.getController().getPlay().getAppuntiLanciati().get(index).getDirection();
+		animazione = new BufferedImage[2];	//1 direzione, ciascuna con due immagini
+		loadAnimation();
+		
 	}
 	
+	private void loadAnimation() {
+		BufferedImage image = null;	
+		try {
+			if(direction == 0) {
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_left_1.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[0] = image;
+				
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_left_2.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[1] = image;
+			}
+			
+			else if(direction == 1) {
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_right_1.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[0] = image;
+				
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_right_2.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[1] = image;
+				xoffset += image.getWidth();
+			}
+			
+			else if(direction == 2) {
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_up_1.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[0] = image;
+				
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_up_2.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[1] = image;
+			}
+			
+			else if(direction == 3) {
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_down_1.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[0] = image;
+				
+				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_down_2.png"));
+				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
+				animazione[1] = image;
+				yoffset += image.getWidth();
+			}
+	
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+		
+
 	public void draw(Graphics2D g2, int playerx, int playery) {
 		counter++;
 		//decidiamo quando disegnare
-//		if(counter >= animationSpeed) {
-//			animationIndex++;
-//			
-//			//decidiamo cosa disegnare
-//			if(animationIndex > 1) {
-//				animationIndex = 0;
-//			}
+		if(counter >= animationSpeed) {
+			animationIndex++;
 			
+			//decidiamo cosa disegnare
+			if(animationIndex > 1) {
+				animationIndex = 0;
+			}
+			
+			counter = 0;
+		}
+		
 			//decidiamo dove disegnarlo
-			int xposInMap = view.getController().getPlay().getPlayer().getAppunti()[index].getHitbox().x;
-			int yposInMap = view.getController().getPlay().getPlayer().getAppunti()[index].getHitbox().y;
+			int xposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().x;
+			int yposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().y;
 			
 			int distanzax = playerx - xposInMap;
 			int distanzay = playery - yposInMap;
 			
-			int xPosOnScreen = PlayerView.xOnScreen - distanzax + PlayerView.xOffset;	
-			int yPosOnScreen = PlayerView.yOnScreen - distanzay + PlayerView.yOffset;
+			int xPosOnScreen = PlayerView.xOnScreen - distanzax + PlayerView.xOffset + xoffset;	
+			int yPosOnScreen = PlayerView.yOnScreen - distanzay + PlayerView.yOffset + yoffset;
 			
-			g2.setColor(Color.red);
-			g2.drawRect(xPosOnScreen, yPosOnScreen, borders.width, borders.height);
+			g2.drawImage(animazione[animationIndex], xPosOnScreen, yPosOnScreen, null);
 			
-//		}
-//		else
-//			counter = 0;
+
 			
 	}
 	

@@ -2,7 +2,6 @@ package controller.playState.entityController;
 
 import java.awt.Rectangle;
 
-import controller.playState.Collisions;
 import controller.playState.PlayStateController;
 
 public abstract class EntityController {

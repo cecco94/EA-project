@@ -2,22 +2,19 @@ package view.playState;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import javax.imageio.ImageIO;
 
 import model.IModel;
 import model.mappa.Map;
 import model.mappa.Stanze;
 import view.IView;
-import view.ViewUtils;
 import view.main.GamePanel;
 import view.mappa.TilesetView;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
-import view.playState.entity.CatView;
+import view.playState.entity.ProjectileView;
 import view.playState.player.PlayerView;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
@@ -27,13 +24,12 @@ public class PlayStateView {
 	private TilesetView tileset;
 	private PlayerView player;
 	private IView view;
-	private CatView cat;
 	
 	//per disegnarli dall'alto verso il basso, mettiamo tutti gli elementi della mappa in una lista
 	//che poi ordineremo
-	private ArrayList<SortableElement> drawOrder;
+	private ArrayList<SortableElement> drawOrder;	
+	private ArrayList<ProjectileView> appuntiLanciati;
 	
-	private BufferedImage effettoBuio;
 	private PlayUI ui;
 	
 	public PlayStateView(IModel m, TilesetView t, IView v) {
@@ -41,21 +37,14 @@ public class PlayStateView {
 		model = m;
 		tileset = t;
 		
-		cat = new CatView(v);
+	//	cat = new CatView(v);
 		
 		ui = new PlayUI(this);
 		
 		player = new PlayerView(view);
 		drawOrder = new ArrayList<>();
 		
-		
-		try {
-			effettoBuio = ImageIO.read(getClass().getResourceAsStream("/mappe/effettoBuio2.png"));
-			effettoBuio = ViewUtils.scaleImage(effettoBuio, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT);
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		}
+		appuntiLanciati = new ArrayList<>();
 
 	}
 	
@@ -74,6 +63,10 @@ public class PlayStateView {
 		//il pavimento viene sempre disegnato sotto a tutto
 		drawFloor(g2, stanza, firstTileInFrameCol, firstTileInFrameRow, playerMapX, playerMapY);
 		
+		//disegna proiettili
+		for(int index = 0; index < appuntiLanciati.size(); index++)
+			appuntiLanciati.get(index).draw(g2, playerMapX, playerMapY);
+		
 		//aggiungi nella lista gli elementi degli ultimi due strati
 		addTilesToSortList(drawOrder, stanza, firstTileInFrameCol, firstTileInFrameRow);
 		
@@ -90,13 +83,6 @@ public class PlayStateView {
 		//svuota la lista per ricominciare il frame successivo
 		drawOrder.clear();
 		
-		
-	//	g2.drawImage(effettoBuio, 0, 0, null);
-		
-		cat.draw(g2, playerMapX, playerMapY);
-		
-	//disegna proiettili
-		player.drawProjectiles(g2, playerMapX, playerMapY);
 	}			
 		
 
@@ -172,6 +158,16 @@ public class PlayStateView {
 		return ui;
 	}
 	
+	public void addProjectile() {
+		appuntiLanciati.add(new ProjectileView(appuntiLanciati.size(), view));
+	}
+	
+	public void removeProjectile(int indexRemove) {
+		for(int i = indexRemove + 1; i < appuntiLanciati.size(); i++)
+			appuntiLanciati.get(i).index--;
+		
+		appuntiLanciati.remove(indexRemove);
+	}
 }
 
 	

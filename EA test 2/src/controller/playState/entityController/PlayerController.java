@@ -1,5 +1,6 @@
 package controller.playState.entityController;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
@@ -12,16 +13,16 @@ public class PlayerController {
 
 	private IController controller;
 	private Rectangle hitbox, tempHitboxForCheck;
+	private Collisions collisionCheck;
+
 	private int speed = (int)(GamePanel.SCALE*1.3f);
 	private boolean moving, attacking, parry, throwing, left, right, up, down;
-	private Collisions collisionCheck;
-	
+	// ci serve per ricordare l'ultima direzione del giocatore per quando lancia gli appunti
+	private Point direction;
+		
 	private boolean isAttackAnimation;
 	private int attackCounter;
-	
-	private Projectile[] appuntiVolanti;
-	public static int proiettiliInGiro;
-	
+
 	
 	public PlayerController(Collisions collcheck, IController c) {
 		controller = c;
@@ -35,25 +36,14 @@ public class PlayerController {
 		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		collisionCheck = collcheck;
 		
-		appuntiVolanti = new Projectile[5];
+		direction = new Point(0,1);
 	}
 	
 
 	public void update() {
 		updatePos();
 		isAbovePassaggio();
-		checkProjectile();
 	}
-	
-	
-	private void checkProjectile() {
-		//se abbiamo 2 proiettili volanti, i va da 0 a 1
-		for(int i = 0; i < proiettiliInGiro; i++)
-			appuntiVolanti[i].update(this);
-		
-		System.out.println(proiettiliInGiro);
-	}
-
 
 	void updatePos() {
 			
@@ -67,6 +57,8 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y;
 			if(collisionCheck.canMoveLeft(tempHitboxForCheck)) {
 				hitbox.x -= speed;
+				direction.x = -1;
+				direction.y = 0;
 				setMoving(true);
 			}
 		} 
@@ -75,6 +67,8 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y;
 			if(collisionCheck.canMoveRight(tempHitboxForCheck)) {
 				hitbox.x += speed;
+				direction.x = +1;
+				direction.y = 0;
 				setMoving(true);
 			}
 		}
@@ -83,6 +77,8 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y - speed;
 			if(collisionCheck.canMoveUp(tempHitboxForCheck)) {
 				hitbox.y -= speed;
+				direction.x = 0;
+				direction.y = -1;
 				setMoving(true);
 			}
 		} 
@@ -91,6 +87,8 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y + speed;
 			if(collisionCheck.canMoveDown(tempHitboxForCheck)) {
 				hitbox.y += speed;
+				direction.x = 0;
+				direction.y = 1;
 				setMoving(true);
 			}
 		}
@@ -192,10 +190,10 @@ public class PlayerController {
 
 	public void setAttacking(boolean attacking) {
 		this.attacking = attacking;
-		if(attacking) {
-			isAttackAnimation = true;
-		}
+		if(attacking) 
+			isAttackAnimation = true;	
 	}
+	
 
 	public void isAbovePassaggio() {
 		// vedi in che stanza sei, vedi la lista dei passaggi, controllali
@@ -221,40 +219,13 @@ public class PlayerController {
 
 	public void setThrowing(boolean throwing) {
 		this.throwing = throwing;
-	}
-	
-	public void addProjectile() {
-		if(proiettiliInGiro < appuntiVolanti.length) {
-			//se ci sono già 2 proiettili volanti, il terzo viene messo nella casella 2 = proiettiliInGiro
-			appuntiVolanti[proiettiliInGiro] = new Projectile(hitbox, controller.getPlay(), proiettiliInGiro);
-			proiettiliInGiro++;			
-		}
-	}
-	
-	public void removeProjectile(int indexElementToRemove) {
-		if(proiettiliInGiro > 0) {			
-			for(int i = indexElementToRemove; i < proiettiliInGiro; i++) {
-				//bisogna anche aggiornare l'indice dentro al proiettile
-				if(i == proiettiliInGiro - 1)
-					appuntiVolanti[i] = null;
-				else {
-				appuntiVolanti[i  + 1].indexInList--;		
-				appuntiVolanti[i] = appuntiVolanti[i + 1];
-				}
-			}
-			
-			proiettiliInGiro--;
-		}
-	}
-	
+	}	
 	
 	public String toString() {
 		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
 	}
 
-
-	public Projectile[] getAppunti() {
-		return appuntiVolanti;
+	public Point getDirection() {
+		return direction;
 	}
-
 }
