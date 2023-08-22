@@ -21,7 +21,6 @@ public class ProjectileView {
 	private int animationIndex;
 	private final int animationSpeed = 20;
 	private int direction;
-	private int xoffset, yoffset;
 	
 	public ProjectileView(int index, IView v) {
 		this.index = index;
@@ -53,7 +52,6 @@ public class ProjectileView {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_right_2.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
 				animazione[1] = image;
-				xoffset += image.getWidth();
 			}
 			
 			else if(direction == 2) {
@@ -74,12 +72,13 @@ public class ProjectileView {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_down_2.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
 				animazione[1] = image;
-				yoffset += image.getWidth();
 			}
 	
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
+			view.getPlay().getAppunti().clear();
+			view.getController().getPlay().getAppuntiLanciati().clear();
 		}
 	}
 		
@@ -98,6 +97,7 @@ public class ProjectileView {
 			counter = 0;
 		}
 		
+		try {
 			//decidiamo dove disegnarlo
 			int xposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().x;
 			int yposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().y;
@@ -105,12 +105,19 @@ public class ProjectileView {
 			int distanzax = playerx - xposInMap;
 			int distanzay = playery - yposInMap;
 			
-			int xPosOnScreen = PlayerView.xOnScreen - distanzax + PlayerView.xOffset + xoffset;	
-			int yPosOnScreen = PlayerView.yOnScreen - distanzay + PlayerView.yOffset + yoffset;
+			int xPosOnScreen = PlayerView.xOnScreen - distanzax + PlayerView.xOffset;	
+			int yPosOnScreen = PlayerView.yOnScreen - distanzay + PlayerView.yOffset;
 			
 			g2.drawImage(animazione[animationIndex], xPosOnScreen, yPosOnScreen, null);
 			
-
+		}
+		catch (IndexOutOfBoundsException obe) {
+			//obe.printStackTrace();
+			System.out.println("problemi nel view projectile");
+			//in caso di problemi elimina tutti gli appunti in giro
+			view.getPlay().getAppunti().clear();
+			view.getController().getPlay().getAppuntiLanciati().clear();
+		}
 			
 	}
 	

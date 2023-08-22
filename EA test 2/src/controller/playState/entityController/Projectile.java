@@ -5,62 +5,69 @@ import java.awt.Rectangle;
 import controller.playState.PlayStateController;
 import view.main.GamePanel;
 
-public class Projectile extends EntityController {
+public class Projectile {
 
 	private boolean hit = false;
 	private int indexInList;
 	private int direction;
-	private final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
+	private Rectangle hitbox;
+	private int speed;
+	private PlayStateController play;
 	
-	public Projectile(Rectangle r, PlayStateController p, int i) {
-		super(r, p);
-		speed = (int)(GamePanel.SCALE);
-		indexInList = i;
-		setDirection();
+	public Projectile(PlayStateController p, int index) {
+		play = p;
+		direction = p.getPlayer().getDirection();
+		setHitbox();
+		speed = (int)(GamePanel.SCALE*1.3f);
+		indexInList = index;
 	}
 
-	private void setDirection() {
-		if(play.getPlayer().getDirection().x == -1) {
-			direction = LEFT;
-		}
-		else if(play.getPlayer().getDirection().x == 1) {
-			direction = RIGHT;
-		//	hitbox.x += hitbox.width;
-		}
-		else if(play.getPlayer().getDirection().y == -1) {
-			direction = UP;
-		}
-		else {
-			direction = DOWN;	
-		//	hitbox.y += hitbox.height;
-		}
+	private void setHitbox() {
+		
+		int width = play.getPlayer().getHitbox().width;
+		int height = play.getPlayer().getHitbox().height;
+		int x = play.getPlayer().getHitbox().x;
+		int y = play.getPlayer().getHitbox().y;
+		
+		if(direction == PlayerController.RIGHT)
+			x += width;
+		else if(direction == PlayerController.DOWN)
+			y += height;
+		
+		hitbox = new Rectangle(x, y, width, height);
 	}
 
-	@Override
 	public void update(PlayerController player) {
 		checkSolid();
 		updatePosition();
 	}
 
 	private void checkSolid() {
-		switch(direction) {
-		case LEFT: 
-			if(!play.getCollisionChecker().canMoveLeft(hitbox)) 
-				hit = true;
-			break;
-		case RIGHT:
-			if(!play.getCollisionChecker().canMoveRight(hitbox)) 
-				hit = true;
-			break;
-		case UP:
-			if(!play.getCollisionChecker().canMoveUp(hitbox)) 
-				hit = true;
-			break;
-		case DOWN:
-			if(!play.getCollisionChecker().canMoveDown(hitbox)) 
-				hit = true;
-			break;
+		try {
+			switch(direction) {
+			case PlayerController.LEFT: 
+				if(!play.getCollisionChecker().canMoveLeft(hitbox)) 
+					hit = true;
+				break;
+			case PlayerController.RIGHT:
+				if(!play.getCollisionChecker().canMoveRight(hitbox)) 
+					hit = true;
+				break;
+			case PlayerController.UP:
+				if(!play.getCollisionChecker().canMoveUp(hitbox)) 
+					hit = true;
+				break;
+			case PlayerController.DOWN:
+				if(!play.getCollisionChecker().canMoveDown(hitbox)) 
+					hit = true;
+				break;
 			}		
+		}
+		catch(ArrayIndexOutOfBoundsException obe) {
+			play.getController().getView().getPlay().removeProjectile(indexInList);
+			play.removeProjectile(indexInList);
+			System.out.println("fuori dai bordi");
+		}
 		
 		if(hit) {
 			play.getController().getView().getPlay().removeProjectile(indexInList);
@@ -70,16 +77,16 @@ public class Projectile extends EntityController {
 
 	private void updatePosition() {
 		switch(direction) {
-		case LEFT:
+		case PlayerController.LEFT:
 			hitbox.x -= speed;
 			break;
-		case RIGHT:
+		case PlayerController.RIGHT:
 			hitbox.x += speed;
 			break;
-		case UP:
+		case PlayerController.UP:
 			hitbox.y -= speed;
 			break;
-		case DOWN:
+		case PlayerController.DOWN:
 			hitbox.y += speed;
 			break;
 		}

@@ -6,9 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import controller.playState.entityController.EnemyController;
 import controller.playState.entityController.EntityController;
-import controller.playState.entityController.NPCcontroller;
 
 public class RoomModel {
 
@@ -75,19 +73,19 @@ public class RoomModel {
 					datiNellaRiga = rigaLetta.trim().split(", ");
 				
 					if(rigaLetta.contains("/")) {	// lo slash indica che è un nemico								
-						int type = Integer.parseInt(datiNellaRiga[1]);	//parte da uno perchè il primo campo serve al lettore
-						int xPos = Integer.parseInt(datiNellaRiga[2]);
-						int yPos = Integer.parseInt(datiNellaRiga[3]);
-						int width = Integer.parseInt(datiNellaRiga[4]);
-						int height = Integer.parseInt(datiNellaRiga[5]);
+//						int type = Integer.parseInt(datiNellaRiga[1]);	//parte da uno perchè il primo campo serve al lettore
+//						int xPos = Integer.parseInt(datiNellaRiga[2]);
+//						int yPos = Integer.parseInt(datiNellaRiga[3]);
+//						int width = Integer.parseInt(datiNellaRiga[4]);
+//						int height = Integer.parseInt(datiNellaRiga[5]);
 					//	nemici.add(new EnemyController(type, xPos, yPos, width, height));
 					}
 					else if(rigaLetta.contains("-")) {		//il trattino indica npc
-						int type = Integer.parseInt(datiNellaRiga[1]);	
-						int xPos = Integer.parseInt(datiNellaRiga[2]);
-						int yPos = Integer.parseInt(datiNellaRiga[3]);
-						int width = Integer.parseInt(datiNellaRiga[4]);
-						int height = Integer.parseInt(datiNellaRiga[5]);
+//						int type = Integer.parseInt(datiNellaRiga[1]);	
+//						int xPos = Integer.parseInt(datiNellaRiga[2]);
+//						int yPos = Integer.parseInt(datiNellaRiga[3]);
+//						int width = Integer.parseInt(datiNellaRiga[4]);
+//						int height = Integer.parseInt(datiNellaRiga[5]);
 					//	NPC.add(new NPCcontroller(type, xPos, yPos, width, height));
 					}
 					else if(rigaLetta.contains(";")) {		//il ; indica i passaggi

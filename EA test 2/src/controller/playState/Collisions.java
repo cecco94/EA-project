@@ -54,7 +54,7 @@ public class Collisions {
 		return canMove;
 	}
 
-	public boolean canMoveRight(Rectangle hitboxPlayer) {
+	public boolean canMoveRight(Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
 		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
 
@@ -86,7 +86,7 @@ public class Collisions {
 		return canMove;
 	}
 
-	public boolean canMoveUp(Rectangle hitboxPlayer) {
+	public boolean canMoveUp(Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
 		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
 		
@@ -118,7 +118,7 @@ public class Collisions {
 	
 	}
 
-	public boolean canMoveDown(Rectangle hitboxPlayer) {
+	public boolean canMoveDown (Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
 		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
 		

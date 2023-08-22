@@ -1,6 +1,5 @@
 package controller.playState.entityController;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
@@ -18,8 +17,10 @@ public class PlayerController {
 	private int speed = (int)(GamePanel.SCALE*1.3f);
 	private boolean moving, attacking, parry, throwing, left, right, up, down;
 	// ci serve per ricordare l'ultima direzione del giocatore per quando lancia gli appunti
-	private Point direction;
-		
+	public static final int LEFT = 0, RIGHT = 1, UP = 2, DOWN = 3;
+	private int direction;
+	
+	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
 	private int attackCounter;
 
@@ -35,8 +36,7 @@ public class PlayerController {
 		hitbox = new Rectangle(hitboxX, hitboxY, hitboxWidth, hitboxHeight);	
 		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		collisionCheck = collcheck;
-		
-		direction = new Point(0,1);
+		direction = DOWN;
 	}
 	
 
@@ -57,8 +57,7 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y;
 			if(collisionCheck.canMoveLeft(tempHitboxForCheck)) {
 				hitbox.x -= speed;
-				direction.x = -1;
-				direction.y = 0;
+				direction = LEFT;
 				setMoving(true);
 			}
 		} 
@@ -67,8 +66,7 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y;
 			if(collisionCheck.canMoveRight(tempHitboxForCheck)) {
 				hitbox.x += speed;
-				direction.x = +1;
-				direction.y = 0;
+				direction = RIGHT;
 				setMoving(true);
 			}
 		}
@@ -77,8 +75,7 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y - speed;
 			if(collisionCheck.canMoveUp(tempHitboxForCheck)) {
 				hitbox.y -= speed;
-				direction.x = 0;
-				direction.y = -1;
+				direction = UP;
 				setMoving(true);
 			}
 		} 
@@ -87,8 +84,7 @@ public class PlayerController {
 			tempHitboxForCheck.y = hitbox.y + speed;
 			if(collisionCheck.canMoveDown(tempHitboxForCheck)) {
 				hitbox.y += speed;
-				direction.x = 0;
-				direction.y = 1;
+				direction = DOWN;
 				setMoving(true);
 			}
 		}
@@ -194,7 +190,6 @@ public class PlayerController {
 			isAttackAnimation = true;	
 	}
 	
-
 	public void isAbovePassaggio() {
 		// vedi in che stanza sei, vedi la lista dei passaggi, controllali
 		// se si, cambia mappa e posiz del player
@@ -225,7 +220,7 @@ public class PlayerController {
 		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
 	}
 
-	public Point getDirection() {
+	public int getDirection() {
 		return direction;
 	}
 }

@@ -14,9 +14,9 @@ public abstract class EntityController {
 	public EntityController (Rectangle r, PlayStateController p) {
 		play = p;
 		
+		hitbox = r;
 		xPos = r.x;
 		yPos = r.y;
-		hitbox = new Rectangle(r.x, r.y, r.width, r.height);
 	}
 	
 	public abstract void update(PlayerController player);

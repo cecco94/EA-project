@@ -16,6 +16,7 @@ import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
 import view.playState.entity.ProjectileView;
 import view.playState.player.PlayerView;
+import view.sound.SoundManager;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
 public class PlayStateView {
@@ -160,13 +161,24 @@ public class PlayStateView {
 	
 	public void addProjectile() {
 		appuntiLanciati.add(new ProjectileView(appuntiLanciati.size(), view));
+		view.playSE(SoundManager.FUOCO);
 	}
 	
 	public void removeProjectile(int indexRemove) {
-		for(int i = indexRemove + 1; i < appuntiLanciati.size(); i++)
+		for(int i = indexRemove; i < appuntiLanciati.size(); i++)
 			appuntiLanciati.get(i).index--;
-		
+		try {
 		appuntiLanciati.remove(indexRemove);
+		}
+		catch(IndexOutOfBoundsException iobe) {
+			System.out.println("lista appunti finita");
+			appuntiLanciati.clear();
+			view.getController().getPlay().getAppuntiLanciati().clear();
+		}
+	}
+	
+	public ArrayList<ProjectileView> getAppunti() {
+		return appuntiLanciati;
 	}
 }
 

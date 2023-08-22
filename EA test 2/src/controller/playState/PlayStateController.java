@@ -19,9 +19,7 @@ public class PlayStateController {
 	private Collisions collisionCheck;
 	private IController controller;
 
-	private ArrayList<Projectile> appuntiLanciati;
-	
-	
+	private ArrayList<Projectile> appuntiLanciati;	
 	
 	public PlayStateController(IController c) {
 		controller = c;
@@ -40,8 +38,7 @@ public class PlayStateController {
 		playerController.update();		
 		
 		//aggiorna i proiettili
-		for(int index = 0; index < appuntiLanciati.size(); index++)
-			appuntiLanciati.get(index).update(playerController);
+		updateProjectiles();
 		
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
 		//possiamo creare un array di room. ogni room contiene una lista di esseri ed oggetti
@@ -58,6 +55,11 @@ public class PlayStateController {
 		}
 	}
 	
+	private void updateProjectiles() {
+		for(int index = 0; index < appuntiLanciati.size(); index++)
+			appuntiLanciati.get(index).update(playerController);	
+	}
+
 	public void setPlayerPos(int x, int y) {
 		playerController.getHitbox().x = x;
 		playerController.getHitbox().y = y;	
@@ -69,6 +71,9 @@ public class PlayStateController {
 		playerController.getHitbox().x = controller.getModel().getNewXPos();
 		playerController.getHitbox().y = controller.getModel().getNewYPos();	
 		playerController.resetBooleans();
+		
+		appuntiLanciati.clear();
+		controller.getView().getPlay().getAppunti().clear();
 	}
 	
 	public void handleKeyPressed(KeyEvent e) {
@@ -145,16 +150,22 @@ public class PlayStateController {
 	}
 	
 	public void addProjectile() {
-		appuntiLanciati.add(new Projectile(playerController.getHitbox(), this, appuntiLanciati.size()));
+		appuntiLanciati.add(new Projectile(this, appuntiLanciati.size()));
 	}
 	
 	public void removeProjectile(int index) {
 		//siccome tutti quelli a destra di index si spostano a sinistra di uno, l'indice deve 
 		//essere aggiornato
-		for(int i = index + 1; i < appuntiLanciati.size(); i++)
+		for(int i = index; i < appuntiLanciati.size(); i++)
 			appuntiLanciati.get(i).abbassaIndice();
-		
-		appuntiLanciati.remove(index);
+		try {
+			appuntiLanciati.remove(index);
+		}
+		catch(IndexOutOfBoundsException iobe) {
+			appuntiLanciati.clear();
+			controller.getView().getPlay().getAppunti().clear();
+			System.out.println("problemi appunti controller");
+		}
 	}
 	
 	public ArrayList<Projectile> getAppuntiLanciati(){
