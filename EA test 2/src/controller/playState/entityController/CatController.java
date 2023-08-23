@@ -34,8 +34,10 @@ public class CatController extends EntityController {
 			resetaction();
 			azioneACaso = randomGenerator.nextInt(2);
 			
-			if (azioneACaso == 0) 
+			if (azioneACaso == 0) {
 				idle = true;
+				moving = false;
+			}
 			else
 				moving = true;
 		}

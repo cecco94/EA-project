@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import model.mappa.Stanze;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
@@ -94,11 +95,14 @@ public class CatView extends EntityView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-		setAction();
-		setDirection();
 
 		if (animationCounter > animationSpeed) {
+			
 			numSprite ++;	
+
+			setAction();
+			setDirection();
+			
 			if(numSprite >= getAnimationLenght())
 				numSprite = 0;	
 			
@@ -113,22 +117,50 @@ public class CatView extends EntityView {
 		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + PlayerView.getXOffset();	
 		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + PlayerView.getYOffset();
 		
-		g2.drawImage(animation[BIANCO][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+		try {
+			g2.drawImage(animation[BIANCO][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+		}
+		catch (ArrayIndexOutOfBoundsException a) {
+			System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
+		}
 		
 	}
 
 	private void setAction() {
 		//vede nel controller cosa fa il gatto e cambia currentAction
+		currentAction = view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).
+															getNPC().get(index).getCurrentAction();
+		
+		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
+		if(currentAction != previousAction) {
+			numSprite = 0;
+			previousAction = currentAction;
+		}
 	}
 	
 	private void setDirection() {
 		//vede nel controller la direzione del gatto e cambia currentDirection
+		currentDirection = view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).
+															getNPC().get(index).getCurrentDirection();
+		
+		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up
+		if(currentDirection == RIGHT)
+			currentDirection = 2;
+		
+		else if(currentDirection == LEFT)
+			currentDirection = 1;
+		
+		else if(currentDirection == DOWN)
+			currentDirection = 0;
+		
+		else if(currentDirection == UP)
+			currentDirection = 3;
 	}
-
 
 	private int getAnimationLenght() {
 		if(currentAction == IDLE)
 			return 1;
+		
 		else if(currentAction == RUN)
 			return 3;
 		
