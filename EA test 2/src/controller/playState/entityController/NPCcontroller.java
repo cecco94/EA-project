@@ -12,7 +12,7 @@ public class NPCcontroller extends EntityController{
 	}
 
 	@Override
-	public void update(PlayerController player) {
+	public void update() {
 		// TODO Auto-generated method stub
 		
 	} 

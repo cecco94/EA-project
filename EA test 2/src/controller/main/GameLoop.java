@@ -29,7 +29,7 @@ public class GameLoop implements Runnable {
 		controller = new IController();
 		caricamento.showProgress(30);
 		
-		model = new IModel();
+		model = new IModel(controller);
 		controller.setModel(model);
 		caricamento.showProgress(60);
 		

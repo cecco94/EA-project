@@ -14,8 +14,8 @@ import view.main.GamePanel;
 import view.mappa.TilesetView;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
-import view.playState.entity.ProjectileView;
-import view.playState.player.PlayerView;
+import view.playState.entityView.PlayerView;
+import view.playState.entityView.ProjectileView;
 import view.sound.SoundManager;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
@@ -30,6 +30,7 @@ public class PlayStateView {
 	//che poi ordineremo
 	private ArrayList<SortableElement> drawOrder;	
 	private ArrayList<ProjectileView> appuntiLanciati;
+	private RoomView[] stanzeView;
 	
 	private PlayUI ui;
 	
@@ -38,8 +39,6 @@ public class PlayStateView {
 		model = m;
 		tileset = t;
 		
-	//	cat = new CatView(v);
-		
 		ui = new PlayUI(this);
 		
 		player = new PlayerView(view);
@@ -47,12 +46,17 @@ public class PlayStateView {
 		
 		appuntiLanciati = new ArrayList<>();
 
+		stanzeView = new RoomView[Stanze.numStanze];
+		stanzeView[Stanze.BIBLIOTECA.indiceMappa] = new RoomView(this, Stanze.BIBLIOTECA.indiceMappa);
+		stanzeView[Stanze.AULA_STUDIO.indiceMappa] = new RoomView(this, Stanze.AULA_STUDIO.indiceMappa);
+		stanzeView[Stanze.DORMITORIO.indiceMappa] = new RoomView(this, Stanze.DORMITORIO.indiceMappa);
+		stanzeView[Stanze.TENDA.indiceMappa] = new RoomView(this, Stanze.TENDA.indiceMappa);
 	}
 	
 	//prima disegna il pavimento, poi ci disegna sopra tutti gli oggetti partendo dall'alto, in modo il player che sta sotto
 	//ad un tile sembri stare davanti a quel tile e viceversa. stiamo aggiungendo tridimensionalità al gioco
 	public void draw(Graphics2D g2) {
-		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
+		int stanza = Stanze.stanzaAttuale.indiceMappa;
 		//prendiamo la posizione del player nella mappa (in quale tile tile si trova il punto in alto a sinitra della hitbox)
 		//contiamo a sinistra -10 e a destra +10, in su -7 e in giù +7 e prendiamo solo le parti della matrice con questi numeri
 		int playerMapX = view.getController().getPlay().getPlayer().getHitbox().x;
@@ -71,7 +75,7 @@ public class PlayStateView {
 		//aggiungi nella lista gli elementi degli ultimi due strati
 		addTilesToSortList(drawOrder, stanza, firstTileInFrameCol, firstTileInFrameRow);
 		
-		//cambia xpos e ypos del player e lo aggiunge
+		//aggiorna xpos e ypos del player e lo aggiunge, poi aggiunge le entità nella stanza vicino al giocatore
 		addNPCandPlayer(drawOrder, playerMapX, playerMapY);
 					
 		//collections è una classe di utilità che implementa un algoritmo veloce di ordinamento
@@ -79,14 +83,13 @@ public class PlayStateView {
 		
 		//richiama il metodo draw su ogni elemento in ordine
 		//per capire dove disegnare gli elementi nello schermo, ci serve la posizione del giocatore
-		drawAllElementsAboveFloor(g2,playerMapX,  playerMapY);
+		drawAllElementsAboveFloor(g2, playerMapX,  playerMapY);
 		
 		//svuota la lista per ricominciare il frame successivo
 		drawOrder.clear();
 		
 	}			
 		
-
 	public void drawFloor(Graphics2D g2, int stanza, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {
 		for (int layer = 0; layer < Map.TERZO_STRATO; layer++)	//disegna i primi due strati
 			drawLayer(g2, stanza, layer, xMappaIniziale, yMappaIniziale, playerMapX, playerMapY);
@@ -107,8 +110,8 @@ public class PlayStateView {
 					int distanzaX = playerMapX - colonna*GamePanel.TILES_SIZE;
 					int distanzaY = playerMapY - riga*GamePanel.TILES_SIZE;
 					
-					int xScreenTile = PlayerView.xOnScreen - distanzaX + player.getXOffset();
-					int yScreenTile = PlayerView.yOnScreen - distanzaY + player.getYOffset();
+					int xScreenTile = PlayerView.xOnScreen - distanzaX + PlayerView.getXOffset();
+					int yScreenTile = PlayerView.yOnScreen - distanzaY + PlayerView.getYOffset();
 							
 					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile).getImage();
 					g2.drawImage(tileDaDisegnare, xScreenTile, yScreenTile, null);
@@ -139,6 +142,15 @@ public class PlayStateView {
 	private void addNPCandPlayer(ArrayList<SortableElement> drawOrder, int posizPlayerX, int posizPlayerY) {
 		player.setMapPositionForSort(posizPlayerX, posizPlayerY);
 		drawOrder.add(player);
+		
+		//aggiungiamo solo gli npc e i nemici nella stanza vicino al giocatore
+		switch(Stanze.stanzaAttuale) {
+		case AULA_STUDIO:
+			stanzeView[Stanze.AULA_STUDIO.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			break;
+		default:
+			break;
+		}
 	}
 
 	private void drawAllElementsAboveFloor(Graphics2D g2, int posizPlayerX, int posizPlayerY) {
@@ -179,6 +191,11 @@ public class PlayStateView {
 	
 	public ArrayList<ProjectileView> getAppunti() {
 		return appuntiLanciati;
+	}
+
+	public RoomView getRoom(int index) {
+		return stanzeView[index];
+		
 	}
 }
 

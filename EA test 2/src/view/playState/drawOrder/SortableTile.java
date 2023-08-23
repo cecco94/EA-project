@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import view.main.GamePanel;
 import view.mappa.TilesetView;
-import view.playState.player.PlayerView;
+import view.playState.entityView.PlayerView;
 
 //è un oggetto che contiene il tipo di tile da disegnare e la sua posizione. Siccome contiene solo tre int
 //è molto leggero è può essere istanziato/eliminato più velocemente di un tile normale
@@ -35,8 +35,8 @@ public class SortableTile extends SortableElement{
 		
 		//ci serve un offset perchè la distanza del tile nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + PlayerView.xOffset;	
-		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + PlayerView.yOffset;
+		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + PlayerView.getXOffset();	
+		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + PlayerView.getYOffset();
 		
 		BufferedImage img = tileset.getTile(numberInTileset).getImage();
 		g2.drawImage(img, xPosOnScreen, yPosOnScreen, null);

@@ -6,61 +6,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import controller.playState.entityController.EntityController;
+import model.IModel;
 
 public class RoomModel {
-
-	private ArrayList<EntityController> nemici;
-	private ArrayList<EntityController> NPC;
-	public ArrayList<Passaggio> passaggi;
 	
-	public RoomModel(String percorsoFile) {
-		
+	private ArrayList<Passaggio> passaggi;
+	private IModel model;
+
+	public RoomModel(String percorsoFile, IModel m, int index) {
+		model = m;
 		passaggi = new ArrayList<>();
-		nemici = new ArrayList<>();
-		NPC = new ArrayList<>();
-		aggiungiElementiAllaStanza(percorsoFile);
+		aggiungiElementiAllaStanza(percorsoFile, index);
 	}
 
-	public void addNewPassaggio(int x, int y, int width, int height, int newX, int newY, Stanze newRoom) {
-		passaggi.add(new Passaggio(x, y, width, height, newX, newY, newRoom));
-	}
-
-	public int checkPassInRoom(Rectangle hitbox) {
-		int index = -1;
-		
-		for(int i = 0; i < passaggi.size(); i++) {
-			if(passaggi.get(i).checkPlayer(hitbox))
-				index = i;
-		}
-		return index;
-	}
-	
-	public void addEnemy(EntityController e) {
-		nemici.add(e);
-	}
-	
-	public void removeEnemy(int index) {
-		nemici.remove(index);
-	}
-	
-	public void addNPC(EntityController n) {
-		NPC.add(n);
-	}
-	
-	public void removeNPC(int index) {
-		NPC.remove(index);
-	}
-	
-	public ArrayList<EntityController> getEnemy(){
-		return nemici;
-	}
-	
-	public ArrayList<EntityController> getNPC(){
-		return NPC;
-	}
-	
-	private void aggiungiElementiAllaStanza(String percorsoFile) {
+	// per non dividere le informazioni, tutti i dati di una stanza sono messi in un solo file
+	// quindi nel file mettiamo anche informazoni per il controller.
+	// leggendo il file una volta sola, qui finiscono anche cose relative al controller 
+	private void aggiungiElementiAllaStanza(String percorsoFile, int index) {
 		try {
 			InputStream	is = getClass().getResourceAsStream(percorsoFile);			
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -73,21 +35,28 @@ public class RoomModel {
 					datiNellaRiga = rigaLetta.trim().split(", ");
 				
 					if(rigaLetta.contains("/")) {	// lo slash indica che è un nemico								
-//						int type = Integer.parseInt(datiNellaRiga[1]);	//parte da uno perchè il primo campo serve al lettore
-//						int xPos = Integer.parseInt(datiNellaRiga[2]);
-//						int yPos = Integer.parseInt(datiNellaRiga[3]);
-//						int width = Integer.parseInt(datiNellaRiga[4]);
-//						int height = Integer.parseInt(datiNellaRiga[5]);
-					//	nemici.add(new EnemyController(type, xPos, yPos, width, height));
+						int type = Integer.parseInt(datiNellaRiga[1]);	//parte da uno perchè il primo campo serve al lettore
+						int xPos = Integer.parseInt(datiNellaRiga[2]);
+						int yPos = Integer.parseInt(datiNellaRiga[3]);
+						int width = Integer.parseInt(datiNellaRiga[4]);
+						int height = Integer.parseInt(datiNellaRiga[5]);
+						
+						Rectangle r = new Rectangle(xPos, yPos, width, height);
+						model.getController().getPlay().getRoom(index).addEnemy(type, r);
 					}
+					
 					else if(rigaLetta.contains("-")) {		//il trattino indica npc
-//						int type = Integer.parseInt(datiNellaRiga[1]);	
-//						int xPos = Integer.parseInt(datiNellaRiga[2]);
-//						int yPos = Integer.parseInt(datiNellaRiga[3]);
-//						int width = Integer.parseInt(datiNellaRiga[4]);
-//						int height = Integer.parseInt(datiNellaRiga[5]);
-					//	NPC.add(new NPCcontroller(type, xPos, yPos, width, height));
+						int type = Integer.parseInt(datiNellaRiga[1]);	
+						int xPos = Integer.parseInt(datiNellaRiga[2]);
+						int yPos = Integer.parseInt(datiNellaRiga[3]);
+						int width = Integer.parseInt(datiNellaRiga[4]);
+						int height = Integer.parseInt(datiNellaRiga[5]);
+						
+						Rectangle r = new Rectangle(xPos, yPos, width, height);
+						model.getController().getPlay().getRoom(index).addNPC(type, r);
+						//sarebbe bello aggiungere qui anche le roomview, ma la view viene inizializzata dopo
 					}
+					
 					else if(rigaLetta.contains(";")) {		//il ; indica i passaggi
 						int prewX = Integer.parseInt(datiNellaRiga[1]);	
 						int prewY = Integer.parseInt(datiNellaRiga[2]);
@@ -110,15 +79,27 @@ public class RoomModel {
 		}										
 	}
 	
-	public void printData() {
-		for(EntityController n :nemici) 
-			System.out.println(n.toString());
-			
-		for(EntityController a : NPC) 
-			System.out.println(a.toString());	
-		
+	public void printData() {		
 		for(Passaggio p : passaggi)
 			System.out.println(p.toString());
 	}
+	
+	public void addNewPassaggio(int x, int y, int width, int height, int newX, int newY, Stanze newRoom) {
+		passaggi.add(new Passaggio(x, y, width, height, newX, newY, newRoom));
+	}
+
+	public int checkPassInRoom(Rectangle hitbox) {
+		int index = -1;
+		for(int i = 0; i < passaggi.size(); i++) {
+			if(passaggi.get(i).checkPlayer(hitbox))
+				index = i;
+		}
+		return index;
+	}
+	
+	public ArrayList<Passaggio> getPassaggi() {
+		return passaggi;
+	}
+	
 	
 }

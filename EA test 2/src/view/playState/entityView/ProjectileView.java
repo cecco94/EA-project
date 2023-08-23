@@ -1,4 +1,4 @@
-package view.playState.entity;
+package view.playState.entityView;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.playState.player.PlayerView;
 
 public class ProjectileView { 
 
@@ -105,15 +104,15 @@ public class ProjectileView {
 			int distanzax = playerx - xposInMap;
 			int distanzay = playery - yposInMap;
 			
-			int xPosOnScreen = PlayerView.xOnScreen - distanzax + PlayerView.xOffset;	
-			int yPosOnScreen = PlayerView.yOnScreen - distanzay + PlayerView.yOffset;
+			int xPosOnScreen = PlayerView.xOnScreen - distanzax + PlayerView.getXOffset();	
+			int yPosOnScreen = PlayerView.yOnScreen - distanzay + PlayerView.getYOffset();
 			
 			g2.drawImage(animazione[animationIndex], xPosOnScreen, yPosOnScreen, null);
 			
 		}
 		catch (IndexOutOfBoundsException obe) {
 			//obe.printStackTrace();
-			System.out.println("problemi nel view projectile");
+			//System.out.println("problemi nel view projectile");
 			//in caso di problemi elimina tutti gli appunti in giro
 			view.getPlay().getAppunti().clear();
 			view.getController().getPlay().getAppuntiLanciati().clear();

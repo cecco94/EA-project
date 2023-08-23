@@ -19,18 +19,24 @@ public class PlayStateController {
 	private Collisions collisionCheck;
 	private IController controller;
 
-	private ArrayList<Projectile> appuntiLanciati;	
+	private ArrayList<Projectile> appuntiLanciati;
+	private RoomController[] stanzeController;
 	
 	public PlayStateController(IController c) {
 		controller = c;
 		collisionCheck = new Collisions(c); 
 		playerController = new PlayerController(collisionCheck, controller);
-		
 		appuntiLanciati = new ArrayList<>();
+		initRooms();
 	}
 
-	public PlayerController getPlayer() {
-		return playerController;
+	private void initRooms() {
+		stanzeController = new RoomController[Stanze.numStanze];
+		stanzeController[Stanze.BIBLIOTECA.indiceMappa] = new RoomController(this);
+		stanzeController[Stanze.DORMITORIO.indiceMappa] = new RoomController(this);		
+		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this);
+		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this);
+		
 	}
 	
 	public void update() {
@@ -50,6 +56,8 @@ public class PlayStateController {
 			break;
 		case BIBLIOTECA:
 			break;
+		case AULA_STUDIO:
+			stanzeController[Stanze.AULA_STUDIO.indiceMappa].update();		
 		default:
 			break;
 		}
@@ -82,15 +90,15 @@ public class PlayStateController {
 			controller.getView().getTransition().setPrev(Gamestate.PLAYING);
 			controller.setGameState(Gamestate.TRANSITION);
 		}
+		
 		else if (e.getKeyCode() == KeyEvent.VK_ENTER)
 			playerController.setAttacking(true);
 			
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE)
 			playerController.setParry(true);
 			
-		else if(e.getKeyCode() == KeyEvent.VK_P) {
+		else if(e.getKeyCode() == KeyEvent.VK_P) 
 			playerController.setThrowing(true);
-		}
 			
 		else
 			playerController.choiceDirection(e);
@@ -122,9 +130,9 @@ public class PlayStateController {
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(true);
 		
-		else if(SwingUtilities.isMiddleMouseButton(e)) {
+		else if(SwingUtilities.isMiddleMouseButton(e)) 
 			playerController.setThrowing(true);
-		}
+		
 	}
 
 	public void handleMouseReleased(MouseEvent e) {
@@ -139,6 +147,10 @@ public class PlayStateController {
 			addProjectile();
 			controller.getView().getPlay().addProjectile();
 		}
+	}
+	
+	public PlayerController getPlayer() {
+		return playerController;
 	}
 	
 	public Collisions getCollisionChecker() {
@@ -164,12 +176,16 @@ public class PlayStateController {
 		catch(IndexOutOfBoundsException iobe) {
 			appuntiLanciati.clear();
 			controller.getView().getPlay().getAppunti().clear();
-			System.out.println("problemi appunti controller");
+		//	System.out.println("problemi appunti controller");
 		}
 	}
 	
 	public ArrayList<Projectile> getAppuntiLanciati(){
 		return appuntiLanciati;
+	}
+	
+	public RoomController getRoom(int index) {
+		return stanzeController[index];
 	}
 	
 }

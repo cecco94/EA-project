@@ -66,7 +66,7 @@ public class Projectile {
 		catch(ArrayIndexOutOfBoundsException obe) {
 			play.getController().getView().getPlay().removeProjectile(indexInList);
 			play.removeProjectile(indexInList);
-			System.out.println("fuori dai bordi");
+		//	System.out.println("fuori dai bordi");
 		}
 		
 		if(hit) {

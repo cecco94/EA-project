@@ -10,24 +10,22 @@ import controller.main.Gamestate;
 import view.IView;
 import view.ViewUtils;
 import view.menu.AbstractMenuButton;
-import view.playState.player.Avatar;
-import view.playState.player.PlayerView;
+import view.playState.entityView.PlayerView;
 
 // sarebbero le immagini con mario e peach
 public class AvatarButton extends AbstractMenuButton {
 	
 	private int animationCounter, numSprite; 
 	private final int animationSpeed = 20;
-	private Avatar avatar;
 	private int animationLenght = 4;
 	private BufferedImage temp = null;
-
+	private int type;
 	
-	public AvatarButton(Avatar gender, Rectangle dim, IView v) {
-		avatar = gender;
+	public AvatarButton(int gender, Rectangle dim, IView v) {
+		view = v;
 		super.setBounds(dim.x, dim.y,dim. width, dim.height);	
 		newState = Gamestate.TRANSITION;
-		view = v;
+		type = gender;
 	}
 	
 	// prima li disegna trasparenti, poi se ci passa sopra il mouse diventano del tutto visibili.
@@ -58,18 +56,20 @@ public class AvatarButton extends AbstractMenuButton {
 		}
 		
 		if(mouseOver) {
-			temp = ViewUtils.scaleImage(PlayerView.getAnimation(avatar, PlayerView.getRun(), PlayerView.getDOWN(), numSprite), bounds.width, bounds.height);
+			temp = ViewUtils.scaleImage(PlayerView.getAnimationForMenu(type, PlayerView.getRun(), 
+										PlayerView.getDOWN(), numSprite), bounds.width, bounds.height);
 			g2.drawImage(temp, bounds.x, bounds.y, null);
 		}
 		else {
-			temp = ViewUtils.scaleImage(PlayerView.getAnimation(avatar, PlayerView.getIDLE(), PlayerView.getDOWN(), numSprite), bounds.width, bounds.height);
+			temp = ViewUtils.scaleImage(PlayerView.getAnimationForMenu(type, PlayerView.getIDLE(), 
+										PlayerView.getDOWN(), numSprite),	bounds.width, bounds.height);
 			g2.drawImage(temp, bounds.x, bounds.y, null);
 		}
 	}
 
 	@Override
 	public void reactToMouse(MouseEvent e) {
-		view.getPlay().getPlayer().setAvatarType(avatar);
+		view.getPlay().getPlayer().setAvatarType(type);
 		view.getPlay().getPlayer().resetAnimation();
 		view.changeGameState(newState);
 	}

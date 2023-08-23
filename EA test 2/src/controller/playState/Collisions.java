@@ -21,7 +21,7 @@ public class Collisions {
 	
 	public boolean canMoveLeft(Rectangle hitboxPlayer) {
 		boolean canMove = true;
-		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
+		int stanza = Stanze.stanzaAttuale.indiceMappa;
 		//in quale quadrato della mappa si trova il punto in alto a sinistra della hitbox
 		int colonnaPlayer = hitboxPlayer.x/GamePanel.TILES_SIZE;
 		int rigaPlayer = hitboxPlayer.y/GamePanel.TILES_SIZE;
@@ -56,7 +56,7 @@ public class Collisions {
 
 	public boolean canMoveRight(Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
-		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
+		int stanza = Stanze.stanzaAttuale.indiceMappa;
 
 		//in quale quadrato della mappa si trova il punto in alto a destra della hitbox
 		int colonnaPlayer = (hitboxPlayer.x + hitboxPlayer.width)/GamePanel.TILES_SIZE;	
@@ -88,7 +88,7 @@ public class Collisions {
 
 	public boolean canMoveUp(Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
-		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
+		int stanza = Stanze.stanzaAttuale.indiceMappa;
 		
 		int colonnaPlayer = hitboxPlayer.x/GamePanel.TILES_SIZE;
 		int rigaPlayer = hitboxPlayer.y/GamePanel.TILES_SIZE;
@@ -120,7 +120,7 @@ public class Collisions {
 
 	public boolean canMoveDown (Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
-		int stanza = Stanze.stanzaAttuale.indiceNellaMappa;
+		int stanza = Stanze.stanzaAttuale.indiceMappa;
 		
 		int colonnaPlayer = hitboxPlayer.x/GamePanel.TILES_SIZE;
 		int rigaPlayer = (hitboxPlayer.y + hitboxPlayer.height)/GamePanel.TILES_SIZE;

@@ -10,13 +10,14 @@ public enum Stanze {
 	TENDA(Map.TENDA, SoundManager.TENDA);
 	
 	Stanze(int i, int music) {
-		indiceNellaMappa = i;
+		indiceMappa = i;
 		indiceMusica = music;
 	}
 
 	public static Stanze stanzaAttuale = AULA_STUDIO;
+	public final static int numStanze = 4;
 	
-	public int indiceNellaMappa, indiceMusica;
+	public int indiceMappa, indiceMusica;
 	
 	public static Stanze getStanzaAssociataAlNumero(int i) {
 		if(i == Map.BIBLIOTECA)

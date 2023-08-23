@@ -18,7 +18,7 @@ import view.ViewUtils;
 import view.menu.AbstractMenu;
 import view.menu.AbstractMenuButton;
 import view.menu.mainMenu.InitialMenuButton;
-import view.playState.player.Avatar;
+import view.playState.entityView.PlayerView;
 
 //menu dove scegli l'avatar
 public class AvatarMenu extends AbstractMenu{
@@ -61,10 +61,10 @@ public class AvatarMenu extends AbstractMenu{
 		
 		y = GAME_HEIGHT/3;
 		Rectangle dimensions = new Rectangle(x, y, (int)(100*SCALE), (int)(150*SCALE));
-		buttons[1] = new AvatarButton(Avatar.RAGAZZA, dimensions, view);
+		buttons[1] = new AvatarButton(PlayerView.RAGAZZA, dimensions, view);
 		
 		dimensions.x = GAME_WIDTH/2 - GAME_WIDTH/15 - (int)(100*SCALE);
-		buttons[2] = new AvatarButton(Avatar.RAGAZZO, dimensions, view);	
+		buttons[2] = new AvatarButton(PlayerView.RAGAZZO, dimensions, view);	
 	}
 	
 	//sarebbero le scritte che appaiono se passi sopra a un personaggio
