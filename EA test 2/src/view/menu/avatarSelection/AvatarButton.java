@@ -24,7 +24,7 @@ public class AvatarButton extends AbstractMenuButton {
 	public AvatarButton(int gender, Rectangle dim, IView v) {
 		view = v;
 		super.setBounds(dim.x, dim.y,dim. width, dim.height);	
-		newState = Gamestate.TRANSITION;
+		newState = Gamestate.TRANSITION_STATE;
 		type = gender;
 	}
 	

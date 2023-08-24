@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.Random;
 
 import controller.playState.PlayStateController;
+import model.mappa.Stanze;
 import view.main.GamePanel;
 
 public class CatController extends EntityController {
@@ -12,6 +13,10 @@ public class CatController extends EntityController {
 	private Random randomGenerator = new Random();
 	private int azioneACaso, direzioneACaso;
 	
+	//posizione nella mappa del roomModel, prima dello spostamento
+	private int tilePreOccupatoRiga;
+	private int tilePreOccupatoColonna;
+	
 	public CatController(Rectangle r, PlayStateController p) {
 		super(r, p);
 		speed = (int)(GamePanel.SCALE*1.3f);
@@ -19,12 +24,40 @@ public class CatController extends EntityController {
 		
 		down = true;
 		idle = true;
+		
+		
 	}
 
 	public void update() {
 		choseAction();
 		choseDirection();
 		checkCollision();
+		occupyPosition();
+	}
+
+	//dice alla mappa nel roomModel che il tile dove si trova lui è occupato
+	private void occupyPosition() {
+		//tile occupato dopo lo spostamento
+		int tilePostOccupatoRiga = hitbox.y/GamePanel.TILES_SIZE;
+		int tilePostOccupatoColonna = hitbox.x/GamePanel.TILES_SIZE;
+		
+		//se ha cambiato tile da occupare, bidogna aggiornare i dati nella mappa del roomModel
+		if(tilePostOccupatoRiga != tilePreOccupatoRiga || tilePostOccupatoColonna != tilePreOccupatoColonna) {
+			
+			int indiceStanzaDaModificare = Stanze.stanzaAttuale.indiceMappa;
+			
+			play.getController().getModel().getStanza(indiceStanzaDaModificare).aggiungiEntitaAlTile(tilePostOccupatoRiga, tilePostOccupatoColonna);
+			play.getController().getModel().getStanza(indiceStanzaDaModificare).togliEntitaAlTile(tilePreOccupatoRiga, tilePreOccupatoColonna);
+			
+//			System.out.println("tiple prima riga "+ tilePreOccupatoRiga + " colonna " + tilePreOccupatoColonna);
+//			System.out.println("tiple dopo riga "+ tilePostOccupatoRiga + " colonna " + tilePostOccupatoColonna);
+			
+			tilePreOccupatoRiga = tilePostOccupatoRiga;
+			tilePreOccupatoColonna = tilePostOccupatoColonna;	
+		}
+			
+		
+		
 	}
 
 	private void choseAction() {
@@ -43,7 +76,7 @@ public class CatController extends EntityController {
 		}
 		
 	}
-
+	
 	private void resetaction() {
 		idle = false;
 		moving = false;

@@ -30,12 +30,12 @@ public class PlayStateController {
 		initRooms();
 	}
 
-	private void initRooms() {
+	public void initRooms() {
 		stanzeController = new RoomController[Stanze.numStanze];
-		stanzeController[Stanze.BIBLIOTECA.indiceMappa] = new RoomController(this);
-		stanzeController[Stanze.DORMITORIO.indiceMappa] = new RoomController(this);		
-		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this);
-		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this);
+		stanzeController[Stanze.BIBLIOTECA.indiceMappa] = new RoomController(this, Stanze.BIBLIOTECA.indiceMappa);
+		stanzeController[Stanze.DORMITORIO.indiceMappa] = new RoomController(this, Stanze.DORMITORIO.indiceMappa);		
+		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this, Stanze.AULA_STUDIO.indiceMappa);
+		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this, Stanze.TENDA.indiceMappa);
 		
 	}
 	
@@ -52,12 +52,16 @@ public class PlayStateController {
 		//Per rendere la cosa più leggera, possiamo aggiornare solo quelli all'interno dell'area visibile
 		switch(Stanze.stanzaAttuale) {
 		case DORMITORIO:
-			//model, dammi la lista deglle entità nel dormitorio, ciascuna la aggiorniamo dandole il player
+			stanzeController[Stanze.DORMITORIO.indiceMappa].update();		
 			break;
 		case BIBLIOTECA:
+			stanzeController[Stanze.BIBLIOTECA.indiceMappa].update();		
 			break;
 		case AULA_STUDIO:
-			stanzeController[Stanze.AULA_STUDIO.indiceMappa].update();		
+			stanzeController[Stanze.AULA_STUDIO.indiceMappa].update();	
+			break;
+		case TENDA:
+			stanzeController[Stanze.TENDA.indiceMappa].update();	
 		default:
 			break;
 		}
@@ -88,16 +92,16 @@ public class PlayStateController {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			controller.getView().getTransition().setNext(Gamestate.MAIN_MENU);
 			controller.getView().getTransition().setPrev(Gamestate.PLAYING);
-			controller.setGameState(Gamestate.TRANSITION);
+			controller.setGameState(Gamestate.TRANSITION_STATE);
 		}
 		
-		else if (e.getKeyCode() == KeyEvent.VK_ENTER)
+		else if (e.getKeyCode() == KeyEvent.VK_ENTER && !playerController.isParring())
 			playerController.setAttacking(true);
 			
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE)
 			playerController.setParry(true);
 			
-		else if(e.getKeyCode() == KeyEvent.VK_P) 
+		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) 
 			playerController.setThrowing(true);
 			
 		else
@@ -105,7 +109,7 @@ public class PlayStateController {
 	}
 	
 	public void handleKeyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER)
+		if (e.getKeyCode() == KeyEvent.VK_ENTER && !playerController.isParring())
 			playerController.setAttacking(false);
 		
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
@@ -113,7 +117,7 @@ public class PlayStateController {
 			controller.getView().getPlay().getPlayer().resetParry();
 		}
 		
-		else if(e.getKeyCode() == KeyEvent.VK_P) {
+		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) {
 			playerController.setThrowing(false);
 			addProjectile();
 			controller.getView().getPlay().addProjectile();
@@ -124,25 +128,25 @@ public class PlayStateController {
 	}
 
 	public void handleMousePressed(MouseEvent e) {
-		if (SwingUtilities.isLeftMouseButton(e))
+		if (SwingUtilities.isLeftMouseButton(e) && !playerController.isParring())
 			playerController.setAttacking(true);
 		
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(true);
 		
-		else if(SwingUtilities.isMiddleMouseButton(e)) 
+		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) 
 			playerController.setThrowing(true);
 		
 	}
 
 	public void handleMouseReleased(MouseEvent e) {
-		if (SwingUtilities.isLeftMouseButton(e))
+		if (SwingUtilities.isLeftMouseButton(e) && !playerController.isParring())
 			playerController.setAttacking(false);
 		
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(false);
 		
-		else if(SwingUtilities.isMiddleMouseButton(e)) {
+		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {
 			playerController.setThrowing(false);
 			addProjectile();
 			controller.getView().getPlay().addProjectile();

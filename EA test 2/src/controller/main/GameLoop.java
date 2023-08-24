@@ -5,6 +5,8 @@ import model.IModel;
 import view.IView;
 import view.gameBegin.SplashScreenGame;
 
+// classe contenente il game loop, il ciclo di update e repaint del gioco
+// gioco gira su un thread diverso per gestirlo meglio in caso di crush
 public class GameLoop implements Runnable {
 	private SplashScreenGame caricamento;
 	

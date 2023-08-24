@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import controller.playState.entityController.CatController;
 import controller.playState.entityController.EnemyController;
 import controller.playState.entityController.EntityController;
-import controller.playState.entityController.NPCcontroller;
+//import controller.playState.entityController.NPCcontroller;
 
 public class RoomController {
 
@@ -14,14 +14,15 @@ public class RoomController {
 	private ArrayList<EntityController> NPC;
 	private PlayStateController play;
 	
-	public RoomController(PlayStateController p) {
+	public RoomController(PlayStateController p, int indexStanza) {
 		play = p;
 		nemici = new ArrayList<>();
 		NPC = new ArrayList<>();
-	}
 	
+	}
+
 	public void update() {
-		
+				
 		for(int i = 0; i < NPC.size(); i++) {
 			NPC.get(i).update();
 			NPC.get(i).toString();
@@ -58,6 +59,6 @@ public class RoomController {
 	}
 
 	public void addNPC(int type, Rectangle r) {
-		NPC.add(new CatController(r, play));	
+		NPC.add(new CatController(r, play));		
 	}
 }

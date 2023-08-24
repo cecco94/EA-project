@@ -11,6 +11,7 @@ import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
 import view.main.GamePanel;
 import view.main.GameWindow;
+//import view.main.MessaggioSubliminale;
 import view.mappa.TilesetView;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
@@ -18,9 +19,8 @@ import view.menu.optionMenu.OptionMenu;
 import view.playState.PlayStateView;
 import view.sound.SoundManager;
 
-// per ora la classe più importante, gestisce tutte le altre classi della view, che fanno riferimento 
-// a lei per cambiare cose importanti come il volume o il gamestate. permette inoltre alle altre classi 
-// di comunicare in modo indiretto
+// permette al model ed al controlle di accedere ai dati e ai metodi della view e viceversa
+// classe a cui fanno riferimento tutte le altre classi della view
 
 public class IView {
 	private IController controller;
@@ -37,7 +37,7 @@ public class IView {
 	private AvatarMenu avatar;
 	private OptionMenu opzioni;
 	private PlayStateView play;
-	private Transition transition;
+	private TransitionState transition;
 	//mappa e tiles
 	private TilesetView tileset;
 	
@@ -59,7 +59,7 @@ public class IView {
 		opzioni = new OptionMenu(this);
 		tileset = new TilesetView();
 		play = new PlayStateView(model, tileset, this);
-		transition = new Transition(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
+		transition = new TransitionState(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
 		
 		//inizializza le cose più delicate
 		gw = new GameWindow(gp, this);
@@ -108,7 +108,7 @@ public class IView {
 		case PLAYING:
 			play.draw(g2);
 			break;
-		case TRANSITION:
+		case TRANSITION_STATE:
 			transition.draw(g2);
 			break;
 		case TRANSITION_ROOM:
@@ -185,7 +185,7 @@ public class IView {
 		return sound.getVolume();
 	}
 	
-	public Transition getTransition() {
+	public TransitionState getTransition() {
 		return transition;
 	}
 	

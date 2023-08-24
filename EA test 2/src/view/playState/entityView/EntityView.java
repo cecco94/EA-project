@@ -33,12 +33,6 @@ public abstract class EntityView extends SortableElement {
 	//ogni ente avrà una differenza tra dove si trova la hitbox e dove parte l'immagine
 	protected int xOffset, yOffset;
 	
-	//ogni ente mobile deve capire dove si trova il personaggio per poterlo ordinare e disegnare
-	public void setMapPositionForSort(Rectangle hitboxEntity) {
-		xPosMapForSort = hitboxEntity.x - xOffset;
-		yPosMapForSort = hitboxEntity.y - yOffset;
-	}
-	
 	public boolean isInGameFrame(int posizPlayerX, int posizPlayerY) {
 		//controlla se l'oggetto è abbastanza vicino al giocatore da poter apparire sullo schermo
 		Rectangle hitboxController = view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox();
@@ -56,7 +50,11 @@ public abstract class EntityView extends SortableElement {
 		return true;
 	}
 	
-	
+	//ogni ente mobile deve capire dove si trova il personaggio per poterlo ordinare e disegnare
+	public void setMapPositionForSort(Rectangle hitboxEntity) {
+		xPosMapForSort = hitboxEntity.x - xOffset;
+		yPosMapForSort = hitboxEntity.y - yOffset;
+	}
 	
 	
 }

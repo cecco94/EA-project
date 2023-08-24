@@ -226,7 +226,7 @@
 
 112 tavolone2, centro snistra ; true; 2,0,30,32
 
-113 tavolone2, alto destra ; true; 0,0,32,32
+113 tavolone2, alto destra ; true; 0,6,30,26
 
 114 pc giallo sopra ; true; 4,10,24,22
 

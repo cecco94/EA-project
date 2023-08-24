@@ -8,6 +8,8 @@ import controller.main.Gamestate;
 import model.mappa.Stanze;
 import view.main.GamePanel;
 
+// classe che mostra a video le informazioni come il punteggio, la vita, le munizioni...
+// si occupa inoltre di disegnare la transizione da una stanza all'altra
 public class PlayUI {
 
 	private PlayStateView play;

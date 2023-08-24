@@ -23,6 +23,7 @@ public abstract class EntityController {
 		//settiamo la posizione nella mappa e scaliamo la dimensione
 		hitbox.x *= GamePanel.TILES_SIZE; 
 		hitbox.y *= GamePanel.TILES_SIZE; 
+		
 		hitbox.width *= GamePanel.SCALE;
 		hitbox.height *= GamePanel.SCALE;
 	}
@@ -42,25 +43,18 @@ public abstract class EntityController {
 	}
 	
 	public int getCurrentAction() {
-		if(idle) {
-			System.out.println("idle");
+		if(idle) 
 			return IDLE;
-		}
-		
-		else if(moving) {
-			System.out.println("move");
+	
+		else if(moving) 
 			return MOVE;
-		}
 	 
-		else if(attacking) {
-			System.out.println("attack");
+		else if(attacking) 
 			return ATTACK;
-		}
 		
-		else {
-			System.out.println("throw");
+		else 
 			return THROW;	
-		}
+		
 	}
 	
 	public int getCurrentDirection() {

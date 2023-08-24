@@ -20,8 +20,8 @@ public class CatView extends EntityView {
 		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		view = v;
 		loadImages();	
-		xOffset = 0;
-		yOffset = 0;
+		xOffset = 3;
+		yOffset = 3;
 		this.index = index;
 	}
 
@@ -95,13 +95,11 @@ public class CatView extends EntityView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-
+		setAction();
+		setDirection();
+		
 		if (animationCounter > animationSpeed) {
-			
 			numSprite ++;	
-
-			setAction();
-			setDirection();
 			
 			if(numSprite >= getAnimationLenght())
 				numSprite = 0;	
@@ -114,14 +112,14 @@ public class CatView extends EntityView {
 		
 		//ci serve un offset perchè la distanza del tile nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + PlayerView.getXOffset();	
-		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + PlayerView.getYOffset();
+		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset;  //PlayerView.getXOffset();
+		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset; //PlayerView.getYOffset();
 		
 		try {
 			g2.drawImage(animation[BIANCO][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
-			System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
+		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
 		
 	}

@@ -9,7 +9,7 @@ import view.sound.SoundManager;
 
 //per non passare bruscamente da uno stato all'altro, disegna sfumandolo il vecchio stato 
 //per tre secondi e sfuma il valore della musica
-public class Transition {
+public class TransitionState {
 
 	private float counter = 360;	
 	private final float transitionDuration = 360; //120 fps quindi sono 3 secondi
@@ -22,7 +22,7 @@ public class Transition {
 	private float volumeBeforeTransition;
 	private boolean saved = false;
 	
-	public Transition(Gamestate p, Gamestate n, IView v) {
+	public TransitionState(Gamestate p, Gamestate n, IView v) {
 		setPrev(p);
 		setNext(n);
 		view = v;
@@ -47,7 +47,7 @@ public class Transition {
 			volume = volume*opacity + 0.01f;
 			view.setMusicVolume(volume);
 			
-			view.changeGameState(Gamestate.TRANSITION);
+			view.changeGameState(Gamestate.TRANSITION_STATE);
 			
 		}
 		else {

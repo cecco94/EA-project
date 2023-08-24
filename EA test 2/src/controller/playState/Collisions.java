@@ -37,7 +37,7 @@ public class Collisions {
 					canMove = false;		
 			}
 		}
-		// se si trova a metà tra una linea e l'altra ci sono due tile da controllare
+		// se si trova a metà tra una riga e l'altra ci sono due tile da controllare
 		else {
 			int tileSopra = control.getModel().getMappa().getStrato(stanza, Map.TERZO_STRATO)[rigaPlayer][colonnaPlayer];
 			int tileSotto = control.getModel().getMappa().getStrato(stanza, Map.TERZO_STRATO)[rigaPlayer + 1][colonnaPlayer];

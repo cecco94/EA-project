@@ -25,6 +25,7 @@ public class IController {
 	
 	public void setModel(IModel m) {
 		model = m;
+
 	}
 	
 	public IModel getModel() {

@@ -39,6 +39,7 @@ public class RoomView {
 		NPCview.add(new CatView(play.getView(), index));
 	}
 
+	//mette nella lista da ordinare tutti e soli gli elementi vicini al player
 	public void addEntitiesInFrameForSort(int posizPlayerX, int posizPlayerY, ArrayList<SortableElement> drawOrder) {
 		//ogni npc prende la posizione del personaggio e vede se è dentro la finestra di gioco
 		for(int i = 0; i < NPCview.size(); i++)
