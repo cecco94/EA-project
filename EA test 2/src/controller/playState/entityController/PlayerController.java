@@ -23,7 +23,11 @@ public class PlayerController {
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
 	private int attackCounter;
-
+	
+//	//posizione nella mappa del roomModel, prima dello spostamento
+//	private int tilePreOccupatoRiga;
+//	private int tilePreOccupatoColonna;
+	
 	
 	public PlayerController(Collisions collcheck, IController c) {
 		controller = c;
@@ -43,10 +47,14 @@ public class PlayerController {
 	public void update() {
 		updatePos();
 		isAbovePassaggio();
+	//	occupyPosition();
 	}
 
-	void updatePos() {
-			
+	private void updatePos() {
+	
+	//	System.out.println("player colonna " + hitbox.x/GamePanel.TILES_SIZE + " riga " + hitbox.y/GamePanel.TILES_SIZE);
+	//	System.out.println("player x " + hitbox.x+ " y " + hitbox.y);
+	
 		//durante l'intervallo dove attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
 		
@@ -56,36 +64,44 @@ public class PlayerController {
 			tempHitboxForCheck.x = hitbox.x - speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(collisionCheck.canMoveLeft(tempHitboxForCheck)) {
-				hitbox.x -= speed;
-				direction = LEFT;
-				setMoving(true);
+				if(!collisionCheck.siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					hitbox.x -= speed;
+					direction = LEFT;
+					setMoving(true);
+				}
 			}
 		} 
 		else if (right && !left && !parry) {
 			tempHitboxForCheck.x = hitbox.x + speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(collisionCheck.canMoveRight(tempHitboxForCheck)) {
-				hitbox.x += speed;
-				direction = RIGHT;
-				setMoving(true);
+				if(!collisionCheck.siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					hitbox.x += speed;
+					direction = RIGHT;
+					setMoving(true);
+				}
 			}
 		}
 		if (up && !down  && !parry) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y - speed;
 			if(collisionCheck.canMoveUp(tempHitboxForCheck)) {
-				hitbox.y -= speed;
-				direction = UP;
-				setMoving(true);
+				if(!collisionCheck.siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					hitbox.y -= speed;
+					direction = UP;
+					setMoving(true);
+				}
 			}
 		} 
 		else if (down && !up && !parry) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y + speed;
 			if(collisionCheck.canMoveDown(tempHitboxForCheck)) {
-				hitbox.y += speed;
-				direction = DOWN;
-				setMoving(true);
+				if(!collisionCheck.siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					hitbox.y += speed;
+					direction = DOWN;
+					setMoving(true);
+				}
 			}
 		}
 	}
@@ -223,4 +239,28 @@ public class PlayerController {
 	public int getDirection() {
 		return direction;
 	}
+	
+	
+//	private void occupyPosition() {
+//	//tile occupato dopo lo spostamento
+//	int tilePostOccupatoRiga = hitbox.y/GamePanel.TILES_SIZE;
+//	int tilePostOccupatoColonna = hitbox.x/GamePanel.TILES_SIZE;
+//	
+//	//se ha cambiato tile da occupare, bidogna aggiornare i dati nella mappa del roomModel
+//	if(tilePostOccupatoRiga != tilePreOccupatoRiga || tilePostOccupatoColonna != tilePreOccupatoColonna) {
+//		
+//		int indiceStanzaDaModificare = Stanze.stanzaAttuale.indiceMappa;
+//		
+//		controller.getModel().getStanza(indiceStanzaDaModificare).aggiungiEntitaAlTile(tilePostOccupatoRiga, tilePostOccupatoColonna);
+//		controller.getModel().getStanza(indiceStanzaDaModificare).togliEntitaAlTile(tilePreOccupatoRiga, tilePreOccupatoColonna);
+//		
+////		System.out.println("tiple prima riga "+ tilePreOccupatoRiga + " colonna " + tilePreOccupatoColonna);
+////		System.out.println("tiple dopo riga "+ tilePostOccupatoRiga + " colonna " + tilePostOccupatoColonna);
+//		
+//		tilePreOccupatoRiga = tilePostOccupatoRiga;
+//		tilePreOccupatoColonna = tilePostOccupatoColonna;	
+//	}
+//	
+//}
+	
 }

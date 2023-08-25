@@ -140,8 +140,6 @@ public class PlayStateView {
 	}
 
 	private void addNPCandPlayer(ArrayList<SortableElement> drawOrder, int posizPlayerX, int posizPlayerY) {
-		player.setMapPositionForSort(posizPlayerX, posizPlayerY);
-		drawOrder.add(player);
 		
 		//aggiungiamo solo gli npc e i nemici nella stanza vicino al giocatore
 		switch(Stanze.stanzaAttuale) {
@@ -151,12 +149,16 @@ public class PlayStateView {
 		default:
 			break;
 		}
+		
+		player.setMapPositionForSort(posizPlayerX, posizPlayerY);
+		drawOrder.add(player);
 	}
 
 	private void drawAllElementsAboveFloor(Graphics2D g2, int posizPlayerX, int posizPlayerY) {
 		
 		for(int i = 0; i < drawOrder.size(); i++)
 			drawOrder.get(i).draw(g2, posizPlayerX, posizPlayerY);
+		
 	}
 	
 	public PlayerView getPlayer() {
@@ -183,7 +185,8 @@ public class PlayStateView {
 		appuntiLanciati.remove(indexRemove);
 		}
 		catch(IndexOutOfBoundsException iobe) {
-			System.out.println("lista appunti finita");
+			iobe.printStackTrace();
+			System.out.println("lista appunti finita nel view");
 			appuntiLanciati.clear();
 			view.getController().getPlay().getAppuntiLanciati().clear();
 		}

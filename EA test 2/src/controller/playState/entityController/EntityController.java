@@ -7,7 +7,8 @@ import view.main.GamePanel;
 
 public abstract class EntityController {
 
-	protected Rectangle hitbox;
+	//il punto in alto a sinistra della hitbox è la posizione dell'entità nella mappa
+	protected Rectangle hitbox, tempHitboxForCheck;
 	protected int speed;
 	protected PlayStateController play;
 	protected boolean moving, idle, attacking, up, down, left, right;
@@ -26,13 +27,17 @@ public abstract class EntityController {
 		
 		hitbox.width *= GamePanel.SCALE;
 		hitbox.height *= GamePanel.SCALE;
+		
+		//hitbox che serve per le collisioni, prima di cambiare la hitbox, cambiamo questa
+		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
+		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		
+		down = true;
+		idle = true;
+
 	}
 	
 	public abstract void update();
-
-	public String toString() {
-		return "( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
-	}
 	
 	public int getType() {
 		return type;
@@ -68,5 +73,9 @@ public abstract class EntityController {
 			return LEFT;
 		else 
 			return RIGHT;
+	}
+	
+	public String toString() {
+		return "( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
 	}
 }

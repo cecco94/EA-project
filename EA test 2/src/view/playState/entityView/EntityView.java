@@ -54,6 +54,9 @@ public abstract class EntityView extends SortableElement {
 	public void setMapPositionForSort(Rectangle hitboxEntity) {
 		xPosMapForSort = hitboxEntity.x - xOffset;
 		yPosMapForSort = hitboxEntity.y - yOffset;
+		
+//		System.out.println("cat pos dopo " + xPosMapForSort + " " + yPosMapForSort);
+
 	}
 	
 	

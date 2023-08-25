@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.util.Random;
 
 import controller.playState.PlayStateController;
-import model.mappa.Stanze;
 import view.main.GamePanel;
 
 public class CatController extends EntityController {
@@ -13,51 +12,23 @@ public class CatController extends EntityController {
 	private Random randomGenerator = new Random();
 	private int azioneACaso, direzioneACaso;
 	
-	//posizione nella mappa del roomModel, prima dello spostamento
-	private int tilePreOccupatoRiga;
-	private int tilePreOccupatoColonna;
+//	//posizione nella mappa del roomModel, prima dello spostamento
+//	private int tilePreOccupatoRiga;
+//	private int tilePreOccupatoColonna;
 	
 	public CatController(Rectangle r, PlayStateController p) {
 		super(r, p);
-		speed = (int)(GamePanel.SCALE*1.3f);
+		
+		speed = (int)(GamePanel.SCALE*1.0f);
 		type = 0;
-		
-		down = true;
-		idle = true;
-		
-		
-	}
 
+	}
+	
 	public void update() {
 		choseAction();
 		choseDirection();
 		checkCollision();
-		occupyPosition();
-	}
-
-	//dice alla mappa nel roomModel che il tile dove si trova lui è occupato
-	private void occupyPosition() {
-		//tile occupato dopo lo spostamento
-		int tilePostOccupatoRiga = hitbox.y/GamePanel.TILES_SIZE;
-		int tilePostOccupatoColonna = hitbox.x/GamePanel.TILES_SIZE;
-		
-		//se ha cambiato tile da occupare, bidogna aggiornare i dati nella mappa del roomModel
-		if(tilePostOccupatoRiga != tilePreOccupatoRiga || tilePostOccupatoColonna != tilePreOccupatoColonna) {
-			
-			int indiceStanzaDaModificare = Stanze.stanzaAttuale.indiceMappa;
-			
-			play.getController().getModel().getStanza(indiceStanzaDaModificare).aggiungiEntitaAlTile(tilePostOccupatoRiga, tilePostOccupatoColonna);
-			play.getController().getModel().getStanza(indiceStanzaDaModificare).togliEntitaAlTile(tilePreOccupatoRiga, tilePreOccupatoColonna);
-			
-//			System.out.println("tiple prima riga "+ tilePreOccupatoRiga + " colonna " + tilePreOccupatoColonna);
-//			System.out.println("tiple dopo riga "+ tilePostOccupatoRiga + " colonna " + tilePostOccupatoColonna);
-			
-			tilePreOccupatoRiga = tilePostOccupatoRiga;
-			tilePreOccupatoColonna = tilePostOccupatoColonna;	
-		}
-			
-		
-		
+	//	occupyPosition();
 	}
 
 	private void choseAction() {
@@ -83,6 +54,9 @@ public class CatController extends EntityController {
 	}
 
 	private void choseDirection() {
+//	System.out.println("gatto colonna " + hitbox.x/GamePanel.TILES_SIZE + " riga " + hitbox.y/GamePanel.TILES_SIZE);
+//	System.out.println("gatto x " + hitbox.x + " y " + hitbox.y);
+		
 	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
 		if(actionCounter >= 400) {
 			resetDirection();	
@@ -113,43 +87,57 @@ public class CatController extends EntityController {
 
 	private void checkCollision() {
 		//collisione con la mappa
+		boolean collision = true;
+		
 		if (moving && up) {
-			if(!play.getCollisionChecker().canMoveUp(hitbox)) {
-				moving = false;
-				idle = true;
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y - speed;
+			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					collision = false;
+					hitbox.y -= speed;
+				}
 			}
-			else
-				hitbox.y -= speed;
 		}
 		
 		if (moving && down) {
-			if(!play.getCollisionChecker().canMoveDown(hitbox)) {
-				moving = false;
-				idle = true;
-			}
-			else
-				hitbox.y += speed;
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y + speed;
+			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					collision = false;
+					hitbox.y += speed;
+				}
+			}	
 		}
 		
 		if (moving && left) {
-			if(!play.getCollisionChecker().canMoveLeft(hitbox)) {
-				moving = false;
-				idle = true;
-			}
-			else
-				hitbox.x -= speed;
+			tempHitboxForCheck.x = hitbox.x - speed;
+			tempHitboxForCheck.y = hitbox.y;
+			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					collision = false;
+					hitbox.x -= speed;
+				}
+			}				
 		}
 		
 		if (moving && right) {
-			if(!play.getCollisionChecker().canMoveRight(hitbox)) {
-				moving = false;
-				idle = true;
-			}
-			else
-				hitbox.x += speed;
-		}
+			tempHitboxForCheck.x = hitbox.x + speed;
+			tempHitboxForCheck.y = hitbox.y;
+			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+					collision = false;
+					hitbox.x += speed;
+				}
+			}		
+		}	
 		
-		//collisione con gli altri enti
+		//se incontra ostacoli nella mappa, resta fermo
+		if(collision) {
+			moving = false;
+			idle = true;
+		}
 		
 	}
 	
@@ -157,5 +145,27 @@ public class CatController extends EntityController {
 		return "gatto ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
 	}
 	
+//	//dice alla mappa nel roomModel che il tile dove si trova lui è occupato
+//	private void occupyPosition() {
+//		//tile occupato dopo lo spostamento
+//		int tilePostOccupatoRiga = hitbox.y/GamePanel.TILES_SIZE;
+//		int tilePostOccupatoColonna = hitbox.x/GamePanel.TILES_SIZE;
+//		
+//		//se ha cambiato tile da occupare, bidogna aggiornare i dati nella mappa del roomModel
+//		if(tilePostOccupatoRiga != tilePreOccupatoRiga || tilePostOccupatoColonna != tilePreOccupatoColonna) {
+//			
+//			int indiceStanzaDaModificare = Stanze.stanzaAttuale.indiceMappa;
+//			
+//			play.getController().getModel().getStanza(indiceStanzaDaModificare).aggiungiEntitaAlTile(tilePostOccupatoRiga, tilePostOccupatoColonna);
+//			play.getController().getModel().getStanza(indiceStanzaDaModificare).togliEntitaAlTile(tilePreOccupatoRiga, tilePreOccupatoColonna);
+//			
+////			System.out.println("tiple prima riga "+ tilePreOccupatoRiga + " colonna " + tilePreOccupatoColonna);
+////			System.out.println("tiple dopo riga "+ tilePostOccupatoRiga + " colonna " + tilePostOccupatoColonna);
+//			
+//			tilePreOccupatoRiga = tilePostOccupatoRiga;
+//			tilePreOccupatoColonna = tilePostOccupatoColonna;	
+//		}
+//		
+//	}
 	
 }

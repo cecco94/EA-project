@@ -20,6 +20,11 @@ public class ProjectileView {
 	private int animationIndex;
 	private final int animationSpeed = 20;
 	private int direction;
+	private int xOffset;
+	private int yOffset;
+	
+	int width;
+	int height;
 	
 	public ProjectileView(int index, IView v) {
 		this.index = index;
@@ -27,7 +32,8 @@ public class ProjectileView {
 		direction = v.getController().getPlay().getAppuntiLanciati().get(index).getDirection();
 		animazione = new BufferedImage[2];	//1 direzione, ciascuna con due immagini
 		loadAnimation();
-		
+		width = view.getController().getPlay().getPlayer().getHitbox().width;
+		height  = view.getController().getPlay().getPlayer().getHitbox().height;
 	}
 	
 	private void loadAnimation() {
@@ -101,13 +107,14 @@ public class ProjectileView {
 			int xposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().x;
 			int yposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().y;
 			
-			int distanzax = playerx - xposInMap;
-			int distanzay = playery - yposInMap;
+			int distanzaX = playerx - xposInMap;
+			int distanzaY = playery - yposInMap;
 			
-			int xPosOnScreen = PlayerView.xOnScreen - distanzax + PlayerView.getXOffset();	
-			int yPosOnScreen = PlayerView.yOnScreen - distanzay + PlayerView.getYOffset();
+			int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset + PlayerView.getXOffset();
+			int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset + PlayerView.getYOffset();
 			
 			g2.drawImage(animazione[animationIndex], xPosOnScreen, yPosOnScreen, null);
+			g2.drawRect(xPosOnScreen + xOffset, yPosOnScreen + yOffset, width, height);
 			
 		}
 		catch (IndexOutOfBoundsException obe) {

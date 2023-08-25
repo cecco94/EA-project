@@ -12,10 +12,10 @@ public class Map {
 	
 	public static final int NUM_STANZE = Stanze.numStanze, NUM_STRATI = 4;
 	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2, QUARTO_STRATO = 3;
-	public static final int BIBLIOTECA = 0,  DORMITORIO = 1, AULA_STUDIO = 2, TENDA = 3;
+	public static final int BIBLIOTECA = 0,  DORMITORIO = 1, AULA_STUDIO = 2, TENDA = 3, LABORATORIO = 4;
 	
 	private String[] percorsiStanze = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt",
-										"/mappe/aulaStudio.txt", "/mappe/tenda.txt"};
+										"/mappe/aulaStudio.txt", "/mappe/tenda.txt", "/mappe/laboratorio.txt"};
 	
 	public Map() {	
 		mappa = new int[NUM_STANZE][NUM_STRATI][][];

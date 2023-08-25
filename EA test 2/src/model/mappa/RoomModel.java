@@ -144,5 +144,8 @@ public class RoomModel {
 		return passaggi;
 	}
 	
+	public int getNumEntityIntile(int riga, int colonna){
+		return tilesOccupati[riga][colonna];
+	}
 	
 }

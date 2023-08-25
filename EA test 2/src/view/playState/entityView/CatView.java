@@ -20,8 +20,8 @@ public class CatView extends EntityView {
 		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		view = v;
 		loadImages();	
-		xOffset = 3;
-		yOffset = 3;
+		xOffset = 0; //3;
+		yOffset = 0; //3;
 		this.index = index;
 	}
 
@@ -94,6 +94,10 @@ public class CatView extends EntityView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
+		
+		
+		
+		
 		animationCounter++;
 		setAction();
 		setDirection();
@@ -110,13 +114,18 @@ public class CatView extends EntityView {
 		int distanzaX = xPlayerMap - xPosMapForSort;
 		int distanzaY = yPlayerMap - yPosMapForSort;
 		
-		//ci serve un offset perchè la distanza del tile nella mappa rispetto al player è riferita al punto in
+		//ci serve un offset perchè la distanza del gatto nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset;  //PlayerView.getXOffset();
-		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset; //PlayerView.getYOffset();
+		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset + PlayerView.getXOffset();
+		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset + PlayerView.getYOffset();
 		
 		try {
 			g2.drawImage(animation[BIANCO][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+			g2.drawRect(xPosOnScreen + xOffset,
+						yPosOnScreen + yOffset,
+						view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox().width,
+						view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox().height);
+
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);

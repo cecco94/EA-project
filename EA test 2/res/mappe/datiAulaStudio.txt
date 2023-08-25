@@ -4,4 +4,4 @@
 
 ;passaggio alla tenda, 26, 10, 32, 32, 14, 15, 3
 
--gatto, 1, 20, 8, 30, 30
+-gatto, 1, 20, 8, 32, 32

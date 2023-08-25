@@ -7,15 +7,16 @@ public enum Stanze {
 	BIBLIOTECA(Map.BIBLIOTECA, SoundManager.BIBLIOTECA), 
 	DORMITORIO(Map.DORMITORIO, SoundManager.DORMITORIO), 
 	AULA_STUDIO(Map.AULA_STUDIO, SoundManager.AULA_STUDIO),
-	TENDA(Map.TENDA, SoundManager.TENDA);
+	TENDA(Map.TENDA, SoundManager.TENDA),
+	LABORATORIO(Map.LABORATORIO,SoundManager.AULA_STUDIO);
 	
 	Stanze(int i, int music) {
 		indiceMappa = i;
 		indiceMusica = music;
 	}
 
-	public static Stanze stanzaAttuale = AULA_STUDIO;
-	public final static int numStanze = 4;
+	public static Stanze stanzaAttuale = LABORATORIO;
+	public final static int numStanze = 5;
 	
 	public int indiceMappa, indiceMusica;
 	

@@ -36,7 +36,8 @@ public class PlayStateController {
 		stanzeController[Stanze.DORMITORIO.indiceMappa] = new RoomController(this, Stanze.DORMITORIO.indiceMappa);		
 		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this, Stanze.AULA_STUDIO.indiceMappa);
 		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this, Stanze.TENDA.indiceMappa);
-		
+		stanzeController[Stanze.LABORATORIO.indiceMappa] = new RoomController(this, Stanze.LABORATORIO.indiceMappa);
+
 	}
 	
 	public void update() {
@@ -62,6 +63,9 @@ public class PlayStateController {
 			break;
 		case TENDA:
 			stanzeController[Stanze.TENDA.indiceMappa].update();	
+			break;
+		case LABORATORIO:
+			stanzeController[Stanze.LABORATORIO.indiceMappa].update();	
 		default:
 			break;
 		}
@@ -69,7 +73,7 @@ public class PlayStateController {
 	
 	private void updateProjectiles() {
 		for(int index = 0; index < appuntiLanciati.size(); index++)
-			appuntiLanciati.get(index).update(playerController);	
+			appuntiLanciati.get(index).update();	
 	}
 
 	public void setPlayerPos(int x, int y) {
@@ -173,7 +177,7 @@ public class PlayStateController {
 		//siccome tutti quelli a destra di index si spostano a sinistra di uno, l'indice deve 
 		//essere aggiornato
 		for(int i = index; i < appuntiLanciati.size(); i++)
-			appuntiLanciati.get(i).abbassaIndice();
+			appuntiLanciati.get(i).abbassaIndiceNellaLista();
 		try {
 			appuntiLanciati.remove(index);
 		}

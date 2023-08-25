@@ -37,7 +37,7 @@ public class Projectile {
 		hitbox = new Rectangle(x, y, width, height);
 	}
 
-	public void update(PlayerController player) {
+	public void update() {
 		checkSolid();
 		updatePosition();
 	}
@@ -46,19 +46,23 @@ public class Projectile {
 		try {
 			switch(direction) {
 			case PlayerController.LEFT: 
-				if(!play.getCollisionChecker().canMoveLeft(hitbox)) 
+				if(!play.getCollisionChecker().canMoveLeft(hitbox) || 
+						play.getCollisionChecker().hitEntity(hitbox))  
 					hit = true;
 				break;
 			case PlayerController.RIGHT:
-				if(!play.getCollisionChecker().canMoveRight(hitbox)) 
+				if(!play.getCollisionChecker().canMoveRight(hitbox) || 
+						play.getCollisionChecker().hitEntity(hitbox)) 
 					hit = true;
 				break;
 			case PlayerController.UP:
-				if(!play.getCollisionChecker().canMoveUp(hitbox)) 
+				if(!play.getCollisionChecker().canMoveUp(hitbox) || 
+						play.getCollisionChecker().hitEntity(hitbox))  
 					hit = true;
 				break;
 			case PlayerController.DOWN:
-				if(!play.getCollisionChecker().canMoveDown(hitbox)) 
+				if(!play.getCollisionChecker().canMoveDown(hitbox)|| 
+						play.getCollisionChecker().hitEntity(hitbox))  
 					hit = true;
 				break;
 			}		
@@ -66,7 +70,7 @@ public class Projectile {
 		catch(ArrayIndexOutOfBoundsException obe) {
 			play.getController().getView().getPlay().removeProjectile(indexInList);
 			play.removeProjectile(indexInList);
-		//	System.out.println("fuori dai bordi");
+			System.out.println("fuori dai bordi");
 		}
 		
 		if(hit) {
@@ -103,5 +107,9 @@ public class Projectile {
 
 	public int getDirection() {
 		return direction;
+	}
+
+	public void abbassaIndiceNellaLista() {
+		indexInList--;	
 	}
 }

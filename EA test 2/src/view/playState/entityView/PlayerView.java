@@ -523,7 +523,10 @@ public class PlayerView extends EntityView {
 		//se una slide era sfasata, resettiamo il valore dell'offset
 		xOnScreen = xOnScreenOriginal;
 		
-	//	g2.drawRect(xOnScreen + xOffset, yOnScreen + yOffset, view.getController().getPlay().getPlayer().getHitbox().width, view.getController().getPlay().getPlayer().getHitbox().height);
+		g2.drawRect(xOnScreen + xOffset,
+					yOnScreen + yOffset, 
+					view.getController().getPlay().getPlayer().getHitbox().width, 
+					view.getController().getPlay().getPlayer().getHitbox().height);
 	}
 
 	// in questo modo solleva lo scudo e lo tiene alzato finchè il giocatore non toglie il dito
