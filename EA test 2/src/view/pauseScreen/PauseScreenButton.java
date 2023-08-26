@@ -1,4 +1,4 @@
-package view;
+package view.pauseScreen;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.main.Gamestate;
+import view.IView;
 import view.main.GamePanel;
 import view.menu.AbstractMenuButton;
 

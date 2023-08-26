@@ -9,6 +9,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 public class SoundManager {
+	//il volume è un numero da 0 a 1
 	private float musicVolume = 0.2f, seVolume = 0.2f;
 	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[10];
@@ -107,8 +108,12 @@ public class SoundManager {
 	    }
 	}
 
-	public float getVolume() {
+	public float getMusicVolume() {
 		return musicVolume;
+	}
+	
+	public float getSEVolume() {
+		return seVolume;
 	}
 	
 }

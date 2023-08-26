@@ -16,6 +16,7 @@ import view.mappa.TilesetView;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
 import view.menu.optionMenu.OptionMenu;
+import view.pauseScreen.PauseScreen;
 import view.playState.PlayStateView;
 import view.sound.SoundManager;
 
@@ -171,6 +172,10 @@ public class IView {
 		return pause;
 	}
 	
+	public SoundManager getSoundManager() {
+		return sound;
+	}
+	
 	public void playMusic(int i) {
 		sound.loopMusic(i);
 	}
@@ -192,7 +197,7 @@ public class IView {
 	}
 
 	public float getMusicVolume() {
-		return sound.getVolume();
+		return sound.getMusicVolume();
 	}
 	
 	public TransitionState getTransition() {

@@ -36,7 +36,7 @@ public class PlayUI {
 			g2.setColor(Color.black);
 			g2.fillRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT);
 			
-			volume = play.getView().getMusicVolume() - counter/transitionDuration + 0.01f;
+			volume = play.getView().getMusicVolume() - opacity + 0.01f;
 			play.getView().setMusicVolume(volume);		
 		}
 		else {

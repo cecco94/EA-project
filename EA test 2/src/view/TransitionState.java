@@ -15,10 +15,11 @@ public class TransitionState {
 	private final float transitionDuration = 360; //120 fps quindi sono 3 secondi
 			
 	private float opacity;
-	private float volume;
 	private Gamestate prev;
 	private Gamestate next;
 	private IView view;
+	
+	private float volume;
 	private float volumeBeforeTransition;
 	private boolean saved = false;
 	
@@ -44,7 +45,8 @@ public class TransitionState {
 			view.prepareNewFrame(g2);
 			
 			//sfuma il volume della musica
-			volume = volume*opacity + 0.01f;
+			volume = volume*opacity; 
+						
 			view.setMusicVolume(volume);
 			
 			view.changeGameState(Gamestate.TRANSITION_STATE);
@@ -64,12 +66,11 @@ public class TransitionState {
 				view.playMusic(Stanze.stanzaAttuale.indiceMusica);
 			
 			view.setMusicVolume(volumeBeforeTransition);
+			volume = view.getMusicVolume();
 			
 			//cambia il gamestate
 			view.changeGameState(next);
 			resetNextPrev();
-			
-			
 			
 		}
 	
@@ -82,6 +83,7 @@ public class TransitionState {
 		}
 	}
 
+	//da cambiare
 	private void resetNextPrev() {
 		if(next == Gamestate.MAIN_MENU) {
 			next = Gamestate.PLAYING;
