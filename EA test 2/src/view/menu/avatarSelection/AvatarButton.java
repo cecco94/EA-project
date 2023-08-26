@@ -74,4 +74,9 @@ public class AvatarButton extends AbstractMenuButton {
 		view.changeGameState(newState);
 	}
 
+	@Override
+	public void reactToDrag(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+
 }

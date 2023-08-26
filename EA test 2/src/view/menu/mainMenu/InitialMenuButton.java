@@ -45,9 +45,15 @@ public class InitialMenuButton extends AbstractMenuButton {
 	}
 
 	// passa al gamestate successivo, per es se clicca play va sul gamestate dove si sceglie l'avatar
+	
 	@Override
 	public void reactToMouse(MouseEvent e) {
 		view.changeGameState(newState);	
+	}
+
+	@Override
+	public void reactToDrag(MouseEvent e) {
+		
 	}
 
 }

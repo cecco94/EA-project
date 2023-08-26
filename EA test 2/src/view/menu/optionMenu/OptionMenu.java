@@ -289,9 +289,6 @@ public class OptionMenu extends AbstractMenu{
 	}
 
 	// le soundbar cambiano quando il mouse viene trascinato dentro di loro
-	public void mouseDragged(MouseEvent e) {
-		musicBar.reactToDrag(e);
-		effectBar.reactToDrag(e);	
-	}
+
 
 }

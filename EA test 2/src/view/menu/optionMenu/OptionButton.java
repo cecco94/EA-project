@@ -56,4 +56,9 @@ public class OptionButton extends AbstractMenuButton {
 		//chiedi a view di chiedere al model di settare la difficoltà
 	}
 
+	@Override
+	public void reactToDrag(MouseEvent e) {
+	
+	}
+
 }

@@ -41,4 +41,9 @@ public abstract class AbstractMenu {
 				mb.setMouseOver(true);
 	}
 	
+	public void mouseDragged(MouseEvent e) {
+		for(AbstractMenuButton mb : buttons)
+			mb.reactToDrag(e);
+	}
+	
 }

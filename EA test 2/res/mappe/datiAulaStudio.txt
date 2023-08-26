@@ -4,4 +4,6 @@
 
 ;passaggio alla tenda, 26, 10, 32, 32, 14, 15, 3
 
+;passaggio al laboratorio, 15, 6, 32, 33, 20, 24, 4
+
 -gatto, 1, 20, 8, 32, 32

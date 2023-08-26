@@ -8,14 +8,14 @@ public enum Stanze {
 	DORMITORIO(Map.DORMITORIO, SoundManager.DORMITORIO), 
 	AULA_STUDIO(Map.AULA_STUDIO, SoundManager.AULA_STUDIO),
 	TENDA(Map.TENDA, SoundManager.TENDA),
-	LABORATORIO(Map.LABORATORIO,SoundManager.AULA_STUDIO);
+	LABORATORIO(Map.LABORATORIO,SoundManager.LABORATORIO);
 	
 	Stanze(int i, int music) {
 		indiceMappa = i;
 		indiceMusica = music;
 	}
 
-	public static Stanze stanzaAttuale = LABORATORIO;
+	public static Stanze stanzaAttuale = BIBLIOTECA;
 	public final static int numStanze = 5;
 	
 	public int indiceMappa, indiceMusica;
@@ -27,6 +27,8 @@ public enum Stanze {
 			return Stanze.AULA_STUDIO;
 		else if(i == Map.TENDA)
 			return Stanze.TENDA;
+		else if(i == Map.LABORATORIO)
+			return Stanze.LABORATORIO;
 		else
 			return Stanze.DORMITORIO;
 	}

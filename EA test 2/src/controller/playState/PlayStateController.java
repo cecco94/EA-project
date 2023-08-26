@@ -94,9 +94,11 @@ public class PlayStateController {
 	
 	public void handleKeyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			controller.getView().getTransition().setNext(Gamestate.MAIN_MENU);
-			controller.getView().getTransition().setPrev(Gamestate.PLAYING);
-			controller.setGameState(Gamestate.TRANSITION_STATE);
+//			controller.getView().getTransition().setNext(Gamestate.MAIN_MENU);
+//			controller.getView().getTransition().setPrev(Gamestate.PLAYING);
+//			controller.setGameState(Gamestate.TRANSITION_STATE);
+			controller.setGameState(Gamestate.PAUSE);
+			
 		}
 		
 		else if (e.getKeyCode() == KeyEvent.VK_ENTER && !playerController.isParring())

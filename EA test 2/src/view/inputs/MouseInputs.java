@@ -22,6 +22,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		case OPTIONS:
 			view.getOptions().mouseDragged(e);
 			break;
+		case PAUSE:
+			view.getPause().mouseDragged(e);
+			break;
 		default:
 			break;
 		}
@@ -39,6 +42,9 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			break;
 		case OPTIONS:
 			view.getOptions().mouseMoved(e);
+			break;
+		case PAUSE:
+			view.getPause().mouseMoved(e);
 			break;
 		default:
 			break;
@@ -72,6 +78,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			break;
 		case PLAYING:
 			view.getController().getPlay().handleMousePressed(e);
+			break;
+		case PAUSE:
+			view.getPause().mousePressed(e);
+			break;
 		default:
 			break;
 		}
@@ -91,6 +101,10 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			break;
 		case PLAYING:
 			view.getController().getPlay().handleMouseReleased(e);
+			break;
+		case PAUSE:
+			view.getPause().mouseReleased(e);
+			break;
 		default:
 			break;
 		}

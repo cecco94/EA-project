@@ -38,6 +38,7 @@ public class IView {
 	private OptionMenu opzioni;
 	private PlayStateView play;
 	private TransitionState transition;
+	private PauseScreen pause;
 	//mappa e tiles
 	private TilesetView tileset;
 	
@@ -60,6 +61,7 @@ public class IView {
 		tileset = new TilesetView();
 		play = new PlayStateView(model, tileset, this);
 		transition = new TransitionState(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
+		pause = new PauseScreen(this);
 		
 		//inizializza le cose più delicate
 		gw = new GameWindow(gp, this);
@@ -114,6 +116,10 @@ public class IView {
 		case TRANSITION_ROOM:
 			play.draw(g2);
 			play.getUI().drawTransition(g2);
+			break;
+		case PAUSE:
+			play.draw(g2);
+			pause.draw(g2);
 		default:
 			break;			
 		}
@@ -159,6 +165,10 @@ public class IView {
 	
 	public PlayStateView getPlay() {
 		return play;
+	}
+	
+	public PauseScreen getPause() {
+		return pause;
 	}
 	
 	public void playMusic(int i) {
