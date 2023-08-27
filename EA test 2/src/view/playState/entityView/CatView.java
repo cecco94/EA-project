@@ -94,10 +94,6 @@ public class CatView extends EntityView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
-		
-		
-		
-		
 		animationCounter++;
 		setAction();
 		setDirection();
@@ -173,19 +169,6 @@ public class CatView extends EntityView {
 		
 		return 0;
 	}
-
-//	private void setDirection() {
-//		directionCounter++;
-//		if (directionCounter > animationSpeed*3) {
-//			direzioni ++;
-//			currentDirection = direzioni;
-//			if(direzioni > 3) {
-//				direzioni = 0;
-//			 	currentDirection = 0;
-//			}
-//			directionCounter = 0;
-//		}	
-//	}
 
 
 }

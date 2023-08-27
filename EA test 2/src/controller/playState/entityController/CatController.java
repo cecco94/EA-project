@@ -11,27 +11,113 @@ public class CatController extends EntityController {
 	private int actionCounter;
 	private Random randomGenerator = new Random();
 	private int azioneACaso, direzioneACaso;
-	
-//	//posizione nella mappa del roomModel, prima dello spostamento
-//	private int tilePreOccupatoRiga;
-//	private int tilePreOccupatoColonna;
+	private boolean scappa;
+	private int counterFuga;
+
 	
 	public CatController(Rectangle r, PlayStateController p) {
 		super(r, p);
-		
-		speed = (int)(GamePanel.SCALE*1.0f);
+		speed = (int)(GamePanel.SCALE*1.5f);
 		type = 0;
-
 	}
 	
 	public void update() {
 		choseAction();
-		choseDirection();
-		checkCollision();
-	//	occupyPosition();
 	}
 
 	private void choseAction() {
+		
+		if(!scappa) {
+			//se il giocatore si avvicina al gatto, il gatto si sposta nella direzione opposta
+			int distanzaX = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
+			int distanzaY = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
+			
+			if(distanzaX < GamePanel.TILES_SIZE*2 && distanzaY < GamePanel.TILES_SIZE*2)
+				scappa = true;
+			else 
+				scappa = false;
+	
+			if(scappa) 
+				panic();			
+			else 
+				normalAction();	
+		}
+		
+		else fuggi();
+		System.out.println(scappa);
+		
+	}
+	
+	private void fuggi() {
+		counterFuga++;
+		
+		if(counterFuga >= 200) {
+			scappa = false;
+			counterFuga = 0;
+		}
+		else
+			checkCollision();
+		
+	}
+
+	private void panic() {
+		
+		int playerDirection = play.getPlayer().getDirection();
+		moving = true;
+		idle = false;
+		
+		if(playerDirection == LEFT && play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
+			direction = LEFT;
+			resetDirection();
+			left = true;
+		}
+		
+		else if(playerDirection == LEFT && !play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
+			direction = UP;
+			resetDirection();
+			up = true;
+		}
+		
+		else if(playerDirection == RIGHT && play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
+			direction = RIGHT;
+			resetDirection();
+			right = true;
+		}
+		
+		else if(playerDirection == RIGHT && !play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
+			direction = DOWN;
+			resetDirection();
+			down = true;
+			}		
+		
+		else if(playerDirection == UP && play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
+			direction = UP;
+			resetDirection();
+			up = true;
+		}
+		
+		else if(playerDirection == UP && !play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
+			direction = RIGHT;
+			resetDirection();
+			right = true;
+		}		
+		
+		
+		else if(playerDirection == DOWN && play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
+			direction = DOWN;
+			resetDirection();
+			down = true;
+		}
+		
+		else if(playerDirection == DOWN && !play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
+			direction = LEFT;
+			resetDirection();
+			left = true;
+		}		
+			
+	}
+
+	private void normalAction() {
 		actionCounter++;	
 		
 		if(actionCounter >= 400) {
@@ -46,8 +132,9 @@ public class CatController extends EntityController {
 				moving = true;
 		}
 		
+		choseDirection();
 	}
-	
+
 	private void resetaction() {
 		idle = false;
 		moving = false;
@@ -76,13 +163,8 @@ public class CatController extends EntityController {
 			
 			actionCounter = 0;
 		}
-	}
-
-	private void resetDirection() {
-		up = false;
-		down = false;
-		left = false;
-		right = false;
+		
+		checkCollision();
 	}
 
 	private void checkCollision() {
@@ -93,7 +175,7 @@ public class CatController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y - speed;
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y -= speed;
 				}
@@ -104,7 +186,7 @@ public class CatController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y + speed;
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y += speed;
 				}
@@ -115,7 +197,7 @@ public class CatController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x - speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x -= speed;
 				}
@@ -126,7 +208,7 @@ public class CatController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x + speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().siSchiantaConQualcosaNellaLista(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x += speed;
 				}
@@ -137,6 +219,7 @@ public class CatController extends EntityController {
 		if(collision) {
 			moving = false;
 			idle = true;
+			
 		}
 		
 	}
@@ -144,28 +227,5 @@ public class CatController extends EntityController {
 	public String toString() {
 		return "gatto ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
 	}
-	
-//	//dice alla mappa nel roomModel che il tile dove si trova lui è occupato
-//	private void occupyPosition() {
-//		//tile occupato dopo lo spostamento
-//		int tilePostOccupatoRiga = hitbox.y/GamePanel.TILES_SIZE;
-//		int tilePostOccupatoColonna = hitbox.x/GamePanel.TILES_SIZE;
-//		
-//		//se ha cambiato tile da occupare, bidogna aggiornare i dati nella mappa del roomModel
-//		if(tilePostOccupatoRiga != tilePreOccupatoRiga || tilePostOccupatoColonna != tilePreOccupatoColonna) {
-//			
-//			int indiceStanzaDaModificare = Stanze.stanzaAttuale.indiceMappa;
-//			
-//			play.getController().getModel().getStanza(indiceStanzaDaModificare).aggiungiEntitaAlTile(tilePostOccupatoRiga, tilePostOccupatoColonna);
-//			play.getController().getModel().getStanza(indiceStanzaDaModificare).togliEntitaAlTile(tilePreOccupatoRiga, tilePreOccupatoColonna);
-//			
-////			System.out.println("tiple prima riga "+ tilePreOccupatoRiga + " colonna " + tilePreOccupatoColonna);
-////			System.out.println("tiple dopo riga "+ tilePostOccupatoRiga + " colonna " + tilePostOccupatoColonna);
-//			
-//			tilePreOccupatoRiga = tilePostOccupatoRiga;
-//			tilePreOccupatoColonna = tilePostOccupatoColonna;	
-//		}
-//		
-//	}
 	
 }

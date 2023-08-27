@@ -51,7 +51,9 @@ public class KeyboardInputs implements KeyListener {
 		case PLAYING:
 			view.getController().getPlay().handleKeyPressed(e);
 			break;
-			
+		case PAUSE:
+			view.getPause().keyPressed(e.getKeyCode());
+			break;
 		default:
 			break;
 		}

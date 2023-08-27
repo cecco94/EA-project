@@ -13,26 +13,29 @@ public class Projectile {
 	private Rectangle hitbox;
 	private int speed;
 	private PlayStateController play;
+	EntityController lanciatore;
 	
-	public Projectile(PlayStateController p, int index) {
+	public Projectile(PlayStateController p, int index, EntityController e) {
 		play = p;
-		direction = p.getPlayer().getDirection();
-		setHitbox();
+		setHitbox(e);
 		speed = (int)(GamePanel.SCALE*1.3f);
 		indexInList = index;
+		
+		direction = e.direction;
+		lanciatore = e;
 	}
 
-	private void setHitbox() {
+	private void setHitbox(EntityController e) {
 		
-		int width = play.getPlayer().getHitbox().width;
-		int height = play.getPlayer().getHitbox().height;
-		int x = play.getPlayer().getHitbox().x;
-		int y = play.getPlayer().getHitbox().y;
+		int width = e.getHitbox().width;
+		int height = e.getHitbox().height;
+		int x = e.getHitbox().x;
+		int y = e.getHitbox().y;
 		
-		if(direction == PlayerController.RIGHT)
-			x += width;
-		else if(direction == PlayerController.DOWN)
-			y += height;
+//		if(direction == EntityController.RIGHT)
+//			x += width;
+//		else if(direction == EntityController.DOWN)
+//			y += height;
 		
 		hitbox = new Rectangle(x, y, width, height);
 	}
@@ -45,24 +48,24 @@ public class Projectile {
 	private void checkSolid() {
 		try {
 			switch(direction) {
-			case PlayerController.LEFT: 
+			case EntityController.LEFT: 
 				if(!play.getCollisionChecker().canMoveLeft(hitbox) || 
-						play.getCollisionChecker().hitEntity(hitbox))  
+						play.getCollisionChecker().hitEntity(hitbox, lanciatore))  
 					hit = true;
 				break;
-			case PlayerController.RIGHT:
+			case EntityController.RIGHT:
 				if(!play.getCollisionChecker().canMoveRight(hitbox) || 
-						play.getCollisionChecker().hitEntity(hitbox)) 
+						play.getCollisionChecker().hitEntity(hitbox, lanciatore)) 
 					hit = true;
 				break;
-			case PlayerController.UP:
+			case EntityController.UP:
 				if(!play.getCollisionChecker().canMoveUp(hitbox) || 
-						play.getCollisionChecker().hitEntity(hitbox))  
+						play.getCollisionChecker().hitEntity(hitbox, lanciatore))  
 					hit = true;
 				break;
-			case PlayerController.DOWN:
+			case EntityController.DOWN:
 				if(!play.getCollisionChecker().canMoveDown(hitbox)|| 
-						play.getCollisionChecker().hitEntity(hitbox))  
+						play.getCollisionChecker().hitEntity(hitbox, lanciatore))  
 					hit = true;
 				break;
 			}		
@@ -72,7 +75,7 @@ public class Projectile {
 			play.removeProjectile(indexInList);
 			System.out.println("fuori dai bordi");
 		}
-		
+							
 		if(hit) {
 			play.getController().getView().getPlay().removeProjectile(indexInList);
 			play.removeProjectile(indexInList);
@@ -81,16 +84,16 @@ public class Projectile {
 
 	private void updatePosition() {
 		switch(direction) {
-		case PlayerController.LEFT:
+		case EntityController.LEFT:
 			hitbox.x -= speed;
 			break;
-		case PlayerController.RIGHT:
+		case EntityController.RIGHT:
 			hitbox.x += speed;
 			break;
-		case PlayerController.UP:
+		case EntityController.UP:
 			hitbox.y -= speed;
 			break;
-		case PlayerController.DOWN:
+		case EntityController.DOWN:
 			hitbox.y += speed;
 			break;
 		}

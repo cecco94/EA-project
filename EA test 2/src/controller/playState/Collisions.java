@@ -170,7 +170,7 @@ public class Collisions {
 	}
 
 	//prende la lista degli npc e dei nemici e vede se collide con uno di loro, a parte se stesso
-	public boolean siSchiantaConQualcosaNellaLista(Rectangle hitboxEntity) {
+	public boolean checkCollisionInEntityList(Rectangle hitboxEntity) {
 		int indiceStanza = Stanze.stanzaAttuale.indiceMappa;
 		int numCollisioni = 0;
 		
@@ -200,21 +200,28 @@ public class Collisions {
 		return false;
 	}
 	
-	public boolean hitEntity(Rectangle hitboxEntity) {
+	//metodo usato dai proiettili per vedere se ha colpito qualcuno
+	public boolean hitEntity(Rectangle hitboxEntity, EntityController lanciatore) {
 		int indiceStanza = Stanze.stanzaAttuale.indiceMappa;
 		int numCollisioni = 0;
 		
 		ArrayList<EntityController> npc = control.getPlay().getRoom(indiceStanza).getNPC();
 		for(int i = 0; i < npc.size(); i++) {
 			if(hitboxEntity.intersects(npc.get(i).getHitbox()))
-				numCollisioni++;
+				if(npc.get(i) != lanciatore)		//se colpisce vhi ha lanciato il proiettile non succede nulla
+					numCollisioni++;
 		}
 		
 		ArrayList<EntityController> enemy = control.getPlay().getRoom(indiceStanza).getEnemy();
 		for(int i = 0; i < enemy.size(); i++) {
 			if(hitboxEntity.intersects(enemy.get(i).getHitbox()))
-				numCollisioni++;
+				if(npc.get(i) != lanciatore)
+					numCollisioni++;
 		}	
+		
+		if(hitboxEntity.intersects(control.getPlay().getPlayer().getHitbox())) 
+			if(control.getPlay().getPlayer() != lanciatore)
+				numCollisioni++;
 		
 		if(numCollisioni > 0) {
 			return true;

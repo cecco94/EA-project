@@ -5,9 +5,11 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
+import java.awt.Rectangle;
 
 import controller.IController;
 import controller.main.Gamestate;
+import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
 import controller.playState.entityController.Projectile;
 import model.mappa.Stanze;
@@ -25,7 +27,8 @@ public class PlayStateController {
 	public PlayStateController(IController c) {
 		controller = c;
 		collisionCheck = new Collisions(c); 
-		playerController = new PlayerController(collisionCheck, controller);
+		Rectangle r = new Rectangle(12, 9, 0, 0);
+		playerController = new PlayerController(r, this);
 		appuntiLanciati = new ArrayList<>();
 		initRooms();
 	}
@@ -48,8 +51,6 @@ public class PlayStateController {
 		updateProjectiles();
 		
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
-		//possiamo creare un array di room. ogni room contiene una lista di esseri ed oggetti
-		//Aggiornando la stanza, aggiorniamo tutti gli elementi al suo interno
 		//Per rendere la cosa più leggera, possiamo aggiornare solo quelli all'interno dell'area visibile
 		switch(Stanze.stanzaAttuale) {
 		case DORMITORIO:
@@ -93,13 +94,8 @@ public class PlayStateController {
 	}
 	
 	public void handleKeyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-//			controller.getView().getTransition().setNext(Gamestate.MAIN_MENU);
-//			controller.getView().getTransition().setPrev(Gamestate.PLAYING);
-//			controller.setGameState(Gamestate.TRANSITION_STATE);
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) 
 			controller.setGameState(Gamestate.PAUSE);
-			
-		}
 		
 		else if (e.getKeyCode() == KeyEvent.VK_ENTER && !playerController.isParring())
 			playerController.setAttacking(true);
@@ -125,7 +121,7 @@ public class PlayStateController {
 		
 		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) {
 			playerController.setThrowing(false);
-			addProjectile();
+			addProjectile(playerController);
 			controller.getView().getPlay().addProjectile();
 		}
 		
@@ -154,7 +150,7 @@ public class PlayStateController {
 		
 		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {
 			playerController.setThrowing(false);
-			addProjectile();
+			addProjectile(playerController);
 			controller.getView().getPlay().addProjectile();
 		}
 	}
@@ -171,8 +167,8 @@ public class PlayStateController {
 		return controller;
 	}
 	
-	public void addProjectile() {
-		appuntiLanciati.add(new Projectile(this, appuntiLanciati.size()));
+	public void addProjectile(EntityController lanciatore) {
+		appuntiLanciati.add(new Projectile(this, appuntiLanciati.size(), lanciatore));
 	}
 	
 	public void removeProjectile(int index) {
@@ -187,6 +183,7 @@ public class PlayStateController {
 			appuntiLanciati.clear();
 			controller.getView().getPlay().getAppunti().clear();
 		//	System.out.println("problemi appunti controller");
+		//	iobe.printStackTrace();
 		}
 	}
 	

@@ -12,8 +12,9 @@ public abstract class EntityController {
 	protected int speed;
 	protected PlayStateController play;
 	protected boolean moving, idle, attacking, up, down, left, right;
-	public static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
-	public static int IDLE = 0, MOVE = 1, ATTACK = 2, THROW = 3;
+	protected int direction;
+	public static final int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
+	public static final int IDLE = 0, MOVE = 1, ATTACK = 2, THROW = 3;
 	protected int currentAction = IDLE;
 	protected int type; //per capire, se è un NPC quale sia
 	
@@ -32,9 +33,24 @@ public abstract class EntityController {
 		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
 		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		
-		down = true;
-		idle = true;
+		resetBooleans();
+		direction = DOWN;
 
+	}
+	
+	protected void setBounds(int x, int y, int w, int h) {
+		hitbox.x = x;
+		tempHitboxForCheck.x = x;
+		
+		hitbox.y = y;
+		tempHitboxForCheck.y = y;
+		
+		hitbox.width = w;
+		tempHitboxForCheck.width = w;
+		
+		hitbox.height = h;
+		tempHitboxForCheck.height = h;
+		
 	}
 	
 	public abstract void update();
@@ -73,6 +89,50 @@ public abstract class EntityController {
 			return LEFT;
 		else 
 			return RIGHT;
+	}
+	
+	public boolean isMoving() {
+		return moving;
+	}
+	
+	public boolean isRight() {
+		return right;
+	}
+	
+	public boolean isLeft() {
+		return left;
+	}
+	
+	public boolean isDown() {
+		return down;
+	}
+	
+	public boolean isUp() {
+		return up;
+	}
+
+	public void setMoving(boolean m) {
+		moving = m;
+	}
+	
+	protected void resetBooleans() {
+		up = false;
+		down = false;
+		left = false;
+		right = false;	
+		idle = false;
+		moving = false;	
+	}
+	
+	protected void resetDirection() {
+		up = false;
+		down = false;
+		left = false;
+		right = false;
+	}
+	
+	public int getDirection() {
+		return direction;
 	}
 	
 	public String toString() {

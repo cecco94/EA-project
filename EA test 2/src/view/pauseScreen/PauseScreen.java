@@ -7,6 +7,7 @@ import static view.main.GamePanel.SCALE;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -22,9 +23,9 @@ import view.menu.optionMenu.SoundBar;
 
 public class PauseScreen extends AbstractMenu {
 
-	String percorsoHome = "/menuIniziale/bottoneHome.png";
-	String percorsoRiprendi = "/menuIniziale/bottoneRiprendi.png";
-	String percorsoScritta = "/menuIniziale/pausaCaffe.png";
+	String percorsoHome = "/menuiniziale/bottoneHome.png";
+	String percorsoRiprendi = "/menuiniziale/bottoneRiprendi.png";
+	String percorsoScritta =  "/menuiniziale/pausa.png";
 
 	private BufferedImage titolo;
 	private BufferedImage volumeMusica, se;
@@ -37,9 +38,11 @@ public class PauseScreen extends AbstractMenu {
 	private int centeredXTitle, centeredXmusic, centeredXse;
 	public final int maxBarWidth = GAME_WIDTH/4, barHeight = (int)(10*SCALE);
 	private int soundbarsX = GAME_WIDTH/2 - maxBarWidth/2;
+	
+	private IView view;
 		
 	public PauseScreen(IView v) {
-
+		view = v;
 		loadImages();
 		centeredXTitle = ViewUtils.getCenteredXPos(titolo.getWidth());
 		createSoundBars(v);
@@ -112,6 +115,11 @@ public class PauseScreen extends AbstractMenu {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 		g2.fillRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));		
+	}
+
+	public void keyPressed(int keyCode) {
+		if(keyCode == KeyEvent.VK_ESCAPE)
+			view.changeGameState(Gamestate.PLAYING);		
 	}
 
 }

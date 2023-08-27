@@ -15,7 +15,7 @@ public enum Stanze {
 		indiceMusica = music;
 	}
 
-	public static Stanze stanzaAttuale = BIBLIOTECA;
+	public static Stanze stanzaAttuale = AULA_STUDIO;
 	public final static int numStanze = 5;
 	
 	public int indiceMappa, indiceMusica;

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import controller.playState.entityController.EntityController;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
@@ -39,7 +40,7 @@ public class ProjectileView {
 	private void loadAnimation() {
 		BufferedImage image = null;	
 		try {
-			if(direction == 0) {
+			if(direction == EntityController.LEFT) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_left_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
 				animazione[0] = image;
@@ -49,7 +50,7 @@ public class ProjectileView {
 				animazione[1] = image;
 			}
 			
-			else if(direction == 1) {
+			else if(direction == EntityController.RIGHT) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_right_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
 				animazione[0] = image;
@@ -59,7 +60,7 @@ public class ProjectileView {
 				animazione[1] = image;
 			}
 			
-			else if(direction == 2) {
+			else if(direction == EntityController.UP) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_up_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
 				animazione[0] = image;
@@ -69,7 +70,7 @@ public class ProjectileView {
 				animazione[1] = image;
 			}
 			
-			else if(direction == 3) {
+			else if(direction == EntityController.DOWN) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_down_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
 				animazione[0] = image;
