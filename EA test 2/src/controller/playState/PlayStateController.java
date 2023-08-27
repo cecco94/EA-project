@@ -40,7 +40,8 @@ public class PlayStateController {
 		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this, Stanze.AULA_STUDIO.indiceMappa);
 		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this, Stanze.TENDA.indiceMappa);
 		stanzeController[Stanze.LABORATORIO.indiceMappa] = new RoomController(this, Stanze.LABORATORIO.indiceMappa);
-
+		stanzeController[Stanze.STUDIO_PROF.indiceMappa] = new RoomController(this, Stanze.STUDIO_PROF.indiceMappa);
+		
 	}
 	
 	public void update() {
@@ -67,6 +68,10 @@ public class PlayStateController {
 			break;
 		case LABORATORIO:
 			stanzeController[Stanze.LABORATORIO.indiceMappa].update();	
+			break;
+		case STUDIO_PROF: 
+			stanzeController[Stanze.STUDIO_PROF.indiceMappa].update();
+			break;
 		default:
 			break;
 		}

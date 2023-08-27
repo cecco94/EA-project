@@ -28,7 +28,7 @@ public class IModel {
 	String percorsoDatiAlaStudio = "/mappe/datiAulaStudio.txt";
 	String percorsoDatiTenda = "/mappe/datiTenda.txt";
 	String percorsoDatiLaboratorio = "/mappe/datiLaboratorio.txt";
-
+	String percorsoDatiStudioProf = "/mappe/datiStudioProf.txt";
 		
 	
 	public IModel(IController c) {
@@ -42,7 +42,7 @@ public class IModel {
 		stanze[Map.AULA_STUDIO] = new RoomModel(percorsoDatiAlaStudio, this, Map.AULA_STUDIO);		
 		stanze[Map.TENDA] = new RoomModel(percorsoDatiTenda, this, Map.TENDA);
 		stanze[Map.LABORATORIO] = new RoomModel(percorsoDatiLaboratorio, this, Map.LABORATORIO);
-
+		stanze[Map.STUDIO_PROF] = new RoomModel(percorsoDatiStudioProf, this, Map.STUDIO_PROF);
 		
 	}
 

@@ -28,7 +28,8 @@ public class CatController extends EntityController {
 	private void choseAction() {
 		
 		if(!scappa) {
-			//se il giocatore si avvicina al gatto, il gatto si sposta nella direzione opposta
+			//se il giocatore si avvicina al gatto, il gatto si sposta nella direzione opposta per un secondo
+			//se la direzione opposta è bloccata da un muro, va in un'altra direzione
 			int distanzaX = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 			int distanzaY = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			
@@ -38,13 +39,13 @@ public class CatController extends EntityController {
 				scappa = false;
 	
 			if(scappa) 
-				panic();			
+					panic();			
 			else 
 				normalAction();	
 		}
 		
 		else fuggi();
-		System.out.println(scappa);
+	//	System.out.println(scappa);
 		
 	}
 	
@@ -73,9 +74,16 @@ public class CatController extends EntityController {
 		}
 		
 		else if(playerDirection == LEFT && !play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-			direction = UP;
-			resetDirection();
-			up = true;
+			if(play.getCollisionChecker().canMoveUp(hitbox)) {
+				direction = UP;
+				resetDirection();
+				up = true;
+			}
+			else {
+				direction = DOWN;
+				resetDirection();
+				down = true;
+			}
 		}
 		
 		else if(playerDirection == RIGHT && play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
@@ -85,10 +93,18 @@ public class CatController extends EntityController {
 		}
 		
 		else if(playerDirection == RIGHT && !play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-			direction = DOWN;
-			resetDirection();
-			down = true;
-			}		
+			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
+				direction = DOWN;
+				resetDirection();
+				down = true;
+			}
+			else {
+				direction = UP;
+				resetDirection();
+				up = true;
+			}
+			
+		}		
 		
 		else if(playerDirection == UP && play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
 			direction = UP;
@@ -97,11 +113,17 @@ public class CatController extends EntityController {
 		}
 		
 		else if(playerDirection == UP && !play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-			direction = RIGHT;
-			resetDirection();
-			right = true;
+			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
+				direction = RIGHT;
+				resetDirection();
+				right = true;
+			}
+			else {
+				direction = LEFT;
+				resetDirection();
+				left = true;
+			}
 		}		
-		
 		
 		else if(playerDirection == DOWN && play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 			direction = DOWN;
@@ -110,9 +132,16 @@ public class CatController extends EntityController {
 		}
 		
 		else if(playerDirection == DOWN && !play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-			direction = LEFT;
-			resetDirection();
-			left = true;
+			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
+				direction = LEFT;
+				resetDirection();
+				left = true;
+			}
+			else {
+				direction = RIGHT;
+				resetDirection();
+				right = true;
+			}
 		}		
 			
 	}
