@@ -8,16 +8,20 @@ import view.main.GamePanel;
 
 public class CatController extends EntityController {
 
+	private static int hitboxWidth = 28, hitboxHeight = 20;
+	private static int catSpeed = (int)(GamePanel.SCALE*1.2f);
+	
 	private int actionCounter;
 	private Random randomGenerator = new Random();
 	private int azioneACaso, direzioneACaso;
-	private boolean scappa;
+	
+	private boolean inFuga;
 	private int counterFuga;
 
 	
-	public CatController(Rectangle r, PlayStateController p) {
-		super(r, p);
-		speed = (int)(GamePanel.SCALE*1.5f);
+	public CatController(int xPos, int yPos, PlayStateController p) {
+		super(new Rectangle(xPos, yPos, hitboxWidth, hitboxHeight), p);
+		speed = catSpeed;
 		type = 0;
 	}
 	
@@ -27,64 +31,88 @@ public class CatController extends EntityController {
 
 	private void choseAction() {
 		
-		if(!scappa) {
+		if(!inFuga) {
 			//se il giocatore si avvicina al gatto, il gatto si sposta nella direzione opposta per un secondo
 			//se la direzione opposta è bloccata da un muro, va in un'altra direzione
 			int distanzaX = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 			int distanzaY = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			
-			if(distanzaX < GamePanel.TILES_SIZE*2 && distanzaY < GamePanel.TILES_SIZE*2)
-				scappa = true;
-			else 
-				scappa = false;
-	
-			if(scappa) 
-					panic();			
+			if(distanzaX < GamePanel.TILES_SIZE*2 && distanzaY < GamePanel.TILES_SIZE*2) {
+				inFuga = true;
+				setDiezioneFuga();	
+				speed = (int)(GamePanel.SCALE*1.5f);
+			}
+			
 			else 
 				normalAction();	
 		}
 		
-		else fuggi();
-	//	System.out.println(scappa);
+		else 
+			fuggiInUNaDirezione();
 		
 	}
 	
-	private void fuggi() {
+	private void fuggiInUNaDirezione() {
 		counterFuga++;
-		
+		//dopo un secondo di fuga può controlare di nuovo se è inseguito
 		if(counterFuga >= 200) {
-			scappa = false;
+			inFuga = false;
 			counterFuga = 0;
+			speed = (int)(GamePanel.SCALE*1.2f);
 		}
+		//se ancora non è passato un secondo, continua a correre in quella direzione
+		//finchè non trovi un muro
 		else
 			checkCollision();
 		
 	}
 
-	private void panic() {
+	private void setDiezioneFuga() {
 		
 		int playerDirection = play.getPlayer().getDirection();
 		moving = true;
 		idle = false;
 		
-		if(playerDirection == LEFT && play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
+		//se il giocatore stava fermo ed è il gatto ad essersi avvicinato per caso
+		//cambia direzione e scappa
+		if(playerDirection == direction) {
+			direction++;
+			
+			if(direction > 3) 
+				direction = 0;
+			
+		}
+		
+		
+		//se il player si avvicina da sinistra, se può scappa a sinistra
+		else if(playerDirection == LEFT && play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
 			direction = LEFT;
 			resetDirection();
 			left = true;
 		}
-		
+		//se non può, controlla se può scappare su o giù
 		else if(playerDirection == LEFT && !play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
 			if(play.getCollisionChecker().canMoveUp(hitbox)) {
 				direction = UP;
 				resetDirection();
 				up = true;
 			}
-			else {
+			else if (play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 				direction = DOWN;
 				resetDirection();
 				down = true;
 			}
+			//se non può scappare resta fermo
+			else {
+				idle = true;
+				moving = false;
+				inFuga = false;
+				System.out.println("fermo");
+			}
+				
 		}
+		
+		
 		
 		else if(playerDirection == RIGHT && play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
 			direction = RIGHT;
@@ -98,13 +126,18 @@ public class CatController extends EntityController {
 				resetDirection();
 				down = true;
 			}
-			else {
+			else if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
 				direction = UP;
 				resetDirection();
 				up = true;
 			}
-			
+			else {
+				idle = true;
+				moving = false;
+				inFuga = false;
+			}
 		}		
+		
 		
 		else if(playerDirection == UP && play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
 			direction = UP;
@@ -118,12 +151,18 @@ public class CatController extends EntityController {
 				resetDirection();
 				right = true;
 			}
-			else {
+			else if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)){
 				direction = LEFT;
 				resetDirection();
 				left = true;
 			}
+			else {
+				idle = true;
+				moving = false;
+				inFuga = false;
+			}
 		}		
+		
 		
 		else if(playerDirection == DOWN && play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 			direction = DOWN;
@@ -137,10 +176,15 @@ public class CatController extends EntityController {
 				resetDirection();
 				left = true;
 			}
-			else {
+			else if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)){
 				direction = RIGHT;
 				resetDirection();
 				right = true;
+			}
+			else {
+				idle = true;
+				moving = false;
+				inFuga = false;
 			}
 		}		
 			
@@ -148,25 +192,27 @@ public class CatController extends EntityController {
 
 	private void normalAction() {
 		actionCounter++;	
-		
+		//ogni due secondi cambia azione e direzione 
 		if(actionCounter >= 400) {
 			resetaction();
 			azioneACaso = randomGenerator.nextInt(2);
 			
-			if (azioneACaso == 0) {
+			if (azioneACaso == 0) 
 				idle = true;
-				moving = false;
-			}
+			
 			else
 				moving = true;
 		}
 		
 		choseDirection();
+		checkCollision();
+		
 	}
 
 	private void resetaction() {
 		idle = false;
 		moving = false;
+		inFuga = false;
 	}
 
 	private void choseDirection() {
@@ -193,7 +239,6 @@ public class CatController extends EntityController {
 			actionCounter = 0;
 		}
 		
-		checkCollision();
 	}
 
 	private void checkCollision() {
@@ -244,11 +289,12 @@ public class CatController extends EntityController {
 			}		
 		}	
 		
-		//se incontra ostacoli nella mappa, resta fermo
+		//se incontra ostacoli nella mappa, si ferma e smette di scappare
 		if(collision) {
 			moving = false;
 			idle = true;
-			
+			inFuga = false;
+			speed = (int)(GamePanel.SCALE*1.2f);
 		}
 		
 	}

@@ -5,8 +5,10 @@ import java.util.ArrayList;
 
 import controller.IController;
 import controller.playState.entityController.EntityController;
+
 import model.mappa.Map;
 import model.mappa.Stanze;
+
 import view.main.GamePanel;
 
 public class Collisions {

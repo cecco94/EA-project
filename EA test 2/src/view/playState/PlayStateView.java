@@ -5,10 +5,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 
-
-import model.IModel;
 import model.mappa.Map;
 import model.mappa.Stanze;
+
 import view.IView;
 import view.main.GamePanel;
 import view.mappa.TilesetView;
@@ -21,7 +20,6 @@ import view.sound.SoundManager;
 //si occuperà di disegnare tutto ciò che si trova nello stato play
 public class PlayStateView {
 
-	private IModel model;
 	private TilesetView tileset;
 	private PlayerView player;
 	private IView view;
@@ -34,9 +32,8 @@ public class PlayStateView {
 	
 	private PlayUI ui;
 	
-	public PlayStateView(IModel m, TilesetView t, IView v) {
+	public PlayStateView(TilesetView t, IView v) {
 		view = v;
-		model = m;
 		tileset = t;
 		
 		ui = new PlayUI(this);
@@ -51,6 +48,9 @@ public class PlayStateView {
 		stanzeView[Stanze.AULA_STUDIO.indiceMappa] = new RoomView(this, Stanze.AULA_STUDIO.indiceMappa);
 		stanzeView[Stanze.DORMITORIO.indiceMappa] = new RoomView(this, Stanze.DORMITORIO.indiceMappa);
 		stanzeView[Stanze.TENDA.indiceMappa] = new RoomView(this, Stanze.TENDA.indiceMappa);
+		stanzeView[Stanze.LABORATORIO.indiceMappa] = new RoomView(this, Stanze.LABORATORIO.indiceMappa);
+		stanzeView[Stanze.STUDIO_PROF.indiceMappa] = new RoomView(this, Stanze.STUDIO_PROF.indiceMappa);
+
 	}
 	
 	//prima disegna il pavimento, poi ci disegna sopra tutti gli oggetti partendo dall'alto, in modo il player che sta sotto
@@ -96,7 +96,7 @@ public class PlayStateView {
 	}
 	
 	private void drawLayer(Graphics2D g2, int stanza, int layer, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {
-		int[][] strato = model.getMappa().getStrato(stanza, layer);
+		int[][] strato = view.getModel().getMappa().getStrato(stanza, layer);
 		for(int riga = yMappaIniziale; riga <= yMappaIniziale + GamePanel.TILES_IN_HEIGHT + 1; riga++) 
 			for(int colonna = xMappaIniziale; colonna <= xMappaIniziale + GamePanel.TILES_IN_WIDTH + 1; colonna++) {
 				int numeroTile = 0;
@@ -122,7 +122,7 @@ public class PlayStateView {
 	private void addTilesToSortList(ArrayList<SortableElement> drawOrder, int stanza, int xMappaIniziale, int yMappaIniziale) {
 		for(int layer = Map.TERZO_STRATO; layer <= Map.QUARTO_STRATO; layer++) {
 			
-			int[][] strato = model.getMappa().getStrato(stanza, layer);
+			int[][] strato = view.getModel().getMappa().getStrato(stanza, layer);
 			for(int riga = yMappaIniziale; riga <= yMappaIniziale + GamePanel.TILES_IN_HEIGHT + 1; riga++) 
 				for(int colonna = xMappaIniziale; colonna <= xMappaIniziale + GamePanel.TILES_IN_WIDTH + 1; colonna++) {
 					int numeroTile = 0;
@@ -146,7 +146,20 @@ public class PlayStateView {
 		case AULA_STUDIO:
 			stanzeView[Stanze.AULA_STUDIO.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
 			break;
-		default:
+		case BIBLIOTECA:
+			stanzeView[Stanze.BIBLIOTECA.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			break;
+		case TENDA:
+			stanzeView[Stanze.TENDA.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			break;
+		case LABORATORIO:
+			stanzeView[Stanze.LABORATORIO.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			break;
+		case STUDIO_PROF:
+			stanzeView[Stanze.STUDIO_PROF.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			break;
+		case DORMITORIO:
+			stanzeView[Stanze.DORMITORIO.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
 			break;
 		}
 		

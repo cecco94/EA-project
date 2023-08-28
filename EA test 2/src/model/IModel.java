@@ -36,13 +36,13 @@ public class IModel {
 		mappa = new Map();
 		tiles = new TilesetModel();
 
-		stanze = new RoomModel[Map.NUM_STANZE];
-		stanze[Map.BIBLIOTECA] = new RoomModel(percorsoDatiBiblioteca, this, Map.BIBLIOTECA);		
-		stanze[Map.DORMITORIO] = new RoomModel(percorsoDatiDormitorio, this, Map.DORMITORIO);
-		stanze[Map.AULA_STUDIO] = new RoomModel(percorsoDatiAlaStudio, this, Map.AULA_STUDIO);		
-		stanze[Map.TENDA] = new RoomModel(percorsoDatiTenda, this, Map.TENDA);
-		stanze[Map.LABORATORIO] = new RoomModel(percorsoDatiLaboratorio, this, Map.LABORATORIO);
-		stanze[Map.STUDIO_PROF] = new RoomModel(percorsoDatiStudioProf, this, Map.STUDIO_PROF);
+		stanze = new RoomModel[Stanze.numStanze];
+		stanze[Stanze.INDEX_BIBLIOTECA] = new RoomModel(percorsoDatiBiblioteca, this, Stanze.INDEX_BIBLIOTECA);		
+		stanze[Stanze.INDEX_DORMITORIO] = new RoomModel(percorsoDatiDormitorio, this, Stanze.INDEX_DORMITORIO);
+		stanze[Stanze.INDEX_AULA_STUDIO] = new RoomModel(percorsoDatiAlaStudio, this, Stanze.INDEX_AULA_STUDIO);		
+		stanze[Stanze.INDEX_TENDA] = new RoomModel(percorsoDatiTenda, this, Stanze.INDEX_TENDA);
+		stanze[Stanze.INDEX_LABORATORIO] = new RoomModel(percorsoDatiLaboratorio, this, Stanze.INDEX_LABORATORIO);
+		stanze[Stanze.INDEX_STUDIO_PROF] = new RoomModel(percorsoDatiStudioProf, this, Stanze.INDEX_STUDIO_PROF);
 		
 	}
 
@@ -89,7 +89,6 @@ public class IModel {
 	public IController getController() {
 		return controller;
 	}
-//	Rectangle r = new Rectangle(23, 9, 32, 32);
-//	stanze[Map.AULA_STUDIO].addNPC(new CatController(r, controller.getPlay()));
+
 	
 }

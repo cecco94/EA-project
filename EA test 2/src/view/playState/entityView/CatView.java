@@ -1,5 +1,6 @@
 package view.playState.entityView;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -14,35 +15,43 @@ import view.main.GamePanel;
 public class CatView extends EntityView {
 
 	public static final int BIANCO = 0, NERO = 1;
+	//siccome tutti i gatti condividono lo stesso array di animazioni, per non 
+	//caricare le immagini ogni volta che creiamo un gatto, usiamo questo boolean
+	//e le immagini verranno caricate solo una volta
+	public static boolean firstCat = true;
 
 	public CatView(IView v, int index) {
 		
 		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		view = v;
-		loadImages();	
-		xOffset = 0; //3;
-		yOffset = 0; //3;
 		this.index = index;
-	}
 
-
-	private void loadImages() {
-		BufferedImage image = null;
-		BufferedImage temp = null;
+		loadImages();	
 		
+		xOffset = (int)(1*GamePanel.SCALE); //3;
+		yOffset = (int)(4*GamePanel.SCALE); //3;
 		animationSpeed = 40;
 		
-		animation = new BufferedImage[2][][][];
-		animation[BIANCO] = new BufferedImage[2][][];	//per ogni gatto per ora abbiamo due azioni
-		animation[NERO] = new BufferedImage[2][][];
+	}
 
-		loadIdleImages(image, temp);
-		loadRunImages(image, temp);	
-		
+	private void loadImages() {
+		if(firstCat) {
+			BufferedImage image = null;
+			BufferedImage temp = null;
+			
+			CatView.animation = new BufferedImage[2][][][];
+			CatView.animation[BIANCO] = new BufferedImage[2][][];	//per ogni gatto per ora abbiamo due azioni
+			CatView.animation[NERO] = new BufferedImage[2][][];
+	
+			loadIdleImages(image, temp);
+			loadRunImages(image, temp);	
+			firstCat = false;
+			
+		}
 	}
 
 	private void loadRunImages(BufferedImage image, BufferedImage temp) {
-		animation[BIANCO][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		CatView.animation[BIANCO][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBianco.png"));
 						
@@ -50,7 +59,7 @@ public class CatView extends EntityView {
 				for(int immagine = 0; immagine < 3; immagine++) {
 					temp = image.getSubimage(immagine*32, direzione*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-					animation[BIANCO][RUN][direzione][immagine] = temp ;
+					CatView.animation[BIANCO][RUN][direzione][immagine] = temp ;
 				}
 			}
 		} 
@@ -60,28 +69,27 @@ public class CatView extends EntityView {
 		
 	}
 
-
 	private void loadIdleImages(BufferedImage image, BufferedImage temp) {
-		animation[BIANCO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
+		CatView.animation[BIANCO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBianco.png"));
 			
 				temp = image.getSubimage(32, 0, 32, 32);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				animation[BIANCO][IDLE][DOWN][0] = temp ;
+				CatView.animation[BIANCO][IDLE][DOWN][0] = temp ;
 			
 			
 				temp = image.getSubimage(32, 64, 32, 32);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				animation[BIANCO][IDLE][RIGHT][0] = temp ;
+				CatView.animation[BIANCO][IDLE][RIGHT][0] = temp ;
 			
 				temp = image.getSubimage(32, 32, 32, 32);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				animation[BIANCO][IDLE][LEFT][0] = temp ;
+				CatView.animation[BIANCO][IDLE][LEFT][0] = temp ;
 			
 				temp = image.getSubimage(32, 96, 32, 32);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				animation[BIANCO][IDLE][UP][0] = temp ;
+				CatView.animation[BIANCO][IDLE][UP][0] = temp ;
 			
 		} 
 		catch (IOException e) {
@@ -89,7 +97,6 @@ public class CatView extends EntityView {
 		}
 		
 	}
-
 
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
@@ -107,23 +114,33 @@ public class CatView extends EntityView {
 			animationCounter = 0;
 		}
 		
-		int distanzaX = xPlayerMap - xPosMapForSort;
-		int distanzaY = yPlayerMap - yPosMapForSort;
+		//distanza nella mappa tra il punto in alto a sinistra della hitbox 
+		//del player ed il punto in alto a sinistra della hitbox del gatto
+		int distanzaX = xPlayerMap - xPosMapForSort + xOffset;
+		int distanzaY = yPlayerMap - yPosMapForSort + yOffset;
 		
 		//ci serve un offset perchè la distanza del gatto nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset + PlayerView.getXOffset();
-		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset + PlayerView.getYOffset();
+		int xPosOnScreen = PlayerView.xOnScreen - distanzaX - xOffset + PlayerView.getXOffset();
+		int yPosOnScreen = PlayerView.yOnScreen - distanzaY - yOffset + PlayerView.getYOffset();
 		
 		try {
-			g2.drawImage(animation[BIANCO][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
-			g2.drawRect(xPosOnScreen + xOffset,
-						yPosOnScreen + yOffset,
+			g2.drawImage(CatView.animation[BIANCO][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+			
+			//quadrato dove viene disegnato il gatto
+			g2.setColor(Color.red);
+			g2.drawRect(xPosOnScreen, yPosOnScreen, 48, 48);
+			
+			//quadrato della hitbox
+			g2.setColor(Color.black);
+			g2.drawRect(xPosOnScreen + 3*xOffset,
+						yPosOnScreen + 3*yOffset,
 						view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox().width,
 						view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox().height);
 
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
+			a.printStackTrace();
 		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
 		

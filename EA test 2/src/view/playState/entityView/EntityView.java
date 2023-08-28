@@ -37,16 +37,12 @@ public abstract class EntityView extends SortableElement {
 		//controlla se l'oggetto è abbastanza vicino al giocatore da poter apparire sullo schermo
 		Rectangle hitboxController = view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox();
 		
-//		System.out.println("player pos " + posizPlayerX + " " + posizPlayerY);
-//		System.out.println("cat pos " + hitboxController.x + " " + hitboxController.y);
-		
 		if(Math.abs(hitboxController.x - posizPlayerX)  > GamePanel.GAME_WIDTH/2)
 			return false;
 		if(Math.abs(hitboxController.y - posizPlayerY)  > GamePanel.GAME_HEIGHT/2)
 			return false;
-		
+		//in caso affermativo, aggiorna i dati sulla sua posizione e ci aggiunge l'offset
 		setMapPositionForSort(hitboxController);
-//		System.out.println("visibile");
 		return true;
 	}
 	
@@ -55,9 +51,18 @@ public abstract class EntityView extends SortableElement {
 		xPosMapForSort = hitboxEntity.x - xOffset;
 		yPosMapForSort = hitboxEntity.y - yOffset;
 		
-//		System.out.println("cat pos dopo " + xPosMapForSort + " " + yPosMapForSort);
-
 	}
 	
+	public static int getRun() {
+		return RUN;
+	}
+
+	public static int getIDLE() {
+		return IDLE;
+	}
+
+	public static int getDOWN() {
+		return DOWN;
+	}
 	
 }

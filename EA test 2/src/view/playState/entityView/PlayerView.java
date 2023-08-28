@@ -1,5 +1,6 @@
 package view.playState.entityView;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -19,14 +20,15 @@ public class PlayerView extends EntityView {
 	
 	private boolean endAttackAnimation = true;
 	private boolean firstParry = true;
-//	private boolean endThrowAnimation = true;
 	
 	public static final int RAGAZZO = 0, RAGAZZA = 1;
 	private int avatarType = RAGAZZO;
 	
 	//per capire la posizione del player usiamo la hitbox, per capire se sta davanti o dietro qualcosa ci servono due offset
 	//perchè la hitbox non coincide con la dimensione completa del personaggio, essendo la prima più piccola
-	private static int xOffset, yOffset;		
+	//difference between xitbox and image of player
+	private static int xOffset = (int)(GamePanel.TILES_SIZE*0.10); // = 4, perchè la hitboxX è il 75% di un tile
+	private static int yOffset = GamePanel.TILES_SIZE/2;  		// = 24, perchè la hitboxY è metà di un tile		
 	
 	//la posizione del player è sempre al centro della finestra di gioco
 	public static final int xOnScreenOriginal = GamePanel.GAME_WIDTH/2 - GamePanel.TILES_SIZE/2;
@@ -36,10 +38,6 @@ public class PlayerView extends EntityView {
 	
 	public PlayerView(IView v) {
 		view = v;
-		
-		//difference between xitbox and image of player
-		xOffset = (int)(GamePanel.TILES_SIZE*0.10);		// = 4, perchè la hitboxX è il 75% di un tile
-		yOffset = GamePanel.TILES_SIZE/2;  				// = 24, perchè la hitboxY è metà di un tile
 		
 		//servono per poter comparare il player con gli altri elementi grafici da ordinare
 		xPosMapForSort = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
@@ -59,7 +57,7 @@ public class PlayerView extends EntityView {
 		playerAnimation = new BufferedImage[2][][][];			//due avatar
 		playerAnimation [RAGAZZO] = new BufferedImage[7][][];	//sette azioni
 		playerAnimation [RAGAZZA] = new BufferedImage[7][][];
-
+		
 		loadIdleImages(image, temp);
 		loadRunImages(image, temp);	
 		loadAttackImages(image, temp);
@@ -414,6 +412,7 @@ public class PlayerView extends EntityView {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 		
 	private void loadRunImages(BufferedImage image, BufferedImage temp) {
@@ -482,6 +481,7 @@ public class PlayerView extends EntityView {
 			e.printStackTrace();
 		}
 		
+		
 	}
 	
 	public void setMapPositionForSort(int posizPlayerX, int posizPlayerY) {
@@ -523,6 +523,12 @@ public class PlayerView extends EntityView {
 		//se una slide era sfasata, resettiamo il valore dell'offset
 		xOnScreen = xOnScreenOriginal;
 		
+		//disegna l'area dove viene disegnato il personaggio
+		g2.setColor(Color.red);
+		g2.drawRect(xOnScreen, yOnScreen, 42, 54);
+		
+		//disegna la hitbox
+		g2.setColor(Color.black);
 		g2.drawRect(xOnScreen + xOffset,
 					yOnScreen + yOffset, 
 					view.getController().getPlay().getPlayer().getHitbox().width, 
@@ -625,22 +631,9 @@ public class PlayerView extends EntityView {
 	//for avatar menu
 	public static BufferedImage getAnimationForMenu(int avatar, int action, int direction, int index) {
 		if (avatar == RAGAZZA)
-			return playerAnimation[RAGAZZA][action][direction][index];
+			return playerAnimation [RAGAZZA][action][direction][index];
 		else
-			return  playerAnimation[RAGAZZO][action][direction][index];
-	}
-	
-	
-	public static int getRun() {
-		return RUN;
-	}
-
-	public static int getIDLE() {
-		return IDLE;
-	}
-
-	public static int getDOWN() {
-		return DOWN;
+			return  playerAnimation [RAGAZZO][action][direction][index];
 	}
 
 	public void setAvatarType(int type) {

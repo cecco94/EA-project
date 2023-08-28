@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import controller.main.Gamestate;
+
 import view.IView;
 import view.ViewUtils;
 import view.menu.AbstractMenuButton;
@@ -62,7 +63,7 @@ public class AvatarButton extends AbstractMenuButton {
 		}
 		else {
 			temp = ViewUtils.scaleImage(PlayerView.getAnimationForMenu(type, PlayerView.getIDLE(), 
-										PlayerView.getDOWN(), numSprite),	bounds.width, bounds.height);
+										PlayerView.getDOWN(), numSprite), bounds.width, bounds.height);
 			g2.drawImage(temp, bounds.x, bounds.y, null);
 		}
 	}

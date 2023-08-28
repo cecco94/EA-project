@@ -14,11 +14,10 @@ public class RoomController {
 	private ArrayList<EntityController> NPC;
 	private PlayStateController play;
 	
-	public RoomController(PlayStateController p, int indexStanza) {
+	public RoomController(PlayStateController p) {
 		play = p;
 		nemici = new ArrayList<>();
 		NPC = new ArrayList<>();
-	
 	}
 
 	public void update() {
@@ -58,7 +57,7 @@ public class RoomController {
 		nemici.add(new EnemyController(r, play));
 	}
 
-	public void addNPC(int type, Rectangle r) {
-		NPC.add(new CatController(r, play));		
+	public void addNPC(int type, int xPos, int yPos) {
+		NPC.add(new CatController(xPos, yPos, play));	
 	}
 }

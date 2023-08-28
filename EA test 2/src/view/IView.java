@@ -60,7 +60,7 @@ public class IView {
 		avatar = new AvatarMenu(this);
 		opzioni = new OptionMenu(this);
 		tileset = new TilesetView();
-		play = new PlayStateView(model, tileset, this);
+		play = new PlayStateView(tileset, this);
 		transition = new TransitionState(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
 		pause = new PauseScreen(this);
 		
@@ -174,6 +174,10 @@ public class IView {
 	
 	public SoundManager getSoundManager() {
 		return sound;
+	}
+	
+	public IModel getModel() {
+		return model;
 	}
 	
 	public void playMusic(int i) {

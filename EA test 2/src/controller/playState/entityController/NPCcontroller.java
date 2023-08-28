@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 import controller.playState.PlayStateController;
 
-public class NPCcontroller extends EntityController{
+public class NPCcontroller extends EntityController {
 
 	public NPCcontroller(Rectangle r, PlayStateController p) {
 		super(r, p);

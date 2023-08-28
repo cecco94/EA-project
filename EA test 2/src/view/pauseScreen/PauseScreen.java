@@ -5,6 +5,7 @@ import static view.main.GamePanel.GAME_WIDTH;
 import static view.main.GamePanel.SCALE;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import controller.main.Gamestate;
+
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
@@ -99,6 +101,7 @@ public class PauseScreen extends AbstractMenu {
 	}
 
 	public void draw(Graphics2D g2) {
+		g2.setColor(Color.black);
 		drawOpaqueRect(g2);
 		drawScritte(g2);
 		drawButtons(g2);

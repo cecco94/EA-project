@@ -93,21 +93,24 @@ public class RoomModel {
 						int type = Integer.parseInt(datiNellaRiga[1]);	
 						int xPos = Integer.parseInt(datiNellaRiga[2]);
 						int yPos = Integer.parseInt(datiNellaRiga[3]);
-						int width = Integer.parseInt(datiNellaRiga[4]);
-						int height = Integer.parseInt(datiNellaRiga[5]);
-						
-						Rectangle r = new Rectangle(xPos, yPos, width, height);
-						model.getController().getPlay().getRoom(index).addNPC(type, r);
+//						int width = Integer.parseInt(datiNellaRiga[4]);
+//						int height = Integer.parseInt(datiNellaRiga[5]);
+//						
+//						Rectangle r = new Rectangle(xPos, yPos, width, height);
+						model.getController().getPlay().getRoom(index).addNPC(type, xPos, yPos);
 						//sarebbe bello aggiungere qui anche le roomview, ma la view viene inizializzata dopo
 					}
 					
 					else if(rigaLetta.contains(";")) {		//il ; indica i passaggi
 						int prewX = Integer.parseInt(datiNellaRiga[1]);	
 						int prewY = Integer.parseInt(datiNellaRiga[2]);
+						
 						int width = Integer.parseInt(datiNellaRiga[3]);
 						int height = Integer.parseInt(datiNellaRiga[4]);
+						
 						int newX = Integer.parseInt(datiNellaRiga[5]);
 						int newY = Integer.parseInt(datiNellaRiga[6]);
+						
 						int newRoom = Integer.parseInt(datiNellaRiga[7]);
 						passaggi.add(new Passaggio(prewX, prewY, width, height, newX, newY, Stanze.getStanzaAssociataAlNumero(newRoom)));
 					}	

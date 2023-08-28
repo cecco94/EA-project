@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import controller.main.Gamestate;
+
 import model.mappa.Stanze;
+
 import view.main.GamePanel;
 
 // classe che mostra a video le informazioni come il punteggio, la vita, le munizioni...

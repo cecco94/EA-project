@@ -12,6 +12,7 @@ import controller.main.Gamestate;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
 import controller.playState.entityController.Projectile;
+
 import model.mappa.Stanze;
 
 //controlla ciò che accade nel gioco durante il play state
@@ -35,12 +36,12 @@ public class PlayStateController {
 
 	public void initRooms() {
 		stanzeController = new RoomController[Stanze.numStanze];
-		stanzeController[Stanze.BIBLIOTECA.indiceMappa] = new RoomController(this, Stanze.BIBLIOTECA.indiceMappa);
-		stanzeController[Stanze.DORMITORIO.indiceMappa] = new RoomController(this, Stanze.DORMITORIO.indiceMappa);		
-		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this, Stanze.AULA_STUDIO.indiceMappa);
-		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this, Stanze.TENDA.indiceMappa);
-		stanzeController[Stanze.LABORATORIO.indiceMappa] = new RoomController(this, Stanze.LABORATORIO.indiceMappa);
-		stanzeController[Stanze.STUDIO_PROF.indiceMappa] = new RoomController(this, Stanze.STUDIO_PROF.indiceMappa);
+		stanzeController[Stanze.BIBLIOTECA.indiceMappa] = new RoomController(this);
+		stanzeController[Stanze.DORMITORIO.indiceMappa] = new RoomController(this);		
+		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this);
+		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this);
+		stanzeController[Stanze.LABORATORIO.indiceMappa] = new RoomController(this);
+		stanzeController[Stanze.STUDIO_PROF.indiceMappa] = new RoomController(this);
 		
 	}
 	
