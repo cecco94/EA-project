@@ -88,6 +88,8 @@ public class PlayStateView {
 		//svuota la lista per ricominciare il frame successivo
 		drawOrder.clear();
 		
+		//disegna la ui sopra a tutto il resto
+		ui.draw(g2);
 	}			
 		
 	public void drawFloor(Graphics2D g2, int stanza, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {

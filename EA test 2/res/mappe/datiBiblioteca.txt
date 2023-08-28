@@ -1,4 +1,4 @@
-;passaggio all'aula studio, 26, 9, 16, 16, 34, 8, 2
+;passaggio all'aula studio, 26, 9, 16, 16, 34, 8, 2, true
 
 -gatto, 1, 12, 9, 32, 32, 0
 

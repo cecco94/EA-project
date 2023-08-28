@@ -37,6 +37,7 @@ public class GameLoop implements Runnable {
 		
 		view = new IView(controller, model);
 		controller.setView(view);
+		model.addView(view);
 		caricamento.dispose();
 	}
 

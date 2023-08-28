@@ -9,7 +9,7 @@ public enum Stanze {
 	AULA_STUDIO(Stanze.INDEX_AULA_STUDIO, SoundManager.AULA_STUDIO),
 	TENDA(Stanze.INDEX_TENDA, SoundManager.TENDA),
 	LABORATORIO(Stanze.INDEX_LABORATORIO,SoundManager.LABORATORIO),
-	STUDIO_PROF(Stanze.INDEX_STUDIO_PROF, SoundManager.LABORATORIO);
+	STUDIO_PROF(Stanze.INDEX_STUDIO_PROF, SoundManager.BOSS);
 	
 	Stanze(int i, int music) {
 		indiceMappa = i;

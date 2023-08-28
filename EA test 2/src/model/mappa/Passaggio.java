@@ -9,10 +9,16 @@ public class Passaggio {
 	private int prevX, prevY;	//posizione del passaggio
 	private int nextX, nextY;	//new position of the player in the new room
 	private Rectangle borders;
+	//se la porta è chiusa, manda un messaggio mostrato dalla UI
+	private boolean open;
+	String messaggio = "";
 	
 	private Stanze nuovaStanza;
 	
-	public Passaggio(int pX, int pY, int width, int height, int nX, int nY, Stanze newRoom) {
+	public Passaggio(boolean pass, String s,int pX, int pY, int width, int height, int nX, int nY, Stanze newRoom) {
+		setOpen(pass);
+		messaggio = s;
+		
 		prevX = pX*GamePanel.TILES_SIZE;
 		prevY = pY*GamePanel.TILES_SIZE;
 		
@@ -42,5 +48,17 @@ public class Passaggio {
 	
 	public String toString() {
 		return 	"passaggio ( " + prevX + ", " + prevY + ", " + borders.width + ", " + borders.height + " )";
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public void setOpen(boolean open) {
+		this.open = open;
+	}
+	
+	public String getScritta() {
+		return messaggio;
 	}
 }

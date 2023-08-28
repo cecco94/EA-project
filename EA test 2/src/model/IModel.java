@@ -7,16 +7,20 @@ import model.mappa.Map;
 import model.mappa.RoomModel;
 import model.mappa.Stanze;
 import model.mappa.TilesetModel;
+import view.IView;
 
 public class IModel {
 
 	private IController controller;
+	private IView view;
 	//serve per memorizzare l'indice del passaggio nella mappa dove si trova il giocatore
 	private int indicePassaggioAttuale; 
 	// memorizza dove andrà il giocatore dopo la transizione tra stanze
 	private int newXPos;
 	private int newYPos;
 	private Stanze newRoom;
+	
+	private int indiceEvento;
 	
 	private Map mappa;
 	private TilesetModel tiles;
@@ -33,6 +37,7 @@ public class IModel {
 	
 	public IModel(IController c) {
 		controller = c;
+		
 		mappa = new Map();
 		tiles = new TilesetModel();
 
@@ -45,6 +50,10 @@ public class IModel {
 		stanze[Stanze.INDEX_STUDIO_PROF] = new RoomModel(percorsoDatiStudioProf, this, Stanze.INDEX_STUDIO_PROF);
 		
 	}
+	
+	public void addView(IView v) {
+		view = v;
+	}
 
 	public Map getMappa() {
 		return mappa;
@@ -55,8 +64,13 @@ public class IModel {
 	}
 
 	public int checkPassaggio(Rectangle hitbox) {
-		indicePassaggioAttuale =  stanze[Stanze.stanzaAttuale.indiceMappa].checkPassInRoom(hitbox);
+		indicePassaggioAttuale = stanze[Stanze.stanzaAttuale.indiceMappa].checkPassInRoom(hitbox);
 		return indicePassaggioAttuale;
+	}
+	
+	public int checkEvent(Rectangle hitbox) {
+		indiceEvento = stanze[Stanze.stanzaAttuale.indiceMappa].checkEventInRoom(hitbox);
+		return indiceEvento;
 	}
 
 	//salva i dati della posizione del giocatore dopo la transizione tra stanze
@@ -88,6 +102,10 @@ public class IModel {
 	
 	public IController getController() {
 		return controller;
+	}
+
+	public IView getView() {
+		return view;
 	}
 
 	

@@ -1,9 +1,11 @@
-;passaggio alla biblioteca, 34, 7, 32, 32, 27, 10, 0
+;passaggio alla biblioteca, 34, 7, 32, 32, 27, 10, 0, true
 
-;passaggio al dormitorio, 34, 42, 64, 32, 28, 24, 1
+;passaggio al dormitorio, 34, 42, 64, 32, 28, 24, 1, true 
 
-;passaggio alla tenda, 26, 10, 32, 32, 14, 15, 3
+;passaggio alla tenda, 26, 10, 32, 32, 14, 15, 3, true
 
-;passaggio al laboratorio, 15, 6, 32, 33, 20, 24, 4
+;passaggio al laboratorio, 15, 6, 32, 33, 20, 24, 4, true 
+
+;passaggio alla segreteria, 16, 42, 32, 32, 0, 0, 0, false, la segreteria è aperta tutti i giorni dalle 8:00 alle 8:01
 
 -gatto, 1, 20, 8, 32, 32

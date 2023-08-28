@@ -7,10 +7,13 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import model.IModel;
+import model.mappa.events.Event;
+import model.mappa.events.Light;
 
 public class RoomModel {
 	
 	private ArrayList<Passaggio> passaggi;
+	private ArrayList<Event> eventi;
 	private IModel model;
 
 	//ogni entità deve vedere se spostandosi si schianta contro un'altra entità. Per farlo, invece di controllare tutta la 
@@ -26,52 +29,20 @@ public class RoomModel {
 	public RoomModel(String percorsoFile, IModel m, int index) {
 		model = m;
 		passaggi = new ArrayList<>();
-		aggiungiPassaggiECreatureAllaStanza(percorsoFile, index);
-		
-		//per capire quanto è grande la stanza, prendiamo il primo strato della mappa corrispondente
-		//e ne prendiamo le dimensioni
-//		int matricePrimoStrato[][] = model.getMappa().getStrato(index, 0);
-//		int altezza = matricePrimoStrato.length;
-//		int larghezza = matricePrimoStrato[0].length;
-	//	tilesOccupati = new int[altezza][larghezza];
-	//	printTilesOccupati();
+		eventi = new ArrayList<>();
+		aggiungiPassaggiCreatureEventi(percorsoFile, index);
 	}
-
-//	@SuppressWarnings("unused")
-//	private void printTilesOccupati() {
-//		for(int righe = 0; righe < tilesOccupati.length; righe++) {
-//			for(int colonne = 0; colonne < tilesOccupati[0].length; colonne++) {
-//				System.out.print(tilesOccupati[righe][colonne]);
-//			}
-//			System.out.println();
-//		}
-//		System.out.println();	
-//	}
-//	
-//	public void aggiungiEntitaAlTile(int riga, int colonna) {
-//		tilesOccupati[riga][colonna]++;
-////		System.out.println("prima ");
-////		printTilesOccupati();
-//	}
-//	
-//	public void togliEntitaAlTile(int riga, int colonna) {
-//		if(tilesOccupati[riga][colonna] > 0) {
-//			tilesOccupati[riga][colonna]--;
-////			System.out.println("dopo ");
-////			printTilesOccupati();
-//		}
-//	}
 	
 	
 	// per non dividere le informazioni, tutti i dati di una stanza sono messi in un solo file
 	// quindi nel file mettiamo anche informazoni per il controller.
 	// leggendo il file una volta sola, qui finiscono anche cose relative al controller 
-	private void aggiungiPassaggiECreatureAllaStanza(String percorsoFile, int index) {
+	private void aggiungiPassaggiCreatureEventi(String percorsoFile, int index) {
 		try {
 			InputStream	is = getClass().getResourceAsStream(percorsoFile);			
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 			String rigaLetta = null;
-			String[] datiNellaRiga = new String[8];
+			String[] datiNellaRiga = new String[10];
 			
 			while((rigaLetta = br.readLine()) != null) {
 				
@@ -112,8 +83,28 @@ public class RoomModel {
 						int newY = Integer.parseInt(datiNellaRiga[6]);
 						
 						int newRoom = Integer.parseInt(datiNellaRiga[7]);
-						passaggi.add(new Passaggio(prewX, prewY, width, height, newX, newY, Stanze.getStanzaAssociataAlNumero(newRoom)));
+						
+						boolean open = Boolean.parseBoolean(datiNellaRiga[8]);
+						String s = "";
+						try {
+							s = datiNellaRiga[9];
+						}
+						catch(ArrayIndexOutOfBoundsException e) {
+							//se non c'è niente da scrivere l'array è più piccolo
+						}
+						
+						passaggi.add(new Passaggio(open, s,prewX, prewY, width, height, newX, newY, Stanze.getStanzaAssociataAlNumero(newRoom)));
 					}	
+					
+					else if(rigaLetta.contains("+")) {		//il + indica eventi
+						int xPos = Integer.parseInt(datiNellaRiga[1]);	
+						int yPos = Integer.parseInt(datiNellaRiga[2]);
+						int width = Integer.parseInt(datiNellaRiga[3]);
+						int height = Integer.parseInt(datiNellaRiga[4]);
+						
+						Rectangle r = new Rectangle(xPos, yPos, width, height);						
+						eventi.add(new Light(r, model));
+					}
 					
 				}
 				
@@ -131,9 +122,9 @@ public class RoomModel {
 			System.out.println(p.toString());
 	}
 	
-	public void addNewPassaggio(int x, int y, int width, int height, int newX, int newY, Stanze newRoom) {
-		passaggi.add(new Passaggio(x, y, width, height, newX, newY, newRoom));
-	}
+//	public void addNewPassaggio(boolean open, String s, int x, int y, int width, int height, int newX, int newY, Stanze newRoom) {
+//		passaggi.add(new Passaggio(open, s, x, y, width, height, newX, newY, newRoom));
+//	}
 
 	public int checkPassInRoom(Rectangle hitbox) {
 		int index = -1;
@@ -144,12 +135,61 @@ public class RoomModel {
 		return index;
 	}
 	
+	public int checkEventInRoom(Rectangle hitbox) {
+		int index = -1;
+		for(int i = 0; i < eventi.size(); i++) {
+			if(eventi.get(i).checkPlayer(hitbox))
+				index = i;
+		}
+		return index;
+	}
+	
 	public ArrayList<Passaggio> getPassaggi() {
 		return passaggi;
 	}
 	
+	public ArrayList<Event> getEventi(){
+		return eventi;
+	}
+	
+}
+
+//per capire quanto è grande la stanza, prendiamo il primo strato della mappa corrispondente
+//e ne prendiamo le dimensioni
+//int matricePrimoStrato[][] = model.getMappa().getStrato(index, 0);
+//int altezza = matricePrimoStrato.length;
+//int larghezza = matricePrimoStrato[0].length;
+//	tilesOccupati = new int[altezza][larghezza];
+//	printTilesOccupati();
+//}
+
+//@SuppressWarnings("unused")
+//private void printTilesOccupati() {
+//for(int righe = 0; righe < tilesOccupati.length; righe++) {
+//	for(int colonne = 0; colonne < tilesOccupati[0].length; colonne++) {
+//		System.out.print(tilesOccupati[righe][colonne]);
+//	}
+//	System.out.println();
+//}
+//System.out.println();	
+//}
+//
+//public void aggiungiEntitaAlTile(int riga, int colonna) {
+//tilesOccupati[riga][colonna]++;
+////System.out.println("prima ");
+////printTilesOccupati();
+//}
+//
+//public void togliEntitaAlTile(int riga, int colonna) {
+//if(tilesOccupati[riga][colonna] > 0) {
+//	tilesOccupati[riga][colonna]--;
+////	System.out.println("dopo ");
+////	printTilesOccupati();
+//}
+//}
+
 //	public int getNumEntityIntile(int riga, int colonna){
 //		return tilesOccupati[riga][colonna];
 //	}
 //	
-}
+

@@ -111,6 +111,9 @@ public class PlayStateController {
 			
 		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) 
 			playerController.setThrowing(true);
+		
+		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
+			playerController.setInteracting(true);
 			
 		else
 			playerController.choiceDirection(e);
@@ -130,6 +133,8 @@ public class PlayStateController {
 			addProjectile(playerController);
 			controller.getView().getPlay().addProjectile();
 		}
+		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
+			playerController.setInteracting(true);
 		
 		else
 			playerController.resetDirection(e);

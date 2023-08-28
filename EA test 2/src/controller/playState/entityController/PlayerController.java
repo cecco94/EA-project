@@ -5,12 +5,13 @@ import java.awt.event.KeyEvent;
 
 import controller.main.Gamestate;
 import controller.playState.PlayStateController;
+import model.mappa.Stanze;
 import view.main.GamePanel;
 
 public class PlayerController extends EntityController {
 
 	private int speed = (int)(GamePanel.SCALE*1.3f);
-	private boolean  parry, throwing;
+	private boolean  parry, throwing, interacting;
 
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
@@ -30,6 +31,7 @@ public class PlayerController extends EntityController {
 	public void update() {
 		updatePos();
 		isAbovePassaggio();
+		isNearEvent();
 	}
 
 	private void updatePos() {
@@ -164,12 +166,39 @@ public class PlayerController extends EntityController {
 	public void isAbovePassaggio() {
 		// vedi in che stanza sei, vedi la lista dei passaggi, controllali
 		// se si, cambia mappa e posiz del player
-			if(play.getController().getModel().checkPassaggio(hitbox) >= 0) {
+		int indicePassaggio = play.getController().getModel().checkPassaggio(hitbox);
+		
+		if(indicePassaggio >= 0) {
+			if(play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(indicePassaggio).isOpen()) {
 				play.getController().getModel().memorizzaDatiNuovaStanza();
-				
 				play.getController().setGameState(Gamestate.TRANSITION_ROOM);
-			}		
+			}
+			else {
+				String s = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(indicePassaggio).getScritta();
+				play.getController().getView().getPlay().getUI().setScritta(s);
+				play.getController().getView().getPlay().getUI().setShowMessage(true);
+			}
+		}		
 	}
+	
+	public void isNearEvent() {
+		//vedi in che stanza sei, vedi la lista degli eventi, controllali
+		//se sei vicino ad un evento, deve apparire il messaggio
+		//se preme E parte l'interazione
+		int indiceEvento = play.getController().getModel().checkEvent(hitbox);
+		
+		if(indiceEvento >= 0) {
+			boolean giaInteragito = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(indiceEvento).isEndInteraction();
+			if(!giaInteragito) {
+				play.getController().getView().getPlay().getUI().setScritta("premi E per interagire");
+				play.getController().getView().getPlay().getUI().setShowMessage(true);
+				if(interacting) {
+					play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(indiceEvento).Interact();
+				}
+			}
+		}
+	}
+	
 
 	public void setParry(boolean b) {
 		parry = b;	
@@ -189,6 +218,15 @@ public class PlayerController extends EntityController {
 	
 	public String toString() {
 		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
+	}
+
+
+	public void setInteracting(boolean b) {
+		interacting = b;	
+	}
+	
+	public boolean isInteracting() {
+		return interacting;
 	}
 	
 	
