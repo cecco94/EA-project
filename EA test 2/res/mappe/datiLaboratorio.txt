@@ -1,3 +1,9 @@
 ;passaggio all'aula studio, 20, 25, 32, 32, 15, 8, 2, true
 
 ;passaggio allo studio prof, 14, 7, 32, 34, 26, 32, 5, false, non sei ancora degno di essere ricevuto dal prof
+
++caffe, 11, 19, 32, 32, caffe
+
++appunti, 21, 9, 32, 32, appunti
+
++cfu, 12, 24, 32, 32, cfu

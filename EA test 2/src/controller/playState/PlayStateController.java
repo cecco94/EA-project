@@ -144,7 +144,7 @@ public class PlayStateController {
 			}
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
-			playerController.setInteracting(true);
+			playerController.setInteracting(false);
 		
 		else
 			playerController.resetDirection(e);

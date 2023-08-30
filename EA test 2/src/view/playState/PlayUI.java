@@ -20,30 +20,31 @@ import view.main.GamePanel;
 public class PlayUI {
 
 	private Font fontDisplay = new Font("Arial", Font.PLAIN, (int)(20*GamePanel.SCALE));
-	private BufferedImage effettoBuio, appunti, cfu;
-	private BufferedImage[] vita;
-	private boolean buio = true;
+	private String messaggio = "";
 	
+	private BufferedImage effettoBuio, noteIcon, cfuIcon;
+	private BufferedImage[] vita;
+	private String dataToShow = "";	
 	private int yPosPlayerData = (int)(5*GamePanel.SCALE);
 	private int xPosPlayerData = (int)(20*GamePanel.SCALE);
+	
+	private boolean buio = true;
 	
 	private PlayStateView play;
 	private int counter = 0;
 	private int counterScritta = 0;
 	private boolean showMessage;
 
-	private final float transitionDuration = 240; //120 fps quindi sono 3 secondi
+	private final float transitionDuration = 240; //120 fps quindi sono 2 secondi
 	private float opacity;
 	
 	private float volume;
 	private float volumeBeforeTransition;
 	private boolean volumeSaved = false;
 	
-	private String messaggio = "";
 	
 	public PlayUI(PlayStateView p) {
 		play = p;
-		
 		loadImages();
 		
 	}
@@ -53,8 +54,8 @@ public class PlayUI {
 			effettoBuio = ImageIO.read(getClass().getResourceAsStream("/ui/effettoBuioFinale.png"));
 			effettoBuio = ViewUtils.scaleImage(effettoBuio, effettoBuio.getWidth()*GamePanel.SCALE, effettoBuio.getHeight()*GamePanel.SCALE);
 			
-			cfu = ImageIO.read(getClass().getResourceAsStream("/ui/punteggioPiccolo.png"));
-			cfu = ViewUtils.scaleImage(cfu, cfu.getWidth()*GamePanel.SCALE, cfu.getHeight()*GamePanel.SCALE);
+			cfuIcon = ImageIO.read(getClass().getResourceAsStream("/ui/punteggioPiccolo.png"));
+			cfuIcon = ViewUtils.scaleImage(cfuIcon, cfuIcon.getWidth()*GamePanel.SCALE, cfuIcon.getHeight()*GamePanel.SCALE);
 
 			vita = new BufferedImage[4];
 			BufferedImage temp = ImageIO.read(getClass().getResourceAsStream("/ui/vitaPiccola.png"));
@@ -65,8 +66,8 @@ public class PlayUI {
 			for(int i = 0; i < 4; i++)
 				vita[i] = ViewUtils.scaleImage(vita[i], vita[i].getWidth()*GamePanel.SCALE, vita[i].getHeight()*GamePanel.SCALE);
 
-			appunti = ImageIO.read(getClass().getResourceAsStream("/ui/appuntiPiccoli.png"));
-			appunti = ViewUtils.scaleImage(appunti, appunti.getWidth()*GamePanel.SCALE, appunti.getHeight()*GamePanel.SCALE);
+			noteIcon = ImageIO.read(getClass().getResourceAsStream("/ui/appuntiPiccoli.png"));
+			noteIcon = ViewUtils.scaleImage(noteIcon, noteIcon.getWidth()*GamePanel.SCALE, noteIcon.getHeight()*GamePanel.SCALE);
 
 		} 
 		catch (IOException e) {	
@@ -79,7 +80,7 @@ public class PlayUI {
 	public void drawTransition(Graphics2D g2) {
 		counter++;
 		saveOldVolume();
-		if (counter < 240) {
+		if (counter < transitionDuration) {
 			opacity = counter/transitionDuration;
 			
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
@@ -113,49 +114,32 @@ public class PlayUI {
 	public void draw(Graphics2D g2) {
 		
 		drawPlayerData(g2);
-		
 		disegnaBuio(g2);
 		disegnaMessaggio(g2);
 	}
 	
 	private void drawPlayerData(Graphics2D g2) {
-		// vita appunti punteggio
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
-		g2.setColor(Color.orange);
-		g2.fillRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT/12);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		g2.setColor(Color.black);
-		
-		drawLife(g2);
-		
-		drawNotes(g2);
-		
-		drawPoints(g2);
-		
+		drawBackGround(g2);
+		drawLife(g2, dataToShow);
+		drawNotes(g2, dataToShow);	
+		drawPoints(g2, dataToShow);
+		//resetta il valore della x
 		xPosPlayerData = (int)(20*GamePanel.SCALE);
 	}
 
-	private void drawPoints(Graphics2D g2) {
-		xPosPlayerData = GamePanel.GAME_WIDTH - cfu.getWidth() - (int)(60*GamePanel.SCALE);
-		g2.drawImage(cfu, xPosPlayerData, yPosPlayerData, null);
-		int punteggio = play.getView().getController().getPlay().getPlayer().getCfu();
-		String s = "" + punteggio;
-		xPosPlayerData += cfu.getWidth() + (int)(10*GamePanel.SCALE);
-		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
-	}
-
-	private void drawNotes(Graphics2D g2) {
-		xPosPlayerData = ViewUtils.getCenteredXPos(appunti.getWidth());
-		g2.drawImage(appunti, xPosPlayerData, yPosPlayerData, null);
-		int notes = play.getView().getController().getPlay().getPlayer().getNotes();
-		String s = "" + notes;
-		xPosPlayerData += appunti.getWidth() + (int)(10*GamePanel.SCALE);
-		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
+	private void drawBackGround(Graphics2D g2) {
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		g2.setColor(Color.yellow);
+		g2.fillRoundRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT/12, 40, 40);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		g2.setColor(Color.black);
 		
 	}
 
-	private void drawLife(Graphics2D g2) {
+	private void drawLife(Graphics2D g2, String s) {
 		int life = play.getView().getController().getPlay().getPlayer().getLife();
+		s = life + " %";
+
 		if(life > 75)
 			g2.drawImage(vita[0], xPosPlayerData, yPosPlayerData, null);
 		else if(life <=75 && life > 50)
@@ -164,9 +148,32 @@ public class PlayUI {
 			g2.drawImage(vita[2], xPosPlayerData, yPosPlayerData, null);
 		else if(life <= 25)
 			g2.drawImage(vita[3], xPosPlayerData, yPosPlayerData, null);
-		String s = play.getView().getController().getPlay().getPlayer().getLife() + " %";
+		
 		g2.setFont(fontDisplay);
 		xPosPlayerData += vita[0].getWidth() + (int)(10*GamePanel.SCALE);
+		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
+		
+	}
+	
+	private void drawPoints(Graphics2D g2, String s) {
+		int cfu = play.getView().getController().getPlay().getPlayer().getCfu();
+		s = "" + cfu;
+
+		xPosPlayerData = GamePanel.GAME_WIDTH - cfuIcon.getWidth() - (int)(60*GamePanel.SCALE);
+		g2.drawImage(cfuIcon, xPosPlayerData, yPosPlayerData, null);
+		
+		xPosPlayerData += cfuIcon.getWidth() + (int)(10*GamePanel.SCALE);
+		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
+	}
+
+	private void drawNotes(Graphics2D g2, String s) {
+		int notes = play.getView().getController().getPlay().getPlayer().getNotes();
+		s = "" + notes;
+
+		xPosPlayerData = ViewUtils.getCenteredXPos(noteIcon.getWidth());
+		g2.drawImage(noteIcon, xPosPlayerData, yPosPlayerData, null);
+		
+		xPosPlayerData += noteIcon.getWidth() + (int)(10*GamePanel.SCALE);
 		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
 		
 	}
@@ -183,9 +190,20 @@ public class PlayUI {
 			if(counterScritta < 360) {
 				
 				g2.setFont(fontDisplay);
+				
 				int x = ViewUtils.getXforCenterText(messaggio, g2);
+				int y = GamePanel.GAME_HEIGHT/2 + (int)(20*GamePanel.SCALE);
+				int width = ViewUtils.getStringLenght(messaggio, g2);
+				int height = ViewUtils.getStringHeight(messaggio, g2);
+				
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+				g2.setColor(Color.yellow);
+				g2.fillRoundRect(x, y, width + (int)(3*GamePanel.SCALE), height + (int)(4*GamePanel.SCALE), 30, 30);
+				
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
 				g2.setColor(Color.red);
-				g2.drawString(messaggio, x, GamePanel.GAME_HEIGHT/2 + (int)(50*GamePanel.SCALE));
+				g2.drawString(messaggio, x, y + height);
 				g2.setColor(Color.black);	
 			}
 			

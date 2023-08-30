@@ -10,7 +10,7 @@ import view.main.GamePanel;
 
 public class PlayerController extends EntityController {
 
-	private int life = 50;
+	private int life = 70;
 	private int cfu = 0;
 	private int notes = 10;
 	
@@ -40,8 +40,8 @@ public class PlayerController extends EntityController {
 
 	private void updatePos() {
 	
-	//	System.out.println("player colonna " + hitbox.x/GamePanel.TILES_SIZE + " riga " + hitbox.y/GamePanel.TILES_SIZE);
-	//	System.out.println("player x " + hitbox.x+ " y " + hitbox.y);
+		System.out.println("player colonna " + hitbox.x/GamePanel.TILES_SIZE + " riga " + hitbox.y/GamePanel.TILES_SIZE);
+		System.out.println("player x " + hitbox.x+ " y " + hitbox.y);
 	
 		//durante l'intervallo dove attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
@@ -196,8 +196,10 @@ public class PlayerController extends EntityController {
 			if(!giaInteragito) {
 				play.getController().getView().getPlay().getUI().setScritta("premi E per interagire");
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
+				
 				if(interacting) {
 					play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(indiceEvento).Interact();
+					interacting = false;
 				}
 			}
 		}
@@ -263,6 +265,20 @@ public class PlayerController extends EntityController {
 	
 	public void abbassaNumeroColpi() {
 		notes--;
+	}
+	
+	public void addNotes() {
+		notes += 5;
+	}
+	
+	public void addCFU() {
+		cfu += 10;
+	}
+	
+	public void addLife() {
+		life += 20;
+		if(life > 100)
+			life = 100;
 	}
 	
 }

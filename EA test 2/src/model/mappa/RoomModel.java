@@ -7,8 +7,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import model.IModel;
+import model.mappa.events.CFU;
+import model.mappa.events.Caffe;
 import model.mappa.events.Event;
 import model.mappa.events.Light;
+import model.mappa.events.Notes;
 
 public class RoomModel {
 	
@@ -99,9 +102,10 @@ public class RoomModel {
 						int yPos = Integer.parseInt(datiNellaRiga[2]);
 						int width = Integer.parseInt(datiNellaRiga[3]);
 						int height = Integer.parseInt(datiNellaRiga[4]);
+						String s = datiNellaRiga[5];
 						
-						Rectangle r = new Rectangle(xPos, yPos, width, height);						
-						eventi.add(new Light(r, model));
+						Rectangle r = new Rectangle(xPos, yPos, width, height);	
+						addEvent(r, s);
 					}
 					
 				}
@@ -115,14 +119,26 @@ public class RoomModel {
 		}										
 	}
 	
+	private void addEvent(Rectangle r, String s) {
+		
+		if(s.compareTo("luce") == 0)
+			eventi.add(new Light(r, model));
+		
+		else if(s.compareTo("caffe") == 0)
+			eventi.add(new Caffe(r, model));
+		
+		else if(s.compareTo("appunti") == 0)
+			eventi.add(new Notes(r, model));
+		
+		else if(s.compareTo("cfu") == 0)
+			eventi.add(new CFU(r, model));
+	}
+
+
 	public void printData() {		
 		for(Passaggio p : passaggi)
 			System.out.println(p.toString());
 	}
-	
-//	public void addNewPassaggio(boolean open, String s, int x, int y, int width, int height, int newX, int newY, Stanze newRoom) {
-//		passaggi.add(new Passaggio(open, s, x, y, width, height, newX, newY, newRoom));
-//	}
 
 	public int checkPassInRoom(Rectangle hitbox) {
 		int index = -1;

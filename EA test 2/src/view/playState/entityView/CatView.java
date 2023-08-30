@@ -41,7 +41,6 @@ public class CatView extends EntityView {
 	private void selectColor() {
 		Random r = new Random();
 		color = r.nextInt(2);	
-		System.out.println(color);
 	}
 
 	private void loadImages() {

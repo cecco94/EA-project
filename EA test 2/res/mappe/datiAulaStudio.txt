@@ -12,3 +12,9 @@ per gli NPC l'ordine è tipo posx posy
 ;passaggio alla segreteria, 16, 42, 32, 32, 0, 0, 0, false, la segreteria è aperta tutti i giorni dalle 8:00 alle 8:01
 
 -gatto, 1, 20, 8
+
++caffe, 13, 12, 32, 32, caffe
+
++appunti, 22, 32, 32, 32, appunti
+
++cfu, 25, 16, 32, 32, cfu

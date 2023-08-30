@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 import model.IModel;
 
-public class Light extends Event{
+public class Light extends Event {
 
 	
 	public Light(Rectangle r, IModel m) {
