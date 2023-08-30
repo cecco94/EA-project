@@ -10,7 +10,7 @@ import view.main.GamePanel;
 
 	public static BufferedImage scaleImage(BufferedImage original, float width, float height) {	
 		int imageType = original.getType();
-		if(imageType == 0) 
+		if(imageType <= 0) 
 			imageType = BufferedImage.TYPE_4BYTE_ABGR;
 		BufferedImage scaledImage = new BufferedImage((int)width, (int)height, imageType);			//==0?5:original.getType());
 		Graphics2D g2 = scaledImage.createGraphics();

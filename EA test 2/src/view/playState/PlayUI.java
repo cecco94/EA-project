@@ -20,8 +20,12 @@ import view.main.GamePanel;
 public class PlayUI {
 
 	private Font fontDisplay = new Font("Arial", Font.PLAIN, (int)(20*GamePanel.SCALE));
-	private BufferedImage effettoBuio;
+	private BufferedImage effettoBuio, appunti, cfu;
+	private BufferedImage[] vita;
 	private boolean buio = true;
+	
+	private int yPosPlayerData = (int)(5*GamePanel.SCALE);
+	private int xPosPlayerData = (int)(20*GamePanel.SCALE);
 	
 	private PlayStateView play;
 	private int counter = 0;
@@ -40,15 +44,37 @@ public class PlayUI {
 	public PlayUI(PlayStateView p) {
 		play = p;
 		
+		loadImages();
+		
+	}
+	
+	private void loadImages() {
 		try {
-			effettoBuio = ImageIO.read(getClass().getResourceAsStream("/effettoBuioFinale.png"));
+			effettoBuio = ImageIO.read(getClass().getResourceAsStream("/ui/effettoBuioFinale.png"));
 			effettoBuio = ViewUtils.scaleImage(effettoBuio, effettoBuio.getWidth()*GamePanel.SCALE, effettoBuio.getHeight()*GamePanel.SCALE);
+			
+			cfu = ImageIO.read(getClass().getResourceAsStream("/ui/punteggioPiccolo.png"));
+			cfu = ViewUtils.scaleImage(cfu, cfu.getWidth()*GamePanel.SCALE, cfu.getHeight()*GamePanel.SCALE);
+
+			vita = new BufferedImage[4];
+			BufferedImage temp = ImageIO.read(getClass().getResourceAsStream("/ui/vitaPiccola.png"));
+			
+			for(int i = 0; i < 4; i++) 
+				vita[i] = temp.getSubimage(45*i, 0, 45, 32);
+			
+			for(int i = 0; i < 4; i++)
+				vita[i] = ViewUtils.scaleImage(vita[i], vita[i].getWidth()*GamePanel.SCALE, vita[i].getHeight()*GamePanel.SCALE);
+
+			appunti = ImageIO.read(getClass().getResourceAsStream("/ui/appuntiPiccoli.png"));
+			appunti = ViewUtils.scaleImage(appunti, appunti.getWidth()*GamePanel.SCALE, appunti.getHeight()*GamePanel.SCALE);
+
 		} 
 		catch (IOException e) {	
 			e.printStackTrace();
 		}
+		
 	}
-	
+
 	//per due secondi diventa tutto sfocato e la musica diminuisce
 	public void drawTransition(Graphics2D g2) {
 		counter++;
@@ -85,11 +111,66 @@ public class PlayUI {
 	}
 	
 	public void draw(Graphics2D g2) {
-		//disegna vita, punteggio, munizioni
-		disegnaMessaggio(g2);
+		
+		drawPlayerData(g2);
+		
 		disegnaBuio(g2);
+		disegnaMessaggio(g2);
 	}
 	
+	private void drawPlayerData(Graphics2D g2) {
+		// vita appunti punteggio
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		g2.setColor(Color.orange);
+		g2.fillRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT/12);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		g2.setColor(Color.black);
+		
+		drawLife(g2);
+		
+		drawNotes(g2);
+		
+		drawPoints(g2);
+		
+		xPosPlayerData = (int)(20*GamePanel.SCALE);
+	}
+
+	private void drawPoints(Graphics2D g2) {
+		xPosPlayerData = GamePanel.GAME_WIDTH - cfu.getWidth() - (int)(60*GamePanel.SCALE);
+		g2.drawImage(cfu, xPosPlayerData, yPosPlayerData, null);
+		int punteggio = play.getView().getController().getPlay().getPlayer().getCfu();
+		String s = "" + punteggio;
+		xPosPlayerData += cfu.getWidth() + (int)(10*GamePanel.SCALE);
+		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
+	}
+
+	private void drawNotes(Graphics2D g2) {
+		xPosPlayerData = ViewUtils.getCenteredXPos(appunti.getWidth());
+		g2.drawImage(appunti, xPosPlayerData, yPosPlayerData, null);
+		int notes = play.getView().getController().getPlay().getPlayer().getNotes();
+		String s = "" + notes;
+		xPosPlayerData += appunti.getWidth() + (int)(10*GamePanel.SCALE);
+		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
+		
+	}
+
+	private void drawLife(Graphics2D g2) {
+		int life = play.getView().getController().getPlay().getPlayer().getLife();
+		if(life > 75)
+			g2.drawImage(vita[0], xPosPlayerData, yPosPlayerData, null);
+		else if(life <=75 && life > 50)
+			g2.drawImage(vita[1], xPosPlayerData, yPosPlayerData, null);
+		else if(life <=50 && life > 25)
+			g2.drawImage(vita[2], xPosPlayerData, yPosPlayerData, null);
+		else if(life <= 25)
+			g2.drawImage(vita[3], xPosPlayerData, yPosPlayerData, null);
+		String s = play.getView().getController().getPlay().getPlayer().getLife() + " %";
+		g2.setFont(fontDisplay);
+		xPosPlayerData += vita[0].getWidth() + (int)(10*GamePanel.SCALE);
+		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
+		
+	}
+
 	private void disegnaBuio(Graphics2D g2) {
 		if (Stanze.stanzaAttuale == Stanze.DORMITORIO && buio)
 			g2.drawImage(effettoBuio, 0, 0, null);

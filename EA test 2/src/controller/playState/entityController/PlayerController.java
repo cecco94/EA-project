@@ -10,6 +10,10 @@ import view.main.GamePanel;
 
 public class PlayerController extends EntityController {
 
+	private int life = 50;
+	private int cfu = 0;
+	private int notes = 10;
+	
 	private int speed = (int)(GamePanel.SCALE*1.3f);
 	private boolean  parry, throwing, interacting;
 
@@ -228,6 +232,37 @@ public class PlayerController extends EntityController {
 	public boolean isInteracting() {
 		return interacting;
 	}
+
+	public int getLife() {
+		return life;
+	}
+
+	public void setLife(int life) {
+		this.life = life;
+	}
+
+
+	public int getCfu() {
+		return cfu;
+	}
+
+
+	public void setCfu(int cfu) {
+		this.cfu = cfu;
+	}
+
+
+	public int getNotes() {
+		return notes;
+	}
+
+
+	public void setNotes(int notes) {
+		this.notes = notes;
+	}
 	
+	public void abbassaNumeroColpi() {
+		notes--;
+	}
 	
 }

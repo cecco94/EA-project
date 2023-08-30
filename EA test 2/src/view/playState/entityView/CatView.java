@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -19,6 +20,7 @@ public class CatView extends EntityView {
 	//caricare le immagini ogni volta che creiamo un gatto, usiamo questo boolean
 	//e le immagini verranno caricate solo una volta
 	public static boolean firstCat = true;
+	private int color;
 
 	public CatView(IView v, int index) {
 		
@@ -32,6 +34,14 @@ public class CatView extends EntityView {
 		yOffset = (int)(4*GamePanel.SCALE); //3;
 		animationSpeed = 40;
 		
+		selectColor();
+	}
+
+	//ogni volta che crea un gatto sceglie il colore a caso
+	private void selectColor() {
+		Random r = new Random();
+		color = r.nextInt(2);	
+		System.out.println(color);
 	}
 
 	private void loadImages() {
@@ -39,7 +49,7 @@ public class CatView extends EntityView {
 			BufferedImage image = null;
 			BufferedImage temp = null;
 			
-			CatView.animation = new BufferedImage[2][][][];
+			CatView.animation = new BufferedImage[2][][][];		//due tipi di gatto
 			CatView.animation[BIANCO] = new BufferedImage[2][][];	//per ogni gatto per ora abbiamo due azioni
 			CatView.animation[NERO] = new BufferedImage[2][][];
 	
@@ -60,6 +70,22 @@ public class CatView extends EntityView {
 					temp = image.getSubimage(immagine*32, direzione*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
 					CatView.animation[BIANCO][RUN][direzione][immagine] = temp ;
+				}
+			}
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		CatView.animation[NERO][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNero.png"));
+						
+			for(int direzione = 0; direzione < 4 ; direzione++) {
+				for(int immagine = 0; immagine < 3; immagine++) {
+					temp = image.getSubimage(immagine*32, direzione*32, 32, 32);
+					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+					CatView.animation[NERO][RUN][direzione][immagine] = temp ;
 				}
 			}
 		} 
@@ -96,6 +122,32 @@ public class CatView extends EntityView {
 			e.printStackTrace();
 		}
 		
+		CatView.animation[NERO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
+		try {
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNero.png"));
+			
+				temp = image.getSubimage(32, 0, 32, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+				CatView.animation[NERO][IDLE][DOWN][0] = temp ;
+			
+			
+				temp = image.getSubimage(32, 64, 32, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+				CatView.animation[NERO][IDLE][RIGHT][0] = temp ;
+			
+				temp = image.getSubimage(32, 32, 32, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+				CatView.animation[NERO][IDLE][LEFT][0] = temp ;
+			
+				temp = image.getSubimage(32, 96, 32, 32);
+				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+				CatView.animation[NERO][IDLE][UP][0] = temp ;
+			
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	@Override
@@ -125,7 +177,7 @@ public class CatView extends EntityView {
 		int yPosOnScreen = PlayerView.yOnScreen - distanzaY - yOffset + PlayerView.getYOffset();
 		
 		try {
-			g2.drawImage(CatView.animation[BIANCO][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+			g2.drawImage(CatView.animation[color][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
 			
 			//quadrato dove viene disegnato il gatto
 			g2.setColor(Color.red);

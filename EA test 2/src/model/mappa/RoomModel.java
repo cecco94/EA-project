@@ -62,12 +62,10 @@ public class RoomModel {
 					
 					else if(rigaLetta.contains("-")) {		//il trattino indica npc
 						int type = Integer.parseInt(datiNellaRiga[1]);	
+						
 						int xPos = Integer.parseInt(datiNellaRiga[2]);
 						int yPos = Integer.parseInt(datiNellaRiga[3]);
-//						int width = Integer.parseInt(datiNellaRiga[4]);
-//						int height = Integer.parseInt(datiNellaRiga[5]);
-//						
-//						Rectangle r = new Rectangle(xPos, yPos, width, height);
+
 						model.getController().getPlay().getRoom(index).addNPC(type, xPos, yPos);
 						//sarebbe bello aggiungere qui anche le roomview, ma la view viene inizializzata dopo
 					}

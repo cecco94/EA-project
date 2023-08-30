@@ -109,8 +109,15 @@ public class PlayStateController {
 		else if(e.getKeyCode() == KeyEvent.VK_SPACE)
 			playerController.setParry(true);
 			
-		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) 
-			playerController.setThrowing(true);
+		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) {
+			if(playerController.getNotes() > 0) 
+				playerController.setThrowing(true);
+			
+			else {
+				controller.getView().getPlay().getUI().setScritta("appunti finiti");
+				controller.getView().getPlay().getUI().setShowMessage(true);
+			}
+		}
 		
 		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
 			playerController.setInteracting(true);
@@ -129,9 +136,12 @@ public class PlayStateController {
 		}
 		
 		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) {
-			playerController.setThrowing(false);
-			addProjectile(playerController);
-			controller.getView().getPlay().addProjectile();
+			if(playerController.getNotes() > 0) {
+				playerController.abbassaNumeroColpi();
+				playerController.setThrowing(false);
+				addProjectile(playerController);
+				controller.getView().getPlay().addProjectile();
+			}
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
 			playerController.setInteracting(true);
@@ -147,8 +157,15 @@ public class PlayStateController {
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(true);
 		
-		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) 
-			playerController.setThrowing(true);
+		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {
+			if(playerController.getNotes() > 0) 
+				playerController.setThrowing(true);	
+			
+			else {
+				controller.getView().getPlay().getUI().setScritta("appunti finiti");
+				controller.getView().getPlay().getUI().setShowMessage(true);
+			}
+		}
 		
 	}
 
@@ -159,10 +176,13 @@ public class PlayStateController {
 		else if(SwingUtilities.isRightMouseButton(e))
 			playerController.setParry(false);
 		
-		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {
-			playerController.setThrowing(false);
-			addProjectile(playerController);
-			controller.getView().getPlay().addProjectile();
+		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {			
+			if(playerController.getNotes() > 0) {
+				playerController.abbassaNumeroColpi();
+				playerController.setThrowing(false);
+				addProjectile(playerController);
+				controller.getView().getPlay().addProjectile();
+			}
 		}
 	}
 	
