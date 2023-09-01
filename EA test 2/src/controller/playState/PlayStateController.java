@@ -11,7 +11,7 @@ import controller.IController;
 import controller.main.Gamestate;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
-import controller.playState.entityController.Projectile;
+import controller.playState.entityController.Bullet;
 
 import model.mappa.Stanze;
 
@@ -22,7 +22,7 @@ public class PlayStateController {
 	private Collisions collisionCheck;
 	private IController controller;
 
-	private ArrayList<Projectile> appuntiLanciati;
+	private ArrayList<Bullet> bulletsInRoom;
 	private RoomController[] stanzeController;
 	
 	public PlayStateController(IController c) {
@@ -30,7 +30,7 @@ public class PlayStateController {
 		collisionCheck = new Collisions(c); 
 		Rectangle r = new Rectangle(12, 9, 0, 0);
 		playerController = new PlayerController(r, this);
-		appuntiLanciati = new ArrayList<>();
+		bulletsInRoom = new ArrayList<>();
 		initRooms();
 	}
 
@@ -50,7 +50,7 @@ public class PlayStateController {
 		playerController.update();		
 		
 		//aggiorna i proiettili
-		updateProjectiles();
+		updateBullets();
 		
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
 		//Per rendere la cosa più leggera, possiamo aggiornare solo quelli all'interno dell'area visibile
@@ -78,9 +78,9 @@ public class PlayStateController {
 		}
 	}
 	
-	private void updateProjectiles() {
-		for(int index = 0; index < appuntiLanciati.size(); index++)
-			appuntiLanciati.get(index).update();	
+	private void updateBullets() {
+		for(int index = 0; index < bulletsInRoom.size(); index++)
+			bulletsInRoom.get(index).update();	
 	}
 
 	public void setPlayerPos(int x, int y) {
@@ -95,7 +95,7 @@ public class PlayStateController {
 		playerController.getHitbox().y = controller.getModel().getNewYPos();	
 		playerController.resetBooleans();
 		
-		appuntiLanciati.clear();
+		bulletsInRoom.clear();
 		controller.getView().getPlay().getAppunti().clear();
 	}
 	
@@ -137,9 +137,9 @@ public class PlayStateController {
 		
 		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) {
 			if(playerController.getNotes() > 0) {
-				playerController.abbassaNumeroColpi();
+				playerController.decreaseBulletsNumber();
 				playerController.setThrowing(false);
-				addProjectile(playerController);
+				addBullets(playerController);
 				controller.getView().getPlay().addProjectile();
 			}
 		}
@@ -178,9 +178,9 @@ public class PlayStateController {
 		
 		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {			
 			if(playerController.getNotes() > 0) {
-				playerController.abbassaNumeroColpi();
+				playerController.decreaseBulletsNumber();
 				playerController.setThrowing(false);
-				addProjectile(playerController);
+				addBullets(playerController);
 				controller.getView().getPlay().addProjectile();
 			}
 		}
@@ -198,28 +198,28 @@ public class PlayStateController {
 		return controller;
 	}
 	
-	public void addProjectile(EntityController lanciatore) {
-		appuntiLanciati.add(new Projectile(this, appuntiLanciati.size(), lanciatore));
+	public void addBullets(EntityController owner) {
+		bulletsInRoom.add(new Bullet(this, bulletsInRoom.size(), owner));
 	}
 	
-	public void removeProjectile(int index) {
+	public void removeBullets(int index) {
 		//siccome tutti quelli a destra di index si spostano a sinistra di uno, l'indice deve 
 		//essere aggiornato
-		for(int i = index; i < appuntiLanciati.size(); i++)
-			appuntiLanciati.get(i).abbassaIndiceNellaLista();
+		for(int i = index; i < bulletsInRoom.size(); i++)
+			bulletsInRoom.get(i).decreaseIndexInList();
 		try {
-			appuntiLanciati.remove(index);
+			bulletsInRoom.remove(index);
 		}
 		catch(IndexOutOfBoundsException iobe) {
-			appuntiLanciati.clear();
+			bulletsInRoom.clear();
 			controller.getView().getPlay().getAppunti().clear();
 		//	System.out.println("problemi appunti controller");
 		//	iobe.printStackTrace();
 		}
 	}
 	
-	public ArrayList<Projectile> getAppuntiLanciati(){
-		return appuntiLanciati;
+	public ArrayList<Bullet> getBulletsInRoom(){
+		return bulletsInRoom;
 	}
 	
 	public RoomController getRoom(int index) {

@@ -10,13 +10,13 @@ import controller.playState.entityController.EntityController;
 
 public class RoomController {
 
-	private ArrayList<EntityController> nemici;
+	private ArrayList<EntityController> enemy;
 	private ArrayList<EntityController> NPC;
 	private PlayStateController play;
 	
 	public RoomController(PlayStateController p) {
 		play = p;
-		nemici = new ArrayList<>();
+		enemy = new ArrayList<>();
 		NPC = new ArrayList<>();
 	}
 
@@ -29,7 +29,7 @@ public class RoomController {
 	}
 	
 	public void removeEnemy(int index) {
-		nemici.remove(index);
+		enemy.remove(index);
 	}
 	
 	public void removeNPC(int index) {
@@ -37,7 +37,7 @@ public class RoomController {
 	}
 	
 	public ArrayList<EntityController> getEnemy(){
-		return nemici;
+		return enemy;
 	}
 	
 	public ArrayList<EntityController> getNPC(){
@@ -45,7 +45,7 @@ public class RoomController {
 	}
 	
 	public void printData() {
-		for(EntityController n :nemici) 
+		for(EntityController n :enemy) 
 			System.out.println(n.toString());
 			
 		for(EntityController a : NPC) 
@@ -54,7 +54,7 @@ public class RoomController {
 	}
 
 	public void addEnemy(int type, Rectangle r) {
-		nemici.add(new EnemyController(r, play));
+		enemy.add(new EnemyController(r, play));
 	}
 
 	public void addNPC(int type, int xPos, int yPos) {

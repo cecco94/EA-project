@@ -203,7 +203,7 @@ public class PlayStateView {
 			iobe.printStackTrace();
 			System.out.println("lista appunti finita nel view");
 			appuntiLanciati.clear();
-			view.getController().getPlay().getAppuntiLanciati().clear();
+			view.getController().getPlay().getBulletsInRoom().clear();
 		}
 	}
 	

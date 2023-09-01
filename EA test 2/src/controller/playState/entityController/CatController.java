@@ -7,16 +7,16 @@ import controller.playState.PlayStateController;
 import view.main.GamePanel;
 
 public class CatController extends EntityController {
-
+	
 	private static int hitboxWidth = 28, hitboxHeight = 20;
-	private static int catSpeed = (int)(GamePanel.SCALE*1.2f);
+	private int catSpeed = (int)(GamePanel.SCALE*1.2f);
 	
 	private int actionCounter;
 	private Random randomGenerator = new Random();
-	private int azioneACaso, direzioneACaso;
+	private int randomAction, randomDirection;
 	
-	private boolean inFuga;
-	private int counterFuga;
+	private boolean runningAway;
+	private int counterRunnigAway;
 
 	
 	public CatController(int xPos, int yPos, PlayStateController p) {
@@ -31,15 +31,15 @@ public class CatController extends EntityController {
 
 	private void choseAction() {
 		
-		if(!inFuga) {
+		if(!runningAway) {
 			//se il giocatore si avvicina al gatto, il gatto si sposta nella direzione opposta per un secondo
 			//se la direzione opposta è bloccata da un muro, va in un'altra direzione
-			int distanzaX = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
-			int distanzaY = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
+			int xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
+			int yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			
-			if(distanzaX < GamePanel.TILES_SIZE*2 && distanzaY < GamePanel.TILES_SIZE*2) {
-				inFuga = true;
-				setDiezioneFuga();	
+			if(xDistance < GamePanel.TILES_SIZE*2 && yDistance < GamePanel.TILES_SIZE*2) {
+				runningAway = true;
+				setRunAwayDirection();	
 				speed = (int)(GamePanel.SCALE*1.5f);
 			}
 			
@@ -48,16 +48,16 @@ public class CatController extends EntityController {
 		}
 		
 		else 
-			fuggiInUNaDirezione();
+			runAwayInChosenDirection();
 		
 	}
 	
-	private void fuggiInUNaDirezione() {
-		counterFuga++;
+	private void runAwayInChosenDirection() {
+		counterRunnigAway++;
 		//dopo un secondo di fuga può controlare di nuovo se è inseguito
-		if(counterFuga >= 200) {
-			inFuga = false;
-			counterFuga = 0;
+		if(counterRunnigAway >= 200) {
+			runningAway = false;
+			counterRunnigAway = 0;
 			speed = (int)(GamePanel.SCALE*1.2f);
 		}
 		//se ancora non è passato un secondo, continua a correre in quella direzione
@@ -67,7 +67,7 @@ public class CatController extends EntityController {
 		
 	}
 
-	private void setDiezioneFuga() {
+	private void setRunAwayDirection() {
 		
 		int playerDirection = play.getPlayer().getDirection();
 		moving = true;
@@ -79,10 +79,8 @@ public class CatController extends EntityController {
 			direction++;
 			
 			if(direction > 3) 
-				direction = 0;
-			
+				direction = 0;	
 		}
-		
 		
 		//se il player si avvicina da sinistra, se può scappa a sinistra
 		else if(playerDirection == LEFT && play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
@@ -106,14 +104,11 @@ public class CatController extends EntityController {
 			else {
 				idle = true;
 				moving = false;
-				inFuga = false;
-				System.out.println("fermo");
+				runningAway = false;
 			}
 				
 		}
-		
-		
-		
+				
 		else if(playerDirection == RIGHT && play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
 			direction = RIGHT;
 			resetDirection();
@@ -134,7 +129,7 @@ public class CatController extends EntityController {
 			else {
 				idle = true;
 				moving = false;
-				inFuga = false;
+				runningAway = false;
 			}
 		}		
 		
@@ -159,7 +154,7 @@ public class CatController extends EntityController {
 			else {
 				idle = true;
 				moving = false;
-				inFuga = false;
+				runningAway = false;
 			}
 		}		
 		
@@ -184,20 +179,21 @@ public class CatController extends EntityController {
 			else {
 				idle = true;
 				moving = false;
-				inFuga = false;
+				runningAway = false;
 			}
 		}		
 			
 	}
 
+	//metodo che gestisce il movimento del gatto quando non viene inseguito 
 	private void normalAction() {
 		actionCounter++;	
 		//ogni due secondi cambia azione e direzione 
 		if(actionCounter >= 400) {
-			resetaction();
-			azioneACaso = randomGenerator.nextInt(2);
+			resetAction();
+			randomAction = randomGenerator.nextInt(2);
 			
-			if (azioneACaso == 0) 
+			if (randomAction == 0) 
 				idle = true;
 			
 			else
@@ -209,31 +205,28 @@ public class CatController extends EntityController {
 		
 	}
 
-	private void resetaction() {
+	private void resetAction() {
 		idle = false;
 		moving = false;
-		inFuga = false;
+		runningAway = false;
 	}
 
-	private void choseDirection() {
-//	System.out.println("gatto colonna " + hitbox.x/GamePanel.TILES_SIZE + " riga " + hitbox.y/GamePanel.TILES_SIZE);
-//	System.out.println("gatto x " + hitbox.x + " y " + hitbox.y);
-		
+	private void choseDirection() {		
 	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
 		if(actionCounter >= 400) {
 			resetDirection();	
-			direzioneACaso = randomGenerator.nextInt(4);
+			randomDirection = randomGenerator.nextInt(4);
 			
-			if(direzioneACaso == 0) 
+			if(randomDirection == 0) 
 				up = true;
 			
-			else if (direzioneACaso == 1) 
+			else if (randomDirection == 1) 
 				down = true;
 			
-			else if(direzioneACaso == 2) 
+			else if(randomDirection == 2) 
 				left = true;
 			
-			else if(direzioneACaso == 3) 
+			else if(randomDirection == 3) 
 				right = true;
 			
 			actionCounter = 0;
@@ -293,7 +286,7 @@ public class CatController extends EntityController {
 		if(collision) {
 			moving = false;
 			idle = true;
-			inFuga = false;
+			runningAway = false;
 			speed = (int)(GamePanel.SCALE*1.2f);
 		}
 		

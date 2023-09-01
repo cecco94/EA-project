@@ -30,7 +30,7 @@ public class ProjectileView {
 	public ProjectileView(int index, IView v) {
 		this.index = index;
 		view = v;
-		direction = v.getController().getPlay().getAppuntiLanciati().get(index).getDirection();
+		direction = v.getController().getPlay().getBulletsInRoom().get(index).getDirection();
 		animazione = new BufferedImage[2];	//1 direzione, ciascuna con due immagini
 		loadAnimation();
 		width = view.getController().getPlay().getPlayer().getHitbox().width;
@@ -84,7 +84,7 @@ public class ProjectileView {
 		catch (IOException e) {
 			e.printStackTrace();
 			view.getPlay().getAppunti().clear();
-			view.getController().getPlay().getAppuntiLanciati().clear();
+			view.getController().getPlay().getBulletsInRoom().clear();
 		}
 	}
 		
@@ -105,8 +105,8 @@ public class ProjectileView {
 		
 		try {
 			//decidiamo dove disegnarlo
-			int xposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().x;
-			int yposInMap = view.getController().getPlay().getAppuntiLanciati().get(index).getHitbox().y;
+			int xposInMap = view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().x;
+			int yposInMap = view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().y;
 			
 			int distanzaX = playerx - xposInMap;
 			int distanzaY = playery - yposInMap;
@@ -123,7 +123,7 @@ public class ProjectileView {
 			//System.out.println("problemi nel view projectile");
 			//in caso di problemi elimina tutti gli appunti in giro
 			view.getPlay().getAppunti().clear();
-			view.getController().getPlay().getAppuntiLanciati().clear();
+			view.getController().getPlay().getBulletsInRoom().clear();
 		}
 			
 	}

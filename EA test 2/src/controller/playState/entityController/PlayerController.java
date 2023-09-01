@@ -34,15 +34,12 @@ public class PlayerController extends EntityController {
 
 	public void update() {
 		updatePos();
-		isAbovePassaggio();
+		isAbovePassage();
 		isNearEvent();
 	}
 
 	private void updatePos() {
-	
-		System.out.println("player colonna " + hitbox.x/GamePanel.TILES_SIZE + " riga " + hitbox.y/GamePanel.TILES_SIZE);
-		System.out.println("player x " + hitbox.x+ " y " + hitbox.y);
-	
+		
 		//durante l'intervallo dove attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
 		
@@ -100,7 +97,7 @@ public class PlayerController extends EntityController {
 			attackCounter++;
 			
 			if(attackCounter < 100)
-				speed = (int)(0.5f);
+				speed = (int)(0.5f); //int --> diventa 0 , rivedere
 			
 			else {
 				speed = (int)(GamePanel.SCALE*1.3);
@@ -167,18 +164,19 @@ public class PlayerController extends EntityController {
 			isAttackAnimation = true;	
 	}
 	
-	public void isAbovePassaggio() {
-		// vedi in che stanza sei, vedi la lista dei passaggi, controllali
-		// se si, cambia mappa e posiz del player
-		int indicePassaggio = play.getController().getModel().checkPassaggio(hitbox);
+	public void isAbovePassage() {
+		// il player vede in che stanza è, vede la lista dei passaggi, e li controlla tutti
+		// se si trova su un passaggio, cambia mappa e posiz del player
+		int passageIndex = play.getController().getModel().checkPassaggio(hitbox);
 		
-		if(indicePassaggio >= 0) {
-			if(play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(indicePassaggio).isOpen()) {
+		if(passageIndex >= 0) {
+			if(play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(passageIndex).isOpen()) {
 				play.getController().getModel().memorizzaDatiNuovaStanza();
 				play.getController().setGameState(Gamestate.TRANSITION_ROOM);
 			}
 			else {
-				String s = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(indicePassaggio).getScritta();
+				//se passaggio è chiuso, il passaggio stesso restituisce una stringa che viene stampata a video
+				String s = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(passageIndex).getScritta();
 				play.getController().getView().getPlay().getUI().setScritta(s);
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 			}
@@ -186,19 +184,19 @@ public class PlayerController extends EntityController {
 	}
 	
 	public void isNearEvent() {
-		//vedi in che stanza sei, vedi la lista degli eventi, controllali
-		//se sei vicino ad un evento, deve apparire il messaggio
+		//il player vede in che stanza è, vede la lista degli eventi, controlla
+		//se è vicino ad un evento, deve apparire il messaggio
 		//se preme E parte l'interazione
-		int indiceEvento = play.getController().getModel().checkEvent(hitbox);
+		int eventIndex = play.getController().getModel().checkEvent(hitbox);
 		
-		if(indiceEvento >= 0) {
-			boolean giaInteragito = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(indiceEvento).isEndInteraction();
-			if(!giaInteragito) {
+		if(eventIndex >= 0) {
+			boolean alreadyInteracted = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(eventIndex).isEndInteraction();
+			if(!alreadyInteracted) {
 				play.getController().getView().getPlay().getUI().setScritta("premi E per interagire");
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 				
 				if(interacting) {
-					play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(indiceEvento).Interact();
+					play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(eventIndex).Interact();
 					interacting = false;
 				}
 			}
@@ -263,7 +261,7 @@ public class PlayerController extends EntityController {
 		this.notes = notes;
 	}
 	
-	public void abbassaNumeroColpi() {
+	public void decreaseBulletsNumber() {
 		notes--;
 	}
 	
