@@ -128,6 +128,7 @@ public class PlayUI {
 	}
 
 	private void drawBackGround(Graphics2D g2) {
+		g2.getColor().getAlpha();
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		g2.setColor(Color.yellow);
 		g2.fillRoundRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT/12, 40, 40);
