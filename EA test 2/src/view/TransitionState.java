@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import controller.main.Gamestate;
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 import view.main.GamePanel;
 import view.sound.SoundManager;
 
@@ -66,7 +66,7 @@ public class TransitionState {
 				view.playMusic(SoundManager.MENU_MUSIC);
 			
 			else 
-				view.playMusic(Stanze.stanzaAttuale.indiceMusica);
+				view.playMusic(Rooms.currentRoom.musicIndex);
 			
 			view.setMusicVolume(volumeBeforeTransition);
 			volume = view.getMusicVolume();

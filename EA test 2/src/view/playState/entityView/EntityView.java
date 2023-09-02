@@ -3,7 +3,7 @@ package view.playState.entityView;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 import view.IView;
 import view.main.GamePanel;
 import view.playState.drawOrder.SortableElement;
@@ -35,7 +35,7 @@ public abstract class EntityView extends SortableElement {
 	
 	public boolean isInGameFrame(int posizPlayerX, int posizPlayerY) {
 		//controlla se l'oggetto è abbastanza vicino al giocatore da poter apparire sullo schermo
-		Rectangle hitboxController = view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox();
+		Rectangle hitboxController = view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).getNPC().get(index).getHitbox();
 		
 		if(Math.abs(hitboxController.x - posizPlayerX)  > GamePanel.GAME_WIDTH/2)
 			return false;

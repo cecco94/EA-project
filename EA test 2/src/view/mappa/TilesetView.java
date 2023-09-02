@@ -11,100 +11,100 @@ public class TilesetView {
 
 	private ArrayList<Tile> tiles;	//lista completa dei tile, parte da 0, mentre il file parte da 1
 
-	private String percorsoPrimoStrato =   "/mappe/strato1.png";	
-	private String percorsoSecondoStrato = "/mappe/strato2NONanimato.png";
-	private String percorsoSecondoStratoAnimato = "/mappe/strato2SoloAnimato.png";
-	private String percorsoTerzoStrato =   "/mappe/strato3.png";
+	private String firstLayerPath =   "/mappe/strato1.png";	
+	private String secondLayerPath = "/mappe/strato2NONanimato.png";
+	private String secondAnimatedLayerPath = "/mappe/strato2SoloAnimato.png";
+	private String thirdLayerPath =   "/mappe/strato3.png";
 	
 	public TilesetView() {
 		tiles = new ArrayList<>();
-		salvaImmaginiPrimoStrato();	
-		salvaImmaginiSecondoStrato();
-		salvaImmaginiSecondoStratoAnimato();
-		salvaImmaginiTerzoStrato();
+		saveFirstLayerImages();	
+		saveSecondLayerImages();
+		saveSecondAnimatedLayerImages();
+		saveThirdLayerImages();
 	}
 
 	public Tile getTile(int i) {
 		return tiles.get(i);
 	}
 	
-	private void salvaImmaginiPrimoStrato() {
+	private void saveFirstLayerImages() {
 		BufferedImage imgZero = null;		//in questo modo la numerazione coincide con quella di tiled
 		
-		BufferedImage sourceImgStrato = null;
+		BufferedImage sourceLayerImage = null;
 		BufferedImage temp = null;
 		try {
 			imgZero = ImageIO.read(getClass().getResourceAsStream("/mappe/000.png"));
 			
-			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoPrimoStrato));
+			sourceLayerImage = ImageIO.read(getClass().getResourceAsStream(firstLayerPath));
 		}
 		catch(Exception e) {
 			e.printStackTrace();			
 		}
 		tiles.add(new Tile(imgZero));
 		
-		int numTilePrimoStrato = sourceImgStrato.getHeight()/32;
-		for(int i = 0; i < numTilePrimoStrato; i++) {
-			temp = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+		int numberTileFirstLayer = sourceLayerImage.getHeight()/32;
+		for(int i = 0; i < numberTileFirstLayer; i++) {
+			temp = sourceLayerImage.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
 			tiles.add(new Tile(temp));
 		}
 	}
 
-	private void salvaImmaginiSecondoStrato() {
-		BufferedImage sourceImgStrato = null;	
+	private void saveSecondLayerImages() {
+		BufferedImage sourceLayerImage = null;	
 		BufferedImage temp = null;
 		try {
-			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoSecondoStrato));	
+			sourceLayerImage = ImageIO.read(getClass().getResourceAsStream(secondLayerPath));	
 		}
 		catch(Exception e) {
 			e.printStackTrace();			
 		}
-		int numTileSecondoStrato = sourceImgStrato.getHeight()/32;
-		for(int i = 0; i < numTileSecondoStrato; i++) {
-			temp = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+		int numberTileSecondLayer = sourceLayerImage.getHeight()/32;
+		for(int i = 0; i < numberTileSecondLayer; i++) {
+			temp = sourceLayerImage.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
 			tiles.add(new Tile(temp));
 		}
 	}
 	
-	private void salvaImmaginiSecondoStratoAnimato() {
-		BufferedImage sourceImgStrato = null;
+	private void saveSecondAnimatedLayerImages() {
+		BufferedImage sourceLayerImage = null;
 		BufferedImage temp1 = null;
 		BufferedImage temp2 = null;
 
 		try {
-			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoSecondoStratoAnimato));
+			sourceLayerImage = ImageIO.read(getClass().getResourceAsStream(secondAnimatedLayerPath));
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		int numTileSecondoStratoAnimato = sourceImgStrato.getHeight()/64;		//non 32 come prima, perchè ogni tile ha due immagini, sono 9 tile
+		int numberTileSecondAnimatedLayer = sourceLayerImage.getHeight()/64;		//non 32 come prima, perchè ogni tile ha due immagini, sono 9 tile
 		
 		//la tv va a parte perchè i 4 tiles cambiano insieme
 		int freqTvAnimation = 240;
 		for(int i = 0; i < 8; i+=2) {
-			temp1 = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
-			temp2 = sourceImgStrato.getSubimage(0, (i+1)*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+			temp1 = sourceLayerImage.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+			temp2 = sourceLayerImage.getSubimage(0, (i+1)*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
 			tiles.add(new TileAnimated(temp1, temp2, freqTvAnimation));
 		}
 		
-		for(int i = 8; i < numTileSecondoStratoAnimato*2; i += 2) {
-			temp1 = sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
-			temp2 = sourceImgStrato.getSubimage(0, (i+1)*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+		for(int i = 8; i < numberTileSecondAnimatedLayer*2; i += 2) {
+			temp1 = sourceLayerImage.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
+			temp2 = sourceLayerImage.getSubimage(0, (i+1)*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE);
 			tiles.add(new TileAnimated(temp1, temp2));
 		}
 	}
 	
-	private void salvaImmaginiTerzoStrato() {
-		BufferedImage sourceImgStrato = null;
+	private void saveThirdLayerImages() {
+		BufferedImage sourceLayerImage = null;
 		try {
-			sourceImgStrato = ImageIO.read(getClass().getResourceAsStream(percorsoTerzoStrato));
+			sourceLayerImage = ImageIO.read(getClass().getResourceAsStream(thirdLayerPath));
 			}
 		catch(Exception e) {
 			e.printStackTrace();		
 		}
-		int numTileTerzoStrato = sourceImgStrato.getHeight()/32;
-		for(int i = 0; i < numTileTerzoStrato; i++) {
-			tiles.add(new Tile(sourceImgStrato.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE)));
+		int numberTileThirdLayer = sourceLayerImage.getHeight()/32;
+		for(int i = 0; i < numberTileThirdLayer; i++) {
+			tiles.add(new Tile(sourceLayerImage.getSubimage(0, i*GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE, GamePanel.TILES_DEFAULT_SIZE)));
 		}
 	}
 	

@@ -18,7 +18,7 @@ public class Notes extends Event {
 		model.getController().getPlay().getPlayer().addNotes();
 		
 		model.getView().playSE(SoundManager.APPUNTI);
-		model.getView().getPlay().getUI().setScritta(message);
+		model.getView().getPlay().getUI().setMessage(message);
 		model.getView().getPlay().getUI().setShowMessage(true);
 		
 		endInteraction = true;

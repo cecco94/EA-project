@@ -36,7 +36,7 @@ public class IView {
 	private StartTitle start;
 	private MainMenu menu;
 	private AvatarMenu avatar;
-	private OptionMenu opzioni;
+	private OptionMenu option;
 	private PlayStateView play;
 	private TransitionState transition;
 	private PauseScreen pause;
@@ -58,7 +58,7 @@ public class IView {
 		menu = new MainMenu(this);
 		start = new StartTitle(this);
 		avatar = new AvatarMenu(this);
-		opzioni = new OptionMenu(this);
+		option = new OptionMenu(this);
 		tileset = new TilesetView();
 		play = new PlayStateView(tileset, this);
 		transition = new TransitionState(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
@@ -91,7 +91,8 @@ public class IView {
 	public void draw() {	
 		gp.repaint();	
 	}
-
+	
+	//usa g2 per disegnare
 	public void prepareNewFrame(Graphics2D g2) {
 		switch(Gamestate.state) {
 		case START_TITLE:
@@ -106,7 +107,7 @@ public class IView {
 		case LOAD_GAME: 
 			break;
 		case OPTIONS:
-			opzioni.draw(g2);
+			option.draw(g2);
 			break;
 		case PLAYING:
 			play.draw(g2);
@@ -161,7 +162,7 @@ public class IView {
 	}
 	
 	public OptionMenu getOptions() {
-		return this.opzioni;
+		return this.option;
 	}
 	
 	public PlayStateView getPlay() {

@@ -19,7 +19,7 @@ public class CFU extends Event{
 		
 		model.getView().playSE(SoundManager.CFU);
 		
-		model.getView().getPlay().getUI().setScritta(message);
+		model.getView().getPlay().getUI().setMessage(message);
 		model.getView().getPlay().getUI().setShowMessage(true);
 		
 		endInteraction = true;

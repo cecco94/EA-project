@@ -22,14 +22,14 @@ public class InitialMenuButton extends AbstractMenuButton {
 		view = v;
 	}
 
-	private void loadIcons(String[] percorsoIcone, int width, int height) {
+	private void loadIcons(String[] iconsPath, int width, int height) {
 		BufferedImage temp;
 		try {
-			temp = ImageIO.read(getClass().getResourceAsStream(percorsoIcone[0]));
+			temp = ImageIO.read(getClass().getResourceAsStream(iconsPath[0]));
 			mouseAwayImage = ViewUtils.scaleImage(temp, width, height);
-			temp = ImageIO.read(getClass().getResourceAsStream(percorsoIcone[1]));
+			temp = ImageIO.read(getClass().getResourceAsStream(iconsPath[1]));
 			mouseOverImage = ViewUtils.scaleImage(temp, width, height);
-			temp = ImageIO.read(getClass().getResourceAsStream(percorsoIcone[2]));
+			temp = ImageIO.read(getClass().getResourceAsStream(iconsPath[2]));
 			mousePressedImage = ViewUtils.scaleImage(temp, width, height);	
 		}
 		catch (IOException e) {

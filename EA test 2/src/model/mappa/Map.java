@@ -8,62 +8,65 @@ import java.io.InputStreamReader;
 public class Map {
 
 	//primo campo = stanza, secondo campo = strato, terzo e quarto = posizione x,y
-	private int[][][][] mappa;	
+	private int[][][][] map;	
 	
-	private static final int NUM_STANZE = Stanze.numStanze, NUM_STRATI = 4;
-	public static final int PRIMO_STRATO = 0, SECONDO_STRATO = 1, TERZO_STRATO = 2, QUARTO_STRATO = 3;
+	private static final int ROOMS_NUMBERS = Rooms.numStanze, LAYERS_NUMBER = 4;
+	public static final int FIRST_LAYER = 0, SECOND_LAYER = 1, THIRD_LAYER = 2, FOURTH_LAYER = 3;
 	
-	private String[] percorsiStanze = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt",
+	private String[] roomPath = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt",
 										"/mappe/aulaStudio.txt", "/mappe/tenda.txt", "/mappe/laboratorio.txt", "/mappe/studioProf.txt"};
 	
 	public Map() {	
-		mappa = new int[NUM_STANZE][NUM_STRATI][][];
+		map = new int[ROOMS_NUMBERS][LAYERS_NUMBER][][];
 		
-		for(int stanzaDaCaricare = 0; stanzaDaCaricare < NUM_STANZE; stanzaDaCaricare++)
-			mappa[stanzaDaCaricare] = loadStanza(percorsiStanze[stanzaDaCaricare], stanzaDaCaricare);		
+		for(int roomToLoad = 0; roomToLoad < ROOMS_NUMBERS; roomToLoad++)
+			map[roomToLoad] = loadRoom(roomPath[roomToLoad], roomToLoad);		
 	}
 
-	private int[][][] loadStanza(String percorsiStanze, int stanzaDaCaricare) {	
-		int[][][] stanza = null;
+		
+	//primo campo= strato, secondo campo = posizione y ,terzo campo = posizizione x 
+	private int[][][] loadRoom(String roomsPaths, int roomToLoad) {	
+		int[][][] room = null; 
 		try {
-			InputStream	is = getClass().getResourceAsStream(percorsiStanze);			
+			InputStream	is = getClass().getResourceAsStream(roomsPaths);			
 			BufferedReader br = new BufferedReader(new InputStreamReader(is));
-			String rigaLetta = null;
+			String readLine = null;
 			
 			//legge la prima riga e carica le dimensioni
-			rigaLetta = br.readLine();
-			String[] dimensioni = rigaLetta.trim().split("x");
-			int maxRow = Integer.parseInt(dimensioni[0]);
-			int maxCol = Integer.parseInt(dimensioni[1]);
-			stanza = new int[NUM_STRATI][maxRow][maxCol];
+			readLine = br.readLine();
+			String[] dimensions = readLine.trim().split("x");
+			int maxRow = Integer.parseInt(dimensions[0]);
+			int maxCol = Integer.parseInt(dimensions[1]);
+			room = new int[LAYERS_NUMBER][maxRow][maxCol];
 			
 			//serve per caricare i numeri usando la funzione split
-			String[] numeriNellaRiga = new String[maxCol];
-			int numeroStrato = 0;
-			int riga = 0;
-			while((rigaLetta = br.readLine()) != null) {
+			String[] numbersInLine = new String[maxCol];
+			int layerNumber = 0;
+			int row = 0;
+			while((readLine = br.readLine()) != null) {
 				
-				if(!rigaLetta.isEmpty() && rigaLetta.contains(", "))	{		
-					numeriNellaRiga = rigaLetta.trim().split(", ");
+				if(!readLine.isEmpty() && readLine.contains(", "))	{		
+					numbersInLine = readLine.trim().split(", ");
 					
-					if(numeriNellaRiga[maxCol -1].contains(",")) {		//capita spesso che l'ultimo numero abbia una virgola a destra
+					if(numbersInLine[maxCol -1].contains(",")) {		//capita spesso che l'ultimo numero abbia una virgola a destra
 						
-						String numeroDaSistemare = numeriNellaRiga[maxCol -1].split(",")[0];	//prendiamo solo l'ultimo numero
-						int ultimoNumero = Integer.parseInt(numeroDaSistemare);
+						String numberToFix = numbersInLine[maxCol -1].split(",")[0];	//prendiamo solo l'ultimo numero
+						int lastNumber = Integer.parseInt(numberToFix);
 						
 						for(int j = 0; j < maxCol -1; j++) 						//aggiunge tutti tranne l'ultimo
-							stanza[numeroStrato][riga][j] = Integer.parseInt(numeriNellaRiga[j]);
-						stanza[numeroStrato][riga][maxCol -1] = ultimoNumero;		//aggiunge l'ultimo
+							room[layerNumber][row][j] = Integer.parseInt(numbersInLine[j]);
+						
+						room[layerNumber][row][maxCol -1] = lastNumber;		//aggiunge l'ultimo
 					}
 					else {	
 						for(int j = 0; j < maxCol; j++) 
-							stanza[numeroStrato][riga][j] = Integer.parseInt(numeriNellaRiga[j]);
+							room[layerNumber][row][j] = Integer.parseInt(numbersInLine[j]);
 					}
-					riga++;
+					row++;
 				}
-				else if(rigaLetta.contains("/")) {		//serve per capire quando è finito lo strato
-					numeroStrato++;
-					riga = 0;
+				else if(readLine.contains("/")) {		//serve per capire quando è finito lo strato
+					layerNumber++;
+					row = 0;
 				}
 			}	
 			br.close();	
@@ -73,11 +76,11 @@ public class Map {
 		catch(Exception e) {
 			e.printStackTrace();			
 		}										
-		return stanza;
+		return room;
 	}
 		
-	public void printStanza(int maxRow, int maxCol, int[][][] stanza){			//for debugging
-		for(int strato = 0; strato < NUM_STRATI; strato++) {		
+	/*public void printStanza(int maxRow, int maxCol, int[][][] stanza){			//for debugging
+		for(int strato = 0; strato < LAYERS_NUMBER; strato++) {		
 			for(int riga = 0; riga < maxRow; riga++) {
 				for(int colonna = 0; colonna < maxCol; colonna++) 
 					System.out.print(stanza[strato][riga][colonna] + " ");
@@ -85,10 +88,10 @@ public class Map {
 				}		
 			System.out.println();		
 		}
-	}
+	}*/
 
-	public int[][] getStrato(int stanza, int strato){
-		return mappa[stanza][strato];
+	public int[][] getLayer(int stanza, int strato){
+		return map[stanza][strato];
 	}
 
 	

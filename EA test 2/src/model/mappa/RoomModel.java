@@ -15,7 +15,7 @@ import model.mappa.events.Notes;
 
 public class RoomModel {
 	
-	private ArrayList<Passaggio> passaggi;
+	private ArrayList<Passage> passaggi;
 	private ArrayList<Event> eventi;
 	private IModel model;
 
@@ -94,7 +94,7 @@ public class RoomModel {
 							//se non c'è niente da scrivere l'array è più piccolo
 						}
 						
-						passaggi.add(new Passaggio(open, s,prewX, prewY, width, height, newX, newY, Stanze.getStanzaAssociataAlNumero(newRoom)));
+						passaggi.add(new Passage(open, s,prewX, prewY, width, height, newX, newY, Rooms.getRoomLinkedToNumber(newRoom)));
 					}	
 					
 					else if(rigaLetta.contains("+")) {		//il + indica eventi
@@ -136,7 +136,7 @@ public class RoomModel {
 
 
 	public void printData() {		
-		for(Passaggio p : passaggi)
+		for(Passage p : passaggi)
 			System.out.println(p.toString());
 	}
 
@@ -158,7 +158,7 @@ public class RoomModel {
 		return index;
 	}
 	
-	public ArrayList<Passaggio> getPassaggi() {
+	public ArrayList<Passage> getPassaggi() {
 		return passaggi;
 	}
 	

@@ -24,9 +24,9 @@ import view.playState.entityView.PlayerView;
 //menu dove scegli l'avatar
 public class AvatarMenu extends AbstractMenu{
 	private IView view;
-	private int scrittaAvatarX, scrittaAvatarY;
-	private BufferedImage scrittaAvatar;
-	private String[] caratteristichePersonaggi;
+	private int titleAvatarX, titleAvatarY;
+	private BufferedImage titleAvatar;
+	private String[] characterSkills;
 	
 	//servono per usare i tasti per muoversi nel menu
 	private final int RAGAZZO = 2, RAGAZZA = 1, INDIETRO = 0;
@@ -42,14 +42,14 @@ public class AvatarMenu extends AbstractMenu{
 	// è la scritta "scegli il tuo avatar"
 	private void loadAvatarChoiceText() {
 		try {
-			scrittaAvatar = ImageIO.read(getClass().getResourceAsStream("/avatarSelection/scritta1.png"));
-			scrittaAvatar = ViewUtils.scaleImage(scrittaAvatar, scrittaAvatar.getWidth()*SCALE/1.5f, scrittaAvatar.getHeight()*SCALE/1.5f);
+			titleAvatar = ImageIO.read(getClass().getResourceAsStream("/avatarSelection/scritta1.png"));
+			titleAvatar = ViewUtils.scaleImage(titleAvatar, titleAvatar.getWidth()*SCALE/1.5f, titleAvatar.getHeight()*SCALE/1.5f);
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		scrittaAvatarX = ViewUtils.getCenteredXPos(scrittaAvatar.getWidth());
-		scrittaAvatarY = (int)(30*SCALE);
+		titleAvatarX = ViewUtils.getCenteredXPos(titleAvatar.getWidth());
+		titleAvatarY = (int)(30*SCALE);
 	}
 	
 	public void loadButtons() {
@@ -57,8 +57,8 @@ public class AvatarMenu extends AbstractMenu{
 		int y = GAME_HEIGHT - (int)(50*SCALE); 	
 		buttons = new AbstractMenuButton[3];
 		
-		String[] percorsoIndietro = {"/menuiniziale/indietro1.png", "/menuiniziale/indietro2.png", "/menuiniziale/indietro3.png"};
-		buttons[0] = new InitialMenuButton(percorsoIndietro, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU, view);
+		String[] goBackButtonImagePath = {"/menuiniziale/indietro1.png", "/menuiniziale/indietro2.png", "/menuiniziale/indietro3.png"};
+		buttons[0] = new InitialMenuButton(goBackButtonImagePath, y, (int)(100*SCALE), (int)(15*SCALE), Gamestate.MAIN_MENU, view);
 		
 		y = GAME_HEIGHT/3;
 		Rectangle dimensions = new Rectangle(x, y, (int)(100*SCALE), (int)(150*SCALE));
@@ -70,9 +70,9 @@ public class AvatarMenu extends AbstractMenu{
 	
 	//sarebbero le scritte che appaiono se passi sopra a un personaggio
 	private void loadCharacterSkills() {
-		caratteristichePersonaggi = new String[2];
-		caratteristichePersonaggi[0] = "Giulia, viene dal classico, la notte piange sempre";
-		caratteristichePersonaggi[1] = "Mario, viene dallo scientifico, crede di sapare già tutto";
+		characterSkills = new String[2];
+		characterSkills[0] = "Sara, viene dal classico, ha più concentrazione";
+		characterSkills[1] = "Mario, viene dallo scientifico, ha più appunti";
 	}
 
 	public void drawAvatarMenu(Graphics2D g2) {
@@ -88,21 +88,21 @@ public class AvatarMenu extends AbstractMenu{
 	}
 	
 	private void drawAvatarChoiceText(Graphics2D g2) {
-		g2.drawImage(scrittaAvatar, scrittaAvatarX, scrittaAvatarY, null);
+		g2.drawImage(titleAvatar, titleAvatarX, titleAvatarY, null);
 	}
 	
 	private void drawCharacterSkills(Graphics2D g2) {
 		if(buttons[RAGAZZO].getMouseOver() == true) {
 			g2.setColor(Color.red);
-			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[RAGAZZO -1], g2);
+			int x = ViewUtils.getXforCenterText(characterSkills[RAGAZZO -1], g2);
 			int y = (int)(buttons[RAGAZZO].getBounds().getHeight() + buttons[RAGAZZO].getBounds().getY() + 30*SCALE);
-			g2.drawString(caratteristichePersonaggi[RAGAZZO -1], x, y);
+			g2.drawString(characterSkills[RAGAZZO -1], x, y);
 		}
 		else if (buttons[RAGAZZA].getMouseOver() == true) {
 			g2.setColor(Color.red);
-			int x = ViewUtils.getXforCenterText(caratteristichePersonaggi[RAGAZZA -1], g2);
+			int x = ViewUtils.getXforCenterText(characterSkills[RAGAZZA -1], g2);
 			int y = (int)(buttons[RAGAZZA].getBounds().getHeight() + buttons[RAGAZZA].getBounds().getY() + 30*SCALE);
-			g2.drawString(caratteristichePersonaggi[RAGAZZA -1], x, y);
+			g2.drawString(characterSkills[RAGAZZA -1], x, y);
 		}
 	}
 	
@@ -110,18 +110,19 @@ public class AvatarMenu extends AbstractMenu{
 		
 		switch(buttonIndex) {
 		case RAGAZZO:
-			comportamentoRagazzo(tasto);
+			keyboardInputsBoyButton(tasto);
 			break;		
 		case RAGAZZA:
-			comportamentoRagazza(tasto);
+			keyboardInputsGirlButton(tasto);
 			break;		
 		case INDIETRO:
-			comportamentoIndietro(tasto);
+			keyboardInputsBackButton(tasto);
 			break;	
 		}	
 	}
 
-	private void comportamentoRagazzo(int tasto) {
+	//metedo che serve per muoversi nel menù con la tastiera (WASD-frecce)
+	private void keyboardInputsBoyButton(int tasto) {
 		if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) 
 			view.setCursorPosition(buttons[RAGAZZO].getBounds().x, buttons[RAGAZZO].getBounds().y);
 
@@ -139,7 +140,7 @@ public class AvatarMenu extends AbstractMenu{
 			}		
 	}
 
-	private void comportamentoRagazza(int tasto) {
+	private void keyboardInputsGirlButton(int tasto) {
 		if(tasto == KeyEvent.VK_S || tasto == KeyEvent.VK_DOWN) {
 			view.setCursorPosition(buttons[INDIETRO].getBounds().x, buttons[INDIETRO].getBounds().y);
 			buttonIndex = INDIETRO;
@@ -154,7 +155,7 @@ public class AvatarMenu extends AbstractMenu{
 			}		
 	}
 
-	private void comportamentoIndietro(int tasto) {
+	private void keyboardInputsBackButton(int tasto) {
 		if(tasto == KeyEvent.VK_A || tasto == KeyEvent.VK_LEFT) {
 			view.setCursorPosition(buttons[RAGAZZO].getBounds().x, buttons[RAGAZZO].getBounds().y);
 			buttonIndex = RAGAZZO;

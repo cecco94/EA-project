@@ -13,7 +13,7 @@ import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
 import controller.playState.entityController.Bullet;
 
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 
 //controlla ciò che accade nel gioco durante il play state
 public class PlayStateController {
@@ -35,13 +35,13 @@ public class PlayStateController {
 	}
 
 	public void initRooms() {
-		stanzeController = new RoomController[Stanze.numStanze];
-		stanzeController[Stanze.BIBLIOTECA.indiceMappa] = new RoomController(this);
-		stanzeController[Stanze.DORMITORIO.indiceMappa] = new RoomController(this);		
-		stanzeController[Stanze.AULA_STUDIO.indiceMappa] = new RoomController(this);
-		stanzeController[Stanze.TENDA.indiceMappa] = new RoomController(this);
-		stanzeController[Stanze.LABORATORIO.indiceMappa] = new RoomController(this);
-		stanzeController[Stanze.STUDIO_PROF.indiceMappa] = new RoomController(this);
+		stanzeController = new RoomController[Rooms.numStanze];
+		stanzeController[Rooms.BIBLIOTECA.mapIndex] = new RoomController(this);
+		stanzeController[Rooms.DORMITORIO.mapIndex] = new RoomController(this);		
+		stanzeController[Rooms.AULA_STUDIO.mapIndex] = new RoomController(this);
+		stanzeController[Rooms.TENDA.mapIndex] = new RoomController(this);
+		stanzeController[Rooms.LABORATORIO.mapIndex] = new RoomController(this);
+		stanzeController[Rooms.STUDIO_PROF.mapIndex] = new RoomController(this);
 		
 	}
 	
@@ -54,24 +54,24 @@ public class PlayStateController {
 		
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
 		//Per rendere la cosa più leggera, possiamo aggiornare solo quelli all'interno dell'area visibile
-		switch(Stanze.stanzaAttuale) {
+		switch(Rooms.currentRoom) {
 		case DORMITORIO:
-			stanzeController[Stanze.DORMITORIO.indiceMappa].update();		
+			stanzeController[Rooms.DORMITORIO.mapIndex].update();		
 			break;
 		case BIBLIOTECA:
-			stanzeController[Stanze.BIBLIOTECA.indiceMappa].update();		
+			stanzeController[Rooms.BIBLIOTECA.mapIndex].update();		
 			break;
 		case AULA_STUDIO:
-			stanzeController[Stanze.AULA_STUDIO.indiceMappa].update();	
+			stanzeController[Rooms.AULA_STUDIO.mapIndex].update();	
 			break;
 		case TENDA:
-			stanzeController[Stanze.TENDA.indiceMappa].update();	
+			stanzeController[Rooms.TENDA.mapIndex].update();	
 			break;
 		case LABORATORIO:
-			stanzeController[Stanze.LABORATORIO.indiceMappa].update();	
+			stanzeController[Rooms.LABORATORIO.mapIndex].update();	
 			break;
 		case STUDIO_PROF: 
-			stanzeController[Stanze.STUDIO_PROF.indiceMappa].update();
+			stanzeController[Rooms.STUDIO_PROF.mapIndex].update();
 			break;
 		default:
 			break;
@@ -96,7 +96,7 @@ public class PlayStateController {
 		playerController.resetBooleans();
 		
 		bulletsInRoom.clear();
-		controller.getView().getPlay().getAppunti().clear();
+		controller.getView().getPlay().getBullets().clear();
 	}
 	
 	public void handleKeyPressed(KeyEvent e) {
@@ -114,7 +114,7 @@ public class PlayStateController {
 				playerController.setThrowing(true);
 			
 			else {
-				controller.getView().getPlay().getUI().setScritta("appunti finiti");
+				controller.getView().getPlay().getUI().setMessage("appunti finiti");
 				controller.getView().getPlay().getUI().setShowMessage(true);
 			}
 		}
@@ -140,7 +140,7 @@ public class PlayStateController {
 				playerController.decreaseBulletsNumber();
 				playerController.setThrowing(false);
 				addBullets(playerController);
-				controller.getView().getPlay().addProjectile();
+				controller.getView().getPlay().addBullet();
 			}
 		}
 		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
@@ -162,7 +162,7 @@ public class PlayStateController {
 				playerController.setThrowing(true);	
 			
 			else {
-				controller.getView().getPlay().getUI().setScritta("appunti finiti");
+				controller.getView().getPlay().getUI().setMessage("appunti finiti");
 				controller.getView().getPlay().getUI().setShowMessage(true);
 			}
 		}
@@ -181,7 +181,7 @@ public class PlayStateController {
 				playerController.decreaseBulletsNumber();
 				playerController.setThrowing(false);
 				addBullets(playerController);
-				controller.getView().getPlay().addProjectile();
+				controller.getView().getPlay().addBullet();
 			}
 		}
 	}
@@ -212,7 +212,7 @@ public class PlayStateController {
 		}
 		catch(IndexOutOfBoundsException iobe) {
 			bulletsInRoom.clear();
-			controller.getView().getPlay().getAppunti().clear();
+			controller.getView().getPlay().getBullets().clear();
 		//	System.out.println("problemi appunti controller");
 		//	iobe.printStackTrace();
 		}

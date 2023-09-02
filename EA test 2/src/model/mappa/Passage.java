@@ -4,20 +4,21 @@ import java.awt.Rectangle;
 
 import view.main.GamePanel;
 
-public class Passaggio {
+public class Passage {
 
 	private int prevX, prevY;	//posizione del passaggio
-	private int nextX, nextY;	//new position of the player in the new room
-	private Rectangle borders;
+	private int nextX, nextY;	//nuova posizione del giocatore nella nuova stanza 
+	private Rectangle borders;	//bordo per passaggio, per capire se il giocatore è sopra al passaggio
 	//se la porta è chiusa, manda un messaggio mostrato dalla UI
 	private boolean open;
-	String messaggio = "";
+	String message = "";
 	
-	private Stanze nuovaStanza;
+	private Rooms nextRoom;
 	
-	public Passaggio(boolean pass, String s,int pX, int pY, int width, int height, int nX, int nY, Stanze newRoom) {
+	
+	public Passage(boolean pass, String s,int pX, int pY, int width, int height, int nX, int nY, Rooms newRoom) {
 		setOpen(pass);
-		messaggio = s;
+		message = s;
 		
 		prevX = pX*GamePanel.TILES_SIZE;
 		prevY = pY*GamePanel.TILES_SIZE;
@@ -25,7 +26,7 @@ public class Passaggio {
 		nextX = nX*GamePanel.TILES_SIZE;
 		nextY = nY*GamePanel.TILES_SIZE;
 		
-		nuovaStanza = newRoom;			//il passaggio è grande quanto un quadratino o una frazione di quadratino
+		nextRoom = newRoom;			//il passaggio è grande quanto un quadratino o una frazione di quadratino
 		borders = new Rectangle(prevX, prevY, (int)(GamePanel.SCALE*width), (int)(GamePanel.SCALE*height));
 	}
 	
@@ -34,8 +35,8 @@ public class Passaggio {
 		return hitboxPlayer.intersects(borders);
 	}
 
-	public Stanze getNewMap() {
-		return nuovaStanza;
+	public Rooms getNewMap() {
+		return nextRoom;
 	}
 
 	public int getNextX() {
@@ -58,7 +59,7 @@ public class Passaggio {
 		this.open = open;
 	}
 	
-	public String getScritta() {
-		return messaggio;
+	public String getMessage() {
+		return message;
 	}
 }

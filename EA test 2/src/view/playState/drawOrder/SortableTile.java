@@ -30,13 +30,13 @@ public class SortableTile extends SortableElement{
 		//la distanza tra il player e il tile è la stessa, sia nella mappa che nella finestra di gioco
 		//prendendo la distanza nella mappa rispetto al giocatore, possiamo capire dove disegnare il tile
 		//rispetto alla posizione del giocatore nella finestra (che è sempre al centro)
-		int distanzaX = playerMapPositionX - xPosMapForSort;
-		int distanzaY = playerMapPositionY - yPosMapForSort;
+		int distanceX = playerMapPositionX - xPosMapForSort;
+		int distanceY = playerMapPositionY - yPosMapForSort;
 		
 		//ci serve un offset perchè la distanza del tile nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + PlayerView.getXOffset();	
-		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + PlayerView.getYOffset();
+		int xPosOnScreen = PlayerView.xOnScreen - distanceX + PlayerView.getXOffset();	
+		int yPosOnScreen = PlayerView.yOnScreen - distanceY + PlayerView.getYOffset();
 		
 		BufferedImage img = tileset.getTile(numberInTileset).getImage();
 		g2.drawImage(img, xPosOnScreen, yPosOnScreen, null);

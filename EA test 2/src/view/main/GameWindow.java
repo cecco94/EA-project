@@ -15,28 +15,24 @@ import view.ViewUtils;
 
 public class GameWindow extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private IView view;
 
 	public GameWindow(GamePanel gp, IView v) {
 		view = v;
 		setTitle("ENGINEERING ADVENTURE");
-	//	setUndecorated(true);		per togliere il sopra della finestra
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		setGameCursor(gp);
 		getContentPane().add(gp);
 		pack();
 		setLocationRelativeTo(null);
-		gestisciPerditaFocus();
+		handleLostFocus();
 	}
 
 	//questo metodo serve per quando la finestra di gioco perde il focus
-	//resetta i booleandella direzione del personaggiodd
-	private void gestisciPerditaFocus() {
+	//resetta i boolean della direzione del personaggio
+	private void handleLostFocus() {
 		addWindowFocusListener(new WindowFocusListener() { 
 			@Override
 			public void windowLostFocus(WindowEvent e) {

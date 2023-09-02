@@ -20,15 +20,7 @@ import view.main.GamePanel;
 		return scaledImage;	
 	}
 	
-//	public static BufferedImage setAlphaImage(BufferedImage original, float alpha) {
-//		BufferedImage transparentImage = new BufferedImage(original.getWidth(), original.getHeight(), original.getType());
-//		Graphics2D g2 = transparentImage.createGraphics();
-//		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-//		g2.drawImage(transparentImage, 0, 0, null);	
-//		g2.dispose();
-//		return transparentImage;
-//	}
-	
+
 	// per posizionare le immagini al centro dello schermo
 	public static int getCenteredXPos(int width){
 		return GamePanel.GAME_WIDTH/2 - width/2;

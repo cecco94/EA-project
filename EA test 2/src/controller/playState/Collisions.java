@@ -7,7 +7,7 @@ import controller.IController;
 import controller.playState.entityController.EntityController;
 
 import model.mappa.Map;
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 
 import view.main.GamePanel;
 
@@ -25,7 +25,7 @@ public class Collisions {
 	
 	public boolean canMoveLeft(Rectangle hitboxPlayer) {
 		boolean canMove = true;
-		int roomIndex = Stanze.stanzaAttuale.indiceMappa;
+		int roomIndex = Rooms.currentRoom.mapIndex;
 		
 		//in quale quadrato della mappa si trova il punto in alto a sinistra della hitbox
 		int playerCol = hitboxPlayer.x/GamePanel.TILES_SIZE;
@@ -33,7 +33,7 @@ public class Collisions {
 		
 		//se si trova su una sola riga controlliamo solo il tile dove si trova
 		if(hitboxPlayer.y + hitboxPlayer.height < (playerRow+1)*GamePanel.TILES_SIZE) {
-			int tile = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol];
+			int tile = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol];
 			if(tile > 0) {		//se il tile è solido	
 				
 				Rectangle hitboxToCheck = getRectOfTile(tile, playerRow, playerCol);
@@ -44,8 +44,8 @@ public class Collisions {
 		}
 		// se si trova a metà tra una riga e l'altra ci sono due tile da controllare
 		else {
-			int tile = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol];
-			int tileDown = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow + 1][playerCol];
+			int tile = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol];
+			int tileDown = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow + 1][playerCol];
 			
 			if(tile > 0 || tileDown > 0) {
 		
@@ -61,7 +61,7 @@ public class Collisions {
 
 	public boolean canMoveRight(Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
-		int roomIndex = Stanze.stanzaAttuale.indiceMappa;
+		int roomIndex = Rooms.currentRoom.mapIndex;
 
 		//in quale quadrato della mappa si trova il punto in alto a destra della hitbox
 		int playerCol = (hitboxPlayer.x + hitboxPlayer.width)/GamePanel.TILES_SIZE;	
@@ -69,7 +69,7 @@ public class Collisions {
 		
 		//se si trova su una sola riga controlliamo solo il tile dove si trova il punto in alto a destra
 		if(hitboxPlayer.y + hitboxPlayer.height < (playerRow+1)*GamePanel.TILES_SIZE) { 
-			int tile = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol];
+			int tile = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol];
 			if(tile > 0) {																				
 				Rectangle hitboxToCheck = getRectOfTile(tile, playerRow, playerCol);	
 				if(hitboxPlayer.intersects(hitboxToCheck))
@@ -78,8 +78,8 @@ public class Collisions {
 		}
 		// se il rect si trova a metà tra una linea e l'altra ci sono due tile da controllare	
 		else {
-			int tile = control.getModel().getMappa().getStrato(roomIndex,Map.TERZO_STRATO)[playerRow][playerCol];
-			int tileDown = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow + 1][playerCol];
+			int tile = control.getModel().getMap().getLayer(roomIndex,Map.THIRD_LAYER)[playerRow][playerCol];
+			int tileDown = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow + 1][playerCol];
 			
 			if(tile > 0 || tileDown > 0) {	
 				Rectangle hitboxToCheck1 = getRectOfTile(tile, playerRow, playerCol);
@@ -93,14 +93,14 @@ public class Collisions {
 
 	public boolean canMoveUp(Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
-		int roomIndex = Stanze.stanzaAttuale.indiceMappa;
+		int roomIndex = Rooms.currentRoom.mapIndex;
 		
 		int playerCol = hitboxPlayer.x/GamePanel.TILES_SIZE;
 		int playerRow = hitboxPlayer.y/GamePanel.TILES_SIZE;
 		
 		//se si trova su una sola colonna controlliamo solo il tile dove si trova
 		if(hitboxPlayer.x + hitboxPlayer.width < (playerCol+1)*GamePanel.TILES_SIZE) {
-			int tile = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol];
+			int tile = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol];
 			if(tile > 0) {																				
 				Rectangle hitboxToCheck = getRectOfTile(tile, playerRow, playerCol);	
 				if(hitboxPlayer.intersects(hitboxToCheck))
@@ -109,8 +109,8 @@ public class Collisions {
 		}
 		
 		else {
-			int tile = control.getModel().getMappa().getStrato(roomIndex,Map.TERZO_STRATO)[playerRow][playerCol];
-			int tileRight = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol + 1];
+			int tile = control.getModel().getMap().getLayer(roomIndex,Map.THIRD_LAYER)[playerRow][playerCol];
+			int tileRight = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol + 1];
 			
 			if(tile > 0 || tileRight > 0) {	
 				Rectangle hitboxToCheck1 = getRectOfTile(tile, playerRow, playerCol);
@@ -125,7 +125,7 @@ public class Collisions {
 
 	public boolean canMoveDown (Rectangle hitboxPlayer) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
-		int roomIndex = Stanze.stanzaAttuale.indiceMappa;
+		int roomIndex = Rooms.currentRoom.mapIndex;
 		
 		//in quale riga/colonna si trova il punto in basso a sinistra della hitbox
 		int playerCol = hitboxPlayer.x/GamePanel.TILES_SIZE;
@@ -133,7 +133,7 @@ public class Collisions {
 		
 		//se si trova su una sola colonna controlliamo solo il tile dove si trova
 		if(hitboxPlayer.x + hitboxPlayer.width < (playerCol+1)*GamePanel.TILES_SIZE) {
-			int tile = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol];
+			int tile = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol];
 			if(tile > 0) {																				
 				Rectangle hitboxToCheck = getRectOfTile(tile, playerRow, playerCol);	
 				if(hitboxPlayer.intersects(hitboxToCheck))
@@ -142,8 +142,8 @@ public class Collisions {
 		}
 		
 		else {
-			int tile = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol];
-			int tileRight = control.getModel().getMappa().getStrato(roomIndex, Map.TERZO_STRATO)[playerRow][playerCol + 1];
+			int tile = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol];
+			int tileRight = control.getModel().getMap().getLayer(roomIndex, Map.THIRD_LAYER)[playerRow][playerCol + 1];
 			
 			if(tile > 0 || tileRight > 0) {	
 				Rectangle hitboxToCheck1 = getRectOfTile(tile, playerRow, playerCol);
@@ -173,7 +173,7 @@ public class Collisions {
 
 	//prende la lista degli npc e dei nemici e vede se collide con uno di loro, a parte se stesso
 	public boolean checkCollisionInEntityList(Rectangle hitboxEntity) {
-		int roomIndex = Stanze.stanzaAttuale.indiceMappa;
+		int roomIndex = Rooms.currentRoom.mapIndex;
 		int numCollision = 0;
 		
 		ArrayList<EntityController> npc = control.getPlay().getRoom(roomIndex).getNPC();
@@ -204,7 +204,7 @@ public class Collisions {
 	
 	//metodo usato dai proiettili per vedere se ha colpito qualcuno
 	public boolean hitEntity(Rectangle hitboxEntity, EntityController owner) {
-		int roomIndex = Stanze.stanzaAttuale.indiceMappa;
+		int roomIndex = Rooms.currentRoom.mapIndex;
 		int numCollision = 0;
 		
 		ArrayList<EntityController> npc = control.getPlay().getRoom(roomIndex).getNPC();

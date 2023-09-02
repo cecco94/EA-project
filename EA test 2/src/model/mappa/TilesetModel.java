@@ -9,27 +9,27 @@ import java.util.ArrayList;
 public class TilesetModel {
 
 	private ArrayList<Tile> tileset;
-	private String percorsoTileset = "/mappe/inizializzaTileset.txt";
+	private String tilesetPath = "/mappe/inizializzaTileset.txt";
 	
 	public TilesetModel() {
-		inizializzaTipiDiTile();
+		initTileset();
 	}
 	
-	private void inizializzaTipiDiTile() {		
+	private void initTileset() {		
 		
 		tileset = new ArrayList<Tile>();
 		
-		InputStream	is = getClass().getResourceAsStream(percorsoTileset);				
+		InputStream	is = getClass().getResourceAsStream(tilesetPath);				
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String s = null;
-		String[] datiDaInserire = new String[3];
+		String[] dataToLoad = new String[3];
 		
 		try {
 			while((s = br.readLine()) != null) {
 				
 				if(!s.isEmpty() && s.contains("; ")){
-					datiDaInserire = s.split("; ");
-					tileset.add(new Tile(datiDaInserire[0], datiDaInserire[1], datiDaInserire[2]) );
+					dataToLoad = s.split("; ");
+					tileset.add(new Tile(dataToLoad[0], dataToLoad[1], dataToLoad[2]) );
 				}
 				
 			}

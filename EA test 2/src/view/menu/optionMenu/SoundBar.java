@@ -32,7 +32,7 @@ public class SoundBar extends AbstractMenuButton {
 	
 	@Override
 	public void draw(Graphics2D g2) {
-		drawCornice(g2);
+		drawBorder(g2);
 		
 		if(mouseOver == false) 
 			g2.setColor(Color.red);
@@ -46,7 +46,7 @@ public class SoundBar extends AbstractMenuButton {
 			g2.fillRoundRect(bounds.x, bounds.y, (int)volumeSESetted, bounds.height, 10, 10);
 	}
 
-	private void drawCornice(Graphics2D g2) {
+	private void drawBorder(Graphics2D g2) {
 		g2.setColor(Color.red);
 		g2.drawRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 10, 10);
 	}

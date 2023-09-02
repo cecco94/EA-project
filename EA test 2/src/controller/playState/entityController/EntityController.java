@@ -38,6 +38,7 @@ public abstract class EntityController {
 
 	}
 	
+	//settiamo la hitbox per creare le entità acnhe se non conosciamo tutti i dati.
 	protected void setBounds(int x, int y, int w, int h) {
 		hitbox.x = x;
 		tempHitboxForCheck.x = x;

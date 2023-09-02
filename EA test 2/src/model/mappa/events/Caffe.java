@@ -18,7 +18,7 @@ public class Caffe extends Event{
 		
 		model.getView().playSE(SoundManager.CAFFE);
 		
-		model.getView().getPlay().getUI().setScritta(message);
+		model.getView().getPlay().getUI().setMessage(message);
 		model.getView().getPlay().getUI().setShowMessage(true);
 		
 		endInteraction = true;

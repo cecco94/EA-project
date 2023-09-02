@@ -66,13 +66,13 @@ public class Bullet {
 			}		
 		}
 		catch(ArrayIndexOutOfBoundsException obe) {
-			play.getController().getView().getPlay().removeProjectile(indexInList);
+			play.getController().getView().getPlay().removeBullet(indexInList);
 			play.removeBullets(indexInList);
 			System.out.println("fuori dai bordi");
 		}
 							
 		if(hit) {
-			play.getController().getView().getPlay().removeProjectile(indexInList);
+			play.getController().getView().getPlay().removeBullet(indexInList);
 			play.removeBullets(indexInList);
 		}		
 	}

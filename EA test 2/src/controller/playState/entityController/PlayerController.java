@@ -5,11 +5,13 @@ import java.awt.event.KeyEvent;
 
 import controller.main.Gamestate;
 import controller.playState.PlayStateController;
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 import view.main.GamePanel;
 
 public class PlayerController extends EntityController {
 
+	private int RAGAZZO = 0 , RAGAZZA = 1;
+	
 	private int life = 70;
 	private int cfu = 0;
 	private int notes = 10;
@@ -29,7 +31,17 @@ public class PlayerController extends EntityController {
 		int hitboxHeight = GamePanel.TILES_SIZE/2;
 		
 		super.setBounds(r.x, r.y, hitboxWidth, hitboxHeight);
+		
 	}
+	
+	public void setType(int gender) {
+		if(gender == RAGAZZO) {			//il ragazzo ha più appunti
+			notes = 20;
+		}else if(gender == RAGAZZA){
+			life = 100;					//la ragazza ha più concentrazione 
+		}
+	}
+	
 	
 
 	public void update() {
@@ -167,17 +179,17 @@ public class PlayerController extends EntityController {
 	public void isAbovePassage() {
 		// il player vede in che stanza è, vede la lista dei passaggi, e li controlla tutti
 		// se si trova su un passaggio, cambia mappa e posiz del player
-		int passageIndex = play.getController().getModel().checkPassaggio(hitbox);
+		int passageIndex = play.getController().getModel().checkPassagge(hitbox);
 		
 		if(passageIndex >= 0) {
-			if(play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(passageIndex).isOpen()) {
-				play.getController().getModel().memorizzaDatiNuovaStanza();
+			if(play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getPassaggi().get(passageIndex).isOpen()) {
+				play.getController().getModel().saveNewRoomData();
 				play.getController().setGameState(Gamestate.TRANSITION_ROOM);
 			}
 			else {
 				//se passaggio è chiuso, il passaggio stesso restituisce una stringa che viene stampata a video
-				String s = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getPassaggi().get(passageIndex).getScritta();
-				play.getController().getView().getPlay().getUI().setScritta(s);
+				String s = play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getPassaggi().get(passageIndex).getMessage();
+				play.getController().getView().getPlay().getUI().setMessage(s);
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 			}
 		}		
@@ -190,13 +202,13 @@ public class PlayerController extends EntityController {
 		int eventIndex = play.getController().getModel().checkEvent(hitbox);
 		
 		if(eventIndex >= 0) {
-			boolean alreadyInteracted = play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(eventIndex).isEndInteraction();
+			boolean alreadyInteracted = play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).isEndInteraction();
 			if(!alreadyInteracted) {
-				play.getController().getView().getPlay().getUI().setScritta("premi E per interagire");
+				play.getController().getView().getPlay().getUI().setMessage("premi E per interagire");
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 				
 				if(interacting) {
-					play.getController().getModel().getStanza(Stanze.stanzaAttuale.indiceMappa).getEventi().get(eventIndex).Interact();
+					play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).Interact();
 					interacting = false;
 				}
 			}

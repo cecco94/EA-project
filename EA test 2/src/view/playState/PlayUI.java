@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
 
 import controller.main.Gamestate;
 
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 import view.ViewUtils;
 import view.main.GamePanel;
 
@@ -20,19 +20,19 @@ import view.main.GamePanel;
 public class PlayUI {
 
 	private Font fontDisplay = new Font("Arial", Font.PLAIN, (int)(20*GamePanel.SCALE));
-	private String messaggio = "";
+	private String message = "";
 	
-	private BufferedImage effettoBuio, noteIcon, cfuIcon;
-	private BufferedImage[] vita;
+	private BufferedImage darkEffect, noteIcon, cfuIcon;
+	private BufferedImage[] lifeIcons;
 	private String dataToShow = "";	
 	private int yPosPlayerData = (int)(5*GamePanel.SCALE);
 	private int xPosPlayerData = (int)(20*GamePanel.SCALE);
 	
-	private boolean buio = true;
+	private boolean dark = true;
 	
 	private PlayStateView play;
-	private int counter = 0;
-	private int counterScritta = 0;
+	private int counterTransition = 0;
+	private int counterMessage = 0;
 	private boolean showMessage;
 
 	private final float transitionDuration = 240; //120 fps quindi sono 2 secondi
@@ -51,24 +51,24 @@ public class PlayUI {
 	
 	private void loadImages() {
 		try {
-			effettoBuio = ImageIO.read(getClass().getResourceAsStream("/ui/effettoBuioFinale.png"));
-			effettoBuio = ViewUtils.scaleImage(effettoBuio, effettoBuio.getWidth()*GamePanel.SCALE, effettoBuio.getHeight()*GamePanel.SCALE);
+			darkEffect = ImageIO.read(getClass().getResourceAsStream("/ui/effettoBuioFinale.png"));
+			darkEffect = ViewUtils.scaleImage(darkEffect, darkEffect.getWidth()*GamePanel.SCALE,											darkEffect.getHeight()*GamePanel.SCALE);
 			
 			cfuIcon = ImageIO.read(getClass().getResourceAsStream("/ui/punteggioPiccolo.png"));
 			cfuIcon = ViewUtils.scaleImage(cfuIcon, cfuIcon.getWidth()*GamePanel.SCALE, cfuIcon.getHeight()*GamePanel.SCALE);
 
-			vita = new BufferedImage[4];
+			lifeIcons = new BufferedImage[4];
 			BufferedImage temp = ImageIO.read(getClass().getResourceAsStream("/ui/vitaPiccola.png"));
 			
 			for(int i = 0; i < 4; i++) 
-				vita[i] = temp.getSubimage(45*i, 0, 45, 32);
+				lifeIcons[i] = temp.getSubimage(45*i, 0, 45, 32);
 			
-			for(int i = 0; i < 4; i++)
-				vita[i] = ViewUtils.scaleImage(vita[i], vita[i].getWidth()*GamePanel.SCALE, vita[i].getHeight()*GamePanel.SCALE);
-
+			for(int i = 0; i < 4; i++) {
+				lifeIcons[i] = ViewUtils.scaleImage(lifeIcons[i], lifeIcons[i].getWidth()*GamePanel.SCALE, 									lifeIcons[i].getHeight()*GamePanel.SCALE);
+			}
 			noteIcon = ImageIO.read(getClass().getResourceAsStream("/ui/appuntiPiccoli.png"));
-			noteIcon = ViewUtils.scaleImage(noteIcon, noteIcon.getWidth()*GamePanel.SCALE, noteIcon.getHeight()*GamePanel.SCALE);
-
+			noteIcon = ViewUtils.scaleImage(noteIcon, noteIcon.getWidth()*GamePanel.SCALE, 												noteIcon.getHeight()*GamePanel.SCALE);
+			
 		} 
 		catch (IOException e) {	
 			e.printStackTrace();
@@ -78,10 +78,10 @@ public class PlayUI {
 
 	//per due secondi diventa tutto sfocato e la musica diminuisce
 	public void drawTransition(Graphics2D g2) {
-		counter++;
+		counterTransition++;
 		saveOldVolume();
-		if (counter < transitionDuration) {
-			opacity = counter/transitionDuration;
+		if (counterTransition < transitionDuration) {
+			opacity = counterTransition/transitionDuration;
 			
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.setColor(Color.black);
@@ -92,13 +92,13 @@ public class PlayUI {
 		}
 		else {
 			// riprendi il gioco usando i valori salvati nel model
-			counter = 0;
+			counterTransition = 0;
 			
 			play.getView().getController().getPlay().resumeGameAfterTransition();
 			play.getView().changeGameState(Gamestate.PLAYING);
 			
 			play.getView().stopMusic();
-			play.getView().playMusic(Stanze.stanzaAttuale.indiceMusica);
+			play.getView().playMusic(Rooms.currentRoom.musicIndex);
 			play.getView().setMusicVolume(volumeBeforeTransition);
 			
 		}
@@ -114,8 +114,8 @@ public class PlayUI {
 	public void draw(Graphics2D g2) {
 		
 		drawPlayerData(g2);
-		disegnaBuio(g2);
-		disegnaMessaggio(g2);
+		drawDark(g2);
+		drawMessage(g2);
 	}
 	
 	private void drawPlayerData(Graphics2D g2) {
@@ -142,16 +142,16 @@ public class PlayUI {
 		s = life + " %";
 
 		if(life > 75)
-			g2.drawImage(vita[0], xPosPlayerData, yPosPlayerData, null);
+			g2.drawImage(lifeIcons[0], xPosPlayerData, yPosPlayerData, null);
 		else if(life <=75 && life > 50)
-			g2.drawImage(vita[1], xPosPlayerData, yPosPlayerData, null);
+			g2.drawImage(lifeIcons[1], xPosPlayerData, yPosPlayerData, null);
 		else if(life <=50 && life > 25)
-			g2.drawImage(vita[2], xPosPlayerData, yPosPlayerData, null);
+			g2.drawImage(lifeIcons[2], xPosPlayerData, yPosPlayerData, null);
 		else if(life <= 25)
-			g2.drawImage(vita[3], xPosPlayerData, yPosPlayerData, null);
+			g2.drawImage(lifeIcons[3], xPosPlayerData, yPosPlayerData, null);
 		
 		g2.setFont(fontDisplay);
-		xPosPlayerData += vita[0].getWidth() + (int)(10*GamePanel.SCALE);
+		xPosPlayerData += lifeIcons[0].getWidth() + (int)(10*GamePanel.SCALE);
 		g2.drawString(s, xPosPlayerData, yPosPlayerData + (int)(25*GamePanel.SCALE));
 		
 	}
@@ -179,23 +179,23 @@ public class PlayUI {
 		
 	}
 
-	private void disegnaBuio(Graphics2D g2) {
-		if (Stanze.stanzaAttuale == Stanze.DORMITORIO && buio)
-			g2.drawImage(effettoBuio, 0, 0, null);
+	private void drawDark(Graphics2D g2) {
+		if (Rooms.currentRoom == Rooms.DORMITORIO && dark)
+			g2.drawImage(darkEffect, 0, 0, null);
 	}
 
-	private void disegnaMessaggio(Graphics2D g2) {
+	private void drawMessage(Graphics2D g2) {
 		if(showMessage) {
 			
-			counterScritta++;
-			if(counterScritta < 360) {
+			counterMessage++;
+			if(counterMessage < 360) {
 				
 				g2.setFont(fontDisplay);
 				
-				int x = ViewUtils.getXforCenterText(messaggio, g2);
+				int x = ViewUtils.getXforCenterText(message, g2);
 				int y = GamePanel.GAME_HEIGHT/2 + (int)(20*GamePanel.SCALE);
-				int width = ViewUtils.getStringLenght(messaggio, g2);
-				int height = ViewUtils.getStringHeight(messaggio, g2);
+				int width = ViewUtils.getStringLenght(message, g2);
+				int height = ViewUtils.getStringHeight(message, g2);
 				
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 				g2.setColor(Color.yellow);
@@ -204,28 +204,28 @@ public class PlayUI {
 				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 				g2.setColor(Color.red);
-				g2.drawString(messaggio, x, y + height);
+				g2.drawString(message, x, y + height);
 				g2.setColor(Color.black);	
 			}
 			
 			else {
-				counterScritta = 0;
+				counterMessage = 0;
 				showMessage = false;
 			}
 		}
 		
 	}
 
-	public void setScritta(String s) {
-		messaggio = s;
+	public void setMessage(String s) {
+		message = s;
 	}
 	
 	public void setShowMessage(boolean showMessage) {
 		this.showMessage = showMessage;
 	}
 	
-	public void setBuio(boolean b) {
-		buio = b;
+	public void setDark(boolean b) {
+		dark = b;
 	}
 	
 	

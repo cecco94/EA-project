@@ -12,17 +12,19 @@ import view.IView;
 import view.inputs.KeyboardInputs;
 import view.inputs.MouseInputs;
 
+//qui vengono definite le dimensioni del gioco. Non sulla finestra per evitare i problemi con la barra della finestra
+//(chiudi,riduci,allarga)  
+
 public class GamePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	//qui vengono definite le dimensioni del gioco. non sulla finestra, perchè sulla finestra c'è quella maledetta barra coi tasti per 
-	//chiudere, riurre a icona etc che rende tutto più complicato per capire le reali dimensioni
+	
 	
 	public final static int TILES_DEFAULT_SIZE = 32;
 	public final static int TILES_IN_WIDTH = 20;
 	public final static int TILES_IN_HEIGHT = 15;
 	
-	//sul mio pc scale = 1.5, viene tutto scalato in modo da far entrare  la finestra di gioco anche in schermi più piccoli
+	//viene tutto scalato in modo da far entrare  la finestra di gioco anche in schermi più piccoli
 	static float computerScreenHeight = (float) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	public final static float SCALE = computerScreenHeight/576;	
 	

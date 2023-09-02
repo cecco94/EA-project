@@ -10,7 +10,7 @@ import view.main.GamePanel;
 public class TileAnimated extends Tile {
 
 	private BufferedImage secondImage;
-	private int counter, frequenza, immagineAttule = 1;
+	private int counter, freq, currentImage = 1;
 	
 	public TileAnimated(BufferedImage img1, BufferedImage img2) {
 		super(img1);
@@ -20,7 +20,7 @@ public class TileAnimated extends Tile {
 		
 		int min = 120;	//un secondo, perchè il gioco ha 120 fps
 		int max = 360;	//tre secondi
-		frequenza = ThreadLocalRandom.current().nextInt(min, max + 1);	//numero casuale
+		freq = ThreadLocalRandom.current().nextInt(min, max + 1);	//numero casuale
 	}
 
 	public TileAnimated(BufferedImage img1, BufferedImage img2, int freq) {
@@ -29,13 +29,13 @@ public class TileAnimated extends Tile {
 		secondImage = img2;	
 		secondImage = ViewUtils.scaleImage(img2, GamePanel.TILES_SIZE, GamePanel.TILES_SIZE);
 	
-		frequenza = freq;	//numero dato
+		this.freq = freq;	//numero dato
 	}
 	
 	public BufferedImage getImage() {
 		selectImageToShow();
 		
-		if(immagineAttule == 1)
+		if(currentImage == 1)
 			return image;
 		
 		return secondImage;		
@@ -43,12 +43,12 @@ public class TileAnimated extends Tile {
 
 	private void selectImageToShow() {
 		counter++;
-		if (counter >= frequenza) {
+		if (counter >= freq) {
 			
-			if(immagineAttule == 1) 
-				immagineAttule = 2;
+			if(currentImage == 1) 
+				currentImage = 2;
 			else 
-				immagineAttule = 1;	
+				currentImage = 1;	
 			
 			counter = 0;
 		}		

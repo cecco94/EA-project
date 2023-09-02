@@ -35,7 +35,6 @@ public abstract class Event {
 	}
 	
 	public boolean checkPlayer(Rectangle hitboxPlayer) {
-	//	System.out.println("posizione x " + bounds.x/GamePanel.TILES_SIZE + " posiz y " + bounds.y/GamePanel.TILES_SIZE + " larga " + bounds.width +  " altezza " + bounds.height);
 		return hitboxPlayer.intersects(bounds);
 	}
 }

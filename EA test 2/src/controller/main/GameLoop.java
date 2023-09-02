@@ -6,10 +6,10 @@ import view.IView;
 import view.gameBegin.SplashScreenGame;
 
 // classe contenente il game loop, il ciclo di update e repaint del gioco
-// gioco gira su un thread diverso per gestirlo meglio in caso di crush
 public class GameLoop implements Runnable {
 	private SplashScreenGame caricamento;
 	
+	// gioco gira su un thread diverso per gestirlo meglio in caso di crush
 	private Thread gameThread;
 	private int FPS_SET = 120;
 	private int UPS_SET = 200;
@@ -18,13 +18,13 @@ public class GameLoop implements Runnable {
 	private IController controller;
 	private IModel model;
 
+	
 	public GameLoop() {
-		
-	//	System.out.println("thread di caricamento  " + Thread.currentThread().getId());
 		initClasses();
 		startGameLoop();
 	}
 
+	//inizializizza le interfacce Model,View,Controller
 	private void initClasses() {
 		
 		caricamento = new SplashScreenGame();	
@@ -41,13 +41,13 @@ public class GameLoop implements Runnable {
 		caricamento.dispose();
 	}
 
+	//fa partire il gioco su un nuovo thread
 	private void startGameLoop() {
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
 
-	// è l'istruzione che viene eseguita in un altro thread, in questo modo tutto il gioco 
-	// viene eseguito in un altro thread
+
 	@Override
 	public void run() {		
 
@@ -66,6 +66,7 @@ public class GameLoop implements Runnable {
 		while (gameThread != null) {
 			long currentTime = System.nanoTime();
 
+			
 			deltaU += (currentTime - previousTime) / timePerUpdate;
 			deltaF += (currentTime - previousTime) / timePerFrame;
 			previousTime = currentTime;

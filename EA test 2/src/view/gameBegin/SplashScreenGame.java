@@ -45,26 +45,26 @@ public class SplashScreenGame extends JFrame implements Runnable {
 
 	private void createAndShowGUI() {
 	   
-	   JLabel sfondo = new JLabel();
-	   sfondo.setOpaque(true);
+	   JLabel background = new JLabel();
+	   background.setOpaque(true);
 	   ImageIcon imageBackground = new ImageIcon(getClass().getResource("/loading/tech.gif"));
 	   imageBackground.setImage(imageBackground.getImage().getScaledInstance(frameWidth, frameHeight, Image.SCALE_DEFAULT));
-	   sfondo.setIcon(imageBackground);	
-	   sfondo.setBounds(0,0,frameWidth,frameHeight);
+	   background.setIcon(imageBackground);	
+	   background.setBounds(0,0,frameWidth,frameHeight);
 		
-	   JLabel scritta = new JLabel();
-	   scritta.setOpaque(true);
-	   scritta.setBackground(new Color(0,0,0,0));
-	   ImageIcon immagineScritta = new ImageIcon(getClass().getResource("/loading/caricamento.png"));
-	   immagineScritta.setImage(immagineScritta.getImage().getScaledInstance(300, 30, Image.SCALE_DEFAULT));
-	   scritta.setIcon(immagineScritta);
-	   scritta.setBounds(frameWidth/2 - immagineScritta.getIconWidth()/2, frameHeight/2 , 
-			   				immagineScritta.getIconWidth(), immagineScritta.getIconHeight());	   
+	   JLabel title = new JLabel();
+	   title.setOpaque(true);
+	   title.setBackground(new Color(0,0,0,0));
+	   ImageIcon titleImage = new ImageIcon(getClass().getResource("/loading/caricamento.png"));
+	   titleImage.setImage(titleImage.getImage().getScaledInstance(300, 30, Image.SCALE_DEFAULT));
+	   title.setIcon(titleImage);
+	   title.setBounds(frameWidth/2 - titleImage.getIconWidth()/2, frameHeight/2 , 
+			   				titleImage.getIconWidth(), titleImage.getIconHeight());	   
 	   
 	   JLayeredPane layeredPane = new JLayeredPane();
 	   layeredPane.setBounds(0,0, frameWidth, frameHeight);
-	   layeredPane.add(sfondo, Integer.valueOf(1));
-	   layeredPane.add(scritta, Integer.valueOf(2));
+	   layeredPane.add(background, Integer.valueOf(1));
+	   layeredPane.add(title, Integer.valueOf(2));
 	   layeredPane.add(progressBar, Integer.valueOf(3));
 	    
       add(layeredPane);

@@ -13,7 +13,7 @@ import view.ViewUtils;
 import view.menu.AbstractMenuButton;
 import view.playState.entityView.PlayerView;
 
-// sarebbero le immagini con mario e peach
+// sarebbero le immagini con gli avatar
 public class AvatarButton extends AbstractMenuButton {
 	
 	private int animationCounter, numSprite; 
@@ -44,6 +44,7 @@ public class AvatarButton extends AbstractMenuButton {
 		drawAnimation(g2);
 	}
 
+	//disegna gli avatar che si muovono quando ci andiamo sopra con il mouse
 	private void drawAnimation(Graphics2D g2) {
 		animationCounter++;
 				
@@ -73,6 +74,7 @@ public class AvatarButton extends AbstractMenuButton {
 		view.getPlay().getPlayer().setAvatarType(type);
 		view.getPlay().getPlayer().resetAnimation();
 		view.changeGameState(newState);
+		view.getController().getPlay().getPlayer().setType(type);
 	}
 
 	@Override

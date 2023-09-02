@@ -15,8 +15,9 @@ import view.sound.SoundManager;
 //classe che contiene la parte grafica del giocatore
 public class PlayerView extends EntityView {
 		
-	//per ora il player ha un array di animazioni a parte non ereditato da Entity..
-	private static  BufferedImage[][][][] playerAnimation;
+	//campo 0 = tipo(ragazzo-ragazza), primo campo = azione, secondo = direzione, terzo = immagine
+	//la classa estente Entity e quindi eredita l'array di animazioni vuoto
+	private static  BufferedImage[][][][] playerAnimation = PlayerView.animation;
 	
 	private boolean endAttackAnimation = true;
 	private boolean firstParry = true;
@@ -517,7 +518,7 @@ public class PlayerView extends EntityView {
 		}
 		
 		//alcune slide sono un pò sfasate
-		sistemaSlideSfasate();	
+		fixOutPhasedSlides();	
 		
 		g2.drawImage(playerAnimation[avatarType][currentAction][currentDirection][numSprite], xOnScreen, yOnScreen, null);
 		//se una slide era sfasata, resettiamo il valore dell'offset
@@ -617,7 +618,7 @@ public class PlayerView extends EntityView {
 		return 0;
 	}
 	
-	private void sistemaSlideSfasate() {
+	private void fixOutPhasedSlides() {
 		if(currentAction == ATTACK && currentDirection == LEFT)
 			xOnScreen -= (int)GamePanel.SCALE*20;	
 		

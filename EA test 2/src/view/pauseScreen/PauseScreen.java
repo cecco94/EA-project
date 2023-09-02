@@ -23,17 +23,18 @@ import view.menu.AbstractMenu;
 import view.menu.AbstractMenuButton;
 import view.menu.optionMenu.SoundBar;
 
+//Se durante il gioco il player preme esc, viene mostrato a schermo il menù di pausa
 public class PauseScreen extends AbstractMenu {
 
-	String percorsoHome = "/menuiniziale/bottoneHome.png";
-	String percorsoRiprendi = "/menuiniziale/bottoneRiprendi.png";
-	String percorsoScritta =  "/menuiniziale/pausa.png";
+	String homeIconPath = "/menuiniziale/bottoneHome.png";
+	String resumeIconPath = "/menuiniziale/bottoneRiprendi.png";
+	String titlePausaIconPath =  "/menuiniziale/pausa.png";
 
-	private BufferedImage titolo;
-	private BufferedImage volumeMusica, se;
+	private BufferedImage titleImg;
+	private BufferedImage musicVolumImg, soundEffectImg;
 	
-	private SoundBar musica, effetti;
-	private PauseScreenButton home, riprendi;
+	private SoundBar musicBar, effectsBar;
+	private PauseScreenButton home, resume;
 	
 	private int titleHeight = GAME_HEIGHT/4;
 	private int musicHeight, seHeight;
@@ -46,53 +47,53 @@ public class PauseScreen extends AbstractMenu {
 	public PauseScreen(IView v) {
 		view = v;
 		loadImages();
-		centeredXTitle = ViewUtils.getCenteredXPos(titolo.getWidth());
+		centeredXTitle = ViewUtils.getCenteredXPos(titleImg.getWidth());
 		createSoundBars(v);
 		createHomeButtons(v);
 		
 		buttons = new AbstractMenuButton[4];
-		buttons[0] = musica;
-		buttons[1] = effetti;
+		buttons[0] = musicBar;
+		buttons[1] = effectsBar;
 		buttons[2] = home;
-		buttons[3] = riprendi;
+		buttons[3] = resume;
 	}
 
 	private void createHomeButtons(IView v) {
-		int homeY = effetti.getBounds().y + effetti.getBounds().height + (int)(20*GamePanel.SCALE);	
-		home = new PauseScreenButton(v, percorsoHome, soundbarsX + (int)(30*GamePanel.SCALE), homeY, Gamestate.TRANSITION_STATE, true);
+		int homeY = effectsBar.getBounds().y + effectsBar.getBounds().height + (int)(20*GamePanel.SCALE);	
+		home = new PauseScreenButton(v, homeIconPath, soundbarsX + (int)(30*GamePanel.SCALE), homeY, Gamestate.TRANSITION_STATE, true);
 		
-		int riprendiY = effetti.getBounds().y + effetti.getBounds().height + (int)(20*GamePanel.SCALE);
-		riprendi = new PauseScreenButton(v, percorsoRiprendi, soundbarsX + (int)(90*GamePanel.SCALE) , riprendiY, Gamestate.PLAYING, false);
+		int resumeY = effectsBar.getBounds().y + effectsBar.getBounds().height + (int)(20*GamePanel.SCALE);
+		resume = new PauseScreenButton(v, resumeIconPath, soundbarsX + (int)(90*GamePanel.SCALE) , resumeY, Gamestate.PLAYING, false);
 		
 	}
 
 	private void createSoundBars(IView v) {
-		musicHeight = titleHeight + titolo.getHeight() + (int)(20*GamePanel.SCALE);
-		centeredXmusic = ViewUtils.getCenteredXPos(volumeMusica.getWidth());
+		musicHeight = titleHeight + titleImg.getHeight() + (int)(20*GamePanel.SCALE);
+		centeredXmusic = ViewUtils.getCenteredXPos(musicVolumImg.getWidth());
 		
-		Rectangle r1 = new Rectangle(soundbarsX, musicHeight + volumeMusica.getHeight() + (int)(20*GamePanel.SCALE), maxBarWidth, barHeight);
-		musica = new SoundBar(this, r1, v, SoundBar.MUSIC);
+		Rectangle r1 = new Rectangle(soundbarsX, musicHeight + musicVolumImg.getHeight() + (int)(20*GamePanel.SCALE), maxBarWidth, barHeight);
+		musicBar = new SoundBar(this, r1, v, SoundBar.MUSIC);
 		
 		seHeight = r1.y + r1.height + (int)(20*GamePanel.SCALE);
-		centeredXse = ViewUtils.getCenteredXPos(se.getWidth());
+		centeredXse = ViewUtils.getCenteredXPos(soundEffectImg.getWidth());
 		
-		Rectangle r2 = new Rectangle(soundbarsX, seHeight + se.getHeight() + (int)(20*GamePanel.SCALE), maxBarWidth, barHeight);
-		effetti = new SoundBar(this, r2, v, SoundBar.SE);
+		Rectangle r2 = new Rectangle(soundbarsX, seHeight + soundEffectImg.getHeight() + (int)(20*GamePanel.SCALE), maxBarWidth, barHeight);
+		effectsBar = new SoundBar(this, r2, v, SoundBar.SE);
 		
 	}
 
 	private void loadImages() {
 		try {
-			titolo = ImageIO.read(getClass().getResourceAsStream(percorsoScritta));
-			int widht = titolo.getWidth();
-			int height = titolo.getHeight();
-			titolo = ViewUtils.scaleImage(titolo, widht*GamePanel.SCALE/2, height*GamePanel.SCALE/2);
+			titleImg = ImageIO.read(getClass().getResourceAsStream(titlePausaIconPath));
+			int widht = titleImg.getWidth();
+			int height = titleImg.getHeight();
+			titleImg = ViewUtils.scaleImage(titleImg, widht*GamePanel.SCALE/2, height*GamePanel.SCALE/2);
 			
-			volumeMusica = ImageIO.read(getClass().getResourceAsStream("/menuiniziale/opzioni/volumemusica.png"));	
-			volumeMusica = ViewUtils.scaleImage(volumeMusica, volumeMusica.getWidth()/4 * SCALE, volumeMusica.getHeight()/4 * SCALE);
+			musicVolumImg = ImageIO.read(getClass().getResourceAsStream("/menuiniziale/opzioni/volumemusica.png"));	
+			musicVolumImg = ViewUtils.scaleImage(musicVolumImg, musicVolumImg.getWidth()/4 * SCALE, musicVolumImg.getHeight()/4 * SCALE);
 			
-			se = ImageIO.read(getClass().getResourceAsStream("/menuiniziale/opzioni/volumeeffetti.png"));	
-			se = ViewUtils.scaleImage(se, se.getWidth()/4 * SCALE, se.getHeight()/4 * SCALE);
+			soundEffectImg = ImageIO.read(getClass().getResourceAsStream("/menuiniziale/opzioni/volumeeffetti.png"));	
+			soundEffectImg = ViewUtils.scaleImage(soundEffectImg, soundEffectImg.getWidth()/4 * SCALE, soundEffectImg.getHeight()/4 * SCALE);
 		} 
 		catch (IOException e) {	
 			e.printStackTrace();
@@ -103,17 +104,20 @@ public class PauseScreen extends AbstractMenu {
 	public void draw(Graphics2D g2) {
 		g2.setColor(Color.black);
 		drawOpaqueRect(g2);
-		drawScritte(g2);
+		drawText(g2);
 		drawButtons(g2);
 	}
 
-	private void drawScritte(Graphics2D g2) {
-		g2.drawImage(titolo, centeredXTitle, titleHeight, null);
-		g2.drawImage(volumeMusica, centeredXmusic, musicHeight, null);
-		g2.drawImage(se, centeredXse, seHeight, null);
+
+	private void drawText(Graphics2D g2) {
+		g2.drawImage(titleImg, centeredXTitle, titleHeight, null);
+		g2.drawImage(musicVolumImg, centeredXmusic, musicHeight, null);
+		g2.drawImage(soundEffectImg, centeredXse, seHeight, null);
 		
 	}
-
+	
+	//quando abbaimo la pausa , sotto abbiamo il gioco, sopra un quadrato nero , un po' trasparente in modo che si 
+	//possa vedere quello che c'è sotto
 	private void drawOpaqueRect(Graphics2D g2) {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.8f));
 		g2.fillRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT);

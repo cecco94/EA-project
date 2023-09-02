@@ -8,7 +8,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
@@ -64,11 +64,11 @@ public class CatView extends EntityView {
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBianco.png"));
 						
-			for(int direzione = 0; direzione < 4 ; direzione++) {
-				for(int immagine = 0; immagine < 3; immagine++) {
-					temp = image.getSubimage(immagine*32, direzione*32, 32, 32);
+			for(int direction = 0; direction < 4 ; direction++) {
+				for(int img = 0; img < 3; img++) {
+					temp = image.getSubimage(img*32, direction*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-					CatView.animation[BIANCO][RUN][direzione][immagine] = temp ;
+					CatView.animation[BIANCO][RUN][direction][img] = temp ;
 				}
 			}
 		} 
@@ -80,11 +80,11 @@ public class CatView extends EntityView {
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNero.png"));
 						
-			for(int direzione = 0; direzione < 4 ; direzione++) {
-				for(int immagine = 0; immagine < 3; immagine++) {
-					temp = image.getSubimage(immagine*32, direzione*32, 32, 32);
+			for(int direction = 0; direction < 4 ; direction++) {
+				for(int img = 0; img < 3; img++) {
+					temp = image.getSubimage(img*32, direction*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-					CatView.animation[NERO][RUN][direzione][immagine] = temp ;
+					CatView.animation[NERO][RUN][direction][img] = temp ;
 				}
 			}
 		} 
@@ -167,13 +167,13 @@ public class CatView extends EntityView {
 		
 		//distanza nella mappa tra il punto in alto a sinistra della hitbox 
 		//del player ed il punto in alto a sinistra della hitbox del gatto
-		int distanzaX = xPlayerMap - xPosMapForSort + xOffset;
-		int distanzaY = yPlayerMap - yPosMapForSort + yOffset;
+		int distanceX = xPlayerMap - xPosMapForSort + xOffset;
+		int distanceY = yPlayerMap - yPosMapForSort + yOffset;
 		
 		//ci serve un offset perchè la distanza del gatto nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanzaX - xOffset + PlayerView.getXOffset();
-		int yPosOnScreen = PlayerView.yOnScreen - distanzaY - yOffset + PlayerView.getYOffset();
+		int xPosOnScreen = PlayerView.xOnScreen - distanceX - xOffset + PlayerView.getXOffset();
+		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
 		
 		try {
 			g2.drawImage(CatView.animation[color][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
@@ -186,8 +186,8 @@ public class CatView extends EntityView {
 			g2.setColor(Color.black);
 			g2.drawRect(xPosOnScreen + 3*xOffset,
 						yPosOnScreen + 3*yOffset,
-						view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox().width,
-						view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).getNPC().get(index).getHitbox().height);
+						view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).getNPC().get(index).getHitbox().width,
+						view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).getNPC().get(index).getHitbox().height);
 
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
@@ -199,7 +199,7 @@ public class CatView extends EntityView {
 
 	private void setAction() {
 		//vede nel controller cosa fa il gatto e cambia currentAction
-		currentAction = view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).
+		currentAction = view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).
 															getNPC().get(index).getCurrentAction();
 		
 		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
@@ -211,7 +211,7 @@ public class CatView extends EntityView {
 	
 	private void setDirection() {
 		//vede nel controller la direzione del gatto e cambia currentDirection
-		currentDirection = view.getController().getPlay().getRoom(Stanze.stanzaAttuale.indiceMappa).
+		currentDirection = view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).
 															getNPC().get(index).getCurrentDirection();
 		
 		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up

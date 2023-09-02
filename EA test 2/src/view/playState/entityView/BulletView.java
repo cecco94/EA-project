@@ -11,11 +11,11 @@ import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
 
-public class ProjectileView { 
+public class BulletView { 
 
 	public int index;
 	private IView view;
-	private BufferedImage[] animazione;
+	private BufferedImage[] animation;
 	
 	private int counter;
 	private int animationIndex;
@@ -27,11 +27,11 @@ public class ProjectileView {
 	int width;
 	int height;
 	
-	public ProjectileView(int index, IView v) {
+	public BulletView(int index, IView v) {
 		this.index = index;
 		view = v;
 		direction = v.getController().getPlay().getBulletsInRoom().get(index).getDirection();
-		animazione = new BufferedImage[2];	//1 direzione, ciascuna con due immagini
+		animation = new BufferedImage[2];	//1 direzione, ciascuna con due immagini
 		loadAnimation();
 		width = view.getController().getPlay().getPlayer().getHitbox().width;
 		height  = view.getController().getPlay().getPlayer().getHitbox().height;
@@ -43,47 +43,47 @@ public class ProjectileView {
 			if(direction == EntityController.LEFT) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_left_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[0] = image;
+				animation[0] = image;
 				
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_left_2.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[1] = image;
+				animation[1] = image;
 			}
 			
 			else if(direction == EntityController.RIGHT) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_right_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[0] = image;
+				animation[0] = image;
 				
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_right_2.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[1] = image;
+				animation[1] = image;
 			}
 			
 			else if(direction == EntityController.UP) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_up_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[0] = image;
+				animation[0] = image;
 				
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_up_2.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[1] = image;
+				animation[1] = image;
 			}
 			
 			else if(direction == EntityController.DOWN) {
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_down_1.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[0] = image;
+				animation[0] = image;
 				
 				image = ImageIO.read(getClass().getResourceAsStream("/entity/fireball_down_2.png"));
 				image = ViewUtils.scaleImage(image, image.getWidth()*GamePanel.SCALE, image.getHeight()*GamePanel.SCALE);
-				animazione[1] = image;
+				animation[1] = image;
 			}
 	
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
-			view.getPlay().getAppunti().clear();
+			view.getPlay().getBullets().clear();
 			view.getController().getPlay().getBulletsInRoom().clear();
 		}
 	}
@@ -114,7 +114,7 @@ public class ProjectileView {
 			int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset + PlayerView.getXOffset();
 			int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset + PlayerView.getYOffset();
 			
-			g2.drawImage(animazione[animationIndex], xPosOnScreen, yPosOnScreen, null);
+			g2.drawImage(animation[animationIndex], xPosOnScreen, yPosOnScreen, null);
 			g2.drawRect(xPosOnScreen + xOffset, yPosOnScreen + yOffset, width, height);
 			
 		}
@@ -122,7 +122,7 @@ public class ProjectileView {
 			//obe.printStackTrace();
 			//System.out.println("problemi nel view projectile");
 			//in caso di problemi elimina tutti gli appunti in giro
-			view.getPlay().getAppunti().clear();
+			view.getPlay().getBullets().clear();
 			view.getController().getPlay().getBulletsInRoom().clear();
 		}
 			

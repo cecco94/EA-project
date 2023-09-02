@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import model.mappa.Map;
-import model.mappa.Stanze;
+import model.mappa.Rooms;
 
 import view.IView;
 import view.main.GamePanel;
@@ -14,7 +14,7 @@ import view.mappa.TilesetView;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
 import view.playState.entityView.PlayerView;
-import view.playState.entityView.ProjectileView;
+import view.playState.entityView.BulletView;
 import view.sound.SoundManager;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
@@ -27,8 +27,8 @@ public class PlayStateView {
 	//per disegnarli dall'alto verso il basso, mettiamo tutti gli elementi della mappa in una lista
 	//che poi ordineremo
 	private ArrayList<SortableElement> drawOrder;	
-	private ArrayList<ProjectileView> appuntiLanciati;
-	private RoomView[] stanzeView;
+	private ArrayList<BulletView> bulletsInRoom;
+	private RoomView[] roomsView;
 	
 	private PlayUI ui;
 	
@@ -41,22 +41,22 @@ public class PlayStateView {
 		player = new PlayerView(view);
 		drawOrder = new ArrayList<>();
 		
-		appuntiLanciati = new ArrayList<>();
+		bulletsInRoom = new ArrayList<>();
 
-		stanzeView = new RoomView[Stanze.numStanze];
-		stanzeView[Stanze.BIBLIOTECA.indiceMappa] = new RoomView(this, Stanze.BIBLIOTECA.indiceMappa);
-		stanzeView[Stanze.AULA_STUDIO.indiceMappa] = new RoomView(this, Stanze.AULA_STUDIO.indiceMappa);
-		stanzeView[Stanze.DORMITORIO.indiceMappa] = new RoomView(this, Stanze.DORMITORIO.indiceMappa);
-		stanzeView[Stanze.TENDA.indiceMappa] = new RoomView(this, Stanze.TENDA.indiceMappa);
-		stanzeView[Stanze.LABORATORIO.indiceMappa] = new RoomView(this, Stanze.LABORATORIO.indiceMappa);
-		stanzeView[Stanze.STUDIO_PROF.indiceMappa] = new RoomView(this, Stanze.STUDIO_PROF.indiceMappa);
+		roomsView = new RoomView[Rooms.numStanze];
+		roomsView[Rooms.BIBLIOTECA.mapIndex] = new RoomView(this, Rooms.BIBLIOTECA.mapIndex);
+		roomsView[Rooms.AULA_STUDIO.mapIndex] = new RoomView(this, Rooms.AULA_STUDIO.mapIndex);
+		roomsView[Rooms.DORMITORIO.mapIndex] = new RoomView(this, Rooms.DORMITORIO.mapIndex);
+		roomsView[Rooms.TENDA.mapIndex] = new RoomView(this, Rooms.TENDA.mapIndex);
+		roomsView[Rooms.LABORATORIO.mapIndex] = new RoomView(this, Rooms.LABORATORIO.mapIndex);
+		roomsView[Rooms.STUDIO_PROF.mapIndex] = new RoomView(this, Rooms.STUDIO_PROF.mapIndex);
 
 	}
 	
 	//prima disegna il pavimento, poi ci disegna sopra tutti gli oggetti partendo dall'alto, in modo il player che sta sotto
 	//ad un tile sembri stare davanti a quel tile e viceversa. stiamo aggiungendo tridimensionalità al gioco
 	public void draw(Graphics2D g2) {
-		int stanza = Stanze.stanzaAttuale.indiceMappa;
+		int roomIndex = Rooms.currentRoom.mapIndex;
 		//prendiamo la posizione del player nella mappa (in quale tile tile si trova il punto in alto a sinitra della hitbox)
 		//contiamo a sinistra -10 e a destra +10, in su -7 e in giù +7 e prendiamo solo le parti della matrice con questi numeri
 		int playerMapX = view.getController().getPlay().getPlayer().getHitbox().x;
@@ -66,14 +66,14 @@ public class PlayStateView {
 		int firstTileInFrameRow = playerMapY/GamePanel.TILES_SIZE - 8;
 		
 		//il pavimento viene sempre disegnato sotto a tutto
-		drawFloor(g2, stanza, firstTileInFrameCol, firstTileInFrameRow, playerMapX, playerMapY);
+		drawFloor(g2, roomIndex, firstTileInFrameCol, firstTileInFrameRow, playerMapX, playerMapY);
 		
 		//disegna proiettili
-		for(int index = 0; index < appuntiLanciati.size(); index++)
-			appuntiLanciati.get(index).draw(g2, playerMapX, playerMapY);
+		for(int index = 0; index < bulletsInRoom.size(); index++)
+			bulletsInRoom.get(index).draw(g2, playerMapX, playerMapY);
 		
 		//aggiungi nella lista gli elementi degli ultimi due strati
-		addTilesToSortList(drawOrder, stanza, firstTileInFrameCol, firstTileInFrameRow);
+		addTilesToSortList(drawOrder, roomIndex, firstTileInFrameCol, firstTileInFrameRow);
 		
 		//aggiorna xpos e ypos del player e lo aggiunge, poi aggiunge le entità nella stanza vicino al giocatore
 		addNPCandPlayer(drawOrder, playerMapX, playerMapY);
@@ -92,87 +92,87 @@ public class PlayStateView {
 		ui.draw(g2);
 	}			
 		
-	public void drawFloor(Graphics2D g2, int stanza, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {
-		for (int layer = 0; layer < Map.TERZO_STRATO; layer++)	//disegna i primi due strati
-			drawLayer(g2, stanza, layer, xMappaIniziale, yMappaIniziale, playerMapX, playerMapY);
+	public void drawFloor(Graphics2D g2, int room, int initialMapX, int initialMapY, int playerMapX, int playerMapY) {
+		for (int layer = 0; layer < Map.THIRD_LAYER; layer++)	//disegna i primi due strati
+			drawLayer(g2, room, layer, initialMapX, initialMapY, playerMapX, playerMapY);
 	}
 	
-	private void drawLayer(Graphics2D g2, int stanza, int layer, int xMappaIniziale, int yMappaIniziale, int playerMapX, int playerMapY) {
-		int[][] strato = view.getModel().getMappa().getStrato(stanza, layer);
-		for(int riga = yMappaIniziale; riga <= yMappaIniziale + GamePanel.TILES_IN_HEIGHT + 1; riga++) 
-			for(int colonna = xMappaIniziale; colonna <= xMappaIniziale + GamePanel.TILES_IN_WIDTH + 1; colonna++) {
-				int numeroTile = 0;
+	private void drawLayer(Graphics2D g2, int room, int layerNumber, int initialMapX, int initialMapY, int playerMapX, int playerMapY) {
+		int[][] layer = view.getModel().getMap().getLayer(room, layerNumber);
+		for(int row = initialMapY; row <= initialMapY + GamePanel.TILES_IN_HEIGHT + 1; row++) 
+			for(int col = initialMapX; col <= initialMapX + GamePanel.TILES_IN_WIDTH + 1; col++) {
+				int tileNumber = 0;
 				try {
-					numeroTile = strato[riga][colonna];
+					tileNumber = layer[row][col];
 				}
 				catch(ArrayIndexOutOfBoundsException obe) {
-					numeroTile = 0;
+					tileNumber = 0;
 				}
-				if(numeroTile > 0) {
-					int distanzaX = playerMapX - colonna*GamePanel.TILES_SIZE;
-					int distanzaY = playerMapY - riga*GamePanel.TILES_SIZE;
+				if(tileNumber > 0) {
+					int distanceX = playerMapX - col*GamePanel.TILES_SIZE;
+					int distanceY = playerMapY - row*GamePanel.TILES_SIZE;
 					
-					int xScreenTile = PlayerView.xOnScreen - distanzaX + PlayerView.getXOffset();
-					int yScreenTile = PlayerView.yOnScreen - distanzaY + PlayerView.getYOffset();
+					int xScreenTile = PlayerView.xOnScreen - distanceX + PlayerView.getXOffset();
+					int yScreenTile = PlayerView.yOnScreen - distanceY + PlayerView.getYOffset();
 							
-					BufferedImage tileDaDisegnare = tileset.getTile(numeroTile).getImage();
-					g2.drawImage(tileDaDisegnare, xScreenTile, yScreenTile, null);
+					BufferedImage tileToDraw = tileset.getTile(tileNumber).getImage();
+					g2.drawImage(tileToDraw, xScreenTile, yScreenTile, null);
 					}
 			}			
 	}
 
-	private void addTilesToSortList(ArrayList<SortableElement> drawOrder, int stanza, int xMappaIniziale, int yMappaIniziale) {
-		for(int layer = Map.TERZO_STRATO; layer <= Map.QUARTO_STRATO; layer++) {
+	private void addTilesToSortList(ArrayList<SortableElement> drawOrder, int roomIndex, int initialMapX, int initialMapY) {
+		for(int layerNumber = Map.THIRD_LAYER; layerNumber <= Map.FOURTH_LAYER; layerNumber++) {
 			
-			int[][] strato = view.getModel().getMappa().getStrato(stanza, layer);
-			for(int riga = yMappaIniziale; riga <= yMappaIniziale + GamePanel.TILES_IN_HEIGHT + 1; riga++) 
-				for(int colonna = xMappaIniziale; colonna <= xMappaIniziale + GamePanel.TILES_IN_WIDTH + 1; colonna++) {
-					int numeroTile = 0;
+			int[][] layer = view.getModel().getMap().getLayer(roomIndex, layerNumber);
+			for(int row = initialMapY; row <= initialMapY + GamePanel.TILES_IN_HEIGHT + 1; row++) 
+				for(int col = initialMapX; col <= initialMapX + GamePanel.TILES_IN_WIDTH + 1; col++) {
+					int tileNumber = 0;
 					try {
-						numeroTile = strato[riga][colonna];
+						tileNumber = layer[row][col];
 					}
 					catch(ArrayIndexOutOfBoundsException obe) {
-						numeroTile = 0;
+						tileNumber = 0;
 					}	
-					if(numeroTile > 0) 
-						drawOrder.add(new SortableTile(tileset, numeroTile, layer, colonna, riga));			
+					if(tileNumber > 0) 
+						drawOrder.add(new SortableTile(tileset, tileNumber, layerNumber, col, row));			
 				}
 		}
 		
 	}
 
-	private void addNPCandPlayer(ArrayList<SortableElement> drawOrder, int posizPlayerX, int posizPlayerY) {
+	private void addNPCandPlayer(ArrayList<SortableElement> drawOrder, int xPlayerPos, int yPlayerPos) {
 		
 		//aggiungiamo solo gli npc e i nemici nella stanza vicino al giocatore
-		switch(Stanze.stanzaAttuale) {
+		switch(Rooms.currentRoom) {
 		case AULA_STUDIO:
-			stanzeView[Stanze.AULA_STUDIO.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			roomsView[Rooms.AULA_STUDIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
 			break;
 		case BIBLIOTECA:
-			stanzeView[Stanze.BIBLIOTECA.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			roomsView[Rooms.BIBLIOTECA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
 			break;
 		case TENDA:
-			stanzeView[Stanze.TENDA.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			roomsView[Rooms.TENDA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
 			break;
 		case LABORATORIO:
-			stanzeView[Stanze.LABORATORIO.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			roomsView[Rooms.LABORATORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
 			break;
 		case STUDIO_PROF:
-			stanzeView[Stanze.STUDIO_PROF.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			roomsView[Rooms.STUDIO_PROF.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
 			break;
 		case DORMITORIO:
-			stanzeView[Stanze.DORMITORIO.indiceMappa].addEntitiesInFrameForSort(posizPlayerX, posizPlayerY, drawOrder);
+			roomsView[Rooms.DORMITORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
 			break;
 		}
 		
-		player.setMapPositionForSort(posizPlayerX, posizPlayerY);
+		player.setMapPositionForSort(xPlayerPos, yPlayerPos);
 		drawOrder.add(player);
 	}
 
-	private void drawAllElementsAboveFloor(Graphics2D g2, int posizPlayerX, int posizPlayerY) {
+	private void drawAllElementsAboveFloor(Graphics2D g2, int xPlayerPos, int yPlayerPos) {
 		
 		for(int i = 0; i < drawOrder.size(); i++)
-			drawOrder.get(i).draw(g2, posizPlayerX, posizPlayerY);
+			drawOrder.get(i).draw(g2, xPlayerPos, yPlayerPos);
 		
 	}
 	
@@ -188,31 +188,31 @@ public class PlayStateView {
 		return ui;
 	}
 	
-	public void addProjectile() {
-		appuntiLanciati.add(new ProjectileView(appuntiLanciati.size(), view));
+	public void addBullet() {
+		bulletsInRoom.add(new BulletView(bulletsInRoom.size(), view));
 		view.playSE(SoundManager.FUOCO);
 	}
 	
-	public void removeProjectile(int indexRemove) {
-		for(int i = indexRemove; i < appuntiLanciati.size(); i++)
-			appuntiLanciati.get(i).index--;
+	public void removeBullet(int indexRemove) {
+		for(int i = indexRemove; i < bulletsInRoom.size(); i++)
+			bulletsInRoom.get(i).index--;
 		try {
-		appuntiLanciati.remove(indexRemove);
+		bulletsInRoom.remove(indexRemove);
 		}
 		catch(IndexOutOfBoundsException iobe) {
 			iobe.printStackTrace();
 			System.out.println("lista appunti finita nel view");
-			appuntiLanciati.clear();
+			bulletsInRoom.clear();
 			view.getController().getPlay().getBulletsInRoom().clear();
 		}
 	}
 	
-	public ArrayList<ProjectileView> getAppunti() {
-		return appuntiLanciati;
+	public ArrayList<BulletView> getBullets() {
+		return bulletsInRoom;
 	}
 
 	public RoomView getRoom(int index) {
-		return stanzeView[index];
+		return roomsView[index];
 		
 	}
 }

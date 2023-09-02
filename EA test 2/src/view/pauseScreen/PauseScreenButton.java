@@ -16,20 +16,20 @@ public class PauseScreenButton extends AbstractMenuButton {
 
 	boolean isHome;
 	
-	//altro costruttore, per quando le immagini sono in un unico file e vogliamo mettere i bottoni affiancati
-	public PauseScreenButton(IView v, String percorsoIcone, int x, int y, Gamestate state, boolean home) {
+	
+	public PauseScreenButton(IView v, String iconsPath, int x, int y, Gamestate state, boolean home) {
 		view = v;
 		newState = state;
-		loadIconFromFile(percorsoIcone);
+		loadIconFromFile(iconsPath);
 		super.setBounds(x, y, (int)(56*GamePanel.SCALE), (int)(56*GamePanel.SCALE));
 		isHome = home;
 	}
 	
 	
-	private void loadIconFromFile(String percorsoIcone) {
+	private void loadIconFromFile(String iconsPath) {
 		BufferedImage temp;
 		try {
-			temp = ImageIO.read(getClass().getResourceAsStream(percorsoIcone));
+			temp = ImageIO.read(getClass().getResourceAsStream(iconsPath));
 			mouseAwayImage = temp.getSubimage(0, 0, 56, 56);
 			mouseOverImage = temp.getSubimage(56, 0, 56, 56);
 			mousePressedImage = temp.getSubimage(56 + 56, 0, 56, 56);

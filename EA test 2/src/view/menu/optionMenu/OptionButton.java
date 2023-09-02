@@ -2,7 +2,6 @@ package view.menu.optionMenu;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -13,24 +12,25 @@ import view.menu.AbstractMenuButton;
 
 public class OptionButton extends AbstractMenuButton {
 
-	private int difficolta;
+	private int difficulty;
 	
 	public OptionButton(String[] path, int y, int width, int height, int diff, IView v) {
-		difficolta = diff;
+		difficulty = diff;
 		super.setBounds(ViewUtils.getCenteredXPos(width), y, width, height);
 		loadIcons(path, width, height);
 		view = v;
 	}
 	
-	private void loadIcons(String[] percorsoIcone, int width, int height) {
-		BufferedImage temp;
+	private void loadIcons(String[] iconsPath, int width, int height) {
 		try {
-			temp = ImageIO.read(getClass().getResourceAsStream(percorsoIcone[0]));
-			mouseAwayImage = ViewUtils.scaleImage(temp, width, height);
-			temp = ImageIO.read(getClass().getResourceAsStream(percorsoIcone[1]));
-			mouseOverImage = ViewUtils.scaleImage(temp, width, height);
-			temp = ImageIO.read(getClass().getResourceAsStream(percorsoIcone[2]));
-			mousePressedImage = ViewUtils.scaleImage(temp, width, height);	
+			mouseAwayImage = ImageIO.read(getClass().getResourceAsStream(iconsPath[0]));
+			mouseAwayImage = ViewUtils.scaleImage(mouseAwayImage, width, height);
+			
+			mouseOverImage = ImageIO.read(getClass().getResourceAsStream(iconsPath[1]));
+			mouseOverImage = ViewUtils.scaleImage(mouseOverImage, width, height);
+			
+			mousePressedImage = ImageIO.read(getClass().getResourceAsStream(iconsPath[2]));
+			mousePressedImage = ViewUtils.scaleImage(mousePressedImage, width, height);	
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -47,12 +47,12 @@ public class OptionButton extends AbstractMenuButton {
 	}
 	
 	public int getDifficolta() {
-		return difficolta;
+		return difficulty;
 	}
 
 	@Override
 	public void reactToMouse(MouseEvent e) {
-		view.getOptions().setFifficolta(difficolta);
+		view.getOptions().setDifficulty(difficulty);
 		//chiedi a view di chiedere al model di settare la difficoltà
 	}
 
