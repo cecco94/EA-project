@@ -9,13 +9,13 @@ import model.mappa.Map;
 import model.mappa.Rooms;
 
 import view.IView;
+import view.SoundManager;
 import view.main.GamePanel;
-import view.mappa.TilesetView;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
 import view.playState.entityView.PlayerView;
+import view.playState.mappaView.TilesetView;
 import view.playState.entityView.BulletView;
-import view.sound.SoundManager;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
 public class PlayStateView {

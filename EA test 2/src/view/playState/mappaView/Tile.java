@@ -1,4 +1,4 @@
-package view.mappa;
+package view.playState.mappaView;
 
 import java.awt.image.BufferedImage;
 

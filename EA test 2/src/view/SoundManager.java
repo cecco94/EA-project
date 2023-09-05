@@ -1,4 +1,4 @@
-package view.sound;
+package view;
 
 
 import java.net.URL;

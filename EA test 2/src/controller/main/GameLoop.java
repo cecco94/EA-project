@@ -66,11 +66,12 @@ public class GameLoop implements Runnable {
 		while (gameThread != null) {
 			long currentTime = System.nanoTime();
 
-			
-			deltaU += (currentTime - previousTime) / timePerUpdate;
+			//variabile che tiene conto del tempo che ci mette il gioco per aggiornarsi
+			deltaU += (currentTime - previousTime) / timePerUpdate; //(tempo attuale - tempo passato e normalizza)
 			deltaF += (currentTime - previousTime) / timePerFrame;
 			previousTime = currentTime;
-
+			
+			//se passato più di 1 fa update
 			if (deltaU >= 1) {
 				update();
 			//	updates++;

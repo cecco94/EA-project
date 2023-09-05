@@ -3,7 +3,7 @@ package model.mappa.events;
 import java.awt.Rectangle;
 
 import model.IModel;
-import view.sound.SoundManager;
+import view.SoundManager;
 
 public class Notes extends Event {
 

@@ -1,6 +1,6 @@
 package model.mappa;
 
-import view.sound.SoundManager;
+import view.SoundManager;
 
 public enum Rooms {
 

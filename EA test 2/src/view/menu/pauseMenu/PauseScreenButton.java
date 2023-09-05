@@ -1,4 +1,4 @@
-package view.pauseScreen;
+package view.menu.pauseMenu;
 
 import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
@@ -21,7 +21,7 @@ public class PauseScreenButton extends AbstractMenuButton {
 		view = v;
 		newState = state;
 		loadIconFromFile(iconsPath);
-		super.setBounds(x, y, (int)(56*GamePanel.SCALE), (int)(56*GamePanel.SCALE));
+		super.setBounds(x, y, (int)(32*GamePanel.SCALE), (int)(32*GamePanel.SCALE));
 		isHome = home;
 	}
 	

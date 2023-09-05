@@ -143,7 +143,7 @@ public class RoomModel {
 	public int checkPassInRoom(Rectangle hitbox) {
 		int index = -1;
 		for(int i = 0; i < passaggi.size(); i++) {
-			if(passaggi.get(i).checkPlayer(hitbox))
+			if(passaggi.get(i).checkPlayer(hitbox)) //se giocatore con hitbox sta nel passaggio 
 				index = i;
 		}
 		return index;

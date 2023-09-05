@@ -21,7 +21,7 @@ public class PlayerController extends EntityController {
 
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
-	private int attackCounter;
+	private int attackCounter; //durata attacco
 	
 	
 	public PlayerController(Rectangle r, PlayStateController p) {
@@ -52,7 +52,7 @@ public class PlayerController extends EntityController {
 
 	private void updatePos() {
 		
-		//durante l'intervallo dove attacca, la velocità del personaggio diminuisce
+		//durante l'intervallo mentre attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
 		
 		setMoving(false);

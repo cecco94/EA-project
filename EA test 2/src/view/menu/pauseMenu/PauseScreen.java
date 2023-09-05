@@ -1,4 +1,4 @@
-package view.pauseScreen;
+package view.menu.pauseMenu;
 
 import static view.main.GamePanel.GAME_HEIGHT;
 import static view.main.GamePanel.GAME_WIDTH;

@@ -11,14 +11,12 @@ import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
 import view.main.GamePanel;
 import view.main.GameWindow;
-//import view.main.MessaggioSubliminale;
-import view.mappa.TilesetView;
 import view.menu.avatarSelection.AvatarMenu;
 import view.menu.mainMenu.MainMenu;
 import view.menu.optionMenu.OptionMenu;
-import view.pauseScreen.PauseScreen;
+import view.menu.pauseMenu.PauseScreen;
 import view.playState.PlayStateView;
-import view.sound.SoundManager;
+import view.playState.mappaView.TilesetView;
 
 // permette al model ed al controlle di accedere ai dati e ai metodi della view e viceversa
 // classe a cui fanno riferimento tutte le altre classi della view

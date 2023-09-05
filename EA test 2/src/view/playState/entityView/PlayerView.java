@@ -8,9 +8,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import view.IView;
+import view.SoundManager;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.sound.SoundManager;
 
 //classe che contiene la parte grafica del giocatore
 public class PlayerView extends EntityView {

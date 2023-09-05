@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import controller.main.Gamestate;
 import model.mappa.Rooms;
 import view.main.GamePanel;
-import view.sound.SoundManager;
 
 //per non passare bruscamente da uno stato all'altro, disegna sfumandolo il vecchio stato 
 //per tre secondi e sfuma il valore della musica

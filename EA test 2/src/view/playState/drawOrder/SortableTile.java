@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import view.main.GamePanel;
-import view.mappa.TilesetView;
 import view.playState.entityView.PlayerView;
+import view.playState.mappaView.TilesetView;
 
 //è un oggetto che contiene il tipo di tile da disegnare e la sua posizione. Siccome contiene solo tre int
 //è molto leggero è può essere istanziato/eliminato più velocemente di un tile normale
