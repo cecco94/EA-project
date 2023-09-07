@@ -4,6 +4,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import javax.swing.SwingUtilities;
+
 import controller.main.Gamestate;
 import view.IView;
 
@@ -77,7 +79,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			view.getOptions().mousePressed(e);
 			break;
 		case PLAYING:
-			view.getController().getPlay().handleMousePressed(e);
+			handleMousePressedDuringPlayState(e);
 			break;
 		case PAUSE:
 			view.getPause().mousePressed(e);
@@ -85,6 +87,18 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		default:
 			break;
 		}
+	}
+	
+	private void handleMousePressedDuringPlayState(MouseEvent e) {
+		if(SwingUtilities.isLeftMouseButton(e))
+			view.getController().getPlay().startPlayerAttacking();
+		
+		else if(SwingUtilities.isRightMouseButton(e))
+			view.getController().getPlay().startPlayerParring();
+		
+		else if(SwingUtilities.isMiddleMouseButton(e))		
+				view.getController().getPlay().startPlayerThrowing();
+	
 	}
 
 	@Override
@@ -100,7 +114,7 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 			view.getOptions().mouseReleased(e);
 			break;
 		case PLAYING:
-			view.getController().getPlay().handleMouseReleased(e);
+			handleMouseReleasedDuringPlayState(e);
 			break;
 		case PAUSE:
 			view.getPause().mouseReleased(e);
@@ -108,6 +122,18 @@ public class MouseInputs implements MouseListener, MouseMotionListener {
 		default:
 			break;
 		}
+	}
+
+	private void handleMouseReleasedDuringPlayState(MouseEvent e) {
+		if(SwingUtilities.isLeftMouseButton(e))
+			view.getController().getPlay().stopPlayerAttacking();
+		
+		else if(SwingUtilities.isRightMouseButton(e))
+			view.getController().getPlay().stopPlayerParring();
+		
+		else if(SwingUtilities.isMiddleMouseButton(e))		
+				view.getController().getPlay().stopPlayerThrowing();
+		
 	}
 
 	@Override

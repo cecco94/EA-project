@@ -1,10 +1,5 @@
 package controller.playState.entityController;
 
-
-
-
-import java.awt.event.KeyEvent;
-
 import controller.main.Gamestate;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
@@ -137,38 +132,38 @@ public class PlayerController extends EntityController {
 		return hitbox;
 	}
 
-	public void choiceDirection(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_W:
+	public void choiceDirection(int dir) {
+		switch (dir) {
+		case UP:
 			up = true;
 			break;
-		case KeyEvent.VK_A:
+		case LEFT:
 			left = true;
 			break;
-		case KeyEvent.VK_S:
+		case DOWN:
 			down = true;
 			break;
-		case KeyEvent.VK_D:
+		case RIGHT:
 			right = true;
 			break;
 		}
 	}
 	
-	public void resetDirection(KeyEvent e) {
-		switch (e.getKeyCode()) {
-		case KeyEvent.VK_W:
+	public void resetDirection(int dir) {
+		switch (dir) {
+		case UP:
 			up = false;
 			break;
-		case KeyEvent.VK_A:
+		case LEFT:
 			left = false;
 			break;
-		case KeyEvent.VK_S:
+		case DOWN:
 			down = false;
 			break;
-		case KeyEvent.VK_D:
+		case RIGHT:
 			right = false;
 			break;
-		}	
+		}
 	}
 	
 	public boolean isAttacking() {

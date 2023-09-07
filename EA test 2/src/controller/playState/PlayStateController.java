@@ -1,7 +1,6 @@
 package controller.playState;
 
 
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -99,17 +98,22 @@ public class PlayStateController {
 		controller.getView().getPlay().getBullets().clear();
 	}
 	
-	public void handleKeyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) 
-			controller.setGameState(Gamestate.PAUSE);
-		
-		else if (e.getKeyCode() == KeyEvent.VK_ENTER && !playerController.isParring())
+	public void goToPauseState() {
+		controller.setGameState(Gamestate.PAUSE);
+	}
+	
+	public void startPlayerAttacking() {
+		if(!playerController.isParring())
 			playerController.setAttacking(true);
+	}
+	
+	public void startPlayerParring() {
+		playerController.setParry(true);
+	}
+	
+	public void startPlayerThrowing() {
+		if(!playerController.isParring()) {
 			
-		else if(e.getKeyCode() == KeyEvent.VK_SPACE)
-			playerController.setParry(true);
-			
-		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) {
 			if(playerController.getNotes() > 0) 
 				playerController.setThrowing(true);
 			
@@ -118,56 +122,43 @@ public class PlayStateController {
 				controller.getView().getPlay().getUI().setShowMessage(true);
 			}
 		}
-		
-		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
-			playerController.setInteracting(true);
-			
-		else
-			playerController.choiceDirection(e);
 	}
 	
-	public void handleKeyReleased(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_ENTER && !playerController.isParring())
+	public void startPlayerInteract() {
+		if(!playerController.isParring())
+			playerController.setInteracting(true);
+	}
+	
+
+	public void stopPlayerAttacking() {
+		if (!playerController.isParring())
 			playerController.setAttacking(false);
-		
-		else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-			playerController.setParry(false);
-			controller.getView().getPlay().getPlayer().resetParry();
-		}
-		
-		else if(e.getKeyCode() == KeyEvent.VK_P && !playerController.isParring()) {
+	}
+	
+	public void stopPlayerParring() {
+		playerController.setParry(false);
+		controller.getView().getPlay().getPlayer().resetParry();
+	}
+	
+	public void stopPlayerThrowing() {
+		if(!playerController.isParring()) {
+			
 			if(playerController.getNotes() > 0) {
 				playerController.decreaseBulletsNumber();
 				playerController.setThrowing(false);
 				addBullets(playerController);
 				controller.getView().getPlay().addBullet();
 			}
-		}
-		else if(e.getKeyCode() == KeyEvent.VK_E && !playerController.isParring())
-			playerController.setInteracting(false);
-		
-		else
-			playerController.resetDirection(e);
-	}
-
-	public void handleMousePressed(MouseEvent e) {
-		if (SwingUtilities.isLeftMouseButton(e) && !playerController.isParring())
-			playerController.setAttacking(true);
-		
-		else if(SwingUtilities.isRightMouseButton(e))
-			playerController.setParry(true);
-		
-		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {
-			if(playerController.getNotes() > 0) 
-				playerController.setThrowing(true);	
 			
-			else {
-				controller.getView().getPlay().getUI().setMessage("appunti finiti");
-				controller.getView().getPlay().getUI().setShowMessage(true);
-			}
 		}
-		
 	}
+	
+	public void stopPlayerInteracting() {
+		if(!playerController.isParring())
+			playerController.setInteracting(false);
+	}
+	
+
 
 	public void handleMouseReleased(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e) && !playerController.isParring())
