@@ -1,13 +1,14 @@
 package model.mappa.events;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import model.IModel;
 import view.SoundManager;
 
 public class Caffe extends Event{
 
-	public Caffe(Rectangle r, IModel m) {
+	public Caffe(Hitbox r, IModel m) {
 		super(r, m);
 		message = "il caffe' aumenta la tua concentrazione!";
 	}

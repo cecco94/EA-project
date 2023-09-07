@@ -1,13 +1,14 @@
 package model.mappa.events;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import model.IModel;
 import view.SoundManager;
 
 public class CFU extends Event{
 
-	public CFU(Rectangle r, IModel m) {
+	public CFU(Hitbox r, IModel m) {
 		super(r, m);
 		message = "ti stai avvicinando alla laurea!";
 

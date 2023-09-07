@@ -1,13 +1,14 @@
 package model.mappa.events;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import model.IModel;
 import view.SoundManager;
 
 public class Notes extends Event {
 
-	public Notes(Rectangle r, IModel m) {
+	public Notes(Hitbox r, IModel m) {
 		super(r, m);
 		message = "hai trovato degli appunti!";
 

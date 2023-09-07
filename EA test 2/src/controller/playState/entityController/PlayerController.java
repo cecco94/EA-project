@@ -1,14 +1,19 @@
 package controller.playState.entityController;
 
-import java.awt.Rectangle;
+
+
+
 import java.awt.event.KeyEvent;
 
 import controller.main.Gamestate;
+import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import model.mappa.Rooms;
 import view.main.GamePanel;
 
 public class PlayerController extends EntityController {
+
+	public static final int INTERACT = 10;
 
 	private int RAGAZZO = 0 , RAGAZZA = 1;
 	
@@ -24,7 +29,7 @@ public class PlayerController extends EntityController {
 	private int attackCounter; //durata attacco
 	
 	
-	public PlayerController(Rectangle r, PlayStateController p) {
+	public PlayerController(Hitbox r, PlayStateController p) {
 		super(r, p);
 		
 		int hitboxWidth = (int)(GamePanel.TILES_SIZE*0.75);
@@ -128,7 +133,7 @@ public class PlayerController extends EntityController {
 		setThrowing(false);
 	}
 	
-	public Rectangle getHitbox() {
+	public Hitbox getHitbox() {
 		return hitbox;
 	}
 

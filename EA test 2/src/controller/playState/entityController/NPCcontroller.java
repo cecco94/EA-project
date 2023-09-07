@@ -1,12 +1,13 @@
 package controller.playState.entityController;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 
 public class NPCcontroller extends EntityController {
 
-	public NPCcontroller(Rectangle r, PlayStateController p) {
+	public NPCcontroller(Hitbox r, PlayStateController p) {
 		super(r, p);
 		
 	}

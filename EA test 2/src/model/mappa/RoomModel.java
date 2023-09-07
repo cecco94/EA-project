@@ -1,11 +1,12 @@
 package model.mappa;
 
-import java.awt.Rectangle;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import controller.playState.Hitbox;
 import model.IModel;
 import model.mappa.events.CFU;
 import model.mappa.events.Caffe;
@@ -51,7 +52,7 @@ public class RoomModel {
 						int width = Integer.parseInt(datiNellaRiga[4]);
 						int height = Integer.parseInt(datiNellaRiga[5]);
 						
-						Rectangle r = new Rectangle(xPos, yPos, width, height);
+						Hitbox r = new Hitbox(xPos, yPos, width, height);
 						model.getController().getPlay().getRoom(index).addEnemy(type, r);
 					}
 					
@@ -96,7 +97,7 @@ public class RoomModel {
 						int height = Integer.parseInt(datiNellaRiga[4]);
 						String s = datiNellaRiga[5];
 						
-						Rectangle r = new Rectangle(xPos, yPos, width, height);	
+						Hitbox r = new Hitbox(xPos, yPos, width, height);	
 						addEvent(r, s);
 					}
 					
@@ -111,7 +112,7 @@ public class RoomModel {
 		}										
 	}
 	
-	private void addEvent(Rectangle r, String s) {
+	private void addEvent(Hitbox r, String s) {
 		
 		if(s.compareTo("luce") == 0)
 			eventi.add(new Light(r, model));
@@ -132,7 +133,7 @@ public class RoomModel {
 			System.out.println(p.toString());
 	}
 
-	public int checkPassInRoom(Rectangle hitbox) {
+	public int checkPassInRoom(Hitbox hitbox) {
 		int index = -1;
 		for(int i = 0; i < passaggi.size(); i++) {
 			if(passaggi.get(i).checkPlayer(hitbox)) //se giocatore con hitbox sta nel passaggio 
@@ -141,7 +142,7 @@ public class RoomModel {
 		return index;
 	}
 	
-	public int checkEventInRoom(Rectangle hitbox) {
+	public int checkEventInRoom(Hitbox hitbox) {
 		int index = -1;
 		for(int i = 0; i < eventi.size(); i++) {
 			if(eventi.get(i).checkPlayer(hitbox))

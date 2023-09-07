@@ -1,19 +1,20 @@
 package model.mappa.events;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import model.IModel;
 import view.main.GamePanel;
 
 public abstract class Event {
 
-	protected Rectangle bounds;
+	protected Hitbox bounds;
 	protected IModel model;
 	protected String message;
 	protected boolean interact, endInteraction;
 	
 	
-	public Event(Rectangle r, IModel m) {
+	public Event(Hitbox r, IModel m) {
 		bounds = r;
 		model = m;
 		
@@ -26,7 +27,7 @@ public abstract class Event {
 	
 	public abstract void Interact();
 	
-	public Rectangle getBounds() {
+	public Hitbox getBounds() {
 		return bounds;
 	}
 	
@@ -34,7 +35,7 @@ public abstract class Event {
 		return endInteraction;
 	}
 	
-	public boolean checkPlayer(Rectangle hitboxPlayer) {
-		return hitboxPlayer.intersects(bounds);
+	public boolean checkPlayer(Hitbox hitbox) {
+		return hitbox.intersects(bounds);
 	}
 }

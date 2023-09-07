@@ -1,13 +1,13 @@
 package model.mappa.events;
 
-import java.awt.Rectangle;
 
+import controller.playState.Hitbox;
 import model.IModel;
 
 public class Light extends Event {
 
 	
-	public Light(Rectangle r, IModel m) {
+	public Light(Hitbox r, IModel m) {
 		super(r, m);
 		message = "hai acceso la luce!";		
 	}

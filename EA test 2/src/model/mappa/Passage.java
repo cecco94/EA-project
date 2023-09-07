@@ -1,14 +1,15 @@
 package model.mappa;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import view.main.GamePanel;
 
 public class Passage {
 
 	private int prevX, prevY;	//posizione del passaggio
 	private int nextX, nextY;	//nuova posizione del giocatore nella nuova stanza 
-	private Rectangle borders;	//bordo per passaggio, per capire se il giocatore è sopra al passaggio
+	private Hitbox borders;	//bordo per passaggio, per capire se il giocatore è sopra al passaggio
 	//se la porta è chiusa, manda un messaggio mostrato dalla UI
 	private boolean open;
 	String message = "";
@@ -27,12 +28,12 @@ public class Passage {
 		nextY = nY*GamePanel.TILES_SIZE;
 		
 		nextRoom = newRoom;			//il passaggio è grande quanto un quadratino o una frazione di quadratino
-		borders = new Rectangle(prevX, prevY, (int)(GamePanel.SCALE*width), (int)(GamePanel.SCALE*height));
+		borders = new Hitbox(prevX, prevY, (int)(GamePanel.SCALE*width), (int)(GamePanel.SCALE*height));
 	}
 	
 	//controlla se il personaggio si trova sul passaggio
-	public boolean checkPlayer(Rectangle hitboxPlayer) {
-		return hitboxPlayer.intersects(borders);
+	public boolean checkPlayer(Hitbox hitbox) {
+		return hitbox.intersects(borders);
 	}
 
 	public Rooms getNewMap() {

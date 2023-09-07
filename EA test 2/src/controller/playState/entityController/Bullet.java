@@ -1,7 +1,8 @@
 package controller.playState.entityController;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import view.main.GamePanel;
 
@@ -10,7 +11,7 @@ public class Bullet {
 	private boolean hit = false;
 	private int indexInList;
 	private int direction;
-	private Rectangle hitbox;
+	private Hitbox hitbox;
 	private int speed;
 	private PlayStateController play;
 	private EntityController owner;  //il proiettile non colpisce chi lo ha lanciato 
@@ -32,7 +33,7 @@ public class Bullet {
 		int x = e.getHitbox().x;
 		int y = e.getHitbox().y;
 		
-		hitbox = new Rectangle(x, y, width, height);
+		hitbox = new Hitbox(x, y, width, height);
 	}
 
 	public void update() {
@@ -95,7 +96,7 @@ public class Bullet {
 		 	
 	}
 
-	public Rectangle getHitbox() {
+	public Hitbox getHitbox() {
 		return hitbox;
 	}
 	

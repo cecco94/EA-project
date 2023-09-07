@@ -2,10 +2,12 @@ package view;
 
 import java.awt.AWTException;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Robot;
 
 import controller.IController;
 import controller.main.Gamestate;
+import controller.playState.Hitbox;
 import model.IModel;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
@@ -207,4 +209,7 @@ public class IView {
 		return transition;
 	}
 	
+	public static Rectangle fromHitboxToRectangle(Hitbox h) {
+		return new Rectangle(h.x, h.y, h.width, h.height);
+	}
 }

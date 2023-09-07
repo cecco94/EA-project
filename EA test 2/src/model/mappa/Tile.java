@@ -1,13 +1,14 @@
 package model.mappa;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import view.main.GamePanel;
 
 public class Tile {
 	
 	private boolean solid; //controllare se serve
-	private Rectangle hitbox;
+	private Hitbox hitbox;
 	private String name;	//molto utile nel debugging
 	
 	public Tile(String name, String solid, String hitbox) {
@@ -16,7 +17,7 @@ public class Tile {
 		if(this.solid == true)
 			initHitbox(hitbox);	
 		else 
-			this.hitbox = new Rectangle(0,0,0,0);
+			this.hitbox = new Hitbox(0,0,0,0);
 	}
 
 	private void initHitbox(String hitbox) {
@@ -26,14 +27,14 @@ public class Tile {
 		int y = (int)(Integer.parseInt(values[1]) * GamePanel.SCALE );
 		int w = (int)(Integer.parseInt(values[2]) * GamePanel.SCALE );
 		int h = (int)(Integer.parseInt(values[3]) * GamePanel.SCALE );
-		this.hitbox = new Rectangle(x,y,w,h);
+		this.hitbox = new Hitbox(x,y,w,h);
 	}
 
 	public boolean isSolid() {
 		return solid;
 	}
 
-	public Rectangle getHitbox() {
+	public Hitbox getHitbox() {
 		return hitbox;
 	}
 

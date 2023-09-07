@@ -1,8 +1,9 @@
 package model;
 
-import java.awt.Rectangle;
+
 
 import controller.IController;
+import controller.playState.Hitbox;
 import model.mappa.Map;
 import model.mappa.RoomModel;
 import model.mappa.Rooms;
@@ -63,12 +64,12 @@ public class IModel {
 		return tiles;
 	}
 
-	public int checkPassagge(Rectangle hitbox) {
+	public int checkPassagge(Hitbox hitbox) {
 		indexCurrentPassage = rooms[Rooms.currentRoom.mapIndex].checkPassInRoom(hitbox);
 		return indexCurrentPassage;
 	}
 	
-	public int checkEvent(Rectangle hitbox) {
+	public int checkEvent(Hitbox hitbox) {
 		eventIndex = rooms[Rooms.currentRoom.mapIndex].checkEventInRoom(hitbox);
 		return eventIndex;
 	}

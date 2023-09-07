@@ -1,24 +1,25 @@
 package controller.playState.entityController;
 
-import java.awt.Rectangle;
 
+
+import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import view.main.GamePanel;
 
 public abstract class EntityController {
 
 	//il punto in alto a sinistra della hitbox è la posizione dell'entità nella mappa
-	protected Rectangle hitbox, tempHitboxForCheck;
+	protected Hitbox hitbox, tempHitboxForCheck;
 	protected int speed;
 	protected PlayStateController play;
 	protected boolean moving, idle, attacking, up, down, left, right;
 	protected int direction;
 	public static final int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
-	public static final int IDLE = 0, MOVE = 1, ATTACK = 2, THROW = 3;
+	public static final int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4;
 	protected int currentAction = IDLE;
 	protected int type; //per capire, se è un NPC quale sia
 	
-	public EntityController (Rectangle r, PlayStateController p) {
+	public EntityController (Hitbox r, PlayStateController p) {
 		play = p;
 		hitbox = r;
 		
@@ -31,7 +32,7 @@ public abstract class EntityController {
 		
 		//hitbox che serve per le collisioni, prima di cambiare la hitbox, cambiamo questa
 		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
-		tempHitboxForCheck = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		tempHitboxForCheck = new Hitbox(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		
 		resetBooleans();
 		direction = DOWN;
@@ -60,7 +61,7 @@ public abstract class EntityController {
 		return type;
 	}
 	
-	public Rectangle getHitbox() {
+	public Hitbox getHitbox() {
 		return hitbox;
 	}
 	

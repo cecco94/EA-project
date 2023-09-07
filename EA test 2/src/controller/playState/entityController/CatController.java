@@ -1,8 +1,9 @@
 package controller.playState.entityController;
 
-import java.awt.Rectangle;
+
 import java.util.Random;
 
+import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import view.main.GamePanel;
 
@@ -20,7 +21,7 @@ public class CatController extends EntityController {
 
 	
 	public CatController(int xPos, int yPos, PlayStateController p) {
-		super(new Rectangle(xPos, yPos, hitboxWidth, hitboxHeight), p);
+		super(new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
 		speed = catSpeed;
 		type = 0;
 	}

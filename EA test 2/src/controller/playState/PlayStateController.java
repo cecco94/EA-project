@@ -1,11 +1,11 @@
 package controller.playState;
 
+
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
-import java.awt.Rectangle;
 
 import controller.IController;
 import controller.main.Gamestate;
@@ -21,14 +21,14 @@ public class PlayStateController {
 	private PlayerController playerController;
 	private Collisions collisionCheck;
 	private IController controller;
-
+	
 	private ArrayList<Bullet> bulletsInRoom;
 	private RoomController[] stanzeController;
 	
 	public PlayStateController(IController c) {
 		controller = c;
 		collisionCheck = new Collisions(c); 
-		Rectangle r = new Rectangle(12, 9, 0, 0);
+		Hitbox r = new Hitbox(12, 9, 0, 0);
 		playerController = new PlayerController(r, this);
 		bulletsInRoom = new ArrayList<>();
 		initRooms();

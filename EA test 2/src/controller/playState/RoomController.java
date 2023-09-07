@@ -1,6 +1,5 @@
 package controller.playState;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import controller.playState.entityController.CatController;
@@ -53,7 +52,7 @@ public class RoomController {
 		
 	}
 
-	public void addEnemy(int type, Rectangle r) {
+	public void addEnemy(int type, Hitbox r) {
 		enemy.add(new EnemyController(r, play));
 	}
 

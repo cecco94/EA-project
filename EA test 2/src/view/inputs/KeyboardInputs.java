@@ -6,11 +6,13 @@ import java.awt.event.KeyListener;
 
 import controller.main.Gamestate;
 import view.IView;
+import view.playState.entityView.EntityView;
 
 
 public class KeyboardInputs implements KeyListener {
 
 	private IView view;
+	
 	
 	public KeyboardInputs(IView v) {
 		this.view = v;
@@ -39,6 +41,27 @@ public class KeyboardInputs implements KeyListener {
 		default:
 			break;
 		}					
+	}
+	
+	public int getActionKey(KeyEvent e) {
+		switch(e.getKeyCode()) {
+		case KeyEvent.VK_ENTER:
+			return EntityView.ATTACK;
+		case KeyEvent.VK_SPACE:
+			return EntityView.PARRY;
+		case KeyEvent.VK_P:
+			return EntityView.THROW;	
+		case KeyEvent.VK_A:
+			return EntityView.LEFT;
+		case KeyEvent.VK_D:
+			return EntityView.RIGHT;	
+		case KeyEvent.VK_W:
+			return EntityView.UP;	
+		case KeyEvent.VK_S:
+			return EntityView.DOWN;
+		default :
+			return 999;
+		}
 	}
 
 	@Override
