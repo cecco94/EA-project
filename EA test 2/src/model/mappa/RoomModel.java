@@ -19,14 +19,6 @@ public class RoomModel {
 	private ArrayList<Event> eventi;
 	private IModel model;
 
-	//ogni entità deve vedere se spostandosi si schianta contro un'altra entità. Per farlo, invece di controllare tutta la 
-	//lista di entità ogni volta, controlla in questa matrice di interi.
-	//In questa matrice è inserito un numero che è il numero di entità sopra al tile.
-	//L'entità controlla il tile dove si trova, se c'è un numero > 1 (uno no perchè è l'entità stessa), controlla nella lista 
-	//se va a intersecarsi con un'altra entità.
-	//Se deve controllare anche altri tile (sta a metà tra due colonne/righe) allora il numero deve essere > 0
-	
-	//private int[][] tilesOccupati;
 		
 		
 	public RoomModel(String percorsoFile, IModel m, int index) {
@@ -168,42 +160,5 @@ public class RoomModel {
 	
 }
 
-//per capire quanto è grande la stanza, prendiamo il primo strato della mappa corrispondente
-//e ne prendiamo le dimensioni
-//int matricePrimoStrato[][] = model.getMappa().getStrato(index, 0);
-//int altezza = matricePrimoStrato.length;
-//int larghezza = matricePrimoStrato[0].length;
-//	tilesOccupati = new int[altezza][larghezza];
-//	printTilesOccupati();
-//}
 
-//@SuppressWarnings("unused")
-//private void printTilesOccupati() {
-//for(int righe = 0; righe < tilesOccupati.length; righe++) {
-//	for(int colonne = 0; colonne < tilesOccupati[0].length; colonne++) {
-//		System.out.print(tilesOccupati[righe][colonne]);
-//	}
-//	System.out.println();
-//}
-//System.out.println();	
-//}
-//
-//public void aggiungiEntitaAlTile(int riga, int colonna) {
-//tilesOccupati[riga][colonna]++;
-////System.out.println("prima ");
-////printTilesOccupati();
-//}
-//
-//public void togliEntitaAlTile(int riga, int colonna) {
-//if(tilesOccupati[riga][colonna] > 0) {
-//	tilesOccupati[riga][colonna]--;
-////	System.out.println("dopo ");
-////	printTilesOccupati();
-//}
-//}
-
-//	public int getNumEntityIntile(int riga, int colonna){
-//		return tilesOccupati[riga][colonna];
-//	}
-//	
 

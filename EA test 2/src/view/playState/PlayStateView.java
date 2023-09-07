@@ -91,7 +91,8 @@ public class PlayStateView {
 		//disegna la ui sopra a tutto il resto
 		ui.draw(g2);
 	}			
-		
+
+	//disegna i primi due starti della mappa
 	public void drawFloor(Graphics2D g2, int room, int initialMapX, int initialMapY, int playerMapX, int playerMapY) {
 		for (int layer = 0; layer < Map.THIRD_LAYER; layer++)	//disegna i primi due strati
 			drawLayer(g2, room, layer, initialMapX, initialMapY, playerMapX, playerMapY);

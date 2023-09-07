@@ -485,6 +485,7 @@ public class PlayerView extends EntityView {
 		
 	}
 	
+	//posizione al centro della finestra
 	public void setMapPositionForSort(int posizPlayerX, int posizPlayerY) {
 		xPosMapForSort = posizPlayerX - xOffset;
 		yPosMapForSort = posizPlayerY - yOffset;
