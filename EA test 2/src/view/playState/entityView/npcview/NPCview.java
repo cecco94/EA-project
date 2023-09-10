@@ -5,13 +5,12 @@ import java.awt.Graphics2D;
 import view.IView;
 import view.playState.entityView.EntityView;
 
-public class NPCview extends EntityView {
+public abstract class NPCview extends EntityView {
 
-	private String[] dialoghi;
-	private IView view;
+	protected String[] dialoghi;
+	protected IView view;
 	
-	public NPCview(IView v, String[] dial) {
-		dialoghi = dial;
+	public NPCview(IView v) {
 		view = v;
 	}
 	

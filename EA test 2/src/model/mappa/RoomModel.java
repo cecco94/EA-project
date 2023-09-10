@@ -53,11 +53,11 @@ public class RoomModel {
 						int height = Integer.parseInt(datiNellaRiga[5]);
 						
 						Hitbox r = new Hitbox(xPos, yPos, width, height);
-						model.getController().getPlay().getRoom(index).addEnemy(type, r);
+					//	model.getController().getPlay().getRoom(index).addEnemy(type, r);
 					}
 					
 					else if(rigaLetta.contains("-")) {		//il trattino indica npc
-						int type = Integer.parseInt(datiNellaRiga[1]);	
+						String type = datiNellaRiga[1];	
 						
 						int xPos = Integer.parseInt(datiNellaRiga[2]);
 						int yPos = Integer.parseInt(datiNellaRiga[3]);

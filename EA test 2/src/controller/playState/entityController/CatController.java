@@ -20,10 +20,9 @@ public class CatController extends EntityController {
 	private int counterRunnigAway;
 
 	
-	public CatController(int xPos, int yPos, PlayStateController p) {
-		super(new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
+	public CatController(int i, String type, int xPos, int yPos, PlayStateController p) {
+		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
 		speed = catSpeed;
-		type = 0;
 	}
 	
 	public void update() {

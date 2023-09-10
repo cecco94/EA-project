@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import controller.main.Gamestate;
+
 import view.IView;
 import view.playState.entityView.EntityView;
 
@@ -62,8 +63,7 @@ public class KeyboardInputs implements KeyListener {
 				break;
 		}
 	}
-	
-	
+		
 	public int getActionAssociatedToKey(KeyEvent e) {
 		
 			if(e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -104,6 +104,19 @@ public class KeyboardInputs implements KeyListener {
 				break;
 			case PAUSE:
 				view.getPause().keyPressed(e.getKeyCode());
+				break;
+			case DIALOGUE:
+				if(e.getKeyCode() == KeyEvent.VK_ESCAPE ||
+				   e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_A ||
+				   e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_W) {
+					
+					view.changeGameState(Gamestate.PLAYING);
+					view.getController().getPlay().getPlayer().resetBooleans();
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					int index = view.getController().getPlay().getPlayer().getIndexOfEntityInteract();
+					view.getPlay().getRoom(view.getCurrentRoomIndex()).getNPC(index).nextDialogueLine();
+				}
 				break;
 			default:
 				break;

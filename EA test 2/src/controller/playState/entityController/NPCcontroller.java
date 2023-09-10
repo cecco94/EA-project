@@ -7,8 +7,8 @@ import controller.playState.PlayStateController;
 
 public class NPCcontroller extends EntityController {
 
-	public NPCcontroller(Hitbox r, PlayStateController p) {
-		super(r, p);
+	public NPCcontroller(int index, String type, Hitbox r, PlayStateController p) {
+		super(index, type, r, p);
 		
 	}
 

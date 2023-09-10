@@ -2,11 +2,10 @@ package view.playState;
 
 import java.util.ArrayList;
 
-import controller.playState.entityController.EntityController;
-
 import view.playState.drawOrder.SortableElement;
 import view.playState.entityView.CatView;
 import view.playState.entityView.EntityView;
+import view.playState.entityView.npcview.Ermenegildo;
 
 public class RoomView {
 
@@ -24,11 +23,11 @@ public class RoomView {
 		getDataFromController(index);
 	}
 	
-	private void getDataFromController(int index) {
+	private void getDataFromController(int roomIndex) {
 		
-		ArrayList<EntityController> temp = play.getView().getController().getPlay().getRoom(index).getNPC();
-		for(int i = 0; i < temp.size(); i++) {
-			addNPC(temp.get(i).getType(), i);
+		int temp = play.getView().getController().getPlay().getRoom(roomIndex).getNPC().size();
+		for(int index = 0; index < temp; index++) {
+			addNPC(play.getView().getController().getPlay().getRoom(roomIndex).getNPC().get(index).getType(), index);
 		}
 	}
 
@@ -36,8 +35,12 @@ public class RoomView {
 		enemyView.add(e);
 	}
 	
-	public void addNPC(int type, int index) {
-		NPCview.add(new CatView(play.getView(), index));
+	public void addNPC(String type, int index) {
+		if(type.compareTo("gatto") == 0)
+			NPCview.add(new CatView(play.getView(), index));
+		
+		else if(type.compareTo("vecchio") == 0) 
+			NPCview.add(new Ermenegildo(play.getView(), index));
 	}
 
 	//mette nella lista da ordinare tutti e soli gli elementi vicini al player
@@ -46,6 +49,10 @@ public class RoomView {
 		for(int i = 0; i < NPCview.size(); i++)
 			if(NPCview.get(i).isInGameFrame(posizPlayerX, posizPlayerY))
 				drawOrder.add(NPCview.get(i));
+	}
+
+	public EntityView getNPC(int index) {	
+		return NPCview.get(index);
 	}
 	
 	

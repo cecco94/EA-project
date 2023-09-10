@@ -9,6 +9,7 @@ import controller.IController;
 import controller.main.Gamestate;
 import controller.playState.Hitbox;
 import model.IModel;
+import model.mappa.Rooms;
 import view.gameBegin.StartTitle;
 import view.inputs.MouseInputs;
 import view.main.GamePanel;
@@ -122,6 +123,10 @@ public class IView {
 		case PAUSE:
 			play.draw(g2);
 			pause.draw(g2);
+			break;
+		case DIALOGUE:
+			play.draw(g2);
+			play.getUI().drawDialogue(g2);
 		default:
 			break;			
 		}
@@ -212,4 +217,13 @@ public class IView {
 	public static Rectangle fromHitboxToRectangle(Hitbox h) {
 		return new Rectangle(h.x, h.y, h.width, h.height);
 	}
+	
+	public int getCurrentRoomIndex() {
+		return Rooms.currentRoom.mapIndex;
+	}
+	
+	public int getCurrentRoomMusicIndex() {
+		return Rooms.currentRoom.musicIndex;
+	}
+	
 }

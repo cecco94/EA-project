@@ -7,8 +7,8 @@ import controller.playState.PlayStateController;
 
 public class EnemyController extends EntityController{
 
-	public EnemyController(Hitbox r, PlayStateController p) {
-		super(r,p);
+	public EnemyController(int index, String type, Hitbox r, PlayStateController p) {
+		super(index, type, r, p);
 		
 	}
 

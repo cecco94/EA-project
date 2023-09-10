@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import controller.main.Gamestate;
-import model.mappa.Rooms;
 import view.main.GamePanel;
 
 //per non passare bruscamente da uno stato all'altro, disegna sfumandolo il vecchio stato 
@@ -65,7 +64,7 @@ public class TransitionState {
 				view.playMusic(SoundManager.MENU_MUSIC);
 			
 			else 
-				view.playMusic(Rooms.currentRoom.musicIndex);
+				view.playMusic(view.getCurrentRoomMusicIndex());
 			
 			view.setMusicVolume(volumeBeforeTransition);
 			volume = view.getMusicVolume();

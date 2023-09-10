@@ -17,9 +17,15 @@ public abstract class EntityController {
 	public static final int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	public static final int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4;
 	protected int currentAction = IDLE;
-	protected int type; //per capire, se è un NPC quale sia
+	protected String type;   //per capire, se è un NPC quale sia
+	//l'indice nella lista delle entità
+	protected int index;
 	
-	public EntityController (Hitbox r, PlayStateController p) {
+	public EntityController (int ind, String type, Hitbox r, PlayStateController p) {
+		index = ind;
+		
+		this.type = type;
+		
 		play = p;
 		hitbox = r;
 		
@@ -36,6 +42,7 @@ public abstract class EntityController {
 		
 		resetBooleans();
 		direction = DOWN;
+		currentAction = IDLE;
 
 	}
 	
@@ -57,7 +64,7 @@ public abstract class EntityController {
 	
 	public abstract void update();
 	
-	public int getType() {
+	public String getType() {
 		return type;
 	}
 	
@@ -135,6 +142,10 @@ public abstract class EntityController {
 	
 	public int getDirection() {
 		return direction;
+	}
+	
+	public int getIndex() {
+		return index;
 	}
 	
 	public String toString() {

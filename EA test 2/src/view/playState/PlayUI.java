@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import controller.main.Gamestate;
 
 import model.mappa.Rooms;
+
 import view.ViewUtils;
 import view.main.GamePanel;
 
@@ -52,7 +53,7 @@ public class PlayUI {
 	private void loadImages() {
 		try {
 			darkEffect = ImageIO.read(getClass().getResourceAsStream("/ui/effettoBuioFinale.png"));
-			darkEffect = ViewUtils.scaleImage(darkEffect, darkEffect.getWidth()*GamePanel.SCALE,											darkEffect.getHeight()*GamePanel.SCALE);
+			darkEffect = ViewUtils.scaleImage(darkEffect, darkEffect.getWidth()*GamePanel.SCALE, darkEffect.getHeight()*GamePanel.SCALE);
 			
 			cfuIcon = ImageIO.read(getClass().getResourceAsStream("/ui/punteggioPiccolo.png"));
 			cfuIcon = ViewUtils.scaleImage(cfuIcon, cfuIcon.getWidth()*GamePanel.SCALE, cfuIcon.getHeight()*GamePanel.SCALE);
@@ -64,10 +65,10 @@ public class PlayUI {
 				lifeIcons[i] = temp.getSubimage(45*i, 0, 45, 32);
 			
 			for(int i = 0; i < 4; i++) {
-				lifeIcons[i] = ViewUtils.scaleImage(lifeIcons[i], lifeIcons[i].getWidth()*GamePanel.SCALE, 									lifeIcons[i].getHeight()*GamePanel.SCALE);
+				lifeIcons[i] = ViewUtils.scaleImage(lifeIcons[i], lifeIcons[i].getWidth()*GamePanel.SCALE, lifeIcons[i].getHeight()*GamePanel.SCALE);
 			}
 			noteIcon = ImageIO.read(getClass().getResourceAsStream("/ui/appuntiPiccoli.png"));
-			noteIcon = ViewUtils.scaleImage(noteIcon, noteIcon.getWidth()*GamePanel.SCALE, 												noteIcon.getHeight()*GamePanel.SCALE);
+			noteIcon = ViewUtils.scaleImage(noteIcon, noteIcon.getWidth()*GamePanel.SCALE, noteIcon.getHeight()*GamePanel.SCALE);
 			
 		} 
 		catch (IOException e) {	
@@ -227,6 +228,33 @@ public class PlayUI {
 	public void setDark(boolean b) {
 		dark = b;
 	}
+
+	
+	public void drawDialogue(Graphics2D g2) {
+		
+		g2.setColor(Color.black);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
+		g2.fillRoundRect(0, GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT/4, 30, 30);
+		
+		g2.setColor(Color.white);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		g2.drawRoundRect((int)(5*GamePanel.SCALE), GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(5*GamePanel.SCALE),
+						    GamePanel.GAME_WIDTH - (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/4 - (int)(10*GamePanel.SCALE), 30, 30);
+		
+		//prende l'indice dell'npc con cui parla il player, va nella stanza e prende quell'npc, prende le stringhe di dialogo da lì, poi le disegna
+		int index = play.getView().getController().getPlay().getPlayer().getIndexOfEntityInteract();
+		String line = play.getRoom(play.getView().getCurrentRoomIndex()).getNPC(index).getCurrentDialogue();
+		g2.setFont(fontDisplay);
+		g2.drawString(line, (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(30*GamePanel.SCALE));
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 }

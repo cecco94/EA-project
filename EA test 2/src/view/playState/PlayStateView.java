@@ -30,7 +30,8 @@ public class PlayStateView {
 	private ArrayList<BulletView> bulletsInRoom;
 	private RoomView[] roomsView;
 	
-	private PlayUI ui;
+	private PlayUI ui;	
+	
 	
 	public PlayStateView(TilesetView t, IView v) {
 		view = v;
@@ -56,7 +57,7 @@ public class PlayStateView {
 	//prima disegna il pavimento, poi ci disegna sopra tutti gli oggetti partendo dall'alto, in modo il player che sta sotto
 	//ad un tile sembri stare davanti a quel tile e viceversa. stiamo aggiungendo tridimensionalità al gioco
 	public void draw(Graphics2D g2) {
-		int roomIndex = Rooms.currentRoom.mapIndex;
+		int roomIndex = view.getCurrentRoomIndex();
 		//prendiamo la posizione del player nella mappa (in quale tile tile si trova il punto in alto a sinitra della hitbox)
 		//contiamo a sinistra -10 e a destra +10, in su -7 e in giù +7 e prendiamo solo le parti della matrice con questi numeri
 		int playerMapX = view.getController().getPlay().getPlayer().getHitbox().x;
@@ -90,6 +91,7 @@ public class PlayStateView {
 		
 		//disegna la ui sopra a tutto il resto
 		ui.draw(g2);
+		
 	}			
 
 	//disegna i primi due starti della mappa

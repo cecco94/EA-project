@@ -17,7 +17,7 @@ public class PlayerView extends EntityView {
 		
 	//campo 0 = tipo(ragazzo-ragazza), primo campo = azione, secondo = direzione, terzo = immagine
 	//la classa estente Entity e quindi eredita l'array di animazioni vuoto
-	private static  BufferedImage[][][][] playerAnimation = PlayerView.animation;
+	private static  BufferedImage[][][][] playerAnimation;
 	
 	private boolean endAttackAnimation = true;
 	private boolean firstParry = true;

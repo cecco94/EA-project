@@ -8,7 +8,6 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import model.mappa.Rooms;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
@@ -19,6 +18,7 @@ public class CatView extends EntityView {
 	//siccome tutti i gatti condividono lo stesso array di animazioni, per non 
 	//caricare le immagini ogni volta che creiamo un gatto, usiamo questo boolean
 	//e le immagini verranno caricate solo una volta
+	private static BufferedImage[][][][] animation;	
 	public static boolean firstCat = true;
 	private int color;
 
@@ -186,8 +186,8 @@ public class CatView extends EntityView {
 			g2.setColor(Color.black);
 			g2.drawRect(xPosOnScreen + 3*xOffset,
 						yPosOnScreen + 3*yOffset,
-						view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).getNPC().get(index).getHitbox().width,
-						view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).getNPC().get(index).getHitbox().height);
+						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().width,
+						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().height);
 
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
@@ -199,7 +199,7 @@ public class CatView extends EntityView {
 
 	private void setAction() {
 		//vede nel controller cosa fa il gatto e cambia currentAction
-		currentAction = view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).
+		currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).
 															getNPC().get(index).getCurrentAction();
 		
 		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
@@ -211,7 +211,7 @@ public class CatView extends EntityView {
 	
 	private void setDirection() {
 		//vede nel controller la direzione del gatto e cambia currentDirection
-		currentDirection = view.getController().getPlay().getRoom(Rooms.currentRoom.mapIndex).
+		currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).
 															getNPC().get(index).getCurrentDirection();
 		
 		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up

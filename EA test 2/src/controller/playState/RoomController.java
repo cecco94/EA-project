@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import controller.playState.entityController.CatController;
 import controller.playState.entityController.EnemyController;
 import controller.playState.entityController.EntityController;
+import controller.playState.entityController.ErmenegildoController;
 //import controller.playState.entityController.NPCcontroller;
 
 public class RoomController {
@@ -27,13 +28,13 @@ public class RoomController {
 		}
 	}
 	
-	public void removeEnemy(int index) {
-		enemy.remove(index);
-	}
-	
-	public void removeNPC(int index) {
-		NPC.remove(index);
-	}
+//	public void removeEnemy(int index) {
+//		enemy.remove(index);
+//	}
+//	
+//	public void removeNPC(int index) {
+//		NPC.remove(index);
+//	}
 	
 	public ArrayList<EntityController> getEnemy(){
 		return enemy;
@@ -52,11 +53,25 @@ public class RoomController {
 		
 	}
 
-	public void addEnemy(int type, Hitbox r) {
-		enemy.add(new EnemyController(r, play));
+	public void addEnemy(String type, Hitbox r) {
+		enemy.add(new EnemyController(enemy.size(), type, r, play));
 	}
 
-	public void addNPC(int type, int xPos, int yPos) {
-		NPC.add(new CatController(xPos, yPos, play));	
+	public void addNPC (String type, int xPos, int yPos) {
+		
+		if(type.compareTo("gatto") == 0)		//se la stringa dentro al file è uguale a "-gatto"
+			NPC.add(new CatController(NPC.size(), type, xPos, yPos, play));	
+		
+		else if(type.compareTo("vecchio") == 0) 
+			NPC.add(new ErmenegildoController(NPC.size(), type, xPos, yPos, play));	
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 }

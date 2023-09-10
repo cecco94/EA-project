@@ -16,6 +16,10 @@ public class PlayerController extends EntityController {
 	private int cfu = 0;
 	private int notes = 10;
 	
+	//quando il player parla con qualcuno, si salva l'indice nella lista di quell'entità
+	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
+	private int indexOfEntityInteract;
+	
 	private int speed = (int)(GamePanel.SCALE*1.3f);
 	private boolean  parry, throwing, interacting;
 
@@ -25,7 +29,8 @@ public class PlayerController extends EntityController {
 	
 	
 	public PlayerController(Hitbox r, PlayStateController p) {
-		super(r, p);
+		//BRUTTO, DA CAMBIARE
+		super(-1, "player", r, p);
 		
 		int hitboxWidth = (int)(GamePanel.TILES_SIZE*0.75);
 		int hitboxHeight = GamePanel.TILES_SIZE/2;
@@ -215,6 +220,12 @@ public class PlayerController extends EntityController {
 		}
 	}
 	
+	public void speak(int index) {
+		play.getController().setGameState(Gamestate.DIALOGUE);
+		indexOfEntityInteract = index;
+		interacting = false;
+	}
+	
 
 	public void setParry(boolean b) {
 		parry = b;	
@@ -289,6 +300,10 @@ public class PlayerController extends EntityController {
 		life += 20;
 		if(life > 100)
 			life = 100;
+	}
+	
+	public int getIndexOfEntityInteract() {
+		return indexOfEntityInteract;
 	}
 	
 }
