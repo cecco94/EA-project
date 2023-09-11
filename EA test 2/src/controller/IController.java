@@ -4,6 +4,7 @@ import controller.main.Gamestate;
 import controller.playState.PlayStateController;
 import model.IModel;
 import view.IView;
+import view.main.GamePanel;
 
 public class IController {
 
@@ -54,5 +55,12 @@ public class IController {
 		return play;
 	}
 	
+	public int getTileSize() {
+		return GamePanel.TILES_SIZE;
+	}
+	
+	public float getGameScale() {
+		return GamePanel.SCALE;
+	}
 	
 }

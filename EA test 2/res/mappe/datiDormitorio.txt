@@ -2,6 +2,6 @@
 
 ;passaggio all'aula studio, 25, 23, 32, 32, 34, 40, 2, true
 
--gatto, 1, 19, 15, 32, 32
+-gatto, gatto, 19, 15, 32, 32
 
 +luce, 36, 21, 32, 32, luce

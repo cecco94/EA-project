@@ -4,23 +4,18 @@ import java.util.Random;
 
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
-import view.main.GamePanel;
 
 public class ErmenegildoController extends EntityController {
 	
 	private static int hitboxWidth = (int)(16*1.5), hitboxHeight = (int)(23*1.5);
-	private int oldManSpeed = (int)(GamePanel.SCALE*1f);
-	//la usiamo per capire se il player è vicino all'npc
-	private Hitbox areaOfInteraction;
-	
-//	private int actionCounter;
-//	private Random randomGenerator = new Random();
-//	private int randomAction, randomDirection;
-	
+	 
+	//	private int actionCounter;
+	//	private Random randomGenerator = new Random();
+	//	private int randomAction, randomDirection;
 	
 	public ErmenegildoController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
-		speed = oldManSpeed;	
+		speed = (int)(play.getController().getGameScale()*1f);	
 		idle = true;
 		down = true;
 	}
@@ -30,7 +25,7 @@ public class ErmenegildoController extends EntityController {
 		int xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 		int yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 		
-		if(xDistance < GamePanel.TILES_SIZE*1.5 && yDistance < GamePanel.TILES_SIZE*1.5) {
+		if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) {
 			play.getController().getView().getPlay().getUI().setMessage("premi E per parlare");
 			play.getController().getView().getPlay().getUI().setShowMessage(true);
 			

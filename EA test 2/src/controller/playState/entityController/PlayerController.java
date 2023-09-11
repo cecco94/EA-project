@@ -3,8 +3,6 @@ package controller.playState.entityController;
 import controller.main.Gamestate;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
-import model.mappa.Rooms;
-import view.main.GamePanel;
 
 public class PlayerController extends EntityController {
 
@@ -20,7 +18,7 @@ public class PlayerController extends EntityController {
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
 	private int indexOfEntityInteract;
 	
-	private int speed = (int)(GamePanel.SCALE*1.3f);
+	private int speed = (int)(play.getController().getGameScale()*1.3f);
 	private boolean  parry, throwing, interacting;
 
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
@@ -32,8 +30,8 @@ public class PlayerController extends EntityController {
 		//BRUTTO, DA CAMBIARE
 		super(-1, "player", r, p);
 		
-		int hitboxWidth = (int)(GamePanel.TILES_SIZE*0.75);
-		int hitboxHeight = GamePanel.TILES_SIZE/2;
+		int hitboxWidth = (int)(play.getController().getTileSize()*0.75);
+		int hitboxHeight = play.getController().getTileSize()/2;
 		
 		super.setBounds(r.x, r.y, hitboxWidth, hitboxHeight);
 		
@@ -117,7 +115,7 @@ public class PlayerController extends EntityController {
 				speed = (int)(0.5f); //int --> diventa 0 , rivedere
 			
 			else {
-				speed = (int)(GamePanel.SCALE*1.3);
+				speed = (int)(play.getController().getGameScale()*1.3);
 				isAttackAnimation = false;
 				attackCounter = 0;
 			}
@@ -187,13 +185,13 @@ public class PlayerController extends EntityController {
 		int passageIndex = play.getController().getModel().checkPassagge(hitbox);
 		
 		if(passageIndex >= 0) {
-			if(play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getPassaggi().get(passageIndex).isOpen()) {
+			if(play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).isOpen()) {
 				play.getController().getModel().saveNewRoomData();
 				play.getController().setGameState(Gamestate.TRANSITION_ROOM);
 			}
 			else {
 				//se passaggio è chiuso, il passaggio stesso restituisce una stringa che viene stampata a video
-				String s = play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getPassaggi().get(passageIndex).getMessage();
+				String s = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).getMessage();
 				play.getController().getView().getPlay().getUI().setMessage(s);
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 			}
@@ -207,13 +205,13 @@ public class PlayerController extends EntityController {
 		int eventIndex = play.getController().getModel().checkEvent(hitbox);
 		
 		if(eventIndex >= 0) {
-			boolean alreadyInteracted = play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).isEndInteraction();
+			boolean alreadyInteracted = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).isEndInteraction();
 			if(!alreadyInteracted) {
 				play.getController().getView().getPlay().getUI().setMessage("premi E per interagire");
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 				
 				if(interacting) {
-					play.getController().getModel().getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).Interact();
+					play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).Interact();
 					interacting = false;
 				}
 			}

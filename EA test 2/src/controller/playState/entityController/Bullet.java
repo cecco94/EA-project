@@ -1,10 +1,7 @@
 package controller.playState.entityController;
 
-
-
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
-import view.main.GamePanel;
 
 public class Bullet {
 
@@ -19,7 +16,7 @@ public class Bullet {
 	public Bullet(PlayStateController p, int index, EntityController e) {
 		play = p;
 		setHitbox(e);
-		speed = (int)(GamePanel.SCALE*1.3f);
+		speed = (int)(play.getController().getGameScale()*1.3f);
 		indexInList = index;
 		
 		direction = e.direction;

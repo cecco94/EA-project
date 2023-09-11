@@ -1,10 +1,7 @@
 package controller.playState;
 
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
-import javax.swing.SwingUtilities;
 
 import controller.IController;
 import controller.main.Gamestate;
@@ -158,25 +155,6 @@ public class PlayStateController {
 			playerController.setInteracting(false);
 	}
 	
-
-
-	public void handleMouseReleased(MouseEvent e) {
-		if (SwingUtilities.isLeftMouseButton(e) && !playerController.isParring())
-			playerController.setAttacking(false);
-		
-		else if(SwingUtilities.isRightMouseButton(e))
-			playerController.setParry(false);
-		
-		else if(SwingUtilities.isMiddleMouseButton(e) && !playerController.isParring()) {			
-			if(playerController.getNotes() > 0) {
-				playerController.decreaseBulletsNumber();
-				playerController.setThrowing(false);
-				addBullets(playerController);
-				controller.getView().getPlay().addBullet();
-			}
-		}
-	}
-	
 	public PlayerController getPlayer() {
 		return playerController;
 	}
@@ -215,6 +193,10 @@ public class PlayStateController {
 	
 	public RoomController getRoom(int index) {
 		return stanzeController[index];
+	}
+	
+	public int getCurrentroomIndex() {
+		return Rooms.currentRoom.mapIndex;
 	}
 	
 }

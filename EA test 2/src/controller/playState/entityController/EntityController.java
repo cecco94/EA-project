@@ -1,10 +1,7 @@
 package controller.playState.entityController;
 
-
-
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
-import view.main.GamePanel;
 
 public abstract class EntityController {
 
@@ -30,11 +27,11 @@ public abstract class EntityController {
 		hitbox = r;
 		
 		//settiamo la posizione nella mappa e scaliamo la dimensione
-		hitbox.x *= GamePanel.TILES_SIZE; 
-		hitbox.y *= GamePanel.TILES_SIZE; 
+		hitbox.x *= play.getController().getTileSize(); 
+		hitbox.y *= play.getController().getTileSize(); 
 		
-		hitbox.width *= GamePanel.SCALE;
-		hitbox.height *= GamePanel.SCALE;
+		hitbox.width  *= play.getController().getGameScale();
+		hitbox.height *= play.getController().getGameScale();
 		
 		//hitbox che serve per le collisioni, prima di cambiare la hitbox, cambiamo questa
 		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox

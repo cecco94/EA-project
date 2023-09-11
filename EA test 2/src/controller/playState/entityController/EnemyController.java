@@ -1,7 +1,5 @@
 package controller.playState.entityController;
 
-
-
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 

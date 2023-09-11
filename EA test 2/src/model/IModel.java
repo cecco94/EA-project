@@ -9,6 +9,7 @@ import model.mappa.RoomModel;
 import model.mappa.Rooms;
 import model.mappa.TilesetModel;
 import view.IView;
+import view.main.GamePanel;
 
 public class IModel {
 
@@ -109,5 +110,12 @@ public class IModel {
 		return view;
 	}
 
+	public static int getTileSize() {
+		return GamePanel.TILES_SIZE;
+	}
+	
+	public static float getGameScale() {
+		return GamePanel.SCALE;
+	}
 	
 }

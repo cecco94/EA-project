@@ -5,12 +5,10 @@ import java.util.Random;
 
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
-import view.main.GamePanel;
 
 public class CatController extends EntityController {
 	
 	private static int hitboxWidth = 28, hitboxHeight = 20;
-	private int catSpeed = (int)(GamePanel.SCALE*1.2f);
 	
 	private int actionCounter;
 	private Random randomGenerator = new Random();
@@ -22,7 +20,7 @@ public class CatController extends EntityController {
 	
 	public CatController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
-		speed = catSpeed;
+		speed = (int)(play.getController().getGameScale()*1.2f);
 	}
 	
 	public void update() {
@@ -37,10 +35,10 @@ public class CatController extends EntityController {
 			int xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 			int yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			
-			if(xDistance < GamePanel.TILES_SIZE*2 && yDistance < GamePanel.TILES_SIZE*2) {
+			if(xDistance < play.getController().getTileSize()*2 && yDistance < play.getController().getTileSize()*2) {
 				runningAway = true;
 				setRunAwayDirection();	
-				speed = (int)(GamePanel.SCALE*1.5f);
+				speed = (int)(play.getController().getGameScale()*1.5f);
 			}
 			
 			else 
@@ -58,7 +56,7 @@ public class CatController extends EntityController {
 		if(counterRunnigAway >= 200) {
 			runningAway = false;
 			counterRunnigAway = 0;
-			speed = (int)(GamePanel.SCALE*1.2f);
+			speed = (int)(play.getController().getGameScale()*1.2f);
 		}
 		//se ancora non è passato un secondo, continua a correre in quella direzione
 		//finchè non trovi un muro
@@ -287,7 +285,7 @@ public class CatController extends EntityController {
 			moving = false;
 			idle = true;
 			runningAway = false;
-			speed = (int)(GamePanel.SCALE*1.2f);
+			speed = (int)(play.getController().getGameScale()*1.2f);
 		}
 		
 	}

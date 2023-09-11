@@ -3,7 +3,7 @@ package model.mappa;
 
 
 import controller.playState.Hitbox;
-import view.main.GamePanel;
+import model.IModel;
 
 public class Tile {
 	
@@ -23,10 +23,10 @@ public class Tile {
 	private void initHitbox(String hitbox) {
 		String[] values = null;
 		values = hitbox.trim().split(",");
-		int x = (int)(Integer.parseInt(values[0]) * GamePanel.SCALE );
-		int y = (int)(Integer.parseInt(values[1]) * GamePanel.SCALE );
-		int w = (int)(Integer.parseInt(values[2]) * GamePanel.SCALE );
-		int h = (int)(Integer.parseInt(values[3]) * GamePanel.SCALE );
+		int x = (int)(Integer.parseInt(values[0]) * IModel.getGameScale() );
+		int y = (int)(Integer.parseInt(values[1]) * IModel.getGameScale() );
+		int w = (int)(Integer.parseInt(values[2]) * IModel.getGameScale() );
+		int h = (int)(Integer.parseInt(values[3]) * IModel.getGameScale() );
 		this.hitbox = new Hitbox(x,y,w,h);
 	}
 

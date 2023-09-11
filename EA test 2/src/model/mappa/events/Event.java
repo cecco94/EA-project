@@ -4,7 +4,6 @@ package model.mappa.events;
 
 import controller.playState.Hitbox;
 import model.IModel;
-import view.main.GamePanel;
 
 public abstract class Event {
 
@@ -18,11 +17,11 @@ public abstract class Event {
 		bounds = r;
 		model = m;
 		
-		bounds.x *= GamePanel.TILES_SIZE;
-		bounds.y *= GamePanel.TILES_SIZE;
+		bounds.x *= model.getController().getTileSize();
+		bounds.y *= model.getController().getTileSize();
 		
-		bounds.width *= GamePanel.SCALE;
-		bounds.height *= GamePanel.SCALE;
+		bounds.width  *= model.getController().getGameScale();
+		bounds.height *= model.getController().getGameScale();
 	}
 	
 	public abstract void Interact();
