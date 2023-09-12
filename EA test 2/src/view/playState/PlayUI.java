@@ -243,16 +243,36 @@ public class PlayUI {
 		
 		//prende l'indice dell'npc con cui parla il player, va nella stanza e prende quell'npc, prende le stringhe di dialogo da lì, poi le disegna
 		int index = play.getView().getController().getPlay().getPlayer().getIndexOfEntityInteract();
-		String line = play.getRoom(play.getView().getCurrentRoomIndex()).getNPC(index).getCurrentDialogue();
+		String text = play.getRoom(play.getView().getCurrentRoomIndex()).getNPC(index).getCurrentDialogue();
 		g2.setFont(fontDisplay);
-		g2.drawString(line, (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(30*GamePanel.SCALE));
+		
+		int y = GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(30*GamePanel.SCALE);
+		
+		for(String line : text.split("\n ")) {
+		//	drawCharToChar(line, y, g2);
+			
+			g2.drawString(line, (int)(10*GamePanel.SCALE), y);
+			y += 40;
+		}
 		
 	}
-	
-	
-	
-	
-	
+
+//		private void drawCharToChar(String line, int y, Graphics2D g2) {
+//			String combinedText = "";
+//			int charIndex = 0;
+//			char[] characters = line.toCharArray();
+//			
+//			if (charIndex < characters.length) {
+//				
+//				String s = String.valueOf(characters[charIndex]);
+//				combinedText.concat(s);
+//				
+//				charIndex++;
+//				System.out.println(s);
+//				g2.drawString(combinedText, (int)(10*GamePanel.SCALE), y);
+//			}
+//		
+//	}
 	
 	
 	

@@ -1,18 +1,12 @@
 package controller.playState.entityController;
 
 
-import java.util.Random;
-
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 
 public class CatController extends EntityController {
 	
 	private static int hitboxWidth = 28, hitboxHeight = 20;
-	
-	private int actionCounter;
-	private Random randomGenerator = new Random();
-	private int randomAction, randomDirection;
 	
 	private boolean runningAway;
 	private int counterRunnigAway;
@@ -29,6 +23,9 @@ public class CatController extends EntityController {
 
 	private void choseAction() {
 		
+		// se non sta scappando, controlla se il giocatore è nelle vicinanze. se il giocatore è vicino, inizia a scappare e scegli una direzione di fuga
+		// se invece il giocatore è lontano, continua a camminare a caso
+		// se infine stai già scappando, continua a scappare
 		if(!runningAway) {
 			//se il giocatore si avvicina al gatto, il gatto si sposta nella direzione opposta per un secondo
 			//se la direzione opposta è bloccata da un muro, va in un'altra direzione
@@ -183,53 +180,10 @@ public class CatController extends EntityController {
 			
 	}
 
-	//metodo che gestisce il movimento del gatto quando non viene inseguito 
-//	private void normalAction() {
-//		actionCounter++;	
-//		//ogni due secondi cambia azione e direzione 
-//		if(actionCounter >= 400) {
-//			resetAction();
-//			randomAction = randomGenerator.nextInt(2);
-//			
-//			if (randomAction == 0) 
-//				idle = true;
-//			
-//			else
-//				moving = true;
-//		}
-//		
-//		choseDirection();
-//		checkCollision();
-//		
-//	}
-
 	protected void resetAction() {
 		super.resetAction();
 		runningAway = false;
 	}
-
-//	protected void choseDirection() {		
-//	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
-//		if(actionCounter >= 400) {
-//			resetDirection();	
-//			randomDirection = randomGenerator.nextInt(4);
-//			
-//			if(randomDirection == 0) 
-//				up = true;
-//			
-//			else if (randomDirection == 1) 
-//				down = true;
-//			
-//			else if(randomDirection == 2) 
-//				left = true;
-//			
-//			else if(randomDirection == 3) 
-//				right = true;
-//			
-//			actionCounter = 0;
-//		}
-//		
-//	}
 
 	protected void checkCollision() {
 		//collisione con la mappa

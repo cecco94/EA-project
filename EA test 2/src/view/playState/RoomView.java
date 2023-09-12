@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import view.playState.drawOrder.SortableElement;
 import view.playState.entityView.CatView;
 import view.playState.entityView.EntityView;
-import view.playState.entityView.npcview.Ermenegildo;
+import view.playState.entityView.npcview.DockView;
+import view.playState.entityView.npcview.ErmenegildoView;
 
 public class RoomView {
 
@@ -40,7 +41,10 @@ public class RoomView {
 			NPCview.add(new CatView(play.getView(), index));
 		
 		else if(type.compareTo("vecchio") == 0) 
-			NPCview.add(new Ermenegildo(play.getView(), index));
+			NPCview.add(new ErmenegildoView(play.getView(), index));
+		
+		else if(type.compareTo("prof") == 0)
+			NPCview.add(new DockView(play.getView(), index));
 	}
 
 	//mette nella lista da ordinare tutti e soli gli elementi vicini al player

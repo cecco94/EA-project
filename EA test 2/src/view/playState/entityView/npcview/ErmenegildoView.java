@@ -13,11 +13,11 @@ import view.main.GamePanel;
 import view.playState.entityView.EntityView;
 import view.playState.entityView.PlayerView;
 
-public class Ermenegildo extends EntityView {
+public class ErmenegildoView extends EntityView {
 				
 	protected static BufferedImage[][][][] animation;	
 	
-	public Ermenegildo(IView v, int index) {
+	public ErmenegildoView(IView v, int index) {
 		
 		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		view = v;
@@ -40,10 +40,10 @@ public class Ermenegildo extends EntityView {
 		BufferedImage image = null;
 		BufferedImage temp = null;
 		
-		Ermenegildo.animation = new BufferedImage[1][2][][];		//un tipo di vecchio, due azioni
+		ErmenegildoView.animation = new BufferedImage[1][2][][];		//un tipo di vecchio, due azioni
 
-		Ermenegildo.animation[0][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
-		Ermenegildo.animation[0][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		ErmenegildoView.animation[0][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		ErmenegildoView.animation[0][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		
 		loadRunImages(image, temp);
 		loadIdleImages();
@@ -58,7 +58,7 @@ public class Ermenegildo extends EntityView {
 				for(int index = 0; index < 3; index++) {
 					temp = image.getSubimage(index*16 + 16*counter, 0, 16, 23);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.5f*GamePanel.SCALE, temp.getHeight()*1.5f*GamePanel.SCALE);
-					Ermenegildo.animation[0][RUN][direction][index] = temp;
+					ErmenegildoView.animation[0][RUN][direction][index] = temp;
 				}
 				counter += 3;
 			}
@@ -72,19 +72,29 @@ public class Ermenegildo extends EntityView {
 	public void loadIdleImages(){
 		//prendi le immagini già caricate, prendi la seconda ogni tre		
 		for(int direction = 0;  direction < 4; direction++)
-			Ermenegildo.animation[0][IDLE][direction][0] = Ermenegildo.animation[0][RUN][direction][1]; 
+			ErmenegildoView.animation[0][IDLE][direction][0] = ErmenegildoView.animation[0][RUN][direction][1]; 
 		
 	}
 	
 	private void setDialogs() {	
-		dialogues = new String[3];
-		dialogues[0] = "ciao, sei nuovo?";
-		dialogues[1] = "beato te, io sono qui da un po'...";
-		dialogues[2] = "il professor Luke Crickets è mi ha bocciato un paio di volte";
+		dialogues = new String[11];
+		dialogues[0] = "ciao, sei una matricola?";
+		dialogues[1] = "che invidia, io sono qui da un po'...\n il prof Luke Crickets mi ha bocciato 100 volte";
+		dialogues[2] = "lascia che ti dia qualche dritta";
+		dialogues[3] = "per laurearti, ti servono 180 CFU, che puoi trovare vicino ai computer";
+		
+		dialogues[4] = "non ti fare influenzare dagli studenti nullafacenti, \n abbassano la tua concentrazione!";
+		dialogues[5] = "siano maledetti.. \n tutti i loro giochi con le carte mi hanno fatto perdere tanto tempo";
+		dialogues[6] = "usa il computer e gli appunti che trovi in giro per difenderti";
 
+		dialogues[7] = "il caffè è un tuo alleato, \n prendi ogni tazzina disponibile se ti senti stanco";
+		dialogues[8] = "conosco qualche scorciatoia per racimolare CFU più in fretta:";
+		dialogues[9] = "parla con i tuoi colleghi, \n possono aiutarti negli esami in cambio di qualche favore";
+		dialogues[10] = "se ti serve qualche altro suggerimento, mi trovi in biblioteca. \n Qui sei al sicuro, i nullafacenti non entrano mai";
+		
 	}
 	
-
+	
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
@@ -92,14 +102,14 @@ public class Ermenegildo extends EntityView {
 		setAction();
 		setDirection();
 		
-//		if (animationCounter > animationSpeed) {
-//			numSprite ++;	
-//			
-//			if(numSprite >= getAnimationLenght())
-//				numSprite = 0;	
-//			
-//			animationCounter = 0;
-//		}
+		if (animationCounter > animationSpeed) {
+			numSprite ++;	
+			
+			if(numSprite >= getAnimationLenght())
+				numSprite = 0;	
+			
+			animationCounter = 0;
+		}
 		
 		//distanza nella mappa tra il punto in alto a sinistra della hitbox 
 		//del player ed il punto in alto a sinistra della hitbox del gatto
@@ -112,7 +122,7 @@ public class Ermenegildo extends EntityView {
 		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
 		
 		try {
-			g2.drawImage(Ermenegildo.animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+			g2.drawImage(ErmenegildoView.animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
 			
 			//quadrato dove viene disegnato il gatto
 			g2.setColor(Color.red);
@@ -160,14 +170,14 @@ public class Ermenegildo extends EntityView {
 			currentDirection = 3;
 	}
 	
-//	private int getAnimationLenght() {
-//		if(currentAction == IDLE)
-//			return 1;
-//		
-//		else if(currentAction == RUN)
-//			return 3;
-//		
-//		return 0;
-//	}
+	private int getAnimationLenght() {
+		if(currentAction == IDLE)
+			return 1;
+		
+		else if(currentAction == RUN)
+			return 3;
+		
+		return 0;
+	}
 	
 }

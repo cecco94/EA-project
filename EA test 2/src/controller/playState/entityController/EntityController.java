@@ -207,7 +207,6 @@ public abstract class EntityController {
 	}
 	
 	protected void checkCollision() {
-		//collisione con la mappa
 		boolean collision = true;
 		
 		if (moving && up) {
@@ -254,14 +253,11 @@ public abstract class EntityController {
 			}		
 		}	
 		
-		//se incontra ostacoli nella mappa, si ferma e smette di scappare
+		//se incontra ostacoli nella mappa, si ferma 
 		if(collision) {
 			moving = false;
 			idle = true;
 			
-			
-//			runningAway = false;
-//			speed = (int)(play.getController().getGameScale()*1.2f);
 		}
 		
 	}

@@ -18,3 +18,5 @@ per gli NPC l'ordine è tipo posx posy
 +appunti, 22, 32, 32, 32, appunti
 
 +cfu, 25, 16, 32, 32, cfu
+
+-prof, prof, 29, 8
