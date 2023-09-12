@@ -14,13 +14,13 @@ public abstract class EntityController {
 	protected boolean moving, idle, attacking, up, down, left, right;
 	protected int direction;
 	public static final int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
-	public static final int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4;
+	public static final int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4, DIE = 5;
 	protected int currentAction = IDLE;
 	
 	// per far camminare l'entità in modo randomico
-	private int actionCounter;
-	private Random randomGenerator = new Random();
-	private int randomAction, randomDirection;
+	protected int actionCounter;
+	protected Random randomGenerator = new Random();
+	protected int randomAction, randomDirection;
 	
 	//per capire, se è un NPC quale sia
 	protected String type;   
@@ -257,9 +257,32 @@ public abstract class EntityController {
 		if(collision) {
 			moving = false;
 			idle = true;
-			
 		}
 		
 	}
 	
+	protected void tunrToInteract() {
+		
+		resetDirection();
+		
+		if(play.getPlayer().getDirection() == DOWN) {
+			direction = UP;
+			up = true;
+		}
+		
+		else if(play.getPlayer().getDirection() == UP) {
+			direction = DOWN;
+			down = true;
+		}
+		
+		else if(play.getPlayer().getDirection() == RIGHT) {
+			direction = LEFT;
+			left = true;
+		}
+		
+		else if(play.getPlayer().getDirection() == LEFT) {
+			direction = RIGHT;
+			right = true;
+		}	
+	}
 }

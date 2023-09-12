@@ -3,7 +3,7 @@ package controller.playState;
 import java.util.ArrayList;
 
 import controller.playState.entityController.CatController;
-import controller.playState.entityController.Dockcontroller;
+import controller.playState.entityController.DocController;
 import controller.playState.entityController.EnemyController;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.ErmenegildoController;
@@ -67,7 +67,7 @@ public class RoomController {
 			NPC.add(new ErmenegildoController(NPC.size(), type, xPos, yPos, play));	
 		
 		else if(type.compareTo("prof") == 0)
-			NPC.add(new Dockcontroller(NPC.size(), type, xPos, yPos, play));
+			NPC.add(new DocController(NPC.size(), type, xPos, yPos, play));
 		
 	}
 	

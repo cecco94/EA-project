@@ -10,7 +10,7 @@ public class ErmenegildoController extends EntityController {
 	
 	public ErmenegildoController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
-		speed = (int)(play.getController().getGameScale()*0.5f);	
+		speed = (int)(play.getController().getGameScale()*0.7f);	
 		idle = true;
 		down = true;
 	}
@@ -35,30 +35,5 @@ public class ErmenegildoController extends EntityController {
 		
 	}
 
-	private void tunrToInteract() {
-		
-		resetDirection();
-		
-		if(play.getPlayer().getDirection() == DOWN) {
-			direction = UP;
-			up = true;
-		}
-		
-		else if(play.getPlayer().getDirection() == UP) {
-			direction = DOWN;
-			down = true;
-		}
-		
-		else if(play.getPlayer().getDirection() == RIGHT) {
-			direction = LEFT;
-			left = true;
-		}
-		
-		else if(play.getPlayer().getDirection() == LEFT) {
-			direction = RIGHT;
-			right = true;
-		}	
-	}
-		
 
 }

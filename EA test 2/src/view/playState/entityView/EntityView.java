@@ -18,11 +18,11 @@ public abstract class EntityView extends SortableElement {
 	// ogni oggetto avrebbe un array di immagini.. non possiamo caricare le immagini una volta dentro la classe indicandoli come statici?
 	// per fare ciò ci servirebbe un costruttore statico, che in java non esiste.. c'è un modo elegante per farlo?
 	
-	public final static int IDLE = 0, RUN = 1, ATTACK = 2, PARRY = 3, THROW = 4,  DIE = 5, SLEEP = 6;
+	public final static int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4,  DIE = 5, SLEEP = 6;
 	public final static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	
 	protected int currentAction = IDLE;
-	protected int previousAction = RUN;
+	protected int previousAction = MOVE;
 	protected int currentDirection = DOWN;
 	
 	//per l'animazione
@@ -58,7 +58,7 @@ public abstract class EntityView extends SortableElement {
 	}
 	
 	public static int getRun() {
-		return RUN;
+		return MOVE;
 	}
 
 	public static int getIDLE() {
@@ -82,6 +82,35 @@ public abstract class EntityView extends SortableElement {
 		}
 	}
 	
+	protected void setDirection() {
+	//vede nel controller la direzione del gatto e cambia currentDirection
+		currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
+		
+		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up
+		if(currentDirection == RIGHT)
+			currentDirection = 1;
+		
+		else if(currentDirection == LEFT)
+			currentDirection = 2;
+		
+		else if(currentDirection == DOWN)
+			currentDirection = 0;
+		
+		else if(currentDirection == UP)
+			currentDirection = 3;
+
+	}
 	
+	protected void setAction() {
+		//vede nel controller cosa fa il gatto e cambia currentAction
+		currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentAction();
+		
+		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
+		if(currentAction != previousAction) {
+			numSprite = 0;
+			previousAction = currentAction;
+		}
+		
+	}	
 	
 }

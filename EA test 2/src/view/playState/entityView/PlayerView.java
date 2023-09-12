@@ -417,7 +417,7 @@ public class PlayerView extends EntityView {
 	}
 		
 	private void loadRunImages(BufferedImage image, BufferedImage temp) {
-		playerAnimation[RAGAZZO][RUN] = new BufferedImage[4][6];		//ci sono 4 direzioni, ogni direzione ha 6 immagini
+		playerAnimation[RAGAZZO][MOVE] = new BufferedImage[4][6];		//ci sono 4 direzioni, ogni direzione ha 6 immagini
 
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/player/walkingSpritesBoyCorr.png"));
@@ -425,57 +425,57 @@ public class PlayerView extends EntityView {
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*23, 0, 23, 35);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZO][RUN][DOWN][i] = temp;
+				playerAnimation[RAGAZZO][MOVE][DOWN][i] = temp;
 			}
 			
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*24, 35, 24, 33);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZO][RUN][RIGHT][i] = temp;
+				playerAnimation[RAGAZZO][MOVE][RIGHT][i] = temp;
 			}
 			
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*24, 35 + 33, 24, 33);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZO][RUN][LEFT][i] = temp;
+				playerAnimation[RAGAZZO][MOVE][LEFT][i] = temp;
 			}
 			
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*26, 35 + 33 + 33, 26, 36);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZO][RUN][UP][i] = temp;
+				playerAnimation[RAGAZZO][MOVE][UP][i] = temp;
 			}
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		playerAnimation[RAGAZZA][RUN] = new BufferedImage[4][6];		//ci sono 4 direzioni, ogni direzione ha 6 immagini
+		playerAnimation[RAGAZZA][MOVE] = new BufferedImage[4][6];		//ci sono 4 direzioni, ogni direzione ha 6 immagini
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/player/MoveGirl.png"));
 			
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*26, 0, 26, 34);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZA][RUN][DOWN][i] = temp;
+				playerAnimation[RAGAZZA][MOVE][DOWN][i] = temp;
 			}
 			
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*24, 34, 24, 33);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZA][RUN][RIGHT][i] = temp;
+				playerAnimation[RAGAZZA][MOVE][RIGHT][i] = temp;
 			}
 			
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*24, 34 + 33, 24, 33);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZA][RUN][LEFT][i] = temp;
+				playerAnimation[RAGAZZA][MOVE][LEFT][i] = temp;
 			}
 			
 			for(int i = 0; i < 6; i++) {
 				temp = image.getSubimage(i*31, 34 + 33 + 33, 31, 34);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
-				playerAnimation[RAGAZZA][RUN][UP][i] = temp;
+				playerAnimation[RAGAZZA][MOVE][UP][i] = temp;
 			}
 		} 
 		catch (IOException e) {
@@ -562,7 +562,7 @@ public class PlayerView extends EntityView {
 		}
 		
 		else if(view.getController().getPlay().getPlayer().isMoving() && endAttackAnimation) {
-			currentAction = RUN;
+			currentAction = MOVE;
 			animationSpeed = 20;
 		}
 		
@@ -605,7 +605,7 @@ public class PlayerView extends EntityView {
 	public int getAnimationLenght() {
 		if(currentAction == IDLE)
 			return 4;
-		else if(currentAction == RUN)
+		else if(currentAction == MOVE)
 			return 6;
 		else if(currentAction == ATTACK)
 			return 5;
@@ -623,7 +623,7 @@ public class PlayerView extends EntityView {
 		if(currentAction == ATTACK && currentDirection == LEFT)
 			xOnScreen -= (int)GamePanel.SCALE*20;	
 		
-		else if(avatarType == RAGAZZA && currentAction == RUN && currentDirection == UP) 
+		else if(avatarType == RAGAZZA && currentAction == MOVE && currentDirection == UP) 
 			xOnScreen -= (int)GamePanel.SCALE*10;
 		
 		else if(avatarType == RAGAZZO && currentAction == THROW && currentDirection == LEFT)

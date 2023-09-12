@@ -60,15 +60,15 @@ public class CatView extends EntityView {
 	}
 
 	private void loadRunImages(BufferedImage image, BufferedImage temp) {
-		CatView.animation[BIANCO][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		CatView.animation[BIANCO][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBianco.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBiancoGiusto.png"));
 						
 			for(int direction = 0; direction < 4 ; direction++) {
 				for(int img = 0; img < 3; img++) {
 					temp = image.getSubimage(img*32, direction*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-					CatView.animation[BIANCO][RUN][direction][img] = temp ;
+					CatView.animation[BIANCO][MOVE][direction][img] = temp ;
 				}
 			}
 		} 
@@ -76,15 +76,15 @@ public class CatView extends EntityView {
 			e.printStackTrace();
 		}
 		
-		CatView.animation[NERO][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		CatView.animation[NERO][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNero.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNeroGiusto.png"));
 						
 			for(int direction = 0; direction < 4 ; direction++) {
 				for(int img = 0; img < 3; img++) {
 					temp = image.getSubimage(img*32, direction*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-					CatView.animation[NERO][RUN][direction][img] = temp ;
+					CatView.animation[NERO][MOVE][direction][img] = temp ;
 				}
 			}
 		} 
@@ -197,42 +197,11 @@ public class CatView extends EntityView {
 		
 	}
 
-	private void setAction() {
-		//vede nel controller cosa fa il gatto e cambia currentAction
-		currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).
-															getNPC().get(index).getCurrentAction();
-		
-		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
-		if(currentAction != previousAction) {
-			numSprite = 0;
-			previousAction = currentAction;
-		}
-	}
-	
-	private void setDirection() {
-		//vede nel controller la direzione del gatto e cambia currentDirection
-		currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).
-															getNPC().get(index).getCurrentDirection();
-		
-		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up
-		if(currentDirection == RIGHT)
-			currentDirection = 2;
-		
-		else if(currentDirection == LEFT)
-			currentDirection = 1;
-		
-		else if(currentDirection == DOWN)
-			currentDirection = 0;
-		
-		else if(currentDirection == UP)
-			currentDirection = 3;
-	}
-
 	private int getAnimationLenght() {
 		if(currentAction == IDLE)
 			return 1;
 		
-		else if(currentAction == RUN)
+		else if(currentAction == MOVE)
 			return 3;
 		
 		return 0;

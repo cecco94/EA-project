@@ -3,13 +3,13 @@ package controller.playState.entityController;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 
-public class Dockcontroller extends EntityController {
+public class DocController extends EntityController {
 	
-	private static int hitboxWidth = (int)(16*1.5), hitboxHeight = (int)(23*1.5);
+	private static int hitboxWidth = (int)(16*1.5), hitboxHeight = (int)(24*1.5);
 
-	public Dockcontroller(int ind, String type, int xPos, int yPos, PlayStateController p) {
+	public DocController(int ind, String type, int xPos, int yPos, PlayStateController p) {
 		super(ind, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
-		speed = (int)(play.getController().getGameScale()*0.5f);	
+		speed = (int)(play.getController().getGameScale()*0.7f);	
 		idle = true;
 		down = true;
 	}
@@ -34,28 +34,5 @@ public class Dockcontroller extends EntityController {
 		
 	}
 	
-	private void tunrToInteract() {
-		resetDirection();
-		
-		if(play.getPlayer().getDirection() == DOWN) {
-			direction = UP;
-			up = true;
-		}
-		
-		else if(play.getPlayer().getDirection() == UP) {
-			direction = DOWN;
-			down = true;
-		}
-		
-		else if(play.getPlayer().getDirection() == RIGHT) {
-			direction = LEFT;
-			left = true;
-		}
-		
-		else if(play.getPlayer().getDirection() == LEFT) {
-			direction = RIGHT;
-			right = true;
-		}	
-	}
 
 }

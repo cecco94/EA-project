@@ -15,7 +15,8 @@ import view.playState.entityView.PlayerView;
 
 public class ErmenegildoView extends EntityView {
 				
-	protected static BufferedImage[][][][] animation;	
+	protected BufferedImage[][][][] animation;	
+	
 	
 	public ErmenegildoView(IView v, int index) {
 		
@@ -40,10 +41,10 @@ public class ErmenegildoView extends EntityView {
 		BufferedImage image = null;
 		BufferedImage temp = null;
 		
-		ErmenegildoView.animation = new BufferedImage[1][2][][];		//un tipo di vecchio, due azioni
+		animation = new BufferedImage[1][2][][];		//un tipo di vecchio, due azioni
 
-		ErmenegildoView.animation[0][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
-		ErmenegildoView.animation[0][RUN] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		animation[0][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		animation[0][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		
 		loadRunImages(image, temp);
 		loadIdleImages();
@@ -58,7 +59,7 @@ public class ErmenegildoView extends EntityView {
 				for(int index = 0; index < 3; index++) {
 					temp = image.getSubimage(index*16 + 16*counter, 0, 16, 23);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.5f*GamePanel.SCALE, temp.getHeight()*1.5f*GamePanel.SCALE);
-					ErmenegildoView.animation[0][RUN][direction][index] = temp;
+					animation[0][MOVE][direction][index] = temp;
 				}
 				counter += 3;
 			}
@@ -72,7 +73,7 @@ public class ErmenegildoView extends EntityView {
 	public void loadIdleImages(){
 		//prendi le immagini già caricate, prendi la seconda ogni tre		
 		for(int direction = 0;  direction < 4; direction++)
-			ErmenegildoView.animation[0][IDLE][direction][0] = ErmenegildoView.animation[0][RUN][direction][1]; 
+			animation[0][IDLE][direction][0] = animation[0][MOVE][direction][1]; 
 		
 	}
 	
@@ -122,7 +123,7 @@ public class ErmenegildoView extends EntityView {
 		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
 		
 		try {
-			g2.drawImage(ErmenegildoView.animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
 			
 			//quadrato dove viene disegnato il gatto
 			g2.setColor(Color.red);
@@ -141,40 +142,11 @@ public class ErmenegildoView extends EntityView {
 		}
 	}
 	
-	private void setAction() {
-	//vede nel controller cosa fa il gatto e cambia currentAction
-			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentAction();
-			
-			//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
-			if(currentAction != previousAction) {
-				numSprite = 0;
-				previousAction = currentAction;
-			}
-		}
-
-	private void setDirection() {
-		//vede nel controller la direzione del gatto e cambia currentDirection
-		currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
-		
-		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up
-		if(currentDirection == RIGHT)
-			currentDirection = 2;
-		
-		else if(currentDirection == LEFT)
-			currentDirection = 1;
-		
-		else if(currentDirection == DOWN)
-			currentDirection = 0;
-		
-		else if(currentDirection == UP)
-			currentDirection = 3;
-	}
-	
 	private int getAnimationLenght() {
 		if(currentAction == IDLE)
 			return 1;
 		
-		else if(currentAction == RUN)
+		else if(currentAction == MOVE)
 			return 3;
 		
 		return 0;
