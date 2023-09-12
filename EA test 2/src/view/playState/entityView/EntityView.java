@@ -73,6 +73,7 @@ public abstract class EntityView extends SortableElement {
 		return dialogues[dialogueIndex];
 	}
 	
+	// dopo che ha detto una frase, va alla frase successiva, se sono finite le frasi esce dallo stato dialogue
 	public void nextDialogueLine() {
 		dialogueIndex++;
 		if(dialogueIndex >= dialogues.length) {

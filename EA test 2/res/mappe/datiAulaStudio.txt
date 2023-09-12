@@ -13,8 +13,6 @@ per gli NPC l'ordine è tipo posx posy
 
 -gatto, gatto, 20, 8
 
--ermenegildo, vecchio, 23, 13
-
 +caffe, 13, 12, 32, 32, caffe
 
 +appunti, 22, 32, 32, 32, appunti

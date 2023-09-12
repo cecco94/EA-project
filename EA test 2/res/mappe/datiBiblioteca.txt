@@ -1,14 +1,8 @@
 ;passaggio all'aula studio, 26, 9, 16, 16, 34, 8, 2, true
 
--gatto, gatto, 12, 9, 32, 32, 0
+-ermenegildo, vecchio, 17, 12
 
--gatto, gatto, 17, 9, 32, 32, 0
-
--gatto, gatto, 16, 16, 32, 32, 0
-
--gatto, gatto, 24, 17, 32, 32, 0
-
-+appunti, 15, 12, 32, 32, appunti
++appunti, 12, 18, 32, 32, appunti
 
 +caffe, 24, 15, 32, 32, caffe
 

@@ -42,7 +42,7 @@ public class CatController extends EntityController {
 			}
 			
 			else 
-				normalAction();	
+				randomMove();
 		}
 		
 		else 
@@ -184,55 +184,54 @@ public class CatController extends EntityController {
 	}
 
 	//metodo che gestisce il movimento del gatto quando non viene inseguito 
-	private void normalAction() {
-		actionCounter++;	
-		//ogni due secondi cambia azione e direzione 
-		if(actionCounter >= 400) {
-			resetAction();
-			randomAction = randomGenerator.nextInt(2);
-			
-			if (randomAction == 0) 
-				idle = true;
-			
-			else
-				moving = true;
-		}
-		
-		choseDirection();
-		checkCollision();
-		
-	}
+//	private void normalAction() {
+//		actionCounter++;	
+//		//ogni due secondi cambia azione e direzione 
+//		if(actionCounter >= 400) {
+//			resetAction();
+//			randomAction = randomGenerator.nextInt(2);
+//			
+//			if (randomAction == 0) 
+//				idle = true;
+//			
+//			else
+//				moving = true;
+//		}
+//		
+//		choseDirection();
+//		checkCollision();
+//		
+//	}
 
-	private void resetAction() {
-		idle = false;
-		moving = false;
+	protected void resetAction() {
+		super.resetAction();
 		runningAway = false;
 	}
 
-	private void choseDirection() {		
-	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
-		if(actionCounter >= 400) {
-			resetDirection();	
-			randomDirection = randomGenerator.nextInt(4);
-			
-			if(randomDirection == 0) 
-				up = true;
-			
-			else if (randomDirection == 1) 
-				down = true;
-			
-			else if(randomDirection == 2) 
-				left = true;
-			
-			else if(randomDirection == 3) 
-				right = true;
-			
-			actionCounter = 0;
-		}
-		
-	}
+//	protected void choseDirection() {		
+//	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
+//		if(actionCounter >= 400) {
+//			resetDirection();	
+//			randomDirection = randomGenerator.nextInt(4);
+//			
+//			if(randomDirection == 0) 
+//				up = true;
+//			
+//			else if (randomDirection == 1) 
+//				down = true;
+//			
+//			else if(randomDirection == 2) 
+//				left = true;
+//			
+//			else if(randomDirection == 3) 
+//				right = true;
+//			
+//			actionCounter = 0;
+//		}
+//		
+//	}
 
-	private void checkCollision() {
+	protected void checkCollision() {
 		//collisione con la mappa
 		boolean collision = true;
 		
