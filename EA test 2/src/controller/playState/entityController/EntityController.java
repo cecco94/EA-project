@@ -47,6 +47,8 @@ public abstract class EntityController {
 		tempHitboxForCheck = new Hitbox(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		
 		resetBooleans();
+		idle = true;
+		down = true;
 		direction = DOWN;
 		currentAction = IDLE;
 

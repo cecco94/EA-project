@@ -74,7 +74,9 @@ public class RoomView {
 		return NPCview.get(index);
 	}
 	
-	
+	public EntityView getEnemy(int index) {
+		return enemyView.get(index);
+	}
 	
 	
 }

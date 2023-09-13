@@ -135,4 +135,5 @@ public abstract class EntityView extends SortableElement {
 				view.changeGameState(Gamestate.PLAYING);
 			}
 		}
+		
 }

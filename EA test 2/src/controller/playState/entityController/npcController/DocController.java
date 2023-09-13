@@ -11,8 +11,7 @@ public class DocController extends EntityController {
 	public DocController(int ind, String type, int xPos, int yPos, PlayStateController p) {
 		super(ind, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
 		speed = (int)(play.getController().getGameScale()*0.7f);	
-		idle = true;
-		down = true;
+
 	}
 
 	@Override

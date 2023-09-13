@@ -12,6 +12,7 @@ import controller.main.Gamestate;
 
 import view.ViewUtils;
 import view.main.GamePanel;
+import view.playState.entityView.PlayerView;
 
 // classe che mostra a video le informazioni come il punteggio, la vita, le munizioni...
 // si occupa inoltre di disegnare la transizione da una stanza all'altra
@@ -20,7 +21,7 @@ public class PlayUI {
 	private Font fontDisplay = new Font("Arial", Font.PLAIN, (int)(20*GamePanel.SCALE));
 	private String message = "";
 	
-	private BufferedImage darkEffect, noteIcon, cfuIcon;
+	private BufferedImage darkEffect, noteIcon, cfuIcon, exclamation;
 	private BufferedImage[] lifeIcons;
 	private String dataToShow = "";	
 	private int yPosPlayerData = (int)(5*GamePanel.SCALE);
@@ -41,6 +42,10 @@ public class PlayUI {
 	private float volumeBeforeTransition;
 	private boolean volumeSaved = false;
 	
+	//per disegnare un punto esclamativo sopra ai nemici che vedono il player
+	private boolean exclamationOn;
+	private int exclamationCounter;
+	private int indexEntityExclaming;
 	
 	public PlayUI(PlayStateView p) {
 		play = p;
@@ -67,6 +72,9 @@ public class PlayUI {
 			}
 			noteIcon = ImageIO.read(getClass().getResourceAsStream("/ui/appuntiPiccoli.png"));
 			noteIcon = ViewUtils.scaleImage(noteIcon, noteIcon.getWidth()*GamePanel.SCALE, noteIcon.getHeight()*GamePanel.SCALE);
+			
+			exclamation = ImageIO.read(getClass().getResourceAsStream("/ui/exclamation.png"));
+			exclamation = ViewUtils.scaleImage(exclamation, exclamation.getWidth()/8*GamePanel.SCALE, exclamation.getHeight()/8*GamePanel.SCALE);
 			
 		} 
 		catch (IOException e) {	
@@ -99,7 +107,7 @@ public class PlayUI {
 			play.getView().stopMusic();
 			play.getView().playMusic(play.getView().getCurrentRoomMusicIndex());
 			play.getView().setMusicVolume(volumeBeforeTransition);
-			
+			volumeSaved = false;
 		}
 	}
 	
@@ -110,9 +118,10 @@ public class PlayUI {
 		}
 	}
 	
-	public void draw(Graphics2D g2) {
+	public void draw(Graphics2D g2, int playerMapX, int playerMapY) {
 		
 		drawPlayerData(g2);
+		drawExclamation(g2, playerMapX, playerMapY);
 		drawDark(g2);
 		drawMessage(g2);
 		
@@ -253,7 +262,33 @@ public class PlayUI {
 	
 	}
 
+	public void drawExclamation(Graphics2D g2, int playerMapX, int playerMapY) {
+		if(exclamationOn) {
+			exclamationCounter++;
+			if(exclamationCounter <= 100) {
+				int exclamationHeight = exclamation.getHeight();
+				
+				int entityX = play.getView().getController().getPlay().getRoom(play.getView().getCurrentRoomIndex()).getEnemy().get(indexEntityExclaming).getHitbox().x;
+				int entityY = play.getView().getController().getPlay().getRoom(play.getView().getCurrentRoomIndex()).getEnemy().get(indexEntityExclaming).getHitbox().y;
+				
+				int distanceX = playerMapX - entityX;
+				int distanceY = playerMapY - entityY;
+				
+				int xpos =  PlayerView.xOnScreen - distanceX;
+				int ypos =  PlayerView.xOnScreen - distanceY;
 	
+				g2.drawImage(exclamation, xpos, ypos - exclamationHeight - 100, null);
+				
+			}
+			else {
+				exclamationOn = false;
+				exclamationCounter = 0;
+			}
+		}
+	}
 	
-	
+	public void activeExclamation(int index) {
+		exclamationOn = true;
+		indexEntityExclaming = index;
+	}
 }

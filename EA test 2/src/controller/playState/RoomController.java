@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import controller.playState.entityController.CatController;
 import controller.playState.entityController.EntityController;
-import controller.playState.entityController.RobotController;
+import controller.playState.entityController.enemyController.RobotController;
 import controller.playState.entityController.npcController.DocController;
 import controller.playState.entityController.npcController.ErmenegildoController;
 import controller.playState.entityController.npcController.NerdController;

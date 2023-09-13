@@ -10,25 +10,33 @@ public class PlayerController extends EntityController {
 
 	private int RAGAZZO = 0 , RAGAZZA = 1;
 	
+	private int attack = 20;
+	private int defense = 2;
 	private int life = 70;
 	private int cfu = 0;
 	private int notes = 10;
+
 	
 	//quando il player parla con qualcuno, si salva l'indice nella lista di quell'entità
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
 	private int indexOfEntityInteract;
 	
 	private int speed = (int)(play.getController().getGameScale()*1.3f);
-	private boolean  parry, throwing, interacting;
+	private boolean parry, throwing, interacting, hitted;
 
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
 	private int attackCounter; //durata attacco
 	
+	//quando viene colpito il giocatore si sposta della direzione del colpo per mezzo secondo e non può fare nulla
+	private int hittedCounter;
+	private int hittedDirection;
+	
 	
 	public PlayerController(Hitbox r, PlayStateController p) {
 		//BRUTTO, DA CAMBIARE
 		super(-1, "player", r, p);
+		resetBooleans();
 		
 		int hitboxWidth = (int)(play.getController().getTileSize()*0.75);
 		int hitboxHeight = play.getController().getTileSize()/2;
@@ -45,19 +53,49 @@ public class PlayerController extends EntityController {
 		}
 	}
 	
-	
-
 	public void update() {
-		updatePos();
-		isAbovePassage();
-		isNearEvent();
+		if(!hitted) {
+			updatePos();
+			isAbovePassage();
+			isNearEvent();
+		}
+		else 
+			spostatiNellaDirezioneDelColpo();
+	}
+
+	private void spostatiNellaDirezioneDelColpo() {
+		hittedCounter++;
+		if(hittedCounter >= 100) {
+			switch(hittedDirection) {
+			case UP:
+				hitbox.y -= 10;
+				break;
+			case LEFT: 
+				hitbox.x -= 10;
+				break;
+			case DOWN:
+				hitbox.y += 10;
+				break;
+			case RIGHT:
+				hitbox.x += 10;
+				break;
+			}
+		}
+		
+		else {
+			hittedCounter = 0;
+			hitted = false;
+			resetBooleans();
+		}
+		
 	}
 
 	private void updatePos() {
 		
+		//System.out.println(hitbox.x/play.getController().getTileSize() + " " + hitbox.x/play.getController().getTileSize());
+		
 		//durante l'intervallo mentre attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
-		
 		setMoving(false);
 		
 		if (left && !right && !parry) {
@@ -136,36 +174,40 @@ public class PlayerController extends EntityController {
 	}
 
 	public void choiceDirection(int dir) {
-		switch (dir) {
-		case UP:
-			up = true;
-			break;
-		case LEFT:
-			left = true;
-			break;
-		case DOWN:
-			down = true;
-			break;
-		case RIGHT:
-			right = true;
-			break;
+		if(!hitted) {
+			switch (dir) {
+			case UP:
+				up = true;
+				break;
+			case LEFT:
+				left = true;
+				break;
+			case DOWN:
+				down = true;
+				break;
+			case RIGHT:
+				right = true;
+				break;
+			}
 		}
 	}
 	
 	public void resetDirection(int dir) {
-		switch (dir) {
-		case UP:
-			up = false;
-			break;
-		case LEFT:
-			left = false;
-			break;
-		case DOWN:
-			down = false;
-			break;
-		case RIGHT:
-			right = false;
-			break;
+		if(!hitted) {
+			switch (dir) {
+			case UP:
+				up = false;
+				break;
+			case LEFT:
+				left = false;
+				break;
+			case DOWN:
+				down = false;
+				break;
+			case RIGHT:
+				right = false;
+				break;
+			}
 		}
 	}
 	
@@ -174,9 +216,11 @@ public class PlayerController extends EntityController {
 	}
 
 	public void setAttacking(boolean a) {
-		attacking = a;
-		if(attacking) 
-			isAttackAnimation = true;	
+		if(!hitted) {
+			attacking = a;
+			if(attacking) 
+				isAttackAnimation = true;
+		}
 	}
 	
 	public void isAbovePassage() {
@@ -224,9 +268,9 @@ public class PlayerController extends EntityController {
 		interacting = false;
 	}
 	
-
 	public void setParry(boolean b) {
-		parry = b;	
+		if(!hitted)
+			parry = b;	
 	}
 
 	public boolean isParring() {
@@ -238,16 +282,17 @@ public class PlayerController extends EntityController {
 	}
 
 	public void setThrowing(boolean throwing) {
-		this.throwing = throwing;
+		if(!hitted)
+			this.throwing = throwing;
 	}	
 	
 	public String toString() {
 		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
 	}
 
-
 	public void setInteracting(boolean b) {
-		interacting = b;	
+		if(!hitted)
+			interacting = b;	
 	}
 	
 	public boolean isInteracting() {
@@ -262,21 +307,17 @@ public class PlayerController extends EntityController {
 		this.life = life;
 	}
 
-
 	public int getCfu() {
 		return cfu;
 	}
-
 
 	public void setCfu(int cfu) {
 		this.cfu = cfu;
 	}
 
-
 	public int getNotes() {
 		return notes;
 	}
-
 
 	public void setNotes(int notes) {
 		this.notes = notes;
@@ -303,5 +344,34 @@ public class PlayerController extends EntityController {
 	public int getIndexOfEntityInteract() {
 		return indexOfEntityInteract;
 	}
+
+	public int getAttack() {
+		return attack;
+	}
+
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
+
+	public int getDefense() {
+		return defense;
+	}
+
+	public void setDefense(int defense) {
+		this.defense = defense;
+	}
+
+	public void colpito(int attack, int direction) {
+		if(!hitted) {
+			hitted = true;
+			hittedDirection = direction;
+			life -= attack-defense;
+		}
+	}
 	
 }
+
+
+
+
+

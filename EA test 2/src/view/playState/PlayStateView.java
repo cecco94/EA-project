@@ -90,8 +90,7 @@ public class PlayStateView {
 		drawOrder.clear();
 		
 		//disegna la ui sopra a tutto il resto
-		ui.draw(g2);
-		
+		ui.draw(g2, playerMapX,  playerMapY);
 	}			
 
 	//disegna i primi due starti della mappa

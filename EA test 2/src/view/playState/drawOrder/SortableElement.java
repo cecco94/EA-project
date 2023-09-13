@@ -37,5 +37,4 @@ public abstract class SortableElement implements Comparable<SortableElement> {
 	
 	public abstract void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap);
 	
-	
 }
