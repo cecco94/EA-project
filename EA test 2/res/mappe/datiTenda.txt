@@ -1,1 +1,3 @@
 ;passaggio all'aula studio, 14, 16, 64, 32, 26, 11, 2, true
+
+-nerd, nerd, 14, 10

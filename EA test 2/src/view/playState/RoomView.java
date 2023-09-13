@@ -8,6 +8,7 @@ import view.playState.entityView.EntityView;
 import view.playState.entityView.RobotView;
 import view.playState.entityView.npcview.DocView;
 import view.playState.entityView.npcview.ErmenegildoView;
+import view.playState.entityView.npcview.NerdView;
 
 public class RoomView {
 
@@ -42,6 +43,7 @@ public class RoomView {
 		enemyView.add(new RobotView(play.getView(), index));
 	}
 	
+	
 	public void addNPC(String type, int index) {
 		if(type.compareTo("gatto") == 0)
 			NPCview.add(new CatView(play.getView(), index));
@@ -51,6 +53,9 @@ public class RoomView {
 		
 		else if(type.compareTo("prof") == 0)
 			NPCview.add(new DocView(play.getView(), index));
+		
+		else if(type.compareTo("nerd") == 0)
+			NPCview.add(new NerdView(play.getView(), index));
 	}
 
 	//mette nella lista da ordinare tutti e soli gli elementi vicini al player

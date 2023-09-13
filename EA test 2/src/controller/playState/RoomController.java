@@ -7,6 +7,7 @@ import controller.playState.entityController.EntityController;
 import controller.playState.entityController.RobotController;
 import controller.playState.entityController.npcController.DocController;
 import controller.playState.entityController.npcController.ErmenegildoController;
+import controller.playState.entityController.npcController.NerdController;
 
 public class RoomController {
 
@@ -71,6 +72,8 @@ public class RoomController {
 		else if(type.compareTo("prof") == 0)
 			NPC.add(new DocController(NPC.size(), type, xPos, yPos, play));
 		
+		else if(type.compareTo("nerd") == 0)
+			NPC.add(new NerdController(NPC.size(), type, xPos, yPos, play));
 	}
 	
 	
