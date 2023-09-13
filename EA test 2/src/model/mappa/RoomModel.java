@@ -46,14 +46,11 @@ public class RoomModel {
 					datiNellaRiga = rigaLetta.trim().split(", ");
 				
 					if(rigaLetta.contains("/")) {	// lo slash indica che è un nemico								
-						int type = Integer.parseInt(datiNellaRiga[1]);	//parte da uno perchè il primo campo serve al lettore
+						String type = datiNellaRiga[1];	//parte da uno perchè il primo campo serve al lettore
 						int xPos = Integer.parseInt(datiNellaRiga[2]);
 						int yPos = Integer.parseInt(datiNellaRiga[3]);
-						int width = Integer.parseInt(datiNellaRiga[4]);
-						int height = Integer.parseInt(datiNellaRiga[5]);
 						
-						Hitbox r = new Hitbox(xPos, yPos, width, height);
-					//	model.getController().getPlay().getRoom(index).addEnemy(type, r);
+						model.getController().getPlay().getRoom(index).addEnemy(type, xPos, yPos);
 					}
 					
 					else if(rigaLetta.contains("-")) {		//il trattino indica npc

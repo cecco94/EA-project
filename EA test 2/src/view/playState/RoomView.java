@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import view.playState.drawOrder.SortableElement;
 import view.playState.entityView.CatView;
 import view.playState.entityView.EntityView;
-import view.playState.entityView.npcview.DockView;
+import view.playState.entityView.RobotView;
+import view.playState.entityView.npcview.DocView;
 import view.playState.entityView.npcview.ErmenegildoView;
 
 public class RoomView {
@@ -30,10 +31,15 @@ public class RoomView {
 		for(int index = 0; index < temp; index++) {
 			addNPC(play.getView().getController().getPlay().getRoom(roomIndex).getNPC().get(index).getType(), index);
 		}
+		
+		int temp2 = play.getView().getController().getPlay().getRoom(roomIndex).getEnemy().size();
+		for(int index = 0; index < temp2; index++) {
+			addEnemy(play.getView().getController().getPlay().getRoom(roomIndex).getEnemy().get(index).getType(), index);
+		}
 	}
 
-	public void addEnemy(EntityView e) {
-		enemyView.add(e);
+	public void addEnemy(String type, int index) {
+		enemyView.add(new RobotView(play.getView(), index));
 	}
 	
 	public void addNPC(String type, int index) {
@@ -44,15 +50,19 @@ public class RoomView {
 			NPCview.add(new ErmenegildoView(play.getView(), index));
 		
 		else if(type.compareTo("prof") == 0)
-			NPCview.add(new DockView(play.getView(), index));
+			NPCview.add(new DocView(play.getView(), index));
 	}
 
 	//mette nella lista da ordinare tutti e soli gli elementi vicini al player
 	public void addEntitiesInFrameForSort(int posizPlayerX, int posizPlayerY, ArrayList<SortableElement> drawOrder) {
 		//ogni npc prende la posizione del personaggio e vede se è dentro la finestra di gioco
 		for(int i = 0; i < NPCview.size(); i++)
-			if(NPCview.get(i).isInGameFrame(posizPlayerX, posizPlayerY))
+			if(NPCview.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "npc"))
 				drawOrder.add(NPCview.get(i));
+		
+		for(int i = 0; i < enemyView.size(); i++)
+			if(enemyView.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "enemy"))
+				drawOrder.add(enemyView.get(i));
 	}
 
 	public EntityView getNPC(int index) {	

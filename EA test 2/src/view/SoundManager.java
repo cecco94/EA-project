@@ -14,7 +14,8 @@ public class SoundManager {
 	private Clip music, soundEffect;
 	private URL soundURL[] = new URL[15];
 	public static final int MENU_MUSIC = 0, AULA_STUDIO = 1, DORMITORIO = 2, BIBLIOTECA = 3,
-							COLPO = 4, TENDA = 5, FUOCO = 6, LABORATORIO = 7, BOSS = 8, CAFFE = 9, APPUNTI = 10, CFU = 11;
+							COLPO = 4, TENDA = 5, FUOCO = 6, LABORATORIO = 7, BOSS = 8, CAFFE = 9, 
+							APPUNTI = 10, CFU = 11, DIALOGUE = 12;
 	
 	// tutti i percorsi dei file dei suoni vengono inseriti in un array
 	public SoundManager() {
@@ -30,6 +31,7 @@ public class SoundManager {
 		soundURL[9] = getClass().getResource("/sound/powerup.wav");	
 		soundURL[10] = getClass().getResource("/sound/coin.wav");	
 		soundURL[11] = getClass().getResource("/sound/fanfare.wav");	
+		soundURL[12] = getClass().getResource("/sound/dialogue.wav");	
 
 
 		setMusic(MENU_MUSIC);

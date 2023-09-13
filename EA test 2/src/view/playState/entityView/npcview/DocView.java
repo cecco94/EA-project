@@ -13,25 +13,21 @@ import view.main.GamePanel;
 import view.playState.entityView.EntityView;
 import view.playState.entityView.PlayerView;
 
-public class DockView extends EntityView {
+public class DocView extends EntityView {
 	
 	private BufferedImage[][][][] animation;
 
 	
-	public DockView(IView v, int index) {
-		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
-		view = v;
-		this.index = index;
+	public DocView(IView v, int index) {
+		super(v, index);
 		
 		setDialogs();
 		loadImages();	
 		
-		xOffset = (int)(0*GamePanel.SCALE); //3;
-		yOffset = (int)(0*GamePanel.SCALE); //3;
+		xOffset = (int)(0*GamePanel.SCALE); 
+		yOffset = (int)(6*GamePanel.SCALE); 
 		animationSpeed = 40;
-		
-		currentAction = IDLE;
-		currentDirection = DOWN;
+
 	}
 	
 	private void loadImages() {
@@ -76,19 +72,21 @@ public class DockView extends EntityView {
 	}
 
 	private void setDialogs() {
-		dialogues = new String[1];
-		dialogues[0] = "...";
+		dialogues = new String[6];
+		dialogues[0] = "hey tu, ti prego aiutami! \n non sembri una matricola scanzafatiche come le altre";
+		dialogues[1] = "sono un assistente di Paul Bags, \n il professore di robotica della facoltà";
+		dialogues[2] = "stavo modificando un turtlebot, ma è impazzito \n e ora vuole uccidere tutti gli umani!";
+		dialogues[3] = "so che sembra un film, ma chi scrive \n i miei dialoghi non ha molta fantasia...";
+		dialogues[4] = "se riesci a fermarlo, ti aiuterò con l'esame sistemi di controllo";
+		dialogues[5] = "buona fortuna";
 		
 	}
-
-
-
 
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		animationCounter++;
-		setAction();
-		setDirection();
+		setAction(true);
+		setDirection(true);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	
@@ -114,7 +112,7 @@ public class DockView extends EntityView {
 			
 			//quadrato dove viene disegnato il gatto
 			g2.setColor(Color.red);
-			g2.drawRect(xPosOnScreen, yPosOnScreen, (int)(24*1.5), (int)(34*1.5));
+			g2.drawRect(xPosOnScreen, yPosOnScreen, (int)(16*1.8*GamePanel.SCALE), (int)(24*1.8*GamePanel.SCALE));
 			
 			//quadrato della hitbox
 			g2.setColor(Color.black);

@@ -1,11 +1,12 @@
-package controller.playState.entityController;
+package controller.playState.entityController.npcController;
 
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
+import controller.playState.entityController.EntityController;
 
 public class DocController extends EntityController {
 	
-	private static int hitboxWidth = (int)(16*1.5), hitboxHeight = (int)(24*1.5);
+	private static int hitboxWidth = (int)(18*1.5), hitboxHeight = (int)(13*1.5);
 
 	public DocController(int ind, String type, int xPos, int yPos, PlayStateController p) {
 		super(ind, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);

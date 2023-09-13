@@ -216,7 +216,7 @@ public class Collisions {
 		ArrayList<EntityController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
 		for(int i = 0; i < enemy.size(); i++) {
 			if(hitboxEntity.intersects(enemy.get(i).getHitbox()))
-				if(npc.get(i) != owner)
+				if(enemy.get(i) != owner)
 					numCollision++;
 		}	
 		

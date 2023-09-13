@@ -25,7 +25,7 @@ public class PlayStateController {
 		controller = c;
 		collisionCheck = new Collisions(c); 
 		
-		Hitbox r = new Hitbox(34, 9, 0, 0);
+		Hitbox r = new Hitbox(15, 23, 0, 0);
 		playerController = new PlayerController(r, this);
 		
 		bulletsInRoom = new ArrayList<>();

@@ -20,9 +20,7 @@ public class ErmenegildoView extends EntityView {
 	
 	public ErmenegildoView(IView v, int index) {
 		
-		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
-		view = v;
-		this.index = index;
+		super(v, index);
 		
 		setDialogs();
 		loadImages();	
@@ -30,9 +28,6 @@ public class ErmenegildoView extends EntityView {
 		xOffset = (int)(0*GamePanel.SCALE); //3;
 		yOffset = (int)(0*GamePanel.SCALE); //3;
 		animationSpeed = 40;
-		
-		currentAction = IDLE;
-		currentDirection = DOWN;
 		
 	}
 
@@ -100,8 +95,8 @@ public class ErmenegildoView extends EntityView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-		setAction();
-		setDirection();
+		setAction(true);
+		setDirection(true);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	

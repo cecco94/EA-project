@@ -7,3 +7,5 @@
 +appunti, 21, 9, 32, 32, appunti
 
 +cfu, 12, 24, 32, 32, cfu
+
+/robot, robot, 22, 21

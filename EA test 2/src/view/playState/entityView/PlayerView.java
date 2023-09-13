@@ -17,8 +17,7 @@ public class PlayerView extends EntityView {
 		
 	//campo 0 = tipo(ragazzo-ragazza), primo campo = azione, secondo = direzione, terzo = immagine
 	//la classa estente Entity e quindi eredita l'array di animazioni vuoto
-	private static  BufferedImage[][][][] playerAnimation;
-	
+	private static BufferedImage[][][][] playerAnimation;
 	private boolean endAttackAnimation = true;
 	private boolean firstParry = true;
 	
@@ -38,12 +37,11 @@ public class PlayerView extends EntityView {
 	
 	
 	public PlayerView(IView v) {
-		view = v;
+		super(v, -1);
 		
 		//servono per poter comparare il player con gli altri elementi grafici da ordinare
 		xPosMapForSort = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
 		yPosMapForSort = view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
-		this.typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		
 		loadImages();	
 

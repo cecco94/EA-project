@@ -6,12 +6,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 import controller.main.Gamestate;
-
-import model.mappa.Rooms;
 
 import view.ViewUtils;
 import view.main.GamePanel;
@@ -30,6 +27,7 @@ public class PlayUI {
 	private int xPosPlayerData = (int)(20*GamePanel.SCALE);
 	
 	private boolean dark = true;
+	private final int DORMITORIO = 1;
 	
 	private PlayStateView play;
 	private int counterTransition = 0;
@@ -99,7 +97,7 @@ public class PlayUI {
 			play.getView().changeGameState(Gamestate.PLAYING);
 			
 			play.getView().stopMusic();
-			play.getView().playMusic(Rooms.currentRoom.musicIndex);
+			play.getView().playMusic(play.getView().getCurrentRoomMusicIndex());
 			play.getView().setMusicVolume(volumeBeforeTransition);
 			
 		}
@@ -117,6 +115,7 @@ public class PlayUI {
 		drawPlayerData(g2);
 		drawDark(g2);
 		drawMessage(g2);
+		
 	}
 	
 	private void drawPlayerData(Graphics2D g2) {
@@ -181,7 +180,7 @@ public class PlayUI {
 	}
 
 	private void drawDark(Graphics2D g2) {
-		if (Rooms.currentRoom == Rooms.DORMITORIO && dark)
+		if (dark && play.getView().getCurrentRoomIndex() == DORMITORIO)
 			g2.drawImage(darkEffect, 0, 0, null);
 	}
 
@@ -229,7 +228,6 @@ public class PlayUI {
 		dark = b;
 	}
 
-	
 	public void drawDialogue(Graphics2D g2) {
 		
 		g2.setColor(Color.black);
@@ -248,32 +246,13 @@ public class PlayUI {
 		
 		int y = GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(30*GamePanel.SCALE);
 		
-		for(String line : text.split("\n ")) {
-		//	drawCharToChar(line, y, g2);
-			
+		for(String line : text.split("\n ")) {			
 			g2.drawString(line, (int)(10*GamePanel.SCALE), y);
 			y += 40;
 		}
-		
+	
 	}
 
-//		private void drawCharToChar(String line, int y, Graphics2D g2) {
-//			String combinedText = "";
-//			int charIndex = 0;
-//			char[] characters = line.toCharArray();
-//			
-//			if (charIndex < characters.length) {
-//				
-//				String s = String.valueOf(characters[charIndex]);
-//				combinedText.concat(s);
-//				
-//				charIndex++;
-//				System.out.println(s);
-//				g2.drawString(combinedText, (int)(10*GamePanel.SCALE), y);
-//			}
-//		
-//	}
-	
 	
 	
 	

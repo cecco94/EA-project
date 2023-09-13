@@ -3,8 +3,8 @@ package view.playState.entityView;
 import java.awt.Rectangle;
 
 import controller.main.Gamestate;
-
 import view.IView;
+import view.SoundManager;
 import view.main.GamePanel;
 import view.playState.drawOrder.SortableElement;
 
@@ -18,9 +18,8 @@ public abstract class EntityView extends SortableElement {
 	// ogni oggetto avrebbe un array di immagini.. non possiamo caricare le immagini una volta dentro la classe indicandoli come statici?
 	// per fare ciò ci servirebbe un costruttore statico, che in java non esiste.. c'è un modo elegante per farlo?
 	
-	public final static int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4,  DIE = 5, SLEEP = 6;
+	public final static int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4, DIE = 5, SLEEP = 6;
 	public final static int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
-	
 	protected int currentAction = IDLE;
 	protected int previousAction = MOVE;
 	protected int currentDirection = DOWN;
@@ -33,14 +32,28 @@ public abstract class EntityView extends SortableElement {
 	//ogni ente avrà una differenza tra dove si trova la hitbox e dove parte l'immagine
 	protected int xOffset, yOffset;
 	
+	//per i dialoghi, ma non tutte le entità hanno dei dialoghi (gatti, player..) 
 	protected int dialogueIndex;
 	protected String[] dialogues;
 	
 	
-	public boolean isInGameFrame(int posizPlayerX, int posizPlayerY) {
+//quando avremo finito con i rettangoli delle hitbox, possiamo mettere qui il metodo draw, che tanto è uguale per tutti
+	public EntityView(IView v, int index) {
+		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
+		view = v;
+		this.index = index;
+	}
+	
+	public boolean isInGameFrame(int posizPlayerX, int posizPlayerY, String type) {
 		//controlla se l'oggetto è abbastanza vicino al giocatore da poter apparire sullo schermo
-		Rectangle hitboxController = IView.fromHitboxToRectangle(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox()); 
+		Rectangle hitboxController = null;
 		
+		if(type.compareTo("npc") == 0)
+			hitboxController = IView.fromHitboxToRectangle(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox()); 
+		
+		else
+			 hitboxController = IView.fromHitboxToRectangle(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox()); 
+	
 		if(Math.abs(hitboxController.x - posizPlayerX)  > GamePanel.GAME_WIDTH/2)
 			return false;
 		if(Math.abs(hitboxController.y - posizPlayerY)  > GamePanel.GAME_HEIGHT/2)
@@ -69,22 +82,13 @@ public abstract class EntityView extends SortableElement {
 		return DOWN;
 	}
 	
-	public String getCurrentDialogue() {
-		return dialogues[dialogueIndex];
-	}
-	
-	// dopo che ha detto una frase, va alla frase successiva, se sono finite le frasi esce dallo stato dialogue
-	public void nextDialogueLine() {
-		dialogueIndex++;
-		if(dialogueIndex >= dialogues.length) {
-			dialogueIndex--;
-			view.changeGameState(Gamestate.PLAYING);
-		}
-	}
-	
-	protected void setDirection() {
+	protected void setDirection(boolean isNPC) {
 	//vede nel controller la direzione del gatto e cambia currentDirection
-		currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
+		if(isNPC)
+			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
+		
+		else
+			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentDirection();
 		
 		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up
 		if(currentDirection == RIGHT)
@@ -101,9 +105,13 @@ public abstract class EntityView extends SortableElement {
 
 	}
 	
-	protected void setAction() {
+	protected void setAction(boolean isNPC) {
 		//vede nel controller cosa fa il gatto e cambia currentAction
-		currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentAction();
+		if(isNPC)
+			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentAction();
+		
+		else
+			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentAction();
 		
 		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
 		if(currentAction != previousAction) {
@@ -111,6 +119,20 @@ public abstract class EntityView extends SortableElement {
 			previousAction = currentAction;
 		}
 		
-	}	
+	}
 	
+	public String getCurrentDialogue() {
+		return dialogues[dialogueIndex];
+	}
+	
+	// dopo che ha detto una frase, va alla frase successiva, se sono finite le frasi esce dallo stato dialogue
+		public void nextDialogueLine() {
+			view.playSE(SoundManager.CAFFE);
+
+			dialogueIndex++;
+			if(dialogueIndex >= dialogues.length) {
+				dialogueIndex--;
+				view.changeGameState(Gamestate.PLAYING);
+			}
+		}
 }

@@ -3,11 +3,10 @@ package controller.playState;
 import java.util.ArrayList;
 
 import controller.playState.entityController.CatController;
-import controller.playState.entityController.DocController;
-import controller.playState.entityController.EnemyController;
 import controller.playState.entityController.EntityController;
-import controller.playState.entityController.ErmenegildoController;
-//import controller.playState.entityController.NPCcontroller;
+import controller.playState.entityController.RobotController;
+import controller.playState.entityController.npcController.DocController;
+import controller.playState.entityController.npcController.ErmenegildoController;
 
 public class RoomController {
 
@@ -25,7 +24,10 @@ public class RoomController {
 				
 		for(int i = 0; i < NPC.size(); i++) {
 			NPC.get(i).update();
-			NPC.get(i).toString();
+		}
+		
+		for(int i = 0; i < enemy.size(); i++) {
+			enemy.get(i).update();
 		}
 	}
 	
@@ -54,8 +56,8 @@ public class RoomController {
 		
 	}
 
-	public void addEnemy(String type, Hitbox r) {
-		enemy.add(new EnemyController(enemy.size(), type, r, play));
+	public void addEnemy(String type, int xPos, int yPos) {
+		enemy.add(new RobotController(enemy.size(), type, xPos, yPos, play));
 	}
 
 	public void addNPC (String type, int xPos, int yPos) {

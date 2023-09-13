@@ -264,6 +264,8 @@ public abstract class EntityController {
 	protected void tunrToInteract() {
 		
 		resetDirection();
+		moving = false;
+		idle = true;
 		
 		if(play.getPlayer().getDirection() == DOWN) {
 			direction = UP;

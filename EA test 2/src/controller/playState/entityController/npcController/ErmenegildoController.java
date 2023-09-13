@@ -1,7 +1,8 @@
-package controller.playState.entityController;
+package controller.playState.entityController.npcController;
 
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
+import controller.playState.entityController.EntityController;
 
 public class ErmenegildoController extends EntityController {
 	

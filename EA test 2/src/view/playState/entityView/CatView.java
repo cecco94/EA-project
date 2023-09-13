@@ -24,9 +24,7 @@ public class CatView extends EntityView {
 
 	public CatView(IView v, int index) {
 		
-		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
-		view = v;
-		this.index = index;
+		super(v, index);
 
 		loadImages();	
 		
@@ -97,7 +95,7 @@ public class CatView extends EntityView {
 	private void loadIdleImages(BufferedImage image, BufferedImage temp) {
 		CatView.animation[BIANCO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBianco.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBiancoGiusto.png"));
 			
 				temp = image.getSubimage(32, 0, 32, 32);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
@@ -123,7 +121,7 @@ public class CatView extends EntityView {
 		
 		CatView.animation[NERO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNero.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNeroGiusto.png"));
 			
 				temp = image.getSubimage(32, 0, 32, 32);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
@@ -153,8 +151,8 @@ public class CatView extends EntityView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-		setAction();
-		setDirection();
+		setAction(true);
+		setDirection(true);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	
