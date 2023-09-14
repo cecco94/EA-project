@@ -3,22 +3,23 @@ package view.playState;
 import java.util.ArrayList;
 
 import view.playState.drawOrder.SortableElement;
-import view.playState.entityView.CatView;
 import view.playState.entityView.EntityView;
 import view.playState.entityView.RobotView;
+import view.playState.entityView.npcview.CatView;
 import view.playState.entityView.npcview.DocView;
 import view.playState.entityView.npcview.ErmenegildoView;
+import view.playState.entityView.npcview.NPCView;
 import view.playState.entityView.npcview.NerdView;
 
 public class RoomView {
 
-	private ArrayList<EntityView> NPCview;
+	private ArrayList<NPCView> NPCviewList;
 	private ArrayList<EntityView> enemyView;
 	private PlayStateView play;
 	
 	public RoomView(PlayStateView p, int index) {
 		play = p;
-		NPCview = new ArrayList<>();
+		NPCviewList = new ArrayList<>();
 		enemyView = new ArrayList<>();
 		
 		//ciascuna roomview deve leggere nella roomcontroller corrispondente
@@ -45,33 +46,34 @@ public class RoomView {
 	
 	
 	public void addNPC(String type, int index) {
-		if(type.compareTo("gatto") == 0)
-			NPCview.add(new CatView(play.getView(), index));
+		if(type.compareTo("gatto") == 0) {
+			NPCviewList.add(new CatView(play.getView(), index));
+		}
 		
-		else if(type.compareTo("vecchio") == 0) 
-			NPCview.add(new ErmenegildoView(play.getView(), index));
+		if(type.compareTo("vecchio") == 0) 
+			NPCviewList.add(new ErmenegildoView(play.getView(), index));
 		
 		else if(type.compareTo("prof") == 0)
-			NPCview.add(new DocView(play.getView(), index));
+			NPCviewList.add(new DocView(play.getView(), index));
 		
 		else if(type.compareTo("nerd") == 0)
-			NPCview.add(new NerdView(play.getView(), index));
+			NPCviewList.add(new NerdView(play.getView(), index));
 	}
 
 	//mette nella lista da ordinare tutti e soli gli elementi vicini al player
 	public void addEntitiesInFrameForSort(int posizPlayerX, int posizPlayerY, ArrayList<SortableElement> drawOrder) {
 		//ogni npc prende la posizione del personaggio e vede se è dentro la finestra di gioco
-		for(int i = 0; i < NPCview.size(); i++)
-			if(NPCview.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "npc"))
-				drawOrder.add(NPCview.get(i));
+		for(int i = 0; i < NPCviewList.size(); i++)
+			if(NPCviewList.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "npc"))
+				drawOrder.add(NPCviewList.get(i));
 		
 		for(int i = 0; i < enemyView.size(); i++)
 			if(enemyView.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "enemy"))
 				drawOrder.add(enemyView.get(i));
 	}
 
-	public EntityView getNPC(int index) {	
-		return NPCview.get(index);
+	public NPCView getNPC(int index) {	
+		return NPCviewList.get(index);
 	}
 	
 	public EntityView getEnemy(int index) {

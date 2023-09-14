@@ -116,10 +116,6 @@ public class IView {
 		case TRANSITION_STATE:
 			transition.draw(g2);
 			break;
-		case TRANSITION_ROOM:
-			play.draw(g2);
-			play.getUI().drawTransition(g2);
-			break;
 		case PAUSE:
 			play.draw(g2);
 			pause.draw(g2);

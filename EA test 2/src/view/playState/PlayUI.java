@@ -8,11 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-import controller.main.Gamestate;
-
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.playState.entityView.PlayerView;
 
 // classe che mostra a video le informazioni come il punteggio, la vita, le munizioni...
 // si occupa inoltre di disegnare la transizione da una stanza all'altra
@@ -31,16 +28,8 @@ public class PlayUI {
 	private final int DORMITORIO = 1;
 	
 	private PlayStateView play;
-	private int counterTransition = 0;
 	private int counterMessage = 0;
 	private boolean showMessage;
-
-	private final float transitionDuration = 240; //120 fps quindi sono 2 secondi
-	private float opacity;
-	
-	private float volume;
-	private float volumeBeforeTransition;
-	private boolean volumeSaved = false;
 	
 	//per disegnare un punto esclamativo sopra ai nemici che vedono il player
 	private boolean exclamationOn;
@@ -82,46 +71,11 @@ public class PlayUI {
 		}
 		
 	}
-
-	//per due secondi diventa tutto sfocato e la musica diminuisce
-	public void drawTransition(Graphics2D g2) {
-		counterTransition++;
-		saveOldVolume();
-		if (counterTransition < transitionDuration) {
-			opacity = counterTransition/transitionDuration;
-			
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-			g2.setColor(Color.black);
-			g2.fillRect(0, 0, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT);
-			
-			volume = play.getView().getMusicVolume() - opacity + 0.01f;
-			play.getView().setMusicVolume(volume);		
-		}
-		else {
-			// riprendi il gioco usando i valori salvati nel model
-			counterTransition = 0;
-			
-			play.getView().getController().getPlay().resumeGameAfterTransition();
-			play.getView().changeGameState(Gamestate.PLAYING);
-			
-			play.getView().stopMusic();
-			play.getView().playMusic(play.getView().getCurrentRoomMusicIndex());
-			play.getView().setMusicVolume(volumeBeforeTransition);
-			volumeSaved = false;
-		}
-	}
 	
-	private void saveOldVolume() {
-		if (!volumeSaved) {
-			volumeBeforeTransition = play.getView().getMusicVolume();
-			volumeSaved = true;
-		}
-	}
-	
-	public void draw(Graphics2D g2, int playerMapX, int playerMapY) {
+	public void draw(Graphics2D g2) {
 		
 		drawPlayerData(g2);
-		drawExclamation(g2, playerMapX, playerMapY);
+		drawExclamation(g2);
 		drawDark(g2);
 		drawMessage(g2);
 		
@@ -246,7 +200,7 @@ public class PlayUI {
 		g2.setColor(Color.white);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 		g2.drawRoundRect((int)(5*GamePanel.SCALE), GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(5*GamePanel.SCALE),
-						    GamePanel.GAME_WIDTH - (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/4 - (int)(10*GamePanel.SCALE), 30, 30);
+						   GamePanel.GAME_WIDTH - (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/4 - (int)(10*GamePanel.SCALE), 30, 30);
 		
 		//prende l'indice dell'npc con cui parla il player, va nella stanza e prende quell'npc, prende le stringhe di dialogo da lì, poi le disegna
 		int index = play.getView().getController().getPlay().getPlayer().getIndexOfEntityInteract();
@@ -262,7 +216,7 @@ public class PlayUI {
 	
 	}
 
-	public void drawExclamation(Graphics2D g2, int playerMapX, int playerMapY) {
+	public void drawExclamation(Graphics2D g2) {
 		if(exclamationOn) {
 			exclamationCounter++;
 			if(exclamationCounter <= 100) {

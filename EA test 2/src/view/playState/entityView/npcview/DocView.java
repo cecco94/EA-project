@@ -10,18 +10,14 @@ import javax.imageio.ImageIO;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.playState.entityView.EntityView;
 import view.playState.entityView.PlayerView;
 
-public class DocView extends EntityView {
+public class DocView extends NPCView {
 	
-	private BufferedImage[][][][] animation;
-
 	
 	public DocView(IView v, int index) {
 		super(v, index);
 		
-		setDialogs();
 		loadImages();	
 		
 		xOffset = (int)(0*GamePanel.SCALE); 
@@ -71,7 +67,7 @@ public class DocView extends EntityView {
 		
 	}
 
-	private void setDialogs() {
+	protected void setDialogues() {
 		dialogues = new String[6];
 		dialogues[0] = "hey tu, ti prego aiutami! \n non sembri una matricola scanzafatiche come le altre";
 		dialogues[1] = "sono un assistente di Paul Bags, \n il professore di robotica della facoltà";

@@ -1,4 +1,4 @@
-package view.playState.entityView;
+package view.playState.entityView.npcview;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -11,15 +11,12 @@ import javax.imageio.ImageIO;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
+import view.playState.entityView.PlayerView;
 
-public class CatView extends EntityView {
+public class CatView extends NPCView {
 
 	public static final int BIANCO = 0, NERO = 1;
-	//siccome tutti i gatti condividono lo stesso array di animazioni, per non 
-	//caricare le immagini ogni volta che creiamo un gatto, usiamo questo boolean
-	//e le immagini verranno caricate solo una volta
-	private static BufferedImage[][][][] animation;	
-	public static boolean firstCat = true;
+	
 	private int color;
 
 	public CatView(IView v, int index) {
@@ -31,7 +28,6 @@ public class CatView extends EntityView {
 		xOffset = (int)(1*GamePanel.SCALE); //3;
 		yOffset = (int)(4*GamePanel.SCALE); //3;
 		animationSpeed = 40;
-		
 		selectColor();
 	}
 
@@ -42,23 +38,22 @@ public class CatView extends EntityView {
 	}
 
 	private void loadImages() {
-		if(firstCat) {
-			BufferedImage image = null;
-			BufferedImage temp = null;
+		
+		BufferedImage image = null;
+		BufferedImage temp = null;
+		
+		animation = new BufferedImage[2][][][];		//due tipi di gatto
+		animation[BIANCO] = new BufferedImage[2][][];	//per ogni gatto per ora abbiamo due azioni
+		animation[NERO] = new BufferedImage[2][][];
+
+		loadIdleImages(image, temp);
+		loadRunImages(image, temp);	
 			
-			CatView.animation = new BufferedImage[2][][][];		//due tipi di gatto
-			CatView.animation[BIANCO] = new BufferedImage[2][][];	//per ogni gatto per ora abbiamo due azioni
-			CatView.animation[NERO] = new BufferedImage[2][][];
-	
-			loadIdleImages(image, temp);
-			loadRunImages(image, temp);	
-			firstCat = false;
-			
-		}
+		
 	}
 
 	private void loadRunImages(BufferedImage image, BufferedImage temp) {
-		CatView.animation[BIANCO][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		animation[BIANCO][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBiancoGiusto.png"));
 						
@@ -66,7 +61,7 @@ public class CatView extends EntityView {
 				for(int img = 0; img < 3; img++) {
 					temp = image.getSubimage(img*32, direction*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-					CatView.animation[BIANCO][MOVE][direction][img] = temp ;
+					animation[BIANCO][MOVE][direction][img] = temp ;
 				}
 			}
 		} 
@@ -74,7 +69,7 @@ public class CatView extends EntityView {
 			e.printStackTrace();
 		}
 		
-		CatView.animation[NERO][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		animation[NERO][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNeroGiusto.png"));
 						
@@ -82,7 +77,7 @@ public class CatView extends EntityView {
 				for(int img = 0; img < 3; img++) {
 					temp = image.getSubimage(img*32, direction*32, 32, 32);
 					temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-					CatView.animation[NERO][MOVE][direction][img] = temp ;
+					animation[NERO][MOVE][direction][img] = temp ;
 				}
 			}
 		} 
@@ -93,52 +88,52 @@ public class CatView extends EntityView {
 	}
 
 	private void loadIdleImages(BufferedImage image, BufferedImage temp) {
-		CatView.animation[BIANCO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
+		animation[BIANCO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoBiancoGiusto.png"));
 			
-				temp = image.getSubimage(32, 0, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[BIANCO][IDLE][DOWN][0] = temp ;
-			
-			
-				temp = image.getSubimage(32, 64, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[BIANCO][IDLE][RIGHT][0] = temp ;
-			
-				temp = image.getSubimage(32, 32, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[BIANCO][IDLE][LEFT][0] = temp ;
-			
-				temp = image.getSubimage(32, 96, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[BIANCO][IDLE][UP][0] = temp ;
+			temp = image.getSubimage(32, 0, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[BIANCO][IDLE][DOWN][0] = temp ;
+		
+		
+			temp = image.getSubimage(32, 64, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[BIANCO][IDLE][RIGHT][0] = temp ;
+		
+			temp = image.getSubimage(32, 32, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[BIANCO][IDLE][LEFT][0] = temp ;
+		
+			temp = image.getSubimage(32, 96, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[BIANCO][IDLE][UP][0] = temp ;
 			
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		CatView.animation[NERO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
+		animation[NERO][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immaginE
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/gattoNeroGiusto.png"));
 			
-				temp = image.getSubimage(32, 0, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[NERO][IDLE][DOWN][0] = temp ;
-			
-			
-				temp = image.getSubimage(32, 64, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[NERO][IDLE][RIGHT][0] = temp ;
-			
-				temp = image.getSubimage(32, 32, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[NERO][IDLE][LEFT][0] = temp ;
-			
-				temp = image.getSubimage(32, 96, 32, 32);
-				temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
-				CatView.animation[NERO][IDLE][UP][0] = temp ;
+			temp = image.getSubimage(32, 0, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[NERO][IDLE][DOWN][0] = temp ;
+		
+		
+			temp = image.getSubimage(32, 64, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[NERO][IDLE][RIGHT][0] = temp ;
+		
+			temp = image.getSubimage(32, 32, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[NERO][IDLE][LEFT][0] = temp ;
+		
+			temp = image.getSubimage(32, 96, 32, 32);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*GamePanel.SCALE, temp.getHeight()*GamePanel.SCALE);
+			animation[NERO][IDLE][UP][0] = temp ;
 			
 		} 
 		catch (IOException e) {
@@ -174,7 +169,7 @@ public class CatView extends EntityView {
 		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
 		
 		try {
-			g2.drawImage(CatView.animation[color][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+			g2.drawImage(animation[color][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
 			
 			//quadrato dove viene disegnato il gatto
 			g2.setColor(Color.red);
@@ -203,6 +198,13 @@ public class CatView extends EntityView {
 			return 3;
 		
 		return 0;
+	}
+
+	@Override
+	protected void setDialogues() {
+		dialogues = new String[1];
+		dialogues[0] = "il gatto ti guarda con sufficienza, \n ha negli occhi un misto di pena e ribrezzo";
+		
 	}
 
 

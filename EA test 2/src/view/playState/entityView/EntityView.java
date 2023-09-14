@@ -1,17 +1,16 @@
 package view.playState.entityView;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
-import controller.main.Gamestate;
 import view.IView;
-import view.SoundManager;
 import view.main.GamePanel;
 import view.playState.drawOrder.SortableElement;
 
 public abstract class EntityView extends SortableElement {
 
 	protected IView view;
-	
+	protected BufferedImage[][][][] animation;
 	//questo indice deve essere uguale nella lista di entità del view e del controller
 	protected int index;
 	//campo 0 = tipo.. per es gatto bianco/nero, primo campo = azione, secondo = direzione, terzo = immagine
@@ -32,15 +31,11 @@ public abstract class EntityView extends SortableElement {
 	//ogni ente avrà una differenza tra dove si trova la hitbox e dove parte l'immagine
 	protected int xOffset, yOffset;
 	
-	//per i dialoghi, ma non tutte le entità hanno dei dialoghi (gatti, player..) 
-	protected int dialogueIndex;
-	protected String[] dialogues;
-	
 	//posizione dell'entità nello schermo
 	protected int xPosOnScreen, yPosOnScreen;
 
 	
-public int getxPosOnScreen() {
+	public int getxPosOnScreen() {
 		return xPosOnScreen;
 	}
 
@@ -132,19 +127,7 @@ public int getxPosOnScreen() {
 		
 	}
 	
-	public String getCurrentDialogue() {
-		return dialogues[dialogueIndex];
-	}
 	
-	// dopo che ha detto una frase, va alla frase successiva, se sono finite le frasi esce dallo stato dialogue
-		public void nextDialogueLine() {
-			view.playSE(SoundManager.CAFFE);
 
-			dialogueIndex++;
-			if(dialogueIndex >= dialogues.length) {
-				dialogueIndex--;
-				view.changeGameState(Gamestate.PLAYING);
-			}
-		}
 		
 }

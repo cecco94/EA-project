@@ -90,7 +90,7 @@ public class PlayStateView {
 		drawOrder.clear();
 		
 		//disegna la ui sopra a tutto il resto
-		ui.draw(g2, playerMapX,  playerMapY);
+		ui.draw(g2);
 	}			
 
 	//disegna i primi due starti della mappa
@@ -214,8 +214,7 @@ public class PlayStateView {
 	}
 
 	public RoomView getRoom(int index) {
-		return roomsView[index];
-		
+		return roomsView[index];	
 	}
 }
 

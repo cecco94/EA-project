@@ -21,7 +21,7 @@ public class TransitionState {
 	
 	private float volume;
 	private float volumeBeforeTransition;
-	private boolean saved = false;
+	private boolean volumeSaved = false;
 	
 	public TransitionState(Gamestate p, Gamestate n, IView v) {
 		setPrev(p);
@@ -53,43 +53,53 @@ public class TransitionState {
 			view.changeGameState(Gamestate.TRANSITION_STATE);
 			
 		}
-		else {
-			//ripristina lo stato iniziale della classe
-			counter = 0;
-			saved = false;
+		else 
+			resetTransition();
 			
-			//cambia la musica
-			view.stopMusic();
-			if(next == Gamestate.MAIN_MENU) 
-				view.playMusic(SoundManager.MENU_MUSIC);
-			
-			else 
-				view.playMusic(view.getCurrentRoomMusicIndex());
-			
-			view.setMusicVolume(volumeBeforeTransition);
-			volume = view.getMusicVolume();
-			
-			//cambia il gamestate
+	}
+
+	private void resetTransition() {
+		//ripristina lo stato iniziale della classe
+		counter = 0;
+		volumeSaved = false;
+		view.stopMusic();
+
+		//se sta andando dal menu al play
+		if(next == Gamestate.PLAYING && prev == Gamestate.SELECT_AVATAR) {
+			view.playMusic(view.getCurrentRoomMusicIndex());
+			view.changeGameState(next);
+		}
+		
+		//se sta cambiando stanza
+		else if(next == Gamestate.PLAYING && prev == Gamestate.PLAYING) {
+			view.getController().getPlay().resumeGameAfterTransition();
+			view.playMusic(view.getCurrentRoomMusicIndex());
+			view.changeGameState(next);
+		}
+		
+		//se sta tornando al menu iniziale
+		else if(next == Gamestate.MAIN_MENU) { 
+			view.playMusic(SoundManager.MENU_MUSIC);
 			view.changeGameState(next);
 			resetNextPrev();
-			
 		}
-	
+		
+		view.setMusicVolume(volumeBeforeTransition);
+		volume = view.getMusicVolume();	
+		
 	}
 
 	private void saveOldVolume() {
-		if (!saved) {
+		if (!volumeSaved) {
 			volumeBeforeTransition = view.getMusicVolume();
-			saved = true;
+			volumeSaved = true;
 		}
 	}
 
 //	//da cambiare
 	private void resetNextPrev() {
-		if(next == Gamestate.MAIN_MENU) {
-			next = Gamestate.PLAYING;
-			prev = Gamestate.SELECT_AVATAR;
-		}
+		next = Gamestate.PLAYING;
+		prev = Gamestate.SELECT_AVATAR;
 	}
 	
 	public Gamestate getPrev() {

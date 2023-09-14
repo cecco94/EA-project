@@ -2,9 +2,9 @@ package controller.playState;
 
 import java.util.ArrayList;
 
-import controller.playState.entityController.CatController;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.enemyController.RobotController;
+import controller.playState.entityController.npcController.CatController;
 import controller.playState.entityController.npcController.DocController;
 import controller.playState.entityController.npcController.ErmenegildoController;
 import controller.playState.entityController.npcController.NerdController;
@@ -63,10 +63,11 @@ public class RoomController {
 
 	public void addNPC (String type, int xPos, int yPos) {
 		
-		if(type.compareTo("gatto") == 0)		//se la stringa dentro al file è uguale a "-gatto"
+		if(type.compareTo("gatto") == 0) {	//se la stringa dentro al file è uguale a "-gatto"
 			NPC.add(new CatController(NPC.size(), type, xPos, yPos, play));	
+		}
 		
-		else if(type.compareTo("vecchio") == 0) 
+	    if(type.compareTo("vecchio") == 0) 
 			NPC.add(new ErmenegildoController(NPC.size(), type, xPos, yPos, play));	
 		
 		else if(type.compareTo("prof") == 0)

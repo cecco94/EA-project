@@ -36,8 +36,8 @@ public class RobotView extends EntityView {
 		
 		animation = new BufferedImage[1][3][][];		
 		
-		animation[0][MOVE] = new BufferedImage[4][3];		//ci sono 4 direzioni, ogni direzione ha 3 immagini
-		animation[0][IDLE] = new BufferedImage[4][1];		//ci sono 4 direzioni, ogni direzione ha 1 immagine
+		animation[0][MOVE] = new BufferedImage[4][3];	//ci sono 4 direzioni, ogni direzione ha 3 immagini
+		animation[0][IDLE] = new BufferedImage[4][1];	//ci sono 4 direzioni, ogni direzione ha 1 immagine
 		animation[0][DIE] = new BufferedImage[4][2];
 		
 		loadRunImages(image, temp);	

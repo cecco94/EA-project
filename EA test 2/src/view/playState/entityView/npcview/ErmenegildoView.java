@@ -10,19 +10,15 @@ import javax.imageio.ImageIO;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.playState.entityView.EntityView;
 import view.playState.entityView.PlayerView;
 
-public class ErmenegildoView extends EntityView {
-				
-	protected BufferedImage[][][][] animation;	
-	
+public class ErmenegildoView extends NPCView {
+					
 	
 	public ErmenegildoView(IView v, int index) {
 		
 		super(v, index);
 		
-		setDialogs();
 		loadImages();	
 		
 		xOffset = (int)(0*GamePanel.SCALE); //3;
@@ -72,15 +68,15 @@ public class ErmenegildoView extends EntityView {
 		
 	}
 	
-	private void setDialogs() {	
+	protected void setDialogues() {	
 		dialogues = new String[11];
 		dialogues[0] = "ciao, sei una matricola?";
 		dialogues[1] = "che invidia, io sono qui da un po'...\n il prof Luke Crickets mi ha bocciato 100 volte";
 		dialogues[2] = "lascia che ti dia qualche dritta";
-		dialogues[3] = "per laurearti, ti servono 180 CFU, che puoi trovare vicino ai computer";
+		dialogues[3] = "per laurearti, ti servono 180 CFU, \n che puoi trovare vicino ai computer";
 		
 		dialogues[4] = "non ti fare influenzare dagli studenti nullafacenti, \n abbassano la tua concentrazione!";
-		dialogues[5] = "siano maledetti.. \n tutti i loro giochi con le carte mi hanno fatto perdere tanto tempo";
+		dialogues[5] = "siano maledetti.. \n tutti i loro giochi con le carte \n mi hanno fatto perdere un sacco di tempo";
 		dialogues[6] = "usa il computer e gli appunti che trovi in giro per difenderti";
 
 		dialogues[7] = "il caffè è un tuo alleato, \n prendi ogni tazzina disponibile se ti senti stanco";

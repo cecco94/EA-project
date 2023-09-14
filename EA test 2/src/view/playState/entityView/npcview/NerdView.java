@@ -10,17 +10,15 @@ import javax.imageio.ImageIO;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.playState.entityView.EntityView;
 import view.playState.entityView.PlayerView;
 
-public class NerdView extends EntityView {
+public class NerdView extends NPCView {
 	
-	protected BufferedImage[][][][] animation;
 
 	public NerdView(IView v, int index) {
 		super(v, index);
 		
-		setDialogs();
+		setDialogues();
 		loadImages();	
 		
 		xOffset = (int)(0*GamePanel.SCALE); //3;
@@ -70,7 +68,7 @@ public class NerdView extends EntityView {
 		}
 	}
 
-	private void setDialogs() {
+	protected void setDialogues() {
 		dialogues = new String[1];
 		dialogues[0] = "ciao";
 		
