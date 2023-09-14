@@ -268,16 +268,10 @@ public class PlayUI {
 			if(exclamationCounter <= 100) {
 				int exclamationHeight = exclamation.getHeight();
 				
-				int entityX = play.getView().getController().getPlay().getRoom(play.getView().getCurrentRoomIndex()).getEnemy().get(indexEntityExclaming).getHitbox().x;
-				int entityY = play.getView().getController().getPlay().getRoom(play.getView().getCurrentRoomIndex()).getEnemy().get(indexEntityExclaming).getHitbox().y;
-				
-				int distanceX = playerMapX - entityX;
-				int distanceY = playerMapY - entityY;
-				
-				int xpos =  PlayerView.xOnScreen - distanceX;
-				int ypos =  PlayerView.xOnScreen - distanceY;
+				int xpos =  play.getRoom(play.getView().getCurrentRoomIndex()).getEnemy(indexEntityExclaming).getxPosOnScreen();
+				int ypos =  play.getRoom(play.getView().getCurrentRoomIndex()).getEnemy(indexEntityExclaming).getyPosOnScreen();
 	
-				g2.drawImage(exclamation, xpos, ypos - exclamationHeight - 100, null);
+				g2.drawImage(exclamation, xpos, ypos - exclamationHeight, null);
 				
 			}
 			else {

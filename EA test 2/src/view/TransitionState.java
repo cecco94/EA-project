@@ -71,7 +71,7 @@ public class TransitionState {
 			
 			//cambia il gamestate
 			view.changeGameState(next);
-			//resetNextPrev();
+			resetNextPrev();
 			
 		}
 	
@@ -85,12 +85,12 @@ public class TransitionState {
 	}
 
 //	//da cambiare
-//	private void resetNextPrev() {
-//		if(next == Gamestate.MAIN_MENU) {
-//			next = Gamestate.PLAYING;
-//			prev = Gamestate.SELECT_AVATAR;
-//		}
-//	}
+	private void resetNextPrev() {
+		if(next == Gamestate.MAIN_MENU) {
+			next = Gamestate.PLAYING;
+			prev = Gamestate.SELECT_AVATAR;
+		}
+	}
 	
 	public Gamestate getPrev() {
 		return prev;

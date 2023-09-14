@@ -36,8 +36,19 @@ public abstract class EntityView extends SortableElement {
 	protected int dialogueIndex;
 	protected String[] dialogues;
 	
+	//posizione dell'entità nello schermo
+	protected int xPosOnScreen, yPosOnScreen;
+
 	
-//quando avremo finito con i rettangoli delle hitbox, possiamo mettere qui il metodo draw, che tanto è uguale per tutti
+public int getxPosOnScreen() {
+		return xPosOnScreen;
+	}
+
+	public int getyPosOnScreen() {
+		return yPosOnScreen;
+	}
+
+	//quando avremo finito con i rettangoli delle hitbox, possiamo mettere qui il metodo draw, che tanto è uguale per tutti
 	public EntityView(IView v, int index) {
 		typeElemtToSort = 4;		//elemento animato, da disegnare sopra la mappa
 		view = v;

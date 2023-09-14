@@ -2,6 +2,7 @@ package view.playState.entityView;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -15,6 +16,7 @@ public class RobotView extends EntityView {
 
 	private BufferedImage[][][][] animation;
 	private final int DIE = 2;
+	private Rectangle lifeRect;
 	
 	public RobotView(IView v, int index) {
 		super(v, index);
@@ -24,6 +26,7 @@ public class RobotView extends EntityView {
 		xOffset = (int)(0*GamePanel.SCALE); 
 		yOffset = (int)(0*GamePanel.SCALE); 
 		animationSpeed = 30;
+		lifeRect = new Rectangle(0,0, animation[0][0][0][0].getWidth(), (int)(2*GamePanel.SCALE));
 		
 	}
 
@@ -122,9 +125,9 @@ public class RobotView extends EntityView {
 		
 		//ci serve un offset perchè la distanza del gatto nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanceX - xOffset + PlayerView.getXOffset();
-		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
-		
+		xPosOnScreen = PlayerView.xOnScreen - distanceX - xOffset + PlayerView.getXOffset();
+		yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
+				
 		try {
 			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
 			
@@ -139,11 +142,23 @@ public class RobotView extends EntityView {
 						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox().width,
 						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox().height);
 
+
+
+			drawLife(g2);
+
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 			a.printStackTrace();
 		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
+		
+	}
+
+	private void drawLife(Graphics2D g2) {
+		g2.setColor(Color.green);
+		lifeRect.x = xPosOnScreen;
+		lifeRect.y = yPosOnScreen - lifeRect.height;
+		g2.fillRect(lifeRect.x, lifeRect.y, lifeRect.width, lifeRect.height);
 		
 	}
 
