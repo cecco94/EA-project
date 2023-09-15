@@ -61,8 +61,9 @@ public class RoomView {
 			NPCviewList.add(new NerdView(play.getView(), index));
 		
 
-		else if(type.compareTo("pupa") == 0)
+		else if(type.compareTo("pupa") == 0) 
 			NPCviewList.add(new PupaView(play.getView(), index));
+		
 	}
 
 	//mette nella lista da ordinare tutti e soli gli elementi vicini al player

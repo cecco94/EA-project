@@ -210,8 +210,9 @@ public class IView {
 		return transition;
 	}
 	
+	//siccome la posizione è espressa in float, facciamo un cast in int in modo da poter usare drawimage
 	public static Rectangle fromHitboxToRectangle(Hitbox h) {
-		return new Rectangle(h.x, h.y, h.width, h.height);
+		return new Rectangle((int)h.x, (int)h.y, h.width, h.height);
 	}
 	
 	public int getCurrentRoomIndex() {

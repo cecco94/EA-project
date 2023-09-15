@@ -40,8 +40,8 @@ public class PlayerView extends EntityView {
 		super(v, -1);
 		
 		//servono per poter comparare il player con gli altri elementi grafici da ordinare
-		xPosMapForSort = view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
-		yPosMapForSort = view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
+		xPosMapForSort = (int)view.getController().getPlay().getPlayer().getHitbox().x - xOffset;
+		yPosMapForSort = (int)view.getController().getPlay().getPlayer().getHitbox().y - yOffset;
 		
 		loadImages();	
 

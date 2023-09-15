@@ -27,8 +27,8 @@ public class Collisions {
 		int roomIndex = control.getPlay().getCurrentroomIndex();
 		
 		//in quale quadrato della mappa si trova il punto in alto a sinistra della hitbox
-		int playerCol = hitboxPlayer.x/control.getTileSize();
-		int playerRow = hitboxPlayer.y/control.getTileSize();
+		int playerCol = (int)(hitboxPlayer.x)/control.getTileSize();
+		int playerRow = (int)(hitboxPlayer.y)/control.getTileSize();
 		
 		//se si trova su una sola riga controlliamo solo il tile dove si trova
 		if(hitboxPlayer.y + hitboxPlayer.height < (playerRow+1)*control.getTileSize()) {
@@ -58,20 +58,20 @@ public class Collisions {
 		return canMove;
 	}
 
-	public boolean canMoveRight(Hitbox hitboxPlayer) throws ArrayIndexOutOfBoundsException {
+	public boolean canMoveRight(Hitbox hitboxEntity) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
 		int roomIndex = control.getPlay().getCurrentroomIndex();
 
 		//in quale quadrato della mappa si trova il punto in alto a destra della hitbox
-		int playerCol = (hitboxPlayer.x + hitboxPlayer.width)/control.getTileSize();
-		int playerRow = hitboxPlayer.y/control.getTileSize();
+		int playerCol = (int)((hitboxEntity.x) + hitboxEntity.width)/control.getTileSize();
+		int playerRow = (int)(hitboxEntity.y)/control.getTileSize();
 		
 		//se si trova su una sola riga controlliamo solo il tile dove si trova il punto in alto a destra
-		if(hitboxPlayer.y + hitboxPlayer.height < (playerRow+1)*control.getTileSize()) { 
+		if(hitboxEntity.y + hitboxEntity.height < (playerRow + 1)*control.getTileSize()) { 
 			int tile = control.getModel().getMap().getLayer(roomIndex, MAP_THIRD_LAYER)[playerRow][playerCol];
 			if(tile > 0) {																				
 				Hitbox hitboxToCheck = getRectOfTile(tile, playerRow, playerCol);	
-				if(hitboxPlayer.intersects(hitboxToCheck))
+				if(hitboxEntity.intersects(hitboxToCheck))
 					canMove = false;		
 			}
 		}
@@ -83,26 +83,26 @@ public class Collisions {
 			if(tile > 0 || tileDown > 0) {	
 				Hitbox hitboxToCheck1 = getRectOfTile(tile, playerRow, playerCol);
 				Hitbox hitboxToCheck2 = getRectOfTile(tileDown, playerRow+1, playerCol);	
-				if(hitboxPlayer.intersects(hitboxToCheck1) || hitboxPlayer.intersects(hitboxToCheck2))
+				if(hitboxEntity.intersects(hitboxToCheck1) || hitboxEntity.intersects(hitboxToCheck2))
 					canMove = false;				
 			}
 		}
 		return canMove;
 	}
 
-	public boolean canMoveUp(Hitbox hitboxPlayer) throws ArrayIndexOutOfBoundsException {
+	public boolean canMoveUp(Hitbox hitboxEntity) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
 		int roomIndex = control.getPlay().getCurrentroomIndex();
 		
-		int playerCol = hitboxPlayer.x/control.getTileSize();
-		int playerRow = hitboxPlayer.y/control.getTileSize();
+		int playerCol = (int)(hitboxEntity.x)/control.getTileSize();
+		int playerRow = (int)(hitboxEntity.y)/control.getTileSize();
 		
 		//se si trova su una sola colonna controlliamo solo il tile dove si trova
-		if(hitboxPlayer.x + hitboxPlayer.width < (playerCol+1)*control.getTileSize()) {
+		if(hitboxEntity.x + hitboxEntity.width < (playerCol+1)*control.getTileSize()) {
 			int tile = control.getModel().getMap().getLayer(roomIndex, MAP_THIRD_LAYER)[playerRow][playerCol];
 			if(tile > 0) {																				
 				Hitbox hitboxToCheck = getRectOfTile(tile, playerRow, playerCol);	
-				if(hitboxPlayer.intersects(hitboxToCheck))
+				if(hitboxEntity.intersects(hitboxToCheck))
 					canMove = false;	
 			}
 		}
@@ -114,7 +114,7 @@ public class Collisions {
 			if(tile > 0 || tileRight > 0) {	
 				Hitbox hitboxToCheck1 = getRectOfTile(tile, playerRow, playerCol);
 				Hitbox hitboxToCheck2 = getRectOfTile(tileRight, playerRow, playerCol + 1);	
-				if(hitboxPlayer.intersects(hitboxToCheck1) || hitboxPlayer.intersects(hitboxToCheck2))
+				if(hitboxEntity.intersects(hitboxToCheck1) || hitboxEntity.intersects(hitboxToCheck2))
 					canMove = false;				
 			}	
 		}
@@ -122,20 +122,20 @@ public class Collisions {
 	
 	}
 
-	public boolean canMoveDown (Hitbox hitboxPlayer) throws ArrayIndexOutOfBoundsException {
+	public boolean canMoveDown (Hitbox hitboxEntity) throws ArrayIndexOutOfBoundsException {
 		boolean canMove = true;
 		int roomIndex = control.getPlay().getCurrentroomIndex();
 		
 		//in quale riga/colonna si trova il punto in basso a sinistra della hitbox
-		int playerCol = hitboxPlayer.x/control.getTileSize();
-		int playerRow = (hitboxPlayer.y + hitboxPlayer.height)/control.getTileSize();
+		int playerCol = (int)(hitboxEntity.x)/control.getTileSize();
+		int playerRow = (int)((hitboxEntity.y) + hitboxEntity.height)/control.getTileSize();
 		
 		//se si trova su una sola colonna controlliamo solo il tile dove si trova
-		if(hitboxPlayer.x + hitboxPlayer.width < (playerCol+1)*control.getTileSize()) {
+		if(hitboxEntity.x + hitboxEntity.width < (playerCol+1)*control.getTileSize()) {
 			int tile = control.getModel().getMap().getLayer(roomIndex, MAP_THIRD_LAYER)[playerRow][playerCol];
 			if(tile > 0) {																				
 				Hitbox hitboxToCheck = getRectOfTile(tile, playerRow, playerCol);	
-				if(hitboxPlayer.intersects(hitboxToCheck))
+				if(hitboxEntity.intersects(hitboxToCheck))
 					canMove = false;	
 			}
 		}
@@ -147,7 +147,7 @@ public class Collisions {
 			if(tile > 0 || tileRight > 0) {	
 				Hitbox hitboxToCheck1 = getRectOfTile(tile, playerRow, playerCol);
 				Hitbox hitboxToCheck2 = getRectOfTile(tileRight, playerRow, playerCol + 1);	
-				if(hitboxPlayer.intersects(hitboxToCheck1) || hitboxPlayer.intersects(hitboxToCheck2))
+				if(hitboxEntity.intersects(hitboxToCheck1) || hitboxEntity.intersects(hitboxToCheck2))
 					canMove = false;				
 			}	
 		}
@@ -157,21 +157,21 @@ public class Collisions {
 	//prende la hitbox corrispondente al numero del tile e la trasla nella posizione dove si trova il tile
 	private Hitbox getRectOfTile(int tile, int playerRow, int playerCol) {
 		
-		int x = control.getModel().getTilesetModel().getTile(tile).getHitbox().x;
+		int x = (int)(control.getModel().getTilesetModel().getTile(tile).getHitbox().x);
 		x += playerCol*control.getTileSize();	
 		
-		int y = control.getModel().getTilesetModel().getTile(tile).getHitbox().y;
+		int y = (int)(control.getModel().getTilesetModel().getTile(tile).getHitbox().y);
 		y += playerRow*control.getTileSize();
 		
-		int width = control.getModel().getTilesetModel().getTile(tile).getHitbox().width;
-		int height = control.getModel().getTilesetModel().getTile(tile).getHitbox().height;
+		int width = (int)(control.getModel().getTilesetModel().getTile(tile).getHitbox().width);
+		int height = (int)(control.getModel().getTilesetModel().getTile(tile).getHitbox().height);
 		
 		Hitbox hitboxTile = new Hitbox(x, y, width, height);
 		return hitboxTile;
 	}
 
 	//prende la lista degli npc e dei nemici e vede se collide con uno di loro, a parte se stesso
-	public boolean checkCollisionInEntityList(Hitbox hitboxEntity) {
+	public boolean isCollisionInEntityList(Hitbox hitboxEntity) {
 		int roomIndex = control.getPlay().getCurrentroomIndex();
 		int numCollision = 0;
 		
@@ -202,14 +202,14 @@ public class Collisions {
 	}
 	
 	//metodo usato dai proiettili per vedere se ha colpito qualcuno
-	public boolean hitEntity(Hitbox hitboxEntity, EntityController owner) {
+	public boolean bulletHittedEntity(Hitbox hitboxEntity, EntityController owner) {
 		int roomIndex = control.getPlay().getCurrentroomIndex();
 		int numCollision = 0;
 		
 		ArrayList<EntityController> npc = control.getPlay().getRoom(roomIndex).getNPC();
 		for(int i = 0; i < npc.size(); i++) {
 			if(hitboxEntity.intersects(npc.get(i).getHitbox()))
-				if(npc.get(i) != owner)		//se colpisce vhi ha lanciato il proiettile non succede nulla
+				if(npc.get(i) != owner)		//se colpisce chi ha lanciato il proiettile non succede nulla
 					numCollision++;
 		}
 		

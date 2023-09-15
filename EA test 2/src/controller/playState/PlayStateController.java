@@ -7,7 +7,7 @@ import controller.IController;
 import controller.main.Gamestate;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
-import controller.playState.entityController.Bullet;
+import controller.playState.entityController.BulletController;
 
 import model.mappa.Rooms;
 
@@ -18,7 +18,7 @@ public class PlayStateController {
 	private Collisions collisionCheck;
 	private IController controller;
 	
-	private ArrayList<Bullet> bulletsInRoom;
+	private ArrayList<BulletController> bulletsInRoom;
 	private RoomController[] stanzeController;
 	
 	public PlayStateController(IController c) {
@@ -170,7 +170,7 @@ public class PlayStateController {
 	}
 	
 	public void addBullets(EntityController owner) {
-		bulletsInRoom.add(new Bullet(this, bulletsInRoom.size(), owner));
+		bulletsInRoom.add(new BulletController(this, bulletsInRoom.size(), owner));
 	}
 	
 	public void removeBullets(int index) {
@@ -189,7 +189,7 @@ public class PlayStateController {
 		}
 	}
 	
-	public ArrayList<Bullet> getBulletsInRoom(){
+	public ArrayList<BulletController> getBulletsInRoom(){
 		return bulletsInRoom;
 	}
 	

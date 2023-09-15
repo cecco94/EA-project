@@ -64,11 +64,10 @@ public class RoomController {
 
 	public void addNPC (String type, int xPos, int yPos) {
 		
-		if(type.compareTo("gatto") == 0) {	//se la stringa dentro al file è uguale a "-gatto"
+		if(type.compareTo("gatto") == 0) 	//se la stringa dentro al file è uguale a "-gatto"
 			NPC.add(new CatController(NPC.size(), type, xPos, yPos, play));	
-		}
 		
-	    if(type.compareTo("vecchio") == 0) 
+		else if(type.compareTo("vecchio") == 0) 
 			NPC.add(new ErmenegildoController(NPC.size(), type, xPos, yPos, play));	
 		
 		else if(type.compareTo("prof") == 0)
@@ -77,15 +76,10 @@ public class RoomController {
 		else if(type.compareTo("nerd") == 0)
 			NPC.add(new NerdController(NPC.size(), type, xPos, yPos, play));
 	    
-		else if(type.compareTo("pupa") == 0)
+		else if(type.compareTo("pupa") == 0) 
 			NPC.add(new PupaController(NPC.size(), type, xPos, yPos, play));
-	    	System.out.print("pupa aggiunta nel controller");
+		
 	}
-	
-	
-	
-	
-	
 	
 	
 	

@@ -11,13 +11,13 @@ public class ErmenegildoController extends EntityController {
 	
 	public ErmenegildoController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
-		speed = (int)(play.getController().getGameScale()*0.7f);	
+		speed = play.getController().getGameScale()*0.3f;	
 	}
 
 	@Override
 	public void update() {
-		int xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
-		int yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
+		float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
+		float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 		
 		if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) {			
 			play.getController().getView().getPlay().getUI().setMessage("premi E per parlare");

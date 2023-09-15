@@ -62,8 +62,8 @@ public class PlayStateView {
 		int roomIndex = view.getCurrentRoomIndex();
 		//prendiamo la posizione del player nella mappa (in quale tile tile si trova il punto in alto a sinitra della hitbox)
 		//contiamo a sinistra -10 e a destra +10, in su -7 e in giù +7 e prendiamo solo le parti della matrice con questi numeri
-		int playerMapX = view.getController().getPlay().getPlayer().getHitbox().x;
-		int playerMapY = view.getController().getPlay().getPlayer().getHitbox().y;
+		int playerMapX = (int)view.getController().getPlay().getPlayer().getHitbox().x;
+		int playerMapY = (int)view.getController().getPlay().getPlayer().getHitbox().y;
 		//da dove iniziare a prendere i numeri della mappa nelle matrici
 		int firstTileInFrameCol = playerMapX/GamePanel.TILES_SIZE - 10;
 		int firstTileInFrameRow = playerMapY/GamePanel.TILES_SIZE - 8;

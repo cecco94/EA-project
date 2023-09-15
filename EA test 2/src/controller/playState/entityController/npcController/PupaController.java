@@ -13,13 +13,13 @@ public class PupaController extends EntityController {
 	
 	public PupaController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
-		speed = (int)(play.getController().getGameScale()*0.7f);	
+		speed = play.getController().getGameScale()*0.5f;	
 	}
 	
 	@Override
 	public void update() {
-		int xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
-		int yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
+		float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
+		float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 		
 		if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) {			
 			play.getController().getView().getPlay().getUI().setMessage("premi E per parlare");
@@ -35,37 +35,43 @@ public class PupaController extends EntityController {
 		case GO_RIGHT:     //va a destra,se incontra ostacoli e arrivata a una certa posizione torna indietro
 			tempHitboxForCheck.x = hitbox.x + speed;
 			direction = RIGHT;
+			resetDirection();
 			right = true;
+			resetAction();
+			moving = true;
 			currentAction = MOVE;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
 				hitbox.x += speed;
-				moving = true;
-				currentAction = MOVE;
-			}else {
+			
+			else {
 				moving = false;
+				idle = true;
 				currentAction = IDLE;	
 			}
-			if(hitbox.x/play.getController().getTileSize()== 37) {
+			if(hitbox.x/play.getController().getTileSize() >= 37) 
 				actualState = GO_LEFT;	
-			}
-				
+			
 			break;
+			
 		case GO_LEFT:
 			tempHitboxForCheck.x = hitbox.x - speed;
 			direction = LEFT;
+			resetDirection();
 			left = true;
+			resetAction();
+			moving = true;
 			currentAction = MOVE;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
 				hitbox.x -= speed;
-				moving = true;
-				currentAction = MOVE;
-			}else {
+			
+			else {
 				moving = false;
+				idle = true;
 				currentAction = IDLE;	
 			}
-			if(hitbox.x/play.getController().getTileSize()== 31) {
+			if(hitbox.x/play.getController().getTileSize() <= 31) 
 				actualState = GO_RIGHT;	
-			}
+		
 			break;
 		}
 			

@@ -7,7 +7,7 @@ per gli NPC l'ordine è tipo posx posy
 
 ;passaggio alla tenda, 26, 10, 32, 32, 14, 15, 3, true
 
-;passaggio al laboratorio, 15, 6, 32, 33, 20, 24, 4, true 
+;passaggio al laboratorio, 15, 6, 32, 34, 20, 24, 4, true 
 
 ;passaggio alla segreteria, 16, 42, 32, 32, 0, 0, 0, false, la segreteria è aperta tutti i giorni dalle 8:00 alle 8:01
 
@@ -20,3 +20,5 @@ per gli NPC l'ordine è tipo posx posy
 +cfu, 25, 16, 32, 32, cfu
 
 -prof, prof, 29, 8
+
+-pupa, pupa, 36, 39

@@ -18,8 +18,8 @@ public class EnemyController extends EntityController{
 	@Override
 	public void update() {
 
-		int xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
-		int yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
+		float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
+		float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 		
 		if(xDistance < play.getController().getTileSize()*2 && yDistance < play.getController().getTileSize()*2) {
 			if(actualState == NORMAL_STATE) {

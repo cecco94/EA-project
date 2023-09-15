@@ -2,7 +2,9 @@ package controller.playState;
 
 public class Hitbox {
 	
-	public int x, y, width, height;
+	//la posizione è esperessa in float in modo da rendere la velocità dei personaggi più regolabile
+	public float x, y;
+	public int width, height;
 	
 
 	 public Hitbox(int x, int y, int width, int height) {

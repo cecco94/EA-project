@@ -3,20 +3,20 @@ package controller.playState.entityController;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 
-public class Bullet {
+public class BulletController {
 
 	private boolean hit = false;
 	private int indexInList;
 	private int direction;
 	private Hitbox hitbox;
-	private int speed;
+	private float speed;
 	private PlayStateController play;
 	private EntityController owner;  //il proiettile non colpisce chi lo ha lanciato 
 	
-	public Bullet(PlayStateController p, int index, EntityController e) {
+	public BulletController(PlayStateController p, int index, EntityController e) {
 		play = p;
 		setHitbox(e);
-		speed = (int)(play.getController().getGameScale()*1.3f);
+		speed = play.getController().getGameScale()*1.3f;
 		indexInList = index;
 		
 		direction = e.direction;
@@ -27,10 +27,10 @@ public class Bullet {
 		
 		int width = e.getHitbox().width;
 		int height = e.getHitbox().height;
-		int x = e.getHitbox().x;
-		int y = e.getHitbox().y;
+		float x = e.getHitbox().x;
+		float y = e.getHitbox().y;
 		
-		hitbox = new Hitbox(x, y, width, height);
+		hitbox = new Hitbox((int)x, (int)y, width, height);
 	}
 
 	public void update() {
@@ -43,22 +43,22 @@ public class Bullet {
 			switch(direction) {
 			case EntityController.LEFT: 
 				if(!play.getCollisionChecker().canMoveLeft(hitbox) || 
-						play.getCollisionChecker().hitEntity(hitbox, owner))  
+						play.getCollisionChecker().bulletHittedEntity(hitbox, owner))  
 					hit = true;
 				break;
 			case EntityController.RIGHT:
 				if(!play.getCollisionChecker().canMoveRight(hitbox) || 
-						play.getCollisionChecker().hitEntity(hitbox, owner)) 
+						play.getCollisionChecker().bulletHittedEntity(hitbox, owner)) 
 					hit = true;
 				break;
 			case EntityController.UP:
 				if(!play.getCollisionChecker().canMoveUp(hitbox) || 
-						play.getCollisionChecker().hitEntity(hitbox, owner))  
+						play.getCollisionChecker().bulletHittedEntity(hitbox, owner))  
 					hit = true;
 				break;
 			case EntityController.DOWN:
 				if(!play.getCollisionChecker().canMoveDown(hitbox)|| 
-						play.getCollisionChecker().hitEntity(hitbox, owner))  
+						play.getCollisionChecker().bulletHittedEntity(hitbox, owner))  
 					hit = true;
 				break;
 			}		

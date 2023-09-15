@@ -21,7 +21,6 @@ public class PlayerController extends EntityController {
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
 	private int indexOfEntityInteract;
 	
-	private int speed = (int)(play.getController().getGameScale()*1.3f);
 	
 	private boolean parry, throwing, interacting;
 
@@ -37,8 +36,9 @@ public class PlayerController extends EntityController {
 		
 		int hitboxWidth = (int)(play.getController().getTileSize()*0.75);
 		int hitboxHeight = play.getController().getTileSize()/2;
+		super.setBounds((int)r.x, (int)r.y, hitboxWidth, hitboxHeight);	
 		
-		super.setBounds(r.x, r.y, hitboxWidth, hitboxHeight);		
+		speed = play.getController().getGameScale()*1.2f;
 	}
 	
 	public void setType(int gender) {

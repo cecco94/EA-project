@@ -9,7 +9,7 @@ public abstract class EntityController {
 
 	//il punto in alto a sinistra della hitbox è la posizione dell'entità nella mappa
 	protected Hitbox hitbox, tempHitboxForCheck;
-	protected int speed;
+	protected float speed;
 	protected PlayStateController play;
 	protected boolean moving, idle, attacking, up, down, left, right;
 	protected int direction;
@@ -36,6 +36,8 @@ public abstract class EntityController {
 		hitbox = r;
 		
 		//settiamo la posizione nella mappa e scaliamo la dimensione
+		//siccome stiamo usando i float per definire la posizione, forse servirebbe un cast a int 
+		//perchè prima era tutto in int e non vorrei sminchiare la posizione delle entità
 		hitbox.x *= play.getController().getTileSize(); 
 		hitbox.y *= play.getController().getTileSize(); 
 		
@@ -44,7 +46,7 @@ public abstract class EntityController {
 		
 		//hitbox che serve per le collisioni, prima di cambiare la hitbox, cambiamo questa
 		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
-		tempHitboxForCheck = new Hitbox(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+		tempHitboxForCheck = new Hitbox((int)hitbox.x, (int)hitbox.y, hitbox.width, hitbox.height);
 		
 		resetBooleans();
 		idle = true;
@@ -56,11 +58,11 @@ public abstract class EntityController {
 	
 	//settiamo la hitbox per creare le entità acnhe se non conosciamo tutti i dati.
 	protected void setBounds(int x, int y, int w, int h) {
-		hitbox.x = x;
-		tempHitboxForCheck.x = x;
+		hitbox.x = (float)x;
+		tempHitboxForCheck.x = (float)x;
 		
-		hitbox.y = y;
-		tempHitboxForCheck.y = y;
+		hitbox.y = (float)y;
+		tempHitboxForCheck.y = (float)y;
 		
 		hitbox.width = w;
 		tempHitboxForCheck.width = w;

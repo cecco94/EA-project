@@ -104,8 +104,8 @@ public class BulletView {
 		
 		try {
 			//decidiamo dove disegnarlo
-			int xposInMap = view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().x;
-			int yposInMap = view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().y;
+			int xposInMap = (int)view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().x;
+			int yposInMap = (int)view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().y;
 			
 			int distanzaX = playerx - xposInMap;
 			int distanzaY = playery - yposInMap;

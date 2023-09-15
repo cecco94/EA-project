@@ -50,30 +50,30 @@ public abstract class EntityView extends SortableElement {
 		this.index = index;
 	}
 	
+	//controlla se l'oggetto è abbastanza vicino al giocatore da poter apparire sullo schermo
 	public boolean isInGameFrame(int posizPlayerX, int posizPlayerY, String type) {
-		//controlla se l'oggetto è abbastanza vicino al giocatore da poter apparire sullo schermo
+		//prende la hitbox dell'entità
 		Rectangle hitboxController = null;
-		
 		if(type.compareTo("npc") == 0)
 			hitboxController = IView.fromHitboxToRectangle(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox()); 
-		
 		else
 			 hitboxController = IView.fromHitboxToRectangle(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox()); 
 	
+		//controlla la distanza dal giocatore
 		if(Math.abs(hitboxController.x - posizPlayerX)  > GamePanel.GAME_WIDTH/2)
 			return false;
 		if(Math.abs(hitboxController.y - posizPlayerY)  > GamePanel.GAME_HEIGHT/2)
 			return false;
+		
 		//in caso affermativo, aggiorna i dati sulla sua posizione e ci aggiunge l'offset
 		setMapPositionForSort(hitboxController);
 		return true;
 	}
 	
-	//ogni ente mobile deve capire dove si trova il personaggio per poterlo ordinare e disegnare
+	//ogni ente deve capire dove si trova per poter essere ordinato e disegnato
 	public void setMapPositionForSort(Rectangle hitboxEntity) {
 		xPosMapForSort = hitboxEntity.x - xOffset;
 		yPosMapForSort = hitboxEntity.y - yOffset;
-		
 	}
 	
 	public static int getRun() {
@@ -88,11 +88,10 @@ public abstract class EntityView extends SortableElement {
 		return DOWN;
 	}
 	
+	//vede nel controller la direzione dell'entità e cambia currentDirection
 	protected void setDirection(boolean isNPC) {
-	//vede nel controller la direzione del gatto e cambia currentDirection
 		if(isNPC)
 			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
-		
 		else
 			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentDirection();
 		
@@ -111,11 +110,10 @@ public abstract class EntityView extends SortableElement {
 
 	}
 	
+	//vede nel controller cosa fa l'entità e cambia currentAction
 	protected void setAction(boolean isNPC) {
-		//vede nel controller cosa fa il gatto e cambia currentAction
 		if(isNPC)
 			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentAction();
-		
 		else
 			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentAction();
 		

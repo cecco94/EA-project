@@ -1,4 +1,4 @@
-;passaggio all'aula studio, 20, 25, 32, 32, 15, 8, 2, true
+;passaggio all'aula studio, 19, 25, 96, 32, 15, 8, 2, true
 
 ;passaggio allo studio prof, 14, 7, 32, 34, 26, 32, 5, false, non sei ancora degno di essere ricevuto dal prof
 
