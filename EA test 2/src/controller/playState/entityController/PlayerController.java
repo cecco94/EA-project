@@ -22,15 +22,12 @@ public class PlayerController extends EntityController {
 	private int indexOfEntityInteract;
 	
 	private int speed = (int)(play.getController().getGameScale()*1.3f);
-	private boolean parry, throwing, interacting, hitted;
+	
+	private boolean parry, throwing, interacting;
 
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
 	private int attackCounter; //durata attacco
-	
-	//quando viene colpito il giocatore si sposta della direzione del colpo per mezzo secondo e non può fare nulla
-	private int hittedCounter;
-	private int hittedDirection;
 	
 	
 	public PlayerController(Hitbox r, PlayStateController p) {
@@ -41,8 +38,7 @@ public class PlayerController extends EntityController {
 		int hitboxWidth = (int)(play.getController().getTileSize()*0.75);
 		int hitboxHeight = play.getController().getTileSize()/2;
 		
-		super.setBounds(r.x, r.y, hitboxWidth, hitboxHeight);
-		
+		super.setBounds(r.x, r.y, hitboxWidth, hitboxHeight);		
 	}
 	
 	public void setType(int gender) {
@@ -54,45 +50,17 @@ public class PlayerController extends EntityController {
 	}
 	
 	public void update() {
-		if(!hitted) {
-			updatePos();
-			isAbovePassage();
-			isNearEvent();
-		}
-		else 
-			spostatiNellaDirezioneDelColpo();
-	}
-
-	private void spostatiNellaDirezioneDelColpo() {
-		hittedCounter++;
-		if(hittedCounter >= 100) {
-			switch(hittedDirection) {
-			case UP:
-				hitbox.y -= 10;
-				break;
-			case LEFT: 
-				hitbox.x -= 10;
-				break;
-			case DOWN:
-				hitbox.y += 10;
-				break;
-			case RIGHT:
-				hitbox.x += 10;
-				break;
-			}
-		}
-		
-		else {
-			hittedCounter = 0;
-			hitted = false;
-			resetBooleans();
-		}
+		updatePos();
+		isAbovePassage();
+		isNearEvent();
 		
 	}
 
 	private void updatePos() {
 		
 		//System.out.println(hitbox.x/play.getController().getTileSize() + " " + hitbox.x/play.getController().getTileSize());
+		//System.out.println(direction + " " + moving);
+		
 		
 		//durante l'intervallo mentre attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
@@ -173,41 +141,39 @@ public class PlayerController extends EntityController {
 		return hitbox;
 	}
 
-	public void choiceDirection(int dir) {
-		if(!hitted) {
-			switch (dir) {
-			case UP:
-				up = true;
-				break;
-			case LEFT:
-				left = true;
-				break;
-			case DOWN:
-				down = true;
-				break;
-			case RIGHT:
-				right = true;
-				break;
-			}
+	public void choiceDirection(int dir) {	
+		switch (dir) {
+		case UP:
+			up = true;
+			break;
+		case LEFT:
+			left = true;
+			break;
+		case DOWN:
+			down = true;
+			break;
+		case RIGHT:
+			right = true;
+			break;
+			
 		}
 	}
 	
 	public void resetDirection(int dir) {
-		if(!hitted) {
-			switch (dir) {
-			case UP:
-				up = false;
-				break;
-			case LEFT:
-				left = false;
-				break;
-			case DOWN:
-				down = false;
-				break;
-			case RIGHT:
-				right = false;
-				break;
-			}
+		switch (dir) {
+		case UP:
+			up = false;
+			break;
+		case LEFT:
+			left = false;
+			break;
+		case DOWN:
+			down = false;
+			break;
+		case RIGHT:
+			right = false;
+			break;
+		
 		}
 	}
 	
@@ -216,11 +182,10 @@ public class PlayerController extends EntityController {
 	}
 
 	public void setAttacking(boolean a) {
-		if(!hitted) {
-			attacking = a;
-			if(attacking) 
-				isAttackAnimation = true;
-		}
+		attacking = a;
+		if(attacking) 
+			isAttackAnimation = true;
+		
 	}
 	
 	public void isAbovePassage() {
@@ -247,9 +212,8 @@ public class PlayerController extends EntityController {
 	}
 	
 	public void isNearEvent() {
-		//il player vede in che stanza è, vede la lista degli eventi, controlla
-		//se è vicino ad un evento, deve apparire il messaggio
-		//se preme E parte l'interazione
+		//il player vede in che stanza è, vede la lista degli eventi, controlla se è vicino ad un evento.
+		//in caso positivo, deve apparire il messaggio. infine se preme E parte l'interazione
 		int eventIndex = play.getController().getModel().checkEvent(hitbox);
 		
 		if(eventIndex >= 0) {
@@ -273,8 +237,7 @@ public class PlayerController extends EntityController {
 	}
 	
 	public void setParry(boolean b) {
-		if(!hitted)
-			parry = b;	
+		parry = b;	
 	}
 
 	public boolean isParring() {
@@ -286,8 +249,7 @@ public class PlayerController extends EntityController {
 	}
 
 	public void setThrowing(boolean throwing) {
-		if(!hitted)
-			this.throwing = throwing;
+		this.throwing = throwing;
 	}	
 	
 	public String toString() {
@@ -295,8 +257,7 @@ public class PlayerController extends EntityController {
 	}
 
 	public void setInteracting(boolean b) {
-		if(!hitted)
-			interacting = b;	
+		interacting = b;	
 	}
 	
 	public boolean isInteracting() {
@@ -365,13 +326,7 @@ public class PlayerController extends EntityController {
 		this.defense = defense;
 	}
 
-	public void colpito(int attack, int direction) {
-		if(!hitted) {
-			hitted = true;
-			hittedDirection = direction;
-			life -= attack-defense;
-		}
-	}
+	
 	
 }
 

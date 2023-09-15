@@ -208,7 +208,7 @@ public abstract class EntityController {
 		}
 	}
 	
-	protected void checkCollision() {
+	protected boolean checkCollision() {
 		boolean collision = true;
 		
 		if (moving && up) {
@@ -218,6 +218,7 @@ public abstract class EntityController {
 				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y -= speed;
+					direction = UP;
 				}
 			}
 		}
@@ -229,6 +230,7 @@ public abstract class EntityController {
 				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y += speed;
+					direction = DOWN;
 				}
 			}	
 		}
@@ -240,6 +242,7 @@ public abstract class EntityController {
 				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x -= speed;
+					direction = LEFT;
 				}
 			}				
 		}
@@ -251,6 +254,7 @@ public abstract class EntityController {
 				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x += speed;
+					direction = RIGHT;
 				}
 			}		
 		}	
@@ -260,6 +264,8 @@ public abstract class EntityController {
 			moving = false;
 			idle = true;
 		}
+		
+		return collision;
 		
 	}
 	
