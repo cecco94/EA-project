@@ -10,9 +10,10 @@ public abstract class EntityController {
 	//il punto in alto a sinistra della hitbox è la posizione dell'entità nella mappa
 	protected Hitbox hitbox, tempHitboxForCheck;
 	protected float speed;
+	
 	protected PlayStateController play;
-	protected boolean moving, idle, attacking, up, down, left, right;
-	protected int direction;
+	
+	protected int currentDirection;
 	public static final int DOWN = 0, RIGHT = 1, LEFT = 2, UP = 3;
 	public static final int IDLE = 0, MOVE = 1, ATTACK = 2, PARRY = 3, THROW = 4, DIE = 5;
 	protected int currentAction = IDLE;
@@ -48,10 +49,7 @@ public abstract class EntityController {
 		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
 		tempHitboxForCheck = new Hitbox((int)hitbox.x, (int)hitbox.y, hitbox.width, hitbox.height);
 		
-		resetBooleans();
-		idle = true;
-		down = true;
-		direction = DOWN;
+		currentDirection = DOWN;
 		currentAction = IDLE;
 
 	}
@@ -83,76 +81,12 @@ public abstract class EntityController {
 	}
 	
 	public int getCurrentAction() {
-		if(idle) 
-			return IDLE;
-	
-		else if(moving) 
-			return MOVE;
-	 
-		else if(attacking) 
-			return ATTACK;
-		
-		else 
-			return THROW;	
-		
+		return currentAction;		
 	}
 	
 	//quando l'entità è ferma, tutti i booleans sono false e ritorna right di default
 	public int getCurrentDirection() {
-		if(up)
-			return UP;
-		
-		else if(down)
-			return DOWN;
-		
-		else if(left)
-			return LEFT;
-		else 
-			return RIGHT;
-	}
-	
-	public boolean isMoving() {
-		return moving;
-	}
-	
-	public boolean isRight() {
-		return right;
-	}
-	
-	public boolean isLeft() {
-		return left;
-	}
-	
-	public boolean isDown() {
-		return down;
-	}
-	
-	public boolean isUp() {
-		return up;
-	}
-
-	public void setMoving(boolean m) {
-		moving = m;
-	}
-	
-	protected void resetBooleans() {
-		up = false;
-		down = false;
-		left = false;
-		right = false;	
-		idle = false;
-		moving = false;	
-	}
-	
-	protected void resetDirection() {
-		up = false;
-		down = false;
-		left = false;
-		right = false;
-	}
-	
-	public int getDirection() {
-		return direction;
+		return currentDirection;
 	}
 	
 	public int getIndex() {
@@ -168,43 +102,49 @@ public abstract class EntityController {
 	public void randomMove() {
 		actionCounter++;	
 		//ogni due secondi cambia azione e direzione 
-		if(actionCounter >= 400) {
-			resetAction();
-			randomAction = randomGenerator.nextInt(2);
-			
-			if (randomAction == 0) 
-				idle = true;
-			
-			else
-				moving = true;
-		}
+		if(actionCounter >= 400) 
+			choseAction();
 		
 		choseDirection();
 		checkCollision();
 	}
 	
-	protected void resetAction() {
-		idle = false;
-		moving = false;
+	private void choseAction() {
+	//	resetAction();
+		randomAction = randomGenerator.nextInt(2);
+		
+		if (randomAction == 0) {
+	//		idle = true;
+			currentAction = IDLE;
+		}
+		
+		else {
+	//		moving = true;
+			currentAction = MOVE;
+		}
+		
 	}
 	
 	protected void choseDirection() {		
 	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
 		if(actionCounter >= 400) {
-			resetDirection();	
 			randomDirection = randomGenerator.nextInt(4);
 			
-			if(randomDirection == 0) 
-				up = true;
+			if(randomDirection == 0) { 
+				currentDirection = DOWN;
+			}
 			
-			else if (randomDirection == 1) 
-				down = true;
+			else if (randomDirection == 1) { 
+				currentAction = RIGHT;
+			}
 			
-			else if(randomDirection == 2) 
-				left = true;
+			else if(randomDirection == 2) {
+				currentDirection = LEFT;
+			}
 			
-			else if(randomDirection == 3) 
-				right = true;
+			else if(randomDirection == 3) {
+				currentDirection = UP;
+			}
 			
 			actionCounter = 0;
 		}
@@ -213,58 +153,57 @@ public abstract class EntityController {
 	protected boolean checkCollision() {
 		boolean collision = true;
 		
-		if (moving && up) {
+		if (currentAction == MOVE && currentDirection == UP) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y - speed;
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y -= speed;
-					direction = UP;
+					currentDirection = UP;
 				}
 			}
 		}
 		
-		if (moving && down) {
+		if (currentAction == MOVE && currentDirection == DOWN) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y + speed;
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y += speed;
-					direction = DOWN;
+					currentDirection = DOWN;
 				}
 			}	
 		}
 		
-		if (moving && left) {
+		if (currentAction == MOVE && currentDirection == LEFT) {
 			tempHitboxForCheck.x = hitbox.x - speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x -= speed;
-					direction = LEFT;
+					currentDirection = LEFT;
 				}
 			}				
 		}
 		
-		if (moving && right) {
+		if (currentAction == MOVE && currentDirection == RIGHT) {
 			tempHitboxForCheck.x = hitbox.x + speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x += speed;
-					direction = RIGHT;
+					currentDirection = RIGHT;
 				}
 			}		
 		}	
 		
 		//se incontra ostacoli nella mappa, si ferma 
 		if(collision) {
-			moving = false;
-			idle = true;
+			currentAction = IDLE;
 		}
 		
 		return collision;
@@ -273,28 +212,22 @@ public abstract class EntityController {
 	
 	protected void tunrToInteract() {
 		
-		resetDirection();
-		moving = false;
-		idle = true;
+		currentAction = IDLE;
 		
-		if(play.getPlayer().getDirection() == DOWN) {
-			direction = UP;
-			up = true;
+		if(play.getPlayer().getCurrentDirection() == DOWN) {
+			currentDirection = UP;
 		}
 		
-		else if(play.getPlayer().getDirection() == UP) {
-			direction = DOWN;
-			down = true;
+		else if(play.getPlayer().getCurrentDirection() == UP) {
+			currentDirection = DOWN;
 		}
 		
-		else if(play.getPlayer().getDirection() == RIGHT) {
-			direction = LEFT;
-			left = true;
+		else if(play.getPlayer().getCurrentDirection() == RIGHT) {
+			currentDirection = LEFT;
 		}
 		
-		else if(play.getPlayer().getDirection() == LEFT) {
-			direction = RIGHT;
-			right = true;
+		else if(play.getPlayer().getCurrentDirection() == LEFT) {
+			currentDirection = RIGHT;
 		}	
 	}
 }

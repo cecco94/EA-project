@@ -479,8 +479,6 @@ public class PlayerView extends EntityView {
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	//posizione al centro della finestra

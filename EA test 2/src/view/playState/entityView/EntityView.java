@@ -94,19 +94,6 @@ public abstract class EntityView extends SortableElement {
 			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
 		else
 			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentDirection();
-		
-		// questo ci serve perchè l'ordine delle sprite nell'immagine è down, left, right, up
-		if(currentDirection == RIGHT)
-			currentDirection = 1;
-		
-		else if(currentDirection == LEFT)
-			currentDirection = 2;
-		
-		else if(currentDirection == DOWN)
-			currentDirection = 0;
-		
-		else if(currentDirection == UP)
-			currentDirection = 3;
 
 	}
 	

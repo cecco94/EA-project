@@ -102,10 +102,12 @@ public class CatController extends EntityController {
 
 	private void setRunAwayDirection() {
 		
-		int playerDirection = play.getPlayer().getDirection();
+		int playerDirection = play.getPlayer().getCurrentDirection();
 		boolean isPlayerMoving = play.getPlayer().isMoving();
-		moving = true;
-		idle = false;
+		
+		currentAction = MOVE;
+//		moving = true;
+//		idle = false;
 		
 		//se il giocatore stava fermo ed è il gatto ad essersi avvicinato per caso
 		if(!isPlayerMoving) 
@@ -121,80 +123,80 @@ public class CatController extends EntityController {
 		switch(playerDirection) {
 		case LEFT:
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-				direction = LEFT;
-				resetDirection();
-				left = true;
+				currentDirection = LEFT;
+//				resetDirection();
+//				left = true;
 			}
 			else {
 				if(play.getCollisionChecker().canMoveUp(hitbox)) {
-					direction = UP;
-					resetDirection();
-					up = true;
+					currentDirection = UP;
+//					resetDirection();
+//					up = true;
 				}
 				else if (play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-					direction = DOWN;
-					resetDirection();
-					down = true;
+					currentDirection = DOWN;
+//					resetDirection();
+//					down = true;
 				}
 			}
 			break;
 		
 		case RIGHT:
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-				direction = RIGHT;
-				resetDirection();
-				right = true;
+				currentDirection = RIGHT;
+//				resetDirection();
+//				right = true;
 			}
 			else {
 				if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-					direction = DOWN;
-					resetDirection();
-					down = true;
+					currentDirection = DOWN;
+//					resetDirection();
+//					down = true;
 				}
 				else if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-					direction = UP;
-					resetDirection();
-					up = true;
+					currentDirection = UP;
+//					resetDirection();
+//					up = true;
 				}
 			}	
 			break;
 			
 		case UP:
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-				direction = UP;
-				resetDirection();
-				up = true;
+				currentDirection = UP;
+//				resetDirection();
+//				up = true;
 			}
 			else {
 				if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-					direction = RIGHT;
-					resetDirection();
-					right = true;
+					currentDirection = RIGHT;
+//					resetDirection();
+//					right = true;
 				}
 				else if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)){
-					direction = LEFT;
-					resetDirection();
-					left = true;
+					currentDirection = LEFT;
+//					resetDirection();
+//					left = true;
 				}
 			}		
 			break;
 		
 		case DOWN:
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-				direction = DOWN;
-				resetDirection();
-				down = true;
+				currentDirection = DOWN;
+//				resetDirection();
+//				down = true;
 			}	
 			else {
 				if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-					direction = LEFT;
-					resetDirection();
-					left = true;
+					currentDirection = LEFT;
+//					resetDirection();
+//					left = true;
 				}
 				else if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)){
-					direction = RIGHT;
-					resetDirection();
-					right = true;
+					currentDirection = RIGHT;
+//					resetDirection();
+//					right = true;
 				}
 			}		
 		break;
@@ -203,25 +205,25 @@ public class CatController extends EntityController {
 	}	
 	
 	private void tornaIndietro() {
-		if(direction == UP) {
-			direction = DOWN;
-			resetDirection();
-			down = true;
+		if(currentDirection == UP) {
+			currentDirection = DOWN;
+//			resetDirection();
+//			down = true;
 		}
-		else if(direction == DOWN) {
-			direction = UP;
-			resetDirection();
-			up = true;
+		else if(currentDirection == DOWN) {
+			currentDirection = UP;
+//			resetDirection();
+//			up = true;
 		}
-		else if(direction == LEFT) {
-			direction = RIGHT;
-			resetDirection();
-			right = true;
+		else if(currentDirection == LEFT) {
+			currentDirection = RIGHT;
+//			resetDirection();
+//			right = true;
 		}
-		else if(direction == RIGHT) {
-			direction = LEFT;
-			resetDirection();
-			left = true;
+		else if(currentDirection == RIGHT) {
+			currentDirection = LEFT;
+//			resetDirection();
+//			left = true;
 		}		
 	}
 

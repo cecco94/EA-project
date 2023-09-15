@@ -19,7 +19,7 @@ public class BulletController {
 		speed = play.getController().getGameScale()*1.3f;
 		indexInList = index;
 		
-		direction = e.direction;
+		direction = e.currentDirection;
 		owner = e;
 	}
 

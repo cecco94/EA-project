@@ -16,13 +16,29 @@ public class PlayerController extends EntityController {
 	private int cfu = 0;
 	private int notes = 10;
 
-	
 	//quando il player parla con qualcuno, si salva l'indice nella lista di quell'entità
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
 	private int indexOfEntityInteract;
 	
-	
-	private boolean parry, throwing, interacting;
+	//il giocatore ha dei booleani per descrivere il suo stato perchè può fare più cose contemporaneamente e può muoversi in più
+	//direzioni allo stesso tempo. gli npc per semplicità non possono farlo
+	private boolean parry, throwing, interacting, moving, idle, attacking, up, down, left, right;
+
+	public boolean isUp() {
+		return up;
+	}
+
+	public boolean isDown() {
+		return down;
+	}
+
+	public boolean isLeft() {
+		return left;
+	}
+
+	public boolean isRight() {
+		return right;
+	}
 
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
@@ -72,7 +88,7 @@ public class PlayerController extends EntityController {
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.x -= speed;
-					direction = LEFT;
+					currentDirection = LEFT;
 					setMoving(true);
 				}
 			}
@@ -83,7 +99,7 @@ public class PlayerController extends EntityController {
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.x += speed;
-					direction = RIGHT;
+					currentDirection = RIGHT;
 					setMoving(true);
 				}
 			}
@@ -94,7 +110,7 @@ public class PlayerController extends EntityController {
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.y -= speed;
-					direction = UP;
+					currentDirection = UP;
 					setMoving(true);
 				}
 			}
@@ -105,7 +121,7 @@ public class PlayerController extends EntityController {
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.y += speed;
-					direction = DOWN;
+					currentDirection = DOWN;
 					setMoving(true);
 				}
 			}
@@ -118,10 +134,10 @@ public class PlayerController extends EntityController {
 			attackCounter++;
 			
 			if(attackCounter < 100)
-				speed = (int)(0.5f); //int --> diventa 0 , rivedere
+				speed = 0.5f; //int --> diventa 0 , rivedere
 			
 			else {
-				speed = (int)(play.getController().getGameScale()*1.3);
+				speed = play.getController().getGameScale()*1.3f;
 				isAttackAnimation = false;
 				attackCounter = 0;
 			}
@@ -130,7 +146,14 @@ public class PlayerController extends EntityController {
 	}
 
 	public void resetBooleans() {
-		super.resetBooleans();
+
+		up = false;
+		down = false;
+		left = false;
+		right = false;	
+		idle = false;
+		moving = false;	
+		
 		setMoving(false);
 		setAttacking(false);
 		setParry(false);
@@ -187,6 +210,14 @@ public class PlayerController extends EntityController {
 			isAttackAnimation = true;
 		
 	}
+	
+	public void setMoving(boolean m) {
+		moving = m;
+}
+		
+	public boolean isMoving() {
+	return moving;
+}
 	
 	public void isAbovePassage() {
 		// il player vede in che stanza è, vede la lista dei passaggi, e li controlla tutti
@@ -324,6 +355,10 @@ public class PlayerController extends EntityController {
 
 	public void setDefense(int defense) {
 		this.defense = defense;
+	}
+
+	public boolean isIdle() {
+		return idle;
 	}
 
 	
