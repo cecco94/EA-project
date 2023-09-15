@@ -28,8 +28,6 @@ public class CatController extends EntityController {
 		//quando è tranquillo controlla se il giovìcatore è vicino, in caso affermativo inizia a scappare, altrimenti si muove a caso
 		case NORMAL_STATE:	
 			
-			System.out.println("mi muovo a caso in direzione " + direction);
-			
 			int xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 			int yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) 
@@ -115,121 +113,96 @@ public class CatController extends EntityController {
 			tornaIndietro();
 			
 		else
-			spostatiNellaDirezioneOpposta();
-		
-//		
-//		//se il giocatore stava fermo ed è il gatto ad essersi avvicinato per caso
-//		//cambia direzione e scappa
-//		if(playerDirection == direction) {
-//			direction++;
-//			if(direction > 3)
-//				direction = 0;
-//		}
-//		
-//		//se il player si avvicina da sinistra, se può scappa a sinistra
-//		else if(playerDirection == LEFT && play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-//			direction = LEFT;
-//			resetDirection();
-//			left = true;
-//		}
-//		//se non può, controlla se può scappare su o giù
-//		else if(playerDirection == LEFT && !play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-//			if(play.getCollisionChecker().canMoveUp(hitbox)) {
-//				direction = UP;
-//				resetDirection();
-//				up = true;
-//			}
-//			else if (play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-//				direction = DOWN;
-//				resetDirection();
-//				down = true;
-//			}
-//			//se non può scappare resta fermo
-//			else {
-//				idle = true;
-//				moving = false;
-//			}
-//				
-//		}
-//				
-//		else if(playerDirection == RIGHT && play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-//			direction = RIGHT;
-//			resetDirection();
-//			right = true;
-//		}
-//		
-//		else if(playerDirection == RIGHT && !play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-//			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-//				direction = DOWN;
-//				resetDirection();
-//				down = true;
-//			}
-//			else if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-//				direction = UP;
-//				resetDirection();
-//				up = true;
-//			}
-//			else {
-//				idle = true;
-//				moving = false;
-//			}
-//		}		
-//		
-//		
-//		else if(playerDirection == UP && play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-//			direction = UP;
-//			resetDirection();
-//			up = true;
-//		}
-//		
-//		else if(playerDirection == UP && !play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-//			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-//				direction = RIGHT;
-//				resetDirection();
-//				right = true;
-//			}
-//			else if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)){
-//				direction = LEFT;
-//				resetDirection();
-//				left = true;
-//			}
-//			else {
-//				idle = true;
-//				moving = false;
-//			}
-//		}		
-//		
-//		
-//		else if(playerDirection == DOWN && play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-//			direction = DOWN;
-//			resetDirection();
-//			down = true;
-//		}
-//		
-//		else if(playerDirection == DOWN && !play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-//			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-//				direction = LEFT;
-//				resetDirection();
-//				left = true;
-//			}
-//			else if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)){
-//				direction = RIGHT;
-//				resetDirection();
-//				right = true;
-//			}
-//			else {
-//				idle = true;
-//				moving = false;
-//			}
-//		}		
-//			
+			scegliDirezAllontanamento(playerDirection);
 	}
 	
-	private void spostatiNellaDirezioneOpposta() {
-		// TODO Auto-generated method stub
+	private void scegliDirezAllontanamento(int playerDirection) {			
+		//se il player si avvicina da sinistra, se può scappa a sinistra
 		
-	}
-
+		switch(playerDirection) {
+		case LEFT:
+			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
+				direction = LEFT;
+				resetDirection();
+				left = true;
+			}
+			else {
+				if(play.getCollisionChecker().canMoveUp(hitbox)) {
+					direction = UP;
+					resetDirection();
+					up = true;
+				}
+				else if (play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
+					direction = DOWN;
+					resetDirection();
+					down = true;
+				}
+			}
+			break;
+		
+		case RIGHT:
+			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
+				direction = RIGHT;
+				resetDirection();
+				right = true;
+			}
+			else {
+				if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
+					direction = DOWN;
+					resetDirection();
+					down = true;
+				}
+				else if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
+					direction = UP;
+					resetDirection();
+					up = true;
+				}
+			}	
+			break;
+			
+		case UP:
+			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
+				direction = UP;
+				resetDirection();
+				up = true;
+			}
+			else {
+				if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
+					direction = RIGHT;
+					resetDirection();
+					right = true;
+				}
+				else if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)){
+					direction = LEFT;
+					resetDirection();
+					left = true;
+				}
+			}		
+			break;
+		
+		case DOWN:
+			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
+				direction = DOWN;
+				resetDirection();
+				down = true;
+			}	
+			else {
+				if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
+					direction = LEFT;
+					resetDirection();
+					left = true;
+				}
+				else if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)){
+					direction = RIGHT;
+					resetDirection();
+					right = true;
+				}
+			}		
+		break;
+				
+		}
+	}	
+	
 	private void tornaIndietro() {
 		if(direction == UP) {
 			direction = DOWN;
@@ -250,10 +223,7 @@ public class CatController extends EntityController {
 			direction = LEFT;
 			resetDirection();
 			left = true;
-		}
-		
-		System.out.println("torno indietro in direzione " + direction);
-		
+		}		
 	}
 
 	public String toString() {
