@@ -8,6 +8,7 @@ import controller.playState.entityController.npcController.CatController;
 import controller.playState.entityController.npcController.DocController;
 import controller.playState.entityController.npcController.ErmenegildoController;
 import controller.playState.entityController.npcController.NerdController;
+import controller.playState.entityController.npcController.PupaController;
 
 public class RoomController {
 
@@ -75,6 +76,10 @@ public class RoomController {
 		
 		else if(type.compareTo("nerd") == 0)
 			NPC.add(new NerdController(NPC.size(), type, xPos, yPos, play));
+	    
+		else if(type.compareTo("pupa") == 0)
+			NPC.add(new PupaController(NPC.size(), type, xPos, yPos, play));
+	    	System.out.print("pupa aggiunta nel controller");
 	}
 	
 	

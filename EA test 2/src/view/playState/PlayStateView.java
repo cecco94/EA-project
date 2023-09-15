@@ -14,6 +14,7 @@ import view.main.GamePanel;
 import view.playState.drawOrder.SortableElement;
 import view.playState.drawOrder.SortableTile;
 import view.playState.entityView.PlayerView;
+
 import view.playState.mappaView.TilesetView;
 import view.playState.entityView.BulletView;
 
@@ -43,6 +44,7 @@ public class PlayStateView {
 		drawOrder = new ArrayList<>();
 		
 		bulletsInRoom = new ArrayList<>();
+		
 
 		roomsView = new RoomView[Rooms.numStanze];
 		roomsView[Rooms.BIBLIOTECA.mapIndex] = new RoomView(this, Rooms.BIBLIOTECA.mapIndex);
@@ -91,6 +93,7 @@ public class PlayStateView {
 		
 		//disegna la ui sopra a tutto il resto
 		ui.draw(g2);
+		
 	}			
 
 	//disegna i primi due starti della mappa

@@ -215,7 +215,7 @@ public abstract class EntityController {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y - speed;
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y -= speed;
 					direction = UP;
@@ -227,7 +227,7 @@ public abstract class EntityController {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y + speed;
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.y += speed;
 					direction = DOWN;
@@ -239,7 +239,7 @@ public abstract class EntityController {
 			tempHitboxForCheck.x = hitbox.x - speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x -= speed;
 					direction = LEFT;
@@ -251,7 +251,7 @@ public abstract class EntityController {
 			tempHitboxForCheck.x = hitbox.x + speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					collision = false;
 					hitbox.x += speed;
 					direction = RIGHT;

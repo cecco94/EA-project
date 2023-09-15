@@ -10,6 +10,7 @@ import view.playState.entityView.npcview.DocView;
 import view.playState.entityView.npcview.ErmenegildoView;
 import view.playState.entityView.npcview.NPCView;
 import view.playState.entityView.npcview.NerdView;
+import view.playState.entityView.npcview.PupaView;
 
 public class RoomView {
 
@@ -58,6 +59,10 @@ public class RoomView {
 		
 		else if(type.compareTo("nerd") == 0)
 			NPCviewList.add(new NerdView(play.getView(), index));
+		
+
+		else if(type.compareTo("pupa") == 0)
+			NPCviewList.add(new PupaView(play.getView(), index));
 	}
 
 	//mette nella lista da ordinare tutti e soli gli elementi vicini al player

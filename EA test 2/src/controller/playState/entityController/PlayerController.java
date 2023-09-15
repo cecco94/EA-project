@@ -70,7 +70,7 @@ public class PlayerController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x - speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.x -= speed;
 					direction = LEFT;
 					setMoving(true);
@@ -81,7 +81,7 @@ public class PlayerController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x + speed;
 			tempHitboxForCheck.y = hitbox.y;
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.x += speed;
 					direction = RIGHT;
 					setMoving(true);
@@ -92,7 +92,7 @@ public class PlayerController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y - speed;
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.y -= speed;
 					direction = UP;
 					setMoving(true);
@@ -103,7 +103,7 @@ public class PlayerController extends EntityController {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y + speed;
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().checkCollisionInEntityList(tempHitboxForCheck)) {
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
 					hitbox.y += speed;
 					direction = DOWN;
 					setMoving(true);
