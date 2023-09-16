@@ -1,4 +1,4 @@
-;passaggio all'aula studio, 26, 9, 16, 16, 34, 8, 2, true
+;passaggio all'aula studio, 25, 9, 64, 32, 34, 8, 2, true
 
 -ermenegildo, vecchio, 17, 12
 

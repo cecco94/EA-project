@@ -327,8 +327,8 @@ public class PlayerController extends EntityController {
 		notes += 5;
 	}
 	
-	public void addCFU() {
-		cfu += 10;
+	public void addCFU(int i) {
+		cfu += i;
 	}
 	
 	public void addLife() {
@@ -360,8 +360,6 @@ public class PlayerController extends EntityController {
 	public boolean isIdle() {
 		return idle;
 	}
-
-	
 	
 }
 

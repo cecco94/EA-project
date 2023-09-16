@@ -9,7 +9,7 @@ public class Light extends Event {
 	
 	public Light(Hitbox r, IModel m) {
 		super(r, m);
-		message = "hai acceso la luce!";		
+		message = "hai acceso la luce, quest completata!";		
 	}
 
 	@Override
@@ -18,6 +18,9 @@ public class Light extends Event {
 		model.getView().getPlay().getUI().setMessage(message);
 		model.getView().getPlay().getUI().setShowMessage(true);
 		model.getView().getPlay().getUI().setDark(false);
+		
+		model.getController().getPlay().getPlayer().addCFU(30);
+		
 		endInteraction = true;
 	}
 	

@@ -69,8 +69,16 @@ public class NerdView extends NPCView {
 	}
 
 	protected void setDialogues() {
-		dialogues = new String[1];
-		dialogues[0] = "ciao";
+		dialogues = new String[7];
+		dialogues[0] = "capiti proprio nel momento giusto";
+		dialogues[1] = "che ci faccio una tenda? semplice, \n non ho abbastanza soldi per affitare una casa \n "
+						+ "e sono troppo asociale per vivere in un dormitorio";
+		dialogues[2] = "noi nerd siamo fatti così";
+		dialogues[3] = "la tua presenza mi disturba, ma ho bisogno di una mano";
+		dialogues[4] = "sto programmando un videogioco per una esame, \n ma un gatto mi ha rubato l'hard disk con il codice sorgente!";
+		dialogues[5] = "se lo trovi, portamenlo e \n condividerò con te la mia conoscenza nerdosa";
+		dialogues[6] = "uscirei io stesso a cercarlo, ma ci sono troppi \n esseri umani in giro per i miei gusti";
+
 		
 	}
 	@Override

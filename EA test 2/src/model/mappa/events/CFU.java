@@ -16,7 +16,7 @@ public class CFU extends Event{
 
 	@Override
 	public void Interact() {
-		model.getController().getPlay().getPlayer().addCFU();
+		model.getController().getPlay().getPlayer().addCFU(20);
 		
 		model.getView().playSE(SoundManager.CFU);
 		

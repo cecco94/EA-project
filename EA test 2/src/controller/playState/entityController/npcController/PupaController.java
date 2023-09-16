@@ -6,7 +6,7 @@ import controller.playState.entityController.EntityController;
 
 public class PupaController extends EntityController {
 	
-	private static int hitboxWidth = (int)(16*1.5), hitboxHeight = (int)(23*1.5);
+	private static int hitboxWidth = (int)(20*1.5), hitboxHeight = (int)(23*1.5);
 	
 	private final int GO_RIGHT = 0, GO_LEFT = 1;
 	private int actualState = GO_LEFT;

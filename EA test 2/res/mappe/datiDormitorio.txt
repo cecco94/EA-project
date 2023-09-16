@@ -1,5 +1,5 @@
 
-;passaggio all'aula studio, 25, 23, 32, 32, 34, 40, 2, true
+;passaggio all'aula studio, 25, 23, 32, 32, 34, 41, 2, true
 
 -gatto, gatto, 19, 15, 32, 32
 

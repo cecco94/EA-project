@@ -8,6 +8,7 @@ import controller.playState.entityController.EntityController;
 public class CatController extends EntityController {
 	
 	private static int hitboxWidth = 28, hitboxHeight = 20;
+	private static boolean hardDisk = true;
 	
 	//la ai del gatto è espressa tramite delle costanti che indicano gli stati in cui si può trovare
 	public final static int NORMAL_STATE = 0, CHOSE_DIRECTION = 1, RUNNING = 2, CAUGHT = 3;
@@ -63,6 +64,13 @@ public class CatController extends EntityController {
 		if(play.getPlayer().isInteracting()) {		
 			tunrToInteract();
 			play.getPlayer().speak(index);
+			
+			if(hardDisk) {
+				hardDisk = false;
+				play.getPlayer().addCFU(30);
+				play.getController().getView().getPlay().getUI().setMessage("hai trovato l'hard disk del nerd, quest completata!");
+				play.getController().getView().getPlay().getUI().setShowMessage(true);
+			}
 		}
 		
 		float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);		
@@ -229,6 +237,15 @@ public class CatController extends EntityController {
 
 	public String toString() {
 		return "gatto ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
+	}
+
+	
+	public static boolean isHardDisk() {
+		return hardDisk;
+	}
+
+	public static void setHardDisk(boolean hardDisk) {
+		CatController.hardDisk = hardDisk;
 	}
 	
 }
