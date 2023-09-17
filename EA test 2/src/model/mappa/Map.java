@@ -13,7 +13,7 @@ public class Map {
 	private static final int ROOMS_NUMBERS = Rooms.numStanze, LAYERS_NUMBER = 4;
 	public static final int FIRST_LAYER = 0, SECOND_LAYER = 1, THIRD_LAYER = 2, FOURTH_LAYER = 3;
 	
-	private String[] roomPath = {"/mappe/mappaBibliotecaQuattroStrati.txt", "/mappe/dormitorio.txt",
+	private String[] roomPath = {"/mappe/biblioteca.txt", "/mappe/dormitorio.txt",
 										"/mappe/aulaStudio.txt", "/mappe/tenda.txt", "/mappe/laboratorio.txt", "/mappe/studioProf.txt"};
 	
 	public Map() {	

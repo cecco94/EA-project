@@ -16,20 +16,22 @@ public class PlayStateController {
 	
 	private PlayerController playerController;
 	private Collisions collisionCheck;
-	private IController controller;
-	
+	private IController controller;	
 	private ArrayList<BulletController> bulletsInRoom;
 	private RoomController[] stanzeController;
+	private PathFinder pathFinder;
+
 	
 	public PlayStateController(IController c) {
 		controller = c;
-		collisionCheck = new Collisions(c); 
-		
-		Hitbox r = new Hitbox(15, 23, 0, 0);
+		collisionCheck = new Collisions(c); 		
+		Hitbox r = new Hitbox(19, 9, 0, 0);
 		playerController = new PlayerController(r, this);
-		
 		bulletsInRoom = new ArrayList<>();
 		initRooms();
+		
+		//per ora il pathfinder ha un grafo grande quanto la stanza più grande
+		pathFinder = new PathFinder(this, 50, 50);
 	}
 
 	public void initRooms() {
@@ -49,7 +51,7 @@ public class PlayStateController {
 		
 		//aggiorna i proiettili
 		updateBullets();
-		
+				
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
 		//Per rendere la cosa più leggera, possiamo aggiornare solo quelli all'interno dell'area visibile
 		switch(Rooms.currentRoom) {
@@ -199,6 +201,10 @@ public class PlayStateController {
 	
 	public int getCurrentroomIndex() {
 		return Rooms.currentRoom.mapIndex;
+	}
+
+	public PathFinder getPathFinder() {
+		return pathFinder;
 	}
 	
 }

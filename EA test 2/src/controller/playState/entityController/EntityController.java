@@ -150,6 +150,7 @@ public abstract class EntityController {
 		}
 	}
 	
+	//questo metodo fa troppe cose, non dovrebbe settare la posizione del personaggo, dovrebbe limitarsi a dire se può muoversi
 	protected boolean checkCollision() {
 		boolean collision = true;
 		

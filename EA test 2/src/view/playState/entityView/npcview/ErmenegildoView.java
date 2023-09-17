@@ -22,7 +22,7 @@ public class ErmenegildoView extends NPCView {
 		loadImages();	
 		
 		xOffset = (int)(0*GamePanel.SCALE); //3;
-		yOffset = (int)(0*GamePanel.SCALE); //3;
+		yOffset = (int)(3*GamePanel.SCALE); //3;
 		animationSpeed = 40;
 		
 	}

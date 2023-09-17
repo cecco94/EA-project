@@ -41,10 +41,9 @@ public class TilesetModel {
 			}			
 	}
 	
-	@SuppressWarnings("unused")
-	private void printTileset() {		//for debugging
+	public void printTileset() {		//for debugging
 		for(int i = 0; i < tileset.size(); i++)
-			System.out.println(tileset.get(i).toString() + " " + (i));
+			System.out.println(tileset.get(i).toString() + ", " + (i));
 	}
 
 	public Tile getTile(int index) {

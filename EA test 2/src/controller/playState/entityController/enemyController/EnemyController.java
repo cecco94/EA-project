@@ -33,6 +33,11 @@ public class EnemyController extends EntityController{
 			randomMove();
 			break;
 		case CHASING_STATE:
+			int goalCol = 0;
+			int goalRow = 0;
+			
+			
+			
 			updateChasing();
 			break;
 		case MISSED_PLAYER:
@@ -54,6 +59,10 @@ public class EnemyController extends EntityController{
 
 	private void updateChasing() {
 		chasingCounter++;
+		
+		
+		
+		
 		if(chasingCounter >= 400) {
 			chasingCounter = 0;
 			actualState = MISSED_PLAYER;

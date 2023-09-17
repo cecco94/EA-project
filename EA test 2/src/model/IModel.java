@@ -41,8 +41,8 @@ public class IModel {
 		controller = c;
 		
 		map = new Map();
-		tiles = new TilesetModel();
-
+		tiles = new TilesetModel();		
+		
 		rooms = new RoomModel[Rooms.numStanze];
 		rooms[Rooms.INDEX_BIBLIOTECA] = new RoomModel(percorsoDatiBiblioteca, this, Rooms.INDEX_BIBLIOTECA);		
 		rooms[Rooms.INDEX_DORMITORIO] = new RoomModel(percorsoDatiDormitorio, this, Rooms.INDEX_DORMITORIO);
@@ -50,6 +50,7 @@ public class IModel {
 		rooms[Rooms.INDEX_TENDA] = new RoomModel(percorsoDatiTenda, this, Rooms.INDEX_TENDA);
 		rooms[Rooms.INDEX_LABORATORIO] = new RoomModel(percorsoDatiLaboratorio, this, Rooms.INDEX_LABORATORIO);
 		rooms[Rooms.INDEX_STUDIO_PROF] = new RoomModel(percorsoDatiStudioProf, this, Rooms.INDEX_STUDIO_PROF);
+		
 		
 	}
 	

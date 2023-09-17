@@ -39,7 +39,7 @@ public class Tile {
 	}
 
 	public String toString() {
-		String s = this.name + this.solid + "," +
+		String s = this.name + ", " + this.solid + ", " +
 			"( " + hitbox.x + ", " + hitbox.y +
 			", " + hitbox.width + ", " + hitbox.height + " )";
 		
