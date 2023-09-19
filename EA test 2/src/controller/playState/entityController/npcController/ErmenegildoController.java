@@ -14,6 +14,7 @@ public class ErmenegildoController extends EntityController {
 	private int currentState = RANDOM_MOVE;
 	private ArrayList<Node> path;
 	private int currentPathIndex = 0;
+	private int directionToCheck = DOWN;
 	
 	public ErmenegildoController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
@@ -46,30 +47,28 @@ public class ErmenegildoController extends EntityController {
 			break;
 			
 		case GO_TO_FIRST_TILE:
+			currentAction = MOVE;
 			goToEdgeOfTile();
 			break;
 				
 		case IN_WAY:
 			if(currentPathIndex == path.size()) {
+				currentAction = IDLE;
 				currentState = RANDOM_MOVE;
 				currentPathIndex = 0;
 				System.out.println("giunto a destinazione");
 			}
 			else
 				proseguiNelPercorso();
-//				System.out.println(currentPathIndex);
-//				System.out.println(path.get(currentPathIndex).getColInGraph() + " " + path.get(currentPathIndex).getRowInGraph());
 			break;
 		}
-	
-	//	System.out.println(currentState);
 	}
 
 	private void goToYourDestination() {
 		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
 		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
 		
-		if(play.getPathFinder().search(startCol, startRow, 26, 19)) {
+		if(play.getPathFinder().search(startCol, startRow, 27, 18)) {
 			currentState = GO_TO_FIRST_TILE;	
 			path = play.getPathFinder().getPathList();
 		}
@@ -77,62 +76,108 @@ public class ErmenegildoController extends EntityController {
 	
 	private void proseguiNelPercorso() {
 		
-		System.out.println("posizione " + hitbox.x/play.getController().getTileSize() + ", " + hitbox.y/play.getController().getTileSize());
-		System.out.println("prossimo tile " + path.get(currentPathIndex).getColInGraph() + ", " + path.get(currentPathIndex).getRowInGraph());
-		
+		//se è arrivato ad un tile del percorso, va al successivo
 		if(hitbox.x == path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() &&
-		   hitbox.x == path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize()) {
+		   hitbox.y == path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize()) {
 				currentPathIndex++;
 		}
 		else {
-			checkLeft();
-			checkRight();
-			checkUp();
-			checkDown();
+			//per andare al successivo, vede quale direzione prendere
+			float yDistance = hitbox.y - path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
+			float xDistance = hitbox.x - path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();
+			
+			//prima controlla se deve salire o scendere
+			if(yDistance < 0)
+				directionToCheck = DOWN;
+			
+			else if(yDistance > 0)
+				directionToCheck = UP;
+			
+			//se non deve salire o scendere, vede se deve andare a destra o a sinistra
+			else if(yDistance == 0) {
+								
+				if(xDistance > 0)
+					directionToCheck = LEFT;
+				
+				else if(xDistance < 0)
+					directionToCheck = RIGHT;
+			}
+
+			//capita la direzione da prendere, entra in questo switch
+				switch (directionToCheck) {
+				case DOWN:
+					checkDown(yDistance);
+					break;
+	
+				case UP:
+					checkUp(yDistance);
+					break;
+				
+				case RIGHT:
+					checkRight(xDistance);
+					break;
+					
+				case LEFT:
+					checkLeft(xDistance);
+					break;
+				}
+			
 		}
 	}
 
-	private void checkDown() {
-		if(hitbox.y - path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize() < speed) {
-//			hitbox.y += speed;
+	private void checkDown(float yDistance) {
+		
+		if(Math.abs(yDistance) > speed) {
+			hitbox.y += speed;
+			currentDirection = DOWN;
 			System.out.println("devo scendere");
-//		}
-//		else {
-//			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
 		}
+		else {
+			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
+			System.out.println("ho finito di scendere!!!!!!!!!!11");	
+		}	
 	}
 
-	private void checkUp() {
-		if(hitbox.y - path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize() > speed) {
-//			hitbox.y -= speed;
+	private void checkUp(float yDistance) {
+			
+		if (Math.abs(yDistance) > speed) {
+			hitbox.y -= speed;
+			currentDirection = UP;
 			System.out.println("devo salire");
-//		}
-//		else {
-//			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();	
+		}
+		else {
+			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
+			System.out.println("ho finito di salire!!!!!!!!!!");
 		}
 	}
+			
 
-	private void checkRight() {
-		if(hitbox.x - path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() < speed) {
-//			hitbox.x += speed;
+	private void checkRight(float xDistance) {
+		
+		if(Math.abs(xDistance) > speed) {
+			hitbox.x += speed;
+			currentDirection = RIGHT;
 			System.out.println("devo andare a destra");
-//		}
-//		else {
-//			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+		}
+		else {
+			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+			System.out.println("ho finito di andare a destra!!!!!!!");
 		}
 	}
 
-	private void checkLeft() {
-		if(hitbox.x - path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() > speed) {
-//			hitbox.x -= speed;
-			System.out.println("devo andare a sinistra");
-//		}
-//		else {
-//			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+	private void checkLeft(float xDistance) {
+			
+		if(Math.abs(xDistance) > speed) {
+			hitbox.x -= speed;
+			currentDirection = LEFT;
+			System.out.println("devo andare a sinistra");	
+		}
+		else {
+			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+			System.out.println("ho finito di andare a sinistra");
 		}
 	}
 	
-
 	private void goToEdgeOfTile() {
 		
 		int startCol = (int)(hitbox.x)/play.getController().getTileSize();

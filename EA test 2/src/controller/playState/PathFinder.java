@@ -53,27 +53,6 @@ public class PathFinder {
 		pathiList.clear();
 		goalReached = false;
 		steps = 0;
-		
-//		int col = 0;
-//		int row = 0;
-		
-//		while(col < colonne && row < righe) {
-//			
-//			graph[row][col].setOpen(false);
-//			graph[row][col].setChecked(false);
-//			graph[row][col].setOpen(false);
-//			graph[row][col].setSolid(false);
-//			
-//			col++;
-//			if(col == colonne) {
-//				col = 0;
-//				row++;
-//			}
-//		}
-//		openList.clear();
-//		pathiList.clear();
-//		goalReached = false;
-//		step = 0;
 	}
 	
 	public void setNodes(int startCol, int startRow, int goalCol, int goalRow) {
