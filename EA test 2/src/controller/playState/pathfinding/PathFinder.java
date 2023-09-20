@@ -1,7 +1,8 @@
-package controller.playState;
+package controller.playState.pathfinding;
 
 import java.util.ArrayList;
 
+import controller.playState.PlayStateController;
 import model.mappa.Map;
 import model.mappa.Rooms;
 
@@ -55,7 +56,7 @@ public class PathFinder {
 		steps = 0;
 	}
 	
-	public void setNodes(int startCol, int startRow, int goalCol, int goalRow) {
+	private void setNodes(int startCol, int startRow, int goalCol, int goalRow) {
 		resetNodes();
 		
 		//occhio a come definiamo questi valori di partenza: valori nella finestra != valori nella mappa
@@ -72,7 +73,7 @@ public class PathFinder {
 			for(int col = 0; col < roomCol; col++) {
 				//per ora, siccome le dimensioni della stanza sono quasi sempre minori di quelle del grafo, ci viene un errore di indice
 				try {
-					int tileIndex = play.getController().getModel().getMap().getLayer(Rooms.INDEX_BIBLIOTECA, Map.THIRD_LAYER)[row][col];
+					int tileIndex = play.getController().getModel().getMap().getLayer(Rooms.currentRoom.mapIndex, Map.THIRD_LAYER)[row][col];
 					if(play.getController().getModel().getTilesetModel().getTile(tileIndex).isSolid())
 						graph[row][col].setSolid(true);
 					else
@@ -128,16 +129,16 @@ public class PathFinder {
 		setNodes(startCol, startRow, goalCol, goalRow);
 		
 		//se il nodo di partenza o di arrivo non sono validi, si ferma subito
-		if(graph[startRow][startCol].isSolid()) {
-			System.out.println("nodo di partenza solido");
-			return false;
-		}
+//		if(graph[startRow][startCol].isSolid()) {
+//			System.out.println("nodo di partenza solido");
+//			return false;
+//		}
 		if(graph[goalRow][goalCol].isSolid()) {
 			System.out.println("nodo di arrivo solido");
 			return false;
 		}
 		
-		while(goalReached == false && steps < 200) {
+		while(goalReached == false && steps < 700) {
 			
 			int col = currentNode.getColInGraph();
 			int row = currentNode.getRowInGraph();

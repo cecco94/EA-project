@@ -97,7 +97,6 @@ public abstract class EntityController {
 		return "( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
 	}
 	
-	
 	// molti npc si muovono a caso nella stanza usando questo medoto
 	public void randomMove() {
 		actionCounter++;	
@@ -106,23 +105,31 @@ public abstract class EntityController {
 			choseAction();
 		
 		choseDirection();
-		checkCollision();
+		
+		if(canMove() && currentAction == MOVE) {
+			if(currentDirection == UP)
+				hitbox.y -= speed;
+			else if(currentDirection == DOWN)
+				hitbox.y += speed;
+			else if(currentDirection == LEFT)
+				hitbox.x -= speed;
+			else if(currentDirection == RIGHT)
+				hitbox.y += speed;
+		}
+		else
+			currentAction = IDLE;
+		
 	}
 	
 	private void choseAction() {
-	//	resetAction();
 		randomAction = randomGenerator.nextInt(2);
 		
-		if (randomAction == 0) {
-	//		idle = true;
+		if (randomAction == IDLE) 
 			currentAction = IDLE;
-		}
 		
-		else {
-	//		moving = true;
+		else 
 			currentAction = MOVE;
-		}
-		
+			
 	}
 	
 	protected void choseDirection() {		
@@ -150,64 +157,43 @@ public abstract class EntityController {
 		}
 	}
 	
-	//questo metodo fa troppe cose, non dovrebbe settare la posizione del personaggo, dovrebbe limitarsi a dire se può muoversi
-	protected boolean checkCollision() {
-		boolean collision = true;
+	protected boolean canMove() {
+		boolean canMove = false;
 		
-		if (currentAction == MOVE && currentDirection == UP) {
+		if(currentDirection == UP) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y - speed;
-			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
-					collision = false;
-					hitbox.y -= speed;
-					currentDirection = UP;
-				}
-			}
+			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) 
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
+					canMove = true;
 		}
 		
-		if (currentAction == MOVE && currentDirection == DOWN) {
+		if(currentDirection == DOWN) {
 			tempHitboxForCheck.x = hitbox.x;
 			tempHitboxForCheck.y = hitbox.y + speed;
-			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
-					collision = false;
-					hitbox.y += speed;
-					currentDirection = DOWN;
-				}
-			}	
+			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) 
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
+					canMove = true;
 		}
 		
-		if (currentAction == MOVE && currentDirection == LEFT) {
+		if(currentDirection == LEFT) {
 			tempHitboxForCheck.x = hitbox.x - speed;
 			tempHitboxForCheck.y = hitbox.y;
-			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
-					collision = false;
-					hitbox.x -= speed;
-					currentDirection = LEFT;
-				}
-			}				
+			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) 
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
+					canMove = true;
 		}
 		
-		if (currentAction == MOVE && currentDirection == RIGHT) {
+		if(currentDirection == RIGHT) {
 			tempHitboxForCheck.x = hitbox.x + speed;
 			tempHitboxForCheck.y = hitbox.y;
-			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
-				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) {
-					collision = false;
-					hitbox.x += speed;
-					currentDirection = RIGHT;
-				}
-			}		
+			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) 
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
+					canMove = true;
+		
 		}	
 		
-		//se incontra ostacoli nella mappa, si ferma 
-		if(collision) {
-			currentAction = IDLE;
-		}
-		
-		return collision;
+		return canMove;
 		
 	}
 	

@@ -24,7 +24,7 @@ public class RobotView extends EntityView {
 		loadImages();
 		
 		xOffset = (int)(0*GamePanel.SCALE); 
-		yOffset = (int)(0*GamePanel.SCALE); 
+		yOffset = (int)(2*GamePanel.SCALE); 
 		animationSpeed = 30;
 		lifeRect = new Rectangle(0,0, animation[0][0][0][0].getWidth(), (int)(2*GamePanel.SCALE));
 		

@@ -1,4 +1,4 @@
-package controller.playState;
+package controller.playState.pathfinding;
 
 public class Node {
 

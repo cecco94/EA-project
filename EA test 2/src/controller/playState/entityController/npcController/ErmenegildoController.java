@@ -3,9 +3,9 @@ package controller.playState.entityController.npcController;
 import java.util.ArrayList;
 
 import controller.playState.Hitbox;
-import controller.playState.Node;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.EntityController;
+import controller.playState.pathfinding.Node;
 
 public class ErmenegildoController extends EntityController {
 	
@@ -52,6 +52,12 @@ public class ErmenegildoController extends EntityController {
 			break;
 				
 		case IN_WAY:
+			
+//			System.out.println("hitbox x " + hitbox.x + " hitbox y " + hitbox.y);
+//			System.out.println("x da raggiungere " + path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() +
+//								" y da raggiungere " + path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize() );
+			
+			
 			if(currentPathIndex == path.size()) {
 				currentAction = IDLE;
 				currentState = RANDOM_MOVE;
@@ -64,11 +70,13 @@ public class ErmenegildoController extends EntityController {
 		}
 	}
 
+	//possimao migliorarlo facendo capire al personaggio la posizione delle entità
+	//così può scegliere un percorso che schivi anche loro
 	private void goToYourDestination() {
 		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
 		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
 		
-		if(play.getPathFinder().search(startCol, startRow, 27, 18)) {
+		if(play.getPathFinder().search(startCol, startRow, 27, 9)) {
 			currentState = GO_TO_FIRST_TILE;	
 			path = play.getPathFinder().getPathList();
 		}
@@ -128,58 +136,54 @@ public class ErmenegildoController extends EntityController {
 	private void checkDown(float yDistance) {
 		
 		if(Math.abs(yDistance) > speed) {
-			hitbox.y += speed;
 			currentDirection = DOWN;
-			System.out.println("devo scendere");
+			tempHitboxForCheck.y = hitbox.y + speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y += speed;
 		}
-		else {
-			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
-			System.out.println("ho finito di scendere!!!!!!!!!!11");	
-		}	
+		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
+			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();	
 	}
 
 	private void checkUp(float yDistance) {
 			
 		if (Math.abs(yDistance) > speed) {
-			hitbox.y -= speed;
 			currentDirection = UP;
-			System.out.println("devo salire");
+			tempHitboxForCheck.y = hitbox.y - speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y -= speed;
 		}
-		else {
+		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
 			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
-			System.out.println("ho finito di salire!!!!!!!!!!");
-		}
 	}
-			
-
+		
 	private void checkRight(float xDistance) {
 		
 		if(Math.abs(xDistance) > speed) {
-			hitbox.x += speed;
 			currentDirection = RIGHT;
-			System.out.println("devo andare a destra");
+			tempHitboxForCheck.x = hitbox.x + speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x += speed;
 		}
-		else {
+		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
 			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
-			System.out.println("ho finito di andare a destra!!!!!!!");
-		}
 	}
 
 	private void checkLeft(float xDistance) {
 			
 		if(Math.abs(xDistance) > speed) {
-			hitbox.x -= speed;
 			currentDirection = LEFT;
-			System.out.println("devo andare a sinistra");	
+			tempHitboxForCheck.x = hitbox.x - speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x -= speed;
 		}
-		else {
+		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
 			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
-			System.out.println("ho finito di andare a sinistra");
-		}
 	}
 	
+	//possiamo renderlo più efficace facendolo andare non sul tile dove si trova ma sul primo tile dove deve andare
+	//così può anche partire da un tile mezzo solido
 	private void goToEdgeOfTile() {
-		
 		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
 		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
 
@@ -208,19 +212,8 @@ public class ErmenegildoController extends EntityController {
 		if(hitbox.x == startCol*play.getController().getTileSize() && hitbox.y == startRow*play.getController().getTileSize()) {
 			currentState = IN_WAY;	
 		}
-		
-		
+			
 	}
 
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

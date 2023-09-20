@@ -87,13 +87,13 @@ public class CatController extends EntityController {
 			float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 			float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);	
 			//se incontra un muro e il giocatore è vicino si arrende
-			if(checkCollision() && xDistance < play.getController().getTileSize() && yDistance < play.getController().getTileSize()) {
+			if(canMove() && xDistance < play.getController().getTileSize() && yDistance < play.getController().getTileSize()) {
 				counterRunning = 0;
 				speed = (int)(play.getController().getGameScale()*1.2f);
 				currentState = CAUGHT;
 			}
 			//se incontra un muro e il giocatore è lontatno si tranquillizza
-			else if(checkCollision() && xDistance > play.getController().getTileSize()*1.5 && yDistance > play.getController().getTileSize()*1.5) {		
+			else if(canMove() && xDistance > play.getController().getTileSize()*1.5 && yDistance > play.getController().getTileSize()*1.5) {		
 				currentState = NORMAL_STATE;									
 				speed = (int)(play.getController().getGameScale()*1.2f);
 				counterRunning = 0;

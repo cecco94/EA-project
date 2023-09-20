@@ -7,6 +7,7 @@ import controller.IController;
 import controller.main.Gamestate;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
+import controller.playState.pathfinding.PathFinder;
 import controller.playState.entityController.BulletController;
 
 import model.mappa.Rooms;
