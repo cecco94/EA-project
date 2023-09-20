@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import controller.playState.PlayStateController;
 import model.mappa.Map;
-import model.mappa.Rooms;
 
 public class PathFinder {
 
@@ -56,7 +55,7 @@ public class PathFinder {
 		steps = 0;
 	}
 	
-	private void setNodes(int startCol, int startRow, int goalCol, int goalRow) {
+	private void setNodes(int startCol, int startRow, int goalCol, int goalRow, boolean isEnemy) {
 		resetNodes();
 		
 		//occhio a come definiamo questi valori di partenza: valori nella finestra != valori nella mappa
@@ -73,11 +72,24 @@ public class PathFinder {
 			for(int col = 0; col < roomCol; col++) {
 				//per ora, siccome le dimensioni della stanza sono quasi sempre minori di quelle del grafo, ci viene un errore di indice
 				try {
-					int tileIndex = play.getController().getModel().getMap().getLayer(Rooms.currentRoom.mapIndex, Map.THIRD_LAYER)[row][col];
+					int tileIndex = play.getController().getModel().getMap().getLayer(play.getCurrentroomIndex(), Map.THIRD_LAYER)[row][col];
+					
 					if(play.getController().getModel().getTilesetModel().getTile(tileIndex).isSolid())
 						graph[row][col].setSolid(true);
-					else
-						setCostOfThisNode(graph[row][col]);
+					
+					else {
+						//dopo aver visto i tile, controlla la posizione delle entità
+						if(play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[row][col] == 1) 
+							graph[row][col].setSolid(true);
+						
+						//il menico non considera solido il tile occupato dal giocatore, in questo modo può inseguirlo
+						if(!isEnemy && play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[row][col] == 2)
+							graph[row][col].setSolid(true);
+						
+						else
+							setCostOfThisNode(graph[row][col]);
+					}
+						
 				}
 				//se è un nodo che non corrisponde ad un tile della mappa perchè la mappa è più piccola, lo settiamo solido, così non dovrebbe rompere
 				catch(IndexOutOfBoundsException e) {
@@ -125,8 +137,8 @@ public class PathFinder {
 		node.setCompleteDistance(node.getDistanceFromStart() + node.getDistanceFromGoal());
 	}
 	
-	public boolean search(int startCol, int startRow, int goalCol, int goalRow) {
-		setNodes(startCol, startRow, goalCol, goalRow);
+	public boolean search(int startCol, int startRow, int goalCol, int goalRow, boolean isEnemy) {
+		setNodes(startCol, startRow, goalCol, goalRow, isEnemy);
 		
 		//se il nodo di partenza o di arrivo non sono validi, si ferma subito
 //		if(graph[startRow][startCol].isSolid()) {
@@ -138,7 +150,7 @@ public class PathFinder {
 			return false;
 		}
 		
-		while(goalReached == false && steps < 700) {
+		while(goalReached == false && steps < 500) {
 			
 			int col = currentNode.getColInGraph();
 			int row = currentNode.getRowInGraph();

@@ -114,8 +114,6 @@ public class CatController extends EntityController {
 		boolean isPlayerMoving = play.getPlayer().isMoving();
 		
 		currentAction = MOVE;
-//		moving = true;
-//		idle = false;
 		
 		//se il giocatore stava fermo ed è il gatto ad essersi avvicinato per caso
 		if(!isPlayerMoving) 
@@ -132,19 +130,13 @@ public class CatController extends EntityController {
 		case LEFT:
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
 				currentDirection = LEFT;
-//				resetDirection();
-//				left = true;
 			}
 			else {
 				if(play.getCollisionChecker().canMoveUp(hitbox)) {
 					currentDirection = UP;
-//					resetDirection();
-//					up = true;
 				}
 				else if (play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 					currentDirection = DOWN;
-//					resetDirection();
-//					down = true;
 				}
 			}
 			break;
@@ -152,19 +144,13 @@ public class CatController extends EntityController {
 		case RIGHT:
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
 				currentDirection = RIGHT;
-//				resetDirection();
-//				right = true;
 			}
 			else {
 				if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 					currentDirection = DOWN;
-//					resetDirection();
-//					down = true;
 				}
 				else if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
 					currentDirection = UP;
-//					resetDirection();
-//					up = true;
 				}
 			}	
 			break;
@@ -172,19 +158,13 @@ public class CatController extends EntityController {
 		case UP:
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck)) {
 				currentDirection = UP;
-//				resetDirection();
-//				up = true;
 			}
 			else {
 				if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)) {
 					currentDirection = RIGHT;
-//					resetDirection();
-//					right = true;
 				}
 				else if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)){
 					currentDirection = LEFT;
-//					resetDirection();
-//					left = true;
 				}
 			}		
 			break;
@@ -192,19 +172,13 @@ public class CatController extends EntityController {
 		case DOWN:
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck)) {
 				currentDirection = DOWN;
-//				resetDirection();
-//				down = true;
 			}	
 			else {
 				if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck)) {
 					currentDirection = LEFT;
-//					resetDirection();
-//					left = true;
 				}
 				else if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck)){
 					currentDirection = RIGHT;
-//					resetDirection();
-//					right = true;
 				}
 			}		
 		break;
@@ -215,23 +189,15 @@ public class CatController extends EntityController {
 	private void tornaIndietro() {
 		if(currentDirection == UP) {
 			currentDirection = DOWN;
-//			resetDirection();
-//			down = true;
 		}
 		else if(currentDirection == DOWN) {
 			currentDirection = UP;
-//			resetDirection();
-//			up = true;
 		}
 		else if(currentDirection == LEFT) {
 			currentDirection = RIGHT;
-//			resetDirection();
-//			right = true;
 		}
 		else if(currentDirection == RIGHT) {
 			currentDirection = LEFT;
-//			resetDirection();
-//			left = true;
 		}		
 	}
 

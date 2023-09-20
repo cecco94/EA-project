@@ -126,6 +126,17 @@ public class PlayerController extends EntityController {
 				}
 			}
 		}
+		
+		//ogni volta che si muove, vede se ha cambiato tile, in tal caso aggiorna i dati nella mappa e la posizione precedente
+		int currentCol = (int)(hitbox.x)/play.getController().getTileSize();
+		int currentRow = (int)(hitbox.y)/play.getController().getTileSize();
+
+		if(moving && (savedCol != currentCol || savedRow != currentRow)) {
+			play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[savedRow][savedCol]	= 0;
+			play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[currentRow][currentCol]	= 2;
+			savedRow = currentRow;
+			savedCol = currentCol;
+		}
 	}
 	
 	// durante l'attacco, il giocatore rallenta

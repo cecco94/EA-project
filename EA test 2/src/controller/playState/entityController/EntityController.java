@@ -1,9 +1,11 @@
 package controller.playState.entityController;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
+import controller.playState.pathfinding.Node;
 
 public abstract class EntityController {
 
@@ -33,6 +35,15 @@ public abstract class EntityController {
 	//se ha cambiato tile, aggiorna la mappa della posizione dei personaggi
 	//segnando true sul nuovo quadratino e false su quello vecchio
 	//infine mette la nuova posizione su quella vecchia
+	protected int savedCol;
+	protected int savedRow;
+	//percorso che l'entità deve seguire
+	protected ArrayList<Node> path;
+	protected int currentPathIndex = 0;
+	
+	//per gestire gli npc ed i nemici come macchine a stati
+	protected final int RANDOM_MOVE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2; 
+	protected int currentState = RANDOM_MOVE;
 	
 	public EntityController (int ind, String type, Hitbox r, PlayStateController p) {
 		index = ind;
@@ -54,6 +65,10 @@ public abstract class EntityController {
 		//hitbox che serve per le collisioni, prima di cambiare la hitbox, cambiamo questa
 		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
 		tempHitboxForCheck = new Hitbox((int)hitbox.x, (int)hitbox.y, hitbox.width, hitbox.height);
+		
+		savedCol = (int)(hitbox.x)/play.getController().getTileSize();
+		savedRow = (int)(hitbox.y)/play.getController().getTileSize();
+		path = new ArrayList<>();
 		
 		currentDirection = DOWN;
 		currentAction = IDLE;
@@ -107,20 +122,36 @@ public abstract class EntityController {
 	public void randomMove() {
 		actionCounter++;	
 		//ogni due secondi cambia azione e direzione 
-		if(actionCounter >= 400) 
+		if(actionCounter >= 400) {
+			choseDirection();
 			choseAction();
+		}
 		
-		choseDirection();
-		
-		if(canMove() && currentAction == MOVE) {
-			if(currentDirection == UP)
-				hitbox.y -= speed;
-			else if(currentDirection == DOWN)
+		if(currentAction == MOVE && canMove()) {
+			if(currentDirection == UP) {
+				hitbox.y -= speed;	
+			}
+			else if(currentDirection == DOWN) {
 				hitbox.y += speed;
-			else if(currentDirection == LEFT)
+			}
+			else if(currentDirection == LEFT) {
 				hitbox.x -= speed;
-			else if(currentDirection == RIGHT)
+			}
+			else if(currentDirection == RIGHT) {
 				hitbox.y += speed;
+			}
+			
+			//ogni volta che si muove, vede se ha cambiato tile, in tal caso aggiorna i dati nella mappa e la posizione precedente
+			//si può migliorare, perchè una hitbox può essere a cavallo tra due o più tile
+			int currentCol = (int)(hitbox.x)/play.getController().getTileSize();
+			int currentRow = (int)(hitbox.y)/play.getController().getTileSize();
+
+			if(savedCol != currentCol || savedRow != currentRow) {
+				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[savedRow][savedCol]	= 0;
+				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[currentRow][currentCol]	= 1;
+				savedRow = currentRow;
+				savedCol = currentCol;
+			}
 		}
 		else
 			currentAction = IDLE;
@@ -140,27 +171,27 @@ public abstract class EntityController {
 	
 	protected void choseDirection() {		
 	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
-		if(actionCounter >= 400) {
-			randomDirection = randomGenerator.nextInt(4);
-			
-			if(randomDirection == 0) { 
-				currentDirection = DOWN;
-			}
-			
-			else if (randomDirection == 1) { 
-				currentAction = RIGHT;
-			}
-			
-			else if(randomDirection == 2) {
-				currentDirection = LEFT;
-			}
-			
-			else if(randomDirection == 3) {
-				currentDirection = UP;
-			}
-			
-			actionCounter = 0;
+	//	if(actionCounter >= 400) {
+		randomDirection = randomGenerator.nextInt(4);
+		
+		if(randomDirection == 0) { 
+			currentDirection = DOWN;
 		}
+		
+		else if (randomDirection == RIGHT) { 
+			currentAction = RIGHT;
+		}
+		
+		else if(randomDirection == LEFT) {
+			currentDirection = LEFT;
+		}
+		
+		else if(randomDirection == UP) {
+			currentDirection = UP;
+		}
+		
+		actionCounter = 0;
+	//	}
 	}
 	
 	protected boolean canMove() {
@@ -222,5 +253,108 @@ public abstract class EntityController {
 		else if(play.getPlayer().getCurrentDirection() == LEFT) {
 			currentDirection = RIGHT;
 		}	
+	}
+
+	protected void goTrhoughtSelectedPath() {
+		
+		//se è arrivato ad un tile del percorso, va al successivo
+		if(hitbox.x == path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() &&
+		   hitbox.y == path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize()) {
+				currentPathIndex++;
+		}
+		else {
+			//per andare al successivo, vede quale direzione prendere
+			float yDistance = hitbox.y - path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
+			float xDistance = hitbox.x - path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();
+			int directionToCheck = 999;
+			//prima controlla se deve salire o scendere
+			if(yDistance < 0)
+				directionToCheck = DOWN;
+			
+			else if(yDistance > 0)
+				directionToCheck = UP;
+			
+			//se non deve salire o scendere, vede se deve andare a destra o a sinistra
+			else if(yDistance == 0) {
+								
+				if(xDistance > 0)
+					directionToCheck = LEFT;
+				
+				else if(xDistance < 0)
+					directionToCheck = RIGHT;
+			}
+
+			//capita la direzione da prendere, entra in questo switch
+				switch (directionToCheck) {
+				case DOWN:
+					checkDown(yDistance);
+					break;
+	
+				case UP:
+					checkUp(yDistance);
+					break;
+				
+				case RIGHT:
+					checkRight(xDistance);
+					break;
+					
+				case LEFT:
+					checkLeft(xDistance);
+					break;
+				}
+			
+		}
+	}
+
+	protected void checkDown(float yDistance) {
+		
+		if(Math.abs(yDistance) > speed) {
+			currentDirection = DOWN;
+			tempHitboxForCheck.y = hitbox.y + speed;
+			tempHitboxForCheck.x = hitbox.x;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y += speed;
+		}
+		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();	
+	}
+
+	protected void checkUp(float yDistance) {
+			
+		if (Math.abs(yDistance) > speed) {
+			currentDirection = UP;
+			tempHitboxForCheck.y = hitbox.y - speed;
+			tempHitboxForCheck.x = hitbox.x;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y -= speed;
+		}
+		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
+	}
+		
+	protected void checkRight(float xDistance) {
+		
+		if(Math.abs(xDistance) > speed) {
+			currentDirection = RIGHT;
+			tempHitboxForCheck.x = hitbox.x + speed;
+			tempHitboxForCheck.y = hitbox.y;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x += speed;
+		}
+		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+	}
+
+	protected void checkLeft(float xDistance) {
+			
+		if(Math.abs(xDistance) > speed) {
+			currentDirection = LEFT;
+			tempHitboxForCheck.x = hitbox.x - speed;
+			tempHitboxForCheck.y = hitbox.y;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x -= speed;
+		}
+		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
 	}
 }

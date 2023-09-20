@@ -1,11 +1,8 @@
 package controller.playState.entityController.enemyController;
 
-import java.util.ArrayList;
-
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.EntityController;
-import controller.playState.pathfinding.Node;
 
 public class EnemyController extends EntityController{
 
@@ -13,8 +10,6 @@ public class EnemyController extends EntityController{
 	public static final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2;;
 	protected int actualState = NORMAL_STATE ;
 	protected int chasingCounter;
-	private ArrayList<Node> path;
-	private int currentPathIndex, directionToCheck;
 	
 	public EnemyController(int ind, String type, Hitbox r, PlayStateController p) {
 		super(ind, type, r, p);
@@ -51,7 +46,7 @@ public class EnemyController extends EntityController{
 				System.out.println("giunto a destinazione");
 			}
 			else
-				proseguiNelPercorso();
+				goTrhoughtSelectedPath();
 			break;
 		}
 		
@@ -100,13 +95,13 @@ public class EnemyController extends EntityController{
 		int playerRow = (int)(play.getPlayer().getHitbox().y)/play.getController().getTileSize();
 
 		
-		if(play.getPathFinder().search(startCol, startRow, playerCol, playerRow)) {
+		if(play.getPathFinder().search(startCol, startRow, playerCol, playerRow, true)) {
 			actualState = GO_TO_FIRST_TILE;	
 			path = play.getPathFinder().getPathList();
 		}
 	}
 	
-	private void proseguiNelPercorso() {
+	protected void goTrhoughtSelectedPath() {
 		
 		//se è arrivato ad un tile del percorso, va al successivo
 		if(hitbox.x == path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() &&
@@ -118,6 +113,7 @@ public class EnemyController extends EntityController{
 			float yDistance = hitbox.y - path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
 			float xDistance = hitbox.x - path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();
 			
+			int directionToCheck = 999;
 			//prima controlla se deve salire o scendere
 			if(yDistance < 0)
 				directionToCheck = DOWN;
@@ -155,50 +151,6 @@ public class EnemyController extends EntityController{
 				}
 			
 		}
-	}
-
-	private void checkDown(float yDistance) {
-		
-		if(Math.abs(yDistance) > speed) {
-			currentDirection = DOWN;
-			if(canMove())
-				hitbox.y += speed;
-		}
-		else if(canMove())
-			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();	
-	}
-
-	private void checkUp(float yDistance) {
-			
-		if (Math.abs(yDistance) > speed) {
-			currentDirection = UP;
-			if(canMove())
-				hitbox.y -= speed;
-		}
-		else if(canMove())
-			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
-	}
-		
-	private void checkRight(float xDistance) {
-		
-		if(Math.abs(xDistance) > speed) {
-			currentDirection = RIGHT;
-			if(canMove())
-				hitbox.x += speed;
-		}
-		else if(canMove())
-			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
-	}
-
-	private void checkLeft(float xDistance) {
-			
-		if(Math.abs(xDistance) > speed) {
-			currentDirection = LEFT;
-			if(canMove())
-				hitbox.x -= speed;
-		}
-		else if(canMove())
-			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
 	}
 	
 	//possiamo renderlo più efficace facendolo andare non sul tile dove si trova ma sul primo tile dove deve andare

@@ -5,16 +5,10 @@ import java.util.ArrayList;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.EntityController;
-import controller.playState.pathfinding.Node;
 
 public class ErmenegildoController extends EntityController {
 	
 	private static int hitboxWidth = (int)(16*1.5), hitboxHeight = (int)(17*1.5);
-	private final int RANDOM_MOVE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2; 
-	private int currentState = RANDOM_MOVE;
-	private ArrayList<Node> path;
-	private int currentPathIndex = 0;
-	private int directionToCheck = DOWN;
 	
 	public ErmenegildoController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
@@ -51,13 +45,7 @@ public class ErmenegildoController extends EntityController {
 			goToEdgeOfTile();
 			break;
 				
-		case IN_WAY:
-			
-//			System.out.println("hitbox x " + hitbox.x + " hitbox y " + hitbox.y);
-//			System.out.println("x da raggiungere " + path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() +
-//								" y da raggiungere " + path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize() );
-			
-			
+		case IN_WAY:			
 			if(currentPathIndex == path.size()) {
 				currentAction = IDLE;
 				currentState = RANDOM_MOVE;
@@ -65,7 +53,7 @@ public class ErmenegildoController extends EntityController {
 				System.out.println("giunto a destinazione");
 			}
 			else
-				proseguiNelPercorso();
+				goTrhoughtSelectedPath();
 			break;
 		}
 	}
@@ -76,109 +64,10 @@ public class ErmenegildoController extends EntityController {
 		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
 		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
 		
-		if(play.getPathFinder().search(startCol, startRow, 27, 9)) {
+		if(play.getPathFinder().search(startCol, startRow, 27, 9, false)) {
 			currentState = GO_TO_FIRST_TILE;	
 			path = play.getPathFinder().getPathList();
 		}
-	}
-	
-	private void proseguiNelPercorso() {
-		
-		//se è arrivato ad un tile del percorso, va al successivo
-		if(hitbox.x == path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() &&
-		   hitbox.y == path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize()) {
-				currentPathIndex++;
-		}
-		else {
-			//per andare al successivo, vede quale direzione prendere
-			float yDistance = hitbox.y - path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
-			float xDistance = hitbox.x - path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();
-			
-			//prima controlla se deve salire o scendere
-			if(yDistance < 0)
-				directionToCheck = DOWN;
-			
-			else if(yDistance > 0)
-				directionToCheck = UP;
-			
-			//se non deve salire o scendere, vede se deve andare a destra o a sinistra
-			else if(yDistance == 0) {
-								
-				if(xDistance > 0)
-					directionToCheck = LEFT;
-				
-				else if(xDistance < 0)
-					directionToCheck = RIGHT;
-			}
-
-			//capita la direzione da prendere, entra in questo switch
-				switch (directionToCheck) {
-				case DOWN:
-					checkDown(yDistance);
-					break;
-	
-				case UP:
-					checkUp(yDistance);
-					break;
-				
-				case RIGHT:
-					checkRight(xDistance);
-					break;
-					
-				case LEFT:
-					checkLeft(xDistance);
-					break;
-				}
-			
-		}
-	}
-
-	private void checkDown(float yDistance) {
-		
-		if(Math.abs(yDistance) > speed) {
-			currentDirection = DOWN;
-			tempHitboxForCheck.y = hitbox.y + speed;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.y += speed;
-		}
-		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
-			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();	
-	}
-
-	private void checkUp(float yDistance) {
-			
-		if (Math.abs(yDistance) > speed) {
-			currentDirection = UP;
-			tempHitboxForCheck.y = hitbox.y - speed;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.y -= speed;
-		}
-		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
-			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
-	}
-		
-	private void checkRight(float xDistance) {
-		
-		if(Math.abs(xDistance) > speed) {
-			currentDirection = RIGHT;
-			tempHitboxForCheck.x = hitbox.x + speed;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.x += speed;
-		}
-		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
-			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
-	}
-
-	private void checkLeft(float xDistance) {
-			
-		if(Math.abs(xDistance) > speed) {
-			currentDirection = LEFT;
-			tempHitboxForCheck.x = hitbox.x - speed;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.x -= speed;
-		}
-		else if(!play.getCollisionChecker().isCollisionInEntityList(hitbox))
-			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
 	}
 	
 	//possiamo renderlo più efficace facendolo andare non sul tile dove si trova ma sul primo tile dove deve andare
