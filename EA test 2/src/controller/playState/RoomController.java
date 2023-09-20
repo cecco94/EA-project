@@ -15,11 +15,25 @@ public class RoomController {
 	private ArrayList<EntityController> enemy;
 	private ArrayList<EntityController> NPC;
 	private PlayStateController play;
+	//quante righe e quante colonne ha la stanza
+	private int rowRoom, colRoom;
 	
-	public RoomController(PlayStateController p) {
+	//ogni stanza ha una matrice di booleani, ogni entità segna sul quadratino dove si trova true.
+	//quando lascisa il quadratino, segna false e segna true su quello che oppurà
+	//prima o poi finirànel model
+	private boolean[][] entityPositionsForPathFinding;
+	
+	
+	public RoomController(PlayStateController p, int righe, int colonne) {
 		play = p;
 		enemy = new ArrayList<>();
 		NPC = new ArrayList<>();
+		
+		rowRoom = righe;
+		colRoom = colonne;
+		entityPositionsForPathFinding = new boolean[righe][colonne];
+		resetMatriceEntita();
+
 	}
 
 	public void update() {
@@ -79,8 +93,41 @@ public class RoomController {
 		else if(type.compareTo("pupa") == 0) 
 			NPC.add(new PupaController(NPC.size(), type, xPos, yPos, play));
 		
+		int colNumber = (int)(NPC.get(NPC.size() - 1).getHitbox().x)/play.getController().getTileSize();
+		int rowNumber = (int)(NPC.get(NPC.size() - 1).getHitbox().y)/play.getController().getTileSize();
+		entityPositionsForPathFinding[rowNumber][colNumber] = true;
 	}
 	
+	public boolean[][] getEntityPositionsForPathFinding(){
+		return entityPositionsForPathFinding;
+	}
 	
+	public void resetMatriceEntita() {
+		//inizializza matrice della posizione dei personaggi
+		for(int i = 0; i < rowRoom; i++) {
+			for (int j = 0; j < colRoom; j++) {
+				entityPositionsForPathFinding[i][j] = false;
+			}
+		}
+		
+	}
+	
+	public void printMatriceEntita() {
+		int colonnaTrue = -1;
+		int rigaTrue = -1;
+		for(int row = 0; row < rowRoom; row++) {
+			for(int col = 0; col < colRoom; col++) {
+				System.out.print(entityPositionsForPathFinding[row][col] + " ");
+				if(entityPositionsForPathFinding[row][col] == true) {
+					colonnaTrue = col;
+					rigaTrue = row;
+					System.out.print("QUI");
+				}
+			}
+			System.out.println();
+
+		}
+		System.out.println(colonnaTrue + ", " + rigaTrue);
+	}
 	
 }

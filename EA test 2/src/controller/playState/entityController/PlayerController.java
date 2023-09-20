@@ -227,7 +227,7 @@ public class PlayerController extends EntityController {
 		if(passageIndex >= 0) {
 			if(play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).isOpen()) {
 				play.getController().getModel().saveNewRoomData();
-				
+						
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
 				play.getController().setGameState(Gamestate.TRANSITION_STATE);

@@ -21,7 +21,7 @@ public class PlayStateController {
 	private ArrayList<BulletController> bulletsInRoom;
 	private RoomController[] stanzeController;
 	private PathFinder pathFinder;
-
+	
 	
 	public PlayStateController(IController c) {
 		controller = c;
@@ -33,19 +33,20 @@ public class PlayStateController {
 		
 		//per ora il pathfinder ha un grafo grande quanto la stanza più grande
 		pathFinder = new PathFinder(this, 50, 50);
+	
 	}
 
 	public void initRooms() {
 		stanzeController = new RoomController[Rooms.numStanze];
-		stanzeController[Rooms.BIBLIOTECA.mapIndex] = new RoomController(this);
-		stanzeController[Rooms.DORMITORIO.mapIndex] = new RoomController(this);		
-		stanzeController[Rooms.AULA_STUDIO.mapIndex] = new RoomController(this);
-		stanzeController[Rooms.TENDA.mapIndex] = new RoomController(this);
-		stanzeController[Rooms.LABORATORIO.mapIndex] = new RoomController(this);
-		stanzeController[Rooms.STUDIO_PROF.mapIndex] = new RoomController(this);
+		stanzeController[Rooms.BIBLIOTECA.mapIndex] = new RoomController(this, 30, 40);
+		stanzeController[Rooms.DORMITORIO.mapIndex] = new RoomController(this, 34, 50);		
+		stanzeController[Rooms.AULA_STUDIO.mapIndex] = new RoomController(this, 50, 50);
+		stanzeController[Rooms.TENDA.mapIndex] = new RoomController(this, 24, 30);
+		stanzeController[Rooms.LABORATORIO.mapIndex] = new RoomController(this, 34, 40);
+		stanzeController[Rooms.STUDIO_PROF.mapIndex] = new RoomController(this, 41, 50);
 		
 	}
-	
+
 	public void update() {
 		//aggiorna il personaggio
 		playerController.update();		
@@ -206,6 +207,11 @@ public class PlayStateController {
 
 	public PathFinder getPathFinder() {
 		return pathFinder;
+	}
+
+	public void printMatriceEntita() {
+		for(RoomController room : stanzeController)
+			room.printMatriceEntita();
 	}
 	
 }

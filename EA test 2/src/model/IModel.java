@@ -51,7 +51,7 @@ public class IModel {
 		rooms[Rooms.INDEX_LABORATORIO] = new RoomModel(percorsoDatiLaboratorio, this, Rooms.INDEX_LABORATORIO);
 		rooms[Rooms.INDEX_STUDIO_PROF] = new RoomModel(percorsoDatiStudioProf, this, Rooms.INDEX_STUDIO_PROF);
 		
-		
+		controller.getPlay().printMatriceEntita();
 	}
 	
 	public void addView(IView v) {

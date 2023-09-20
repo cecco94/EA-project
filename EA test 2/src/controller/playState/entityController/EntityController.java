@@ -28,6 +28,12 @@ public abstract class EntityController {
 	//l'indice nella lista delle entità
 	protected int index;
 	
+	//quando l'entità viene creata, si segna la posizione in righe & colonne
+	//ogni volta che si muove, controlla se ha cambiato tile
+	//se ha cambiato tile, aggiorna la mappa della posizione dei personaggi
+	//segnando true sul nuovo quadratino e false su quello vecchio
+	//infine mette la nuova posizione su quella vecchia
+	
 	public EntityController (int ind, String type, Hitbox r, PlayStateController p) {
 		index = ind;
 		
