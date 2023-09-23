@@ -16,6 +16,9 @@ public class PupaController extends EntityController {
 		speed = play.getController().getGameScale()*0.5f;	
 		currentDirection = LEFT;
 		currentAction = MOVE;
+		
+		this.typeOfTarget = "npc";
+
 	}
 	
 	@Override

@@ -9,3 +9,17 @@
 +cfu, 12, 24, 32, 32, cfu
 
 /robot, robot, 22, 21
+
+gatto, gatto, 13, 23
+
+gatto, gatto, 18, 23
+
+gatto, gatto, 21, 23
+
+gatto, gatto, 24, 23
+
+gatto, gatto, 22, 19
+
+gatto, gatto, 16, 14
+
+gatto, gatto, 20, 12

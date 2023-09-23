@@ -48,6 +48,9 @@ public class PlayerController extends EntityController {
 	public PlayerController(Hitbox r, PlayStateController p) {
 		//BRUTTO, DA CAMBIARE
 		super(-1, "player", r, p);
+		
+		this.typeOfTarget = "player";
+		
 		resetBooleans();
 		
 		int hitboxWidth = (int)(play.getController().getTileSize()*0.75);

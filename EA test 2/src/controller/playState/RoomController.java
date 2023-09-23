@@ -3,6 +3,7 @@ package controller.playState;
 import java.util.ArrayList;
 
 import controller.playState.entityController.EntityController;
+import controller.playState.entityController.enemyController.EnemyController;
 import controller.playState.entityController.enemyController.RobotController;
 import controller.playState.entityController.npcController.CatController;
 import controller.playState.entityController.npcController.DocController;
@@ -12,7 +13,7 @@ import controller.playState.entityController.npcController.PupaController;
 
 public class RoomController {
 
-	private ArrayList<EntityController> enemy;
+	private ArrayList<EnemyController> enemy;
 	private ArrayList<EntityController> NPC;
 	private PlayStateController play;
 	//quante righe e quante colonne ha la stanza
@@ -55,7 +56,7 @@ public class RoomController {
 //		NPC.remove(index);
 //	}
 	
-	public ArrayList<EntityController> getEnemy(){
+	public ArrayList<EnemyController> getEnemy(){
 		return enemy;
 	}
 	

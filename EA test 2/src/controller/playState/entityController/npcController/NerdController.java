@@ -10,7 +10,10 @@ public class NerdController extends EntityController{
 	
 	public NerdController(int i, String type, int xPos, int yPos, PlayStateController p) {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
-		speed = (int)(play.getController().getGameScale()*0.7f);	
+		speed = (int)(play.getController().getGameScale()*0.7f);
+		
+		this.typeOfTarget = "npc";
+
 	}
 	
 	@Override

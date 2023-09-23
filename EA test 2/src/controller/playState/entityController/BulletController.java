@@ -2,6 +2,7 @@ package controller.playState.entityController;
 
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
+import controller.playState.entityController.enemyController.EnemyController;
 
 public class BulletController {
 
@@ -11,7 +12,8 @@ public class BulletController {
 	private Hitbox hitbox;
 	private float speed;
 	private PlayStateController play;
-	private EntityController owner;  //il proiettile non colpisce chi lo ha lanciato 
+	//il proiettile non colpisce chi lo ha lanciato, target è la entità che viene colpita
+	private EntityController owner, target;  
 	
 	public BulletController(PlayStateController p, int index, EntityController e) {
 		play = p;
@@ -41,25 +43,59 @@ public class BulletController {
 	private void checkCollision() {
 		try {
 			switch(direction) {
-			case EntityController.LEFT: 
-				if(!play.getCollisionChecker().canMoveLeft(hitbox) || 
-						play.getCollisionChecker().bulletHittedEntity(hitbox, owner))  
+			case EntityController.LEFT:
+				//prima controlla se si schianta contro una parete
+				if(!play.getCollisionChecker().canMoveLeft(hitbox)) {
 					hit = true;
+					target = null;
+				}
+				else {
+					//se non si schianta contro una parete, vede se si schianta contro una entità
+					target = play.getCollisionChecker().bulletHittedEntity(hitbox, owner);
+					if(target != null) {
+						//in caso positivo, si salva il riferimento a quella entità
+						hit = true;
+					}
+				}	  	
 				break;
-			case EntityController.RIGHT:
-				if(!play.getCollisionChecker().canMoveRight(hitbox) || 
-						play.getCollisionChecker().bulletHittedEntity(hitbox, owner)) 
+				
+			case EntityController.UP: 
+				if(!play.getCollisionChecker().canMoveUp(hitbox)) {
 					hit = true;
+					target = null;
+				}
+				else {
+					target = play.getCollisionChecker().bulletHittedEntity(hitbox, owner);
+					if(target != null) {
+						hit = true;
+					}
+				}	  	
 				break;
-			case EntityController.UP:
-				if(!play.getCollisionChecker().canMoveUp(hitbox) || 
-						play.getCollisionChecker().bulletHittedEntity(hitbox, owner))  
+				
+			case EntityController.DOWN: 
+				if(!play.getCollisionChecker().canMoveDown(hitbox)) {
 					hit = true;
+					target = null;
+				}
+				else {
+					target = play.getCollisionChecker().bulletHittedEntity(hitbox, owner);
+					if(target != null) {
+						hit = true;
+					}
+				}	  	
 				break;
-			case EntityController.DOWN:
-				if(!play.getCollisionChecker().canMoveDown(hitbox)|| 
-						play.getCollisionChecker().bulletHittedEntity(hitbox, owner))  
+				
+			case EntityController.RIGHT: 
+				if(!play.getCollisionChecker().canMoveRight(hitbox)) {
 					hit = true;
+					target = null;
+				}
+				else {
+					target = play.getCollisionChecker().bulletHittedEntity(hitbox, owner);
+					if(target != null) {
+						hit = true;
+					}
+				}	  	
 				break;
 			}		
 		}
@@ -70,6 +106,19 @@ public class BulletController {
 		}
 							
 		if(hit) {
+			//se si è schiantato contro una entità, se non è un npc, abbassa la sua vita
+			if(target != null) {
+				if(target.typeOfTarget.compareTo("enemy") == 0) {
+					EnemyController enemy = (EnemyController)target;
+					int enemyLife = enemy.getLife() - 10;
+					enemy.setLife(enemyLife);
+				}
+				
+				else if(target.typeOfTarget.compareTo("player") == 0) {
+					play.getPlayer().setLife(play.getPlayer().getLife() - 10);
+				}
+			}
+			
 			play.getController().getView().getPlay().removeBullet(indexInList);
 			play.removeBullets(indexInList);
 		}		
@@ -97,7 +146,6 @@ public class BulletController {
 		return hitbox;
 	}
 	
-
 	public int getDirection() {
 		return direction;
 	}

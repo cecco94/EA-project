@@ -75,8 +75,8 @@ public class RobotView extends EntityView {
 	private void loadDieImages(BufferedImage image, BufferedImage temp) {
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/robotGiusto.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		temp = image.getSubimage(0*16, 4*24, 16, 24);
@@ -158,6 +158,12 @@ public class RobotView extends EntityView {
 		g2.setColor(Color.green);
 		lifeRect.x = xPosOnScreen;
 		lifeRect.y = yPosOnScreen - lifeRect.height;
+		
+		//la lunghezza del rettangolo deve essere proporzionale alla vita dell robot, la vita è già in percentuale
+		int life = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getLife();
+		
+		lifeRect.width = life*animation[0][0][0][0].getWidth()/100;
+		
 		g2.fillRect(lifeRect.x, lifeRect.y, lifeRect.width, lifeRect.height);
 		
 	}

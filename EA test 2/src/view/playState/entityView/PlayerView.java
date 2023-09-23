@@ -137,7 +137,7 @@ public class PlayerView extends EntityView {
 	private void loadParryImages(BufferedImage image, BufferedImage temp) {
 		playerAnimation [RAGAZZO][PARRY] = new BufferedImage[4][2];		//ci sono 1 direzioni, ogni direzione ha 6 immagini	
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/BowBoy.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/BowBoypc.png"));
 			
 			for(int i = 0; i < 2; i++) {
 				temp = image.getSubimage(i*25, 0, 25, 34);
@@ -169,7 +169,7 @@ public class PlayerView extends EntityView {
 		
 		playerAnimation [RAGAZZA][PARRY] = new BufferedImage[4][2];
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/BowGirl.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/BowGirlpc.png"));
 			
 			for(int i = 0; i < 2; i++) {
 				temp = image.getSubimage(i*26, 0, 26, 34);
@@ -283,7 +283,7 @@ public class PlayerView extends EntityView {
 	private void loadAttackImages(BufferedImage image, BufferedImage temp) {
 		playerAnimation [RAGAZZO][ATTACK] = new BufferedImage[4][5];		//ci sono 4 direzioni, ogni direzione ha 5 immagini	
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/ThrowBoy.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/attackBoyBook.png"));
 			
 			for(int i = 0; i < 5; i++) {
 				temp = image.getSubimage(i*26, 0, 26, 40);
@@ -315,7 +315,7 @@ public class PlayerView extends EntityView {
 		
 		playerAnimation [RAGAZZA][ATTACK] = new BufferedImage[4][5];
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/ThrowGirl.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/attackGirlbook.png"));
 			
 			for(int i = 0; i < 5; i++) {
 				temp = image.getSubimage(i*25, 0, 25, 41);

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import controller.IController;
 import controller.playState.entityController.EntityController;
+import controller.playState.entityController.enemyController.EnemyController;
 
 
 public class Collisions {
@@ -181,7 +182,7 @@ public class Collisions {
 				numCollision++;
 		}
 		
-		ArrayList<EntityController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
+		ArrayList<EnemyController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
 		for(int i = 0; i < enemy.size(); i++) {
 			if(hitboxEntity.intersects(enemy.get(i).getHitbox()))
 				numCollision++;
@@ -202,33 +203,42 @@ public class Collisions {
 	}
 	
 	//metodo usato dai proiettili per vedere se ha colpito qualcuno
-	public boolean bulletHittedEntity(Hitbox hitboxEntity, EntityController owner) {
+	public EntityController bulletHittedEntity(Hitbox hitboxEntity, EntityController owner) {
 		int roomIndex = control.getPlay().getCurrentroomIndex();
-		int numCollision = 0;
+	//	int numCollision = 0;
+		EntityController target = null;
 		
 		ArrayList<EntityController> npc = control.getPlay().getRoom(roomIndex).getNPC();
 		for(int i = 0; i < npc.size(); i++) {
 			if(hitboxEntity.intersects(npc.get(i).getHitbox()))
-				if(npc.get(i) != owner)		//se colpisce chi ha lanciato il proiettile non succede nulla
-					numCollision++;
+				if(npc.get(i) != owner)	{	//se colpisce chi ha lanciato il proiettile non succede nulla
+			//		numCollision++;
+					target = npc.get(i);
+				}
 		}
 		
-		ArrayList<EntityController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
+		ArrayList<EnemyController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
 		for(int i = 0; i < enemy.size(); i++) {
 			if(hitboxEntity.intersects(enemy.get(i).getHitbox()))
-				if(enemy.get(i) != owner)
-					numCollision++;
+				if(enemy.get(i) != owner) {
+			//		numCollision++;
+					target = enemy.get(i);
+				}
 		}	
 		
 		if(hitboxEntity.intersects(control.getPlay().getPlayer().getHitbox())) 
-			if(control.getPlay().getPlayer() != owner)
-				numCollision++;
+			if(control.getPlay().getPlayer() != owner) {
+		//		numCollision++;
+				target = control.getPlay().getPlayer();
+			}
 		
-		if(numCollision > 0) {
-			return true;
-		}
+		return target;
 		
-		return false;
+//		if(numCollision > 0) {
+//			return true;
+//		}
+//		
+//		return false;
 	}
 		
 

@@ -30,6 +30,9 @@ public abstract class EntityController {
 	//l'indice nella lista delle entità
 	protected int index;
 	
+	//questa stringa serve per capire se il proiettile si è schiantato su un npc, su un nemico o sul player
+	protected String typeOfTarget;
+	
 	//quando l'entità viene creata, si segna la posizione in righe & colonne
 	//ogni volta che si muove, controlla se ha cambiato tile
 	//se ha cambiato tile, aggiorna la mappa della posizione dei personaggi
@@ -128,6 +131,7 @@ public abstract class EntityController {
 		}
 		
 		if(currentAction == MOVE && canMove()) {
+						
 			if(currentDirection == UP) {
 				hitbox.y -= speed;	
 			}
@@ -307,7 +311,7 @@ public abstract class EntityController {
 	}
 
 	protected void checkDown(float yDistance) {
-		
+		//se la distanza è maggiore di un passo, fai un passo (se non ti schianti contro qualcun altro)
 		if(Math.abs(yDistance) > speed) {
 			currentDirection = DOWN;
 			tempHitboxForCheck.y = hitbox.y + speed;
@@ -315,6 +319,7 @@ public abstract class EntityController {
 			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.y += speed;
 		}
+		//se invece la distanza è <= un passo, spostati direttamente lì
 		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();	
 	}
@@ -356,5 +361,38 @@ public abstract class EntityController {
 		}
 		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+	}
+	
+	//possiamo renderlo più efficace facendolo andare non sul tile dove si trova ma sul primo tile dove deve andare
+	//così può anche partire da un tile mezzo solido
+	protected void goToEdgeOfTile() {
+		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
+		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
+
+		//se sta troppo a destra, si sposta a sinistra fino ad arrivare vicinissimo al bordo del tile, poi la hitbox si attacca al bordo
+		if(hitbox.x > startCol*play.getController().getTileSize()) {
+			if((hitbox.x - startCol*play.getController().getTileSize()) > speed) {
+				currentDirection = LEFT;
+				hitbox.x -= speed;
+			}
+			else {
+				hitbox.x = (int)(startCol*play.getController().getTileSize());
+			}
+		}
+		
+		//se sta troppo in basso
+		else if(hitbox.y > startRow*play.getController().getTileSize()) {
+			if((hitbox.y - startRow*play.getController().getTileSize()) > speed) {
+				currentDirection = UP;
+				hitbox.y -= speed;
+			}
+			else {
+				hitbox.y = (int)(startRow*play.getController().getTileSize());	
+			}
+		}
+				
+		if(hitbox.x == startCol*play.getController().getTileSize() && hitbox.y == startRow*play.getController().getTileSize()) {
+			currentState = IN_WAY;	
+		}
 	}
 }

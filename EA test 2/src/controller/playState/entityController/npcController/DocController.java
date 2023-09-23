@@ -12,6 +12,8 @@ public class DocController extends EntityController {
 		super(ind, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
 		speed = (int)(play.getController().getGameScale()*0.7f);	
 
+		this.typeOfTarget = "npc";
+
 	}
 
 	@Override

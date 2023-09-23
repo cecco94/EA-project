@@ -14,6 +14,9 @@ public class ErmenegildoController extends EntityController {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
 		speed = play.getController().getGameScale()*0.3f;	
 		path = new ArrayList<>();
+		
+		this.typeOfTarget = "npc";
+
 	}
 
 	@Override
@@ -33,11 +36,8 @@ public class ErmenegildoController extends EntityController {
 				//	play.getPlayer().speak(index);
 				}
 			}
-			
-			else {
+			else 
 				randomMove();
-			}
-
 			break;
 			
 		case GO_TO_FIRST_TILE:
@@ -58,8 +58,6 @@ public class ErmenegildoController extends EntityController {
 		}
 	}
 
-	//possimao migliorarlo facendo capire al personaggio la posizione delle entità
-	//così può scegliere un percorso che schivi anche loro
 	private void goToYourDestination() {
 		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
 		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
@@ -70,39 +68,6 @@ public class ErmenegildoController extends EntityController {
 		}
 	}
 	
-	//possiamo renderlo più efficace facendolo andare non sul tile dove si trova ma sul primo tile dove deve andare
-	//così può anche partire da un tile mezzo solido
-	private void goToEdgeOfTile() {
-		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
-		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
-
-		//se sta troppo a destra, si sposta a sinistra fino ad arrivare vicinissimo al bordo del tile, poi la hitbox si attacca al bordo
-		if(hitbox.x > startCol*play.getController().getTileSize()) {
-			if((hitbox.x - startCol*play.getController().getTileSize()) > speed) {
-				currentDirection = LEFT;
-				hitbox.x -= speed;
-			}
-			else {
-				hitbox.x = (int)(startCol*play.getController().getTileSize());
-			}
-		}
-		
-		//se sta troppo in basso
-		else if(hitbox.y > startRow*play.getController().getTileSize()) {
-			if((hitbox.y - startRow*play.getController().getTileSize()) > speed) {
-				currentDirection = UP;
-				hitbox.y -= speed;
-			}
-			else {
-				hitbox.y = (int)(startRow*play.getController().getTileSize());	
-			}
-		}
-				
-		if(hitbox.x == startCol*play.getController().getTileSize() && hitbox.y == startRow*play.getController().getTileSize()) {
-			currentState = IN_WAY;	
-		}
-			
-	}
-
 	
 }
+
