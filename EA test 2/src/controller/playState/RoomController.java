@@ -76,6 +76,17 @@ public class RoomController {
 	public void addEnemy(String type, int xPos, int yPos) {
 		enemy.add(new RobotController(enemy.size(), type, xPos, yPos, play));
 	}
+	
+	public void removeEnemy(int index) {
+		for(int i = index; i < enemy.size(); i++)
+			enemy.get(i).decreaseIndexInList();
+		try {
+			enemy.remove(index);
+		}
+		catch(IndexOutOfBoundsException iobe) {
+			iobe.printStackTrace();
+		}
+	}
 
 	public void addNPC (String type, int xPos, int yPos) {
 		

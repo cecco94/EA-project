@@ -45,7 +45,7 @@ public abstract class EntityController {
 	protected int currentPathIndex = 0;
 	
 	//per gestire gli npc ed i nemici come macchine a stati
-	protected final int RANDOM_MOVE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2; 
+	protected final int RANDOM_MOVE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2, KO_STATE = 3; 
 	protected int currentState = RANDOM_MOVE;
 	
 	public EntityController (int ind, String type, Hitbox r, PlayStateController p) {

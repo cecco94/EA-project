@@ -34,6 +34,8 @@ public abstract class EntityView extends SortableElement {
 	//posizione dell'entità nello schermo
 	protected int xPosOnScreen, yPosOnScreen;
 
+	//per distinguere tra npc e enemy
+	protected String type;
 	
 	public int getxPosOnScreen() {
 		return xPosOnScreen;
@@ -89,8 +91,8 @@ public abstract class EntityView extends SortableElement {
 	}
 	
 	//vede nel controller la direzione dell'entità e cambia currentDirection
-	protected void setDirection(boolean isNPC) {
-		if(isNPC)
+	protected void setDirection(EntityView entity) {
+		if(entity.type.compareTo("npc") == 0)
 			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
 		else
 			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentDirection();
@@ -98,8 +100,8 @@ public abstract class EntityView extends SortableElement {
 	}
 	
 	//vede nel controller cosa fa l'entità e cambia currentAction
-	protected void setAction(boolean isNPC) {
-		if(isNPC)
+	protected void setAction(EntityView entity) {
+		if(entity.type.compareTo("npc") == 0)
 			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentAction();
 		else
 			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentAction();
@@ -109,6 +111,11 @@ public abstract class EntityView extends SortableElement {
 			numSprite = 0;
 			previousAction = currentAction;
 		}
+		
+	}
+
+	public void decreaseIndexInList() {
+		this.index--;
 		
 	}
 	

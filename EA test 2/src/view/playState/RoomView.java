@@ -85,6 +85,18 @@ public class RoomView {
 	public EntityView getEnemy(int index) {
 		return enemyView.get(index);
 	}
+
+	public void removeEnemy(int index) {
+		
+		for(int i = index; i < enemyView.size(); i++)
+			enemyView.get(i).decreaseIndexInList();
+		try {
+			enemyView.remove(index);
+		}
+		catch(IndexOutOfBoundsException iobe) {
+			iobe.printStackTrace();
+		}		
+	}
 	
 	
 }

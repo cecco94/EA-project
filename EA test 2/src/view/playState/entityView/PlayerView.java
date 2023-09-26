@@ -283,7 +283,7 @@ public class PlayerView extends EntityView {
 	private void loadAttackImages(BufferedImage image, BufferedImage temp) {
 		playerAnimation [RAGAZZO][ATTACK] = new BufferedImage[4][5];		//ci sono 4 direzioni, ogni direzione ha 5 immagini	
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/attackBoyBook.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/attaccoRagazzo.png"));
 			
 			for(int i = 0; i < 5; i++) {
 				temp = image.getSubimage(i*26, 0, 26, 40);

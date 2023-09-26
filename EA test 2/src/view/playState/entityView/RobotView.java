@@ -15,18 +15,22 @@ import view.main.GamePanel;
 public class RobotView extends EntityView {
 
 	private BufferedImage[][][][] animation;
-	private final int DIE = 2;
 	private Rectangle lifeRect;
+	private int maxLifeWidth;
+	private boolean firstDeathSprite;
 	
 	public RobotView(IView v, int index) {
 		super(v, index);
+		
+		this.type = "enemy";
 		
 		loadImages();
 		
 		xOffset = (int)(0*GamePanel.SCALE); 
 		yOffset = (int)(2*GamePanel.SCALE); 
 		animationSpeed = 30;
-		lifeRect = new Rectangle(0,0, animation[0][0][0][0].getWidth(), (int)(2*GamePanel.SCALE));
+		maxLifeWidth = animation[0][0][0][0].getWidth();
+		lifeRect = new Rectangle(0, 0, maxLifeWidth, (int)(3*GamePanel.SCALE));
 		
 	}
 
@@ -34,7 +38,7 @@ public class RobotView extends EntityView {
 		BufferedImage image = null;
 		BufferedImage temp = null;
 		
-		animation = new BufferedImage[1][3][][];		
+		animation = new BufferedImage[1][6][][];		
 		
 		animation[0][MOVE] = new BufferedImage[4][3];	//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		animation[0][IDLE] = new BufferedImage[4][1];	//ci sono 4 direzioni, ogni direzione ha 1 immagine
@@ -91,13 +95,13 @@ public class RobotView extends EntityView {
 		
 		temp = image.getSubimage(1*16, 4*24, 24, 24);
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
-		animation[0][DIE][DOWN][0] = temp;
-		animation[0][DIE][RIGHT][0] = temp;
+		animation[0][DIE][DOWN][1] = temp;
+		animation[0][DIE][RIGHT][1] = temp;
 
 		temp = image.getSubimage(1*16, 5*24, 24, 24);
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
-		animation[0][DIE][LEFT][0] = temp;
-		animation[0][DIE][UP][0] = temp;
+		animation[0][DIE][LEFT][1] = temp;
+		animation[0][DIE][UP][1] = temp;
 
 		
 	}
@@ -106,12 +110,14 @@ public class RobotView extends EntityView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-		setAction(false);
-		setDirection(false);
+		setAction(this);
+		setDirection(this);
 		
 		if (animationCounter > animationSpeed) {
-			numSprite ++;	
-			
+			numSprite++;
+			//l'animazione si ferma con lui a terra
+			setDyingAniIndex();
+	
 			if(numSprite >= getAnimationLenght())
 				numSprite = 0;	
 			
@@ -161,8 +167,7 @@ public class RobotView extends EntityView {
 		
 		//la lunghezza del rettangolo deve essere proporzionale alla vita dell robot, la vita è già in percentuale
 		int life = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getLife();
-		
-		lifeRect.width = life*animation[0][0][0][0].getWidth()/100;
+		lifeRect.width = life*maxLifeWidth/100;
 		
 		g2.fillRect(lifeRect.x, lifeRect.y, lifeRect.width, lifeRect.height);
 		
@@ -181,4 +186,16 @@ public class RobotView extends EntityView {
 		return 0;
 	}
 
+	private void setDyingAniIndex() {
+		if(currentAction == DIE) {
+			if(firstDeathSprite) {
+				numSprite--;
+				firstDeathSprite = false;
+			}
+			else {
+				numSprite = getAnimationLenght() - 1;
+			}
+		}
+		
+	}
 }

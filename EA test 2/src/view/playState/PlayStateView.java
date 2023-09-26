@@ -219,6 +219,10 @@ public class PlayStateView {
 	public RoomView getRoom(int index) {
 		return roomsView[index];	
 	}
+
+	public void removeEnemy(int index) {
+		roomsView[Rooms.currentRoom.mapIndex].removeEnemy(index);
+	}
 }
 
 	

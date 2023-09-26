@@ -18,6 +18,8 @@ public class NerdView extends NPCView {
 	public NerdView(IView v, int index) {
 		super(v, index);
 		
+		this.type = "npc";
+		
 		setDialogues();
 		loadImages();	
 		
@@ -85,8 +87,8 @@ public class NerdView extends NPCView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-		setAction(true);
-		setDirection(true);
+		setAction(this);
+		setDirection(this);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	

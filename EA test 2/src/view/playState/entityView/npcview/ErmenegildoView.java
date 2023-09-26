@@ -19,6 +19,8 @@ public class ErmenegildoView extends NPCView {
 		
 		super(v, index);
 		
+		this.type = "npc";
+		
 		loadImages();	
 		
 		xOffset = (int)(0*GamePanel.SCALE); //3;
@@ -91,8 +93,8 @@ public class ErmenegildoView extends NPCView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-		setAction(true);
-		setDirection(true);
+		setAction(this);
+		setDirection(this);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	

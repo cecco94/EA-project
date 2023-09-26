@@ -23,6 +23,8 @@ public class CatView extends NPCView {
 		
 		super(v, index);
 
+		this.type = "npc";
+		
 		loadImages();	
 		
 		xOffset = (int)(1*GamePanel.SCALE); //3;
@@ -146,8 +148,8 @@ public class CatView extends NPCView {
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
 		animationCounter++;
-		setAction(true);
-		setDirection(true);
+		setAction(this);
+		setDirection(this);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	

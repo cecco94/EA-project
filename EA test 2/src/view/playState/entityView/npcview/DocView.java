@@ -18,6 +18,8 @@ public class DocView extends NPCView {
 	public DocView(IView v, int index) {
 		super(v, index);
 		
+		this.type = "npc";
+		
 		loadImages();	
 		
 		xOffset = (int)(0*GamePanel.SCALE); 
@@ -81,8 +83,8 @@ public class DocView extends NPCView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		animationCounter++;
-		setAction(true);
-		setDirection(true);
+		setAction(this);
+		setDirection(this);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	

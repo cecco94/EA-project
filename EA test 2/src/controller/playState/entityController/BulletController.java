@@ -14,6 +14,7 @@ public class BulletController {
 	private PlayStateController play;
 	//il proiettile non colpisce chi lo ha lanciato, target è la entità che viene colpita
 	private EntityController owner, target;  
+	private int distanzaPercorsa;
 	
 	public BulletController(PlayStateController p, int index, EntityController e) {
 		play = p;
@@ -110,12 +111,11 @@ public class BulletController {
 			if(target != null) {
 				if(target.typeOfTarget.compareTo("enemy") == 0) {
 					EnemyController enemy = (EnemyController)target;
-					int enemyLife = enemy.getLife() - 10;
-					enemy.setLife(enemyLife);
+					enemy.hitted(10);
 				}
 				
 				else if(target.typeOfTarget.compareTo("player") == 0) {
-					play.getPlayer().setLife(play.getPlayer().getLife() - 10);
+					play.getPlayer().hitted(10);
 				}
 			}
 			
@@ -139,7 +139,13 @@ public class BulletController {
 			hitbox.y += speed;
 			break;
 		}
-		 	
+		//il proiettile dopo qualche metro si ferma
+		distanzaPercorsa += speed; 
+		if(distanzaPercorsa >= 3*play.getController().getTileSize()) {
+			play.getController().getView().getPlay().removeBullet(indexInList);
+			play.removeBullets(indexInList);
+		}
+			
 	}
 
 	public Hitbox getHitbox() {

@@ -85,18 +85,23 @@ public class SoundManager {
 	public void setSEVolume(float v) {
 		if (v > 0f && v < 1f) {
 			this.seVolume = v;
+	    	try {
+	    		FloatControl gainControl = (FloatControl) soundEffect.getControl(FloatControl.Type.MASTER_GAIN);   
 	    	
-	    	FloatControl gainControl = (FloatControl) soundEffect.getControl(FloatControl.Type.MASTER_GAIN);   
+	    		float controlValue = 20f * (float) Math.log10(v); // siccome il suono è in decibel, bisogna convertirlo in lineare
 	    	
-	    	float controlValue = 20f * (float) Math.log10(v); // siccome il suono è in decibel, bisogna convertirlo in lineare
-	    	
-	    	if(controlValue > -80)		//per controllo, sennò viene un numero troppo basso
-	    		gainControl.setValue(controlValue);	
-	    	
-	    	if(v < 0.015f)
-	    		gainControl.setValue(gainControl.getMinimum());
-	    }
+		    	if(controlValue > -80)		//per controllo, sennò viene un numero troppo basso
+		    		gainControl.setValue(controlValue);	
+		    	
+		    	if(v < 0.015f)
+		    		gainControl.setValue(gainControl.getMinimum());
+		    }
+	    	catch(IllegalArgumentException iae) {
+	    		iae.printStackTrace();
+	    	}
+		}
 	}
+		
 	
 	// metodo che funziona bene
 	public void setMusicVolume(float v) {

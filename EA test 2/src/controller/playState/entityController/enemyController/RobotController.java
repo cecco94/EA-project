@@ -13,7 +13,7 @@ public class RobotController extends EnemyController {
 		speed = (int)(play.getController().getGameScale()*1f);	
 		
 		attack = 30;
-		defense = 10;
+		defense = 0;
 		life = 100;
 	}
 
@@ -24,12 +24,21 @@ public class RobotController extends EnemyController {
 	@Override
 	public void update() {
 
+		//quando il robot sta morendo, diventa puù cattivo
+		if(life <= 20) {
+			attack += 10;
+			speed = play.getController().getGameScale()*1.2f;
+			
+			if(life <= 0)
+				currentState = KO_STATE;
+		}
+		
 		switch(currentState) {
 		case NORMAL_STATE:
 			float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 			float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			
-			if(xDistance < play.getController().getTileSize()*4 && yDistance < play.getController().getTileSize()*4) {
+			if(xDistance < play.getController().getTileSize()*5 && yDistance < play.getController().getTileSize()*5) {
 				if(currentState == NORMAL_STATE) {
 					play.getController().getView().getPlay().getUI().activeExclamation(index);
 					goToYourDestination();	
@@ -45,7 +54,6 @@ public class RobotController extends EnemyController {
 			break;
 			
 		case IN_WAY:
-			
 			if(currentPathIndex == path.size() - 1) {
 				currentAction = IDLE;
 				currentState = NORMAL_STATE;
@@ -55,6 +63,15 @@ public class RobotController extends EnemyController {
 			else {
 				goTrhoughtSelectedPath();
 				shootToPlayer();	
+			}
+			break;
+			
+		case KO_STATE:
+			currentAction = DIE;
+			dyingCounter++;
+			if(dyingCounter >= 400) {
+				play.getController().getView().getPlay().removeEnemy(index);
+				play.removeEnemy(index);
 			}
 			break;
 		}

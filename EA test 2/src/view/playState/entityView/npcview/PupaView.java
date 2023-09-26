@@ -18,6 +18,10 @@ public class PupaView extends NPCView {
 		
 		super(v, index);
 		
+		
+		this.type = "npc";
+		
+		
 		loadImages();	
 		setDialogues();
 		
@@ -136,8 +140,8 @@ public class PupaView extends NPCView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		animationCounter++;
-		setAction(true);
-		setDirection(true);
+		setAction(this);
+		setDirection(this);
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	

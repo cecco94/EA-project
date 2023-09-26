@@ -8,8 +8,8 @@ public abstract class EnemyController extends EntityController{
 
 	protected int life, attack, defense;
 	protected final int maxLife = 100;
-	public static final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2;
-	protected int bulletCounter;
+	public static final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2, DYING = 3;
+	protected int bulletCounter, dyingCounter;
 	
 	public EnemyController(int ind, String type, Hitbox r, PlayStateController p) {
 		super(ind, type, r, p);
@@ -18,8 +18,11 @@ public abstract class EnemyController extends EntityController{
 	
 	public abstract void update();
 
-	public void colpito() {
-		life -= play.getPlayer().getAttack() - defense;
+	public void hitted(int damage) {
+		int realDamage = damage - defense;
+		System.out.println(realDamage);
+		if(realDamage > 0)
+			life -= realDamage;
 	}
 	
 	public void colpisci() {
@@ -117,40 +120,11 @@ public abstract class EnemyController extends EntityController{
 			
 		}
 	}
-	
-	//possiamo renderlo più efficace facendolo andare non sul tile dove si trova ma sul primo tile dove deve andare
-	//così può anche partire da un tile mezzo solido
-//	protected void goToEdgeOfTile() {
-//		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
-//		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
-//
-//		//se sta troppo a destra, si sposta a sinistra fino ad arrivare vicinissimo al bordo del tile, poi la hitbox si attacca al bordo
-//		if(hitbox.x > startCol*play.getController().getTileSize()) {
-//			if((hitbox.x - startCol*play.getController().getTileSize()) > speed) {
-//				currentDirection = LEFT;
-//				hitbox.x -= speed;
-//			}
-//			else {
-//				hitbox.x = (int)(startCol*play.getController().getTileSize());
-//			}
-//		}
-//		
-//		//se sta troppo in basso
-//		else if(hitbox.y > startRow*play.getController().getTileSize()) {
-//			if((hitbox.y - startRow*play.getController().getTileSize()) > speed) {
-//				currentDirection = UP;
-//				hitbox.y -= speed;
-//			}
-//			else {
-//				hitbox.y = (int)(startRow*play.getController().getTileSize());	
-//			}
-//		}
-//				
-//		if(hitbox.x == startCol*play.getController().getTileSize() && hitbox.y == startRow*play.getController().getTileSize()) {
-//			actualState = IN_WAY;	
-//		}
-			
-//	}
+
+	public void decreaseIndexInList() {
+		this.index--;
+		
+	}
 
 
 }

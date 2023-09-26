@@ -7,14 +7,8 @@ import controller.playState.PlayStateController;
 public class PlayerController extends EntityController {
 
 	public static final int INTERACT = 10;
-
 	private int RAGAZZO = 0 , RAGAZZA = 1;
-	
-	private int attack = 20;
-	private int defense = 2;
-	private int life = 70;
-	private int cfu = 0;
-	private int notes = 10;
+	private int attack, defense, life, cfu, notes;
 
 	//quando il player parla con qualcuno, si salva l'indice nella lista di quell'entità
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
@@ -23,32 +17,14 @@ public class PlayerController extends EntityController {
 	//il giocatore ha dei booleani per descrivere il suo stato perchè può fare più cose contemporaneamente e può muoversi in più
 	//direzioni allo stesso tempo. gli npc per semplicità non possono farlo
 	private boolean parry, throwing, interacting, moving, idle, attacking, up, down, left, right;
-
-	public boolean isUp() {
-		return up;
-	}
-
-	public boolean isDown() {
-		return down;
-	}
-
-	public boolean isLeft() {
-		return left;
-	}
-
-	public boolean isRight() {
-		return right;
-	}
-
+	
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
-	private int attackCounter; //durata attacco
-	
+	private int attackCounter; 		
 	
 	public PlayerController(Hitbox r, PlayStateController p) {
 		//BRUTTO, DA CAMBIARE
 		super(-1, "player", r, p);
-		
 		this.typeOfTarget = "player";
 		
 		resetBooleans();
@@ -60,11 +36,20 @@ public class PlayerController extends EntityController {
 		speed = play.getController().getGameScale()*1.2f;
 	}
 	
-	public void setType(int gender) {
+	public void setGender(int gender) {
 		if(gender == RAGAZZO) {			//il ragazzo ha più appunti
 			notes = 20;
-		}else if(gender == RAGAZZA){
+			attack = 25;
+			defense = 1;
+			life = 70;
+			speed = play.getController().getGameScale()*1.2f;
+		}
+		else if(gender == RAGAZZA){
 			life = 100;					//la ragazza ha più concentrazione 
+			notes = 10;
+			attack = 15;
+			defense = 5;
+			speed = play.getController().getGameScale()*1.3f;
 		}
 	}
 	
@@ -241,7 +226,9 @@ public class PlayerController extends EntityController {
 		if(passageIndex >= 0) {
 			if(play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).isOpen()) {
 				play.getController().getModel().saveNewRoomData();
-						
+				//per evitare errori, resettiamo il valore della posizione dentro la mappa che salva le posizioni delle entità per il pathfinding	
+				savedCol = 0;
+				savedRow = 0;
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
 				play.getController().setGameState(Gamestate.TRANSITION_STATE);
@@ -313,6 +300,13 @@ public class PlayerController extends EntityController {
 		return life;
 	}
 
+	public void hitted(int damage) {
+		int realDamage = damage - defense;
+		if(realDamage > 0) {
+			life -= realDamage;
+		}
+	}
+	
 	public void setLife(int life) {
 		this.life = life;
 	}
@@ -375,6 +369,21 @@ public class PlayerController extends EntityController {
 		return idle;
 	}
 	
+	public boolean isUp() {
+		return up;
+	}
+
+	public boolean isDown() {
+		return down;
+	}
+
+	public boolean isLeft() {
+		return left;
+	}
+
+	public boolean isRight() {
+		return right;
+	}
 }
 
 

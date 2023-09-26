@@ -213,5 +213,9 @@ public class PlayStateController {
 		for(RoomController room : stanzeController)
 			room.printMatriceEntita();
 	}
+
+	public void removeEnemy(int index) {
+		stanzeController[getCurrentroomIndex()].removeEnemy(index);	
+	}
 	
 }
