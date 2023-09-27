@@ -241,5 +241,24 @@ public class Collisions {
 //		return false;
 	}
 		
+	//usato quando il giocatore attacca, ritorna il nemico colpito
+	public EnemyController isCollisionDuringPlayerAttack(Hitbox attackHitbox) {
+		int roomIndex = control.getPlay().getCurrentroomIndex();
+		EnemyController target = null;
+		
+//		ArrayList<EntityController> npc = control.getPlay().getRoom(roomIndex).getNPC();
+//		for(int i = 0; i < npc.size(); i++) {
+//			if(attackHitbox.intersects(npc.get(i).getHitbox()))
+//				target = npc.get(i);
+//		}
+		
+		ArrayList<EnemyController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
+		for(int i = 0; i < enemy.size(); i++) {
+			if(attackHitbox.intersects(enemy.get(i).getHitbox()))
+				target = enemy.get(i);
+		}	
+		
+		return target;
+	}
 
 }

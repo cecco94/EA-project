@@ -1,5 +1,6 @@
 package view.playState.entityView;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -109,6 +110,12 @@ public class RobotView extends EntityView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
+		int state = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrenState();
+		if(state == 4)
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+		
+		
+		
 		animationCounter++;
 		setAction(this);
 		setDirection(this);
@@ -151,7 +158,9 @@ public class RobotView extends EntityView {
 
 
 			drawLife(g2);
-
+			
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+			
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 			a.printStackTrace();

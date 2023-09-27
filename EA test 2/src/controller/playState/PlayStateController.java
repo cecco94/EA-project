@@ -134,8 +134,10 @@ public class PlayStateController {
 	
 
 	public void stopPlayerAttacking() {
-		if (!playerController.isParring())
+		if (!playerController.isParring()) {
 			playerController.setAttacking(false);
+			playerController.damageEnemy();
+		}
 	}
 	
 	public void stopPlayerParring() {
@@ -180,15 +182,16 @@ public class PlayStateController {
 	public void removeBullets(int index) {
 		//siccome tutti quelli a destra di index si spostano a sinistra di uno, l'indice deve 
 		//essere aggiornato
-		for(int i = index; i < bulletsInRoom.size(); i++)
-			bulletsInRoom.get(i).decreaseIndexInList();
 		try {
+			for(int i = index; i < bulletsInRoom.size(); i++)
+				bulletsInRoom.get(i).decreaseIndexInList();
+			
 			bulletsInRoom.remove(index);
 		}
 		catch(IndexOutOfBoundsException iobe) {
 			bulletsInRoom.clear();
 			controller.getView().getPlay().getBullets().clear();
-		//	System.out.println("problemi appunti controller");
+			System.out.println("problemi appunti controller");
 		//	iobe.printStackTrace();
 		}
 	}
@@ -218,4 +221,7 @@ public class PlayStateController {
 		stanzeController[getCurrentroomIndex()].removeEnemy(index);	
 	}
 	
+	public int getTileSize() {
+		return controller.getTileSize();
+	}
 }

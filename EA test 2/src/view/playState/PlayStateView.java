@@ -199,9 +199,10 @@ public class PlayStateView {
 	}
 	
 	public void removeBullet(int indexRemove) {
-		for(int i = indexRemove; i < bulletsInRoom.size(); i++)
-			bulletsInRoom.get(i).index--;
 		try {
+			for(int i = indexRemove; i < bulletsInRoom.size(); i++)
+				bulletsInRoom.get(i).index--;
+			
 		bulletsInRoom.remove(indexRemove);
 		}
 		catch(IndexOutOfBoundsException iobe) {

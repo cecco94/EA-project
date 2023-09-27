@@ -24,7 +24,7 @@
 
 11 tavolone centro sinistra con allungamento in alto a destra ; true; 0,0,32,32
 
-12 tavolone sotto centro ; true; 0,0,32,30
+12 tavolone sotto centro ; true; 0,0,32,32
 
 13 panca alto ; true; 0,20,32,12
 
@@ -36,13 +36,13 @@
 
 17 panca centro ; true; 0,0,32,32
 
-18 tavolone basso sinistra ; true; 0,0,32,30
+18 tavolone basso sinistra ; true; 0,0,32,32
 
-19 tavolone sotto centro ; true; 0,0,32,30
+19 tavolone sotto centro ; true; 0,0,32,32
 
-20 tavolone sotto destra ; true; 0,0,32,30
+20 tavolone sotto destra ; true; 0,0,32,32
 
-21 panca sotto ; true; 0,0,32,30
+21 panca sotto ; true; 0,0,32,32
 
 22 libreria tutta marrone sopra ; true; 2,2,28,30
 
@@ -118,17 +118,17 @@
 
 58 tavolone2, centro destra ; true; 0,0,30,32
 
-59 tavolone2, sotto sinistra ; true; 2,0,30,30
+59 tavolone2, sotto sinistra ; true; 2,0,30,32
 
-60 tavolone2, sotto centro ; true; 0,0,32,22
+60 tavolone2, sotto centro ; true; 0,0,32,32
 
-61 tavolone2, sotto destra ; true; 0,0,30,30
+61 tavolone2, sotto destra ; true; 0,0,30,32
 
 62 panca verticale, sopra ; true; 2,6,28,26
 
 63 panca verticale, centro ; true; 2,0,28,32
 
-64 panca verticale, sotto ; true; 2,0,28,30
+64 panca verticale, sotto ; true; 2,0,28,32
 
 65 banco sopra sinistra ; true; 0,12,32,20
 

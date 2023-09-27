@@ -3,6 +3,7 @@ package controller.playState.entityController;
 import controller.main.Gamestate;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
+import controller.playState.entityController.enemyController.EnemyController;
 
 public class PlayerController extends EntityController {
 
@@ -20,7 +21,10 @@ public class PlayerController extends EntityController {
 	
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
-	private int attackCounter; 		
+	private int attackCounter; 	
+	
+	//hitbox che serve per quando il player attacca da vicino, se la hitbox di un nemico si interseca con essa, viene colpito
+	private Hitbox attackHitbox;
 	
 	public PlayerController(Hitbox r, PlayStateController p) {
 		//BRUTTO, DA CAMBIARE
@@ -34,12 +38,15 @@ public class PlayerController extends EntityController {
 		super.setBounds((int)r.x, (int)r.y, hitboxWidth, hitboxHeight);	
 		
 		speed = play.getController().getGameScale()*1.2f;
+		
+		attackHitbox = new Hitbox(0, 0, hitboxWidth, hitboxHeight);
+		
 	}
 	
 	public void setGender(int gender) {
 		if(gender == RAGAZZO) {			//il ragazzo ha più appunti
 			notes = 20;
-			attack = 25;
+			attack = 15;
 			defense = 1;
 			life = 70;
 			speed = play.getController().getGameScale()*1.2f;
@@ -47,7 +54,7 @@ public class PlayerController extends EntityController {
 		else if(gender == RAGAZZA){
 			life = 100;					//la ragazza ha più concentrazione 
 			notes = 10;
-			attack = 15;
+			attack = 10;
 			defense = 5;
 			speed = play.getController().getGameScale()*1.3f;
 		}
@@ -133,7 +140,7 @@ public class PlayerController extends EntityController {
 			attackCounter++;
 			
 			if(attackCounter < 100)
-				speed = 0.5f; //int --> diventa 0 , rivedere
+				speed = 0.2f; 
 			
 			else {
 				speed = play.getController().getGameScale()*1.3f;
@@ -300,11 +307,51 @@ public class PlayerController extends EntityController {
 		return life;
 	}
 
-	public void hitted(int damage) {
-		int realDamage = damage - defense;
-		if(realDamage > 0) {
-			life -= realDamage;
+	public void hitted(int damage, int direction) {
+		//se si para nella giusta direzione non subisce danni
+		if(isParring()) {
+			if(direction == UP && currentDirection == DOWN || direction == DOWN && currentDirection == UP || 
+			   direction == LEFT && currentDirection == RIGHT || direction == RIGHT && currentDirection == LEFT) {
+				damage = 0;
+			}
 		}
+		int realDamage = damage - defense;
+		if(realDamage > 0) 
+			life -= realDamage;	
+		
+		//quando viene colpito, si sposta leggermente nella direzione del colpo
+		if(direction == UP) {
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y - 2*speed;
+			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y = tempHitboxForCheck.y;
+		}
+		
+		else if(direction == DOWN) {
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y + 2*speed;
+			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y = tempHitboxForCheck.y;
+		}
+		
+		else if (direction == RIGHT) {
+			tempHitboxForCheck.y = hitbox.y;
+			tempHitboxForCheck.x = hitbox.x + 2*speed;
+			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x = tempHitboxForCheck.x;
+		}
+		
+		else if (direction == LEFT) {
+			tempHitboxForCheck.y = hitbox.y;
+			tempHitboxForCheck.x = hitbox.x - 2*speed;
+			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x = tempHitboxForCheck.x;
+		}
+		
 	}
 	
 	public void setLife(int life) {
@@ -383,6 +430,30 @@ public class PlayerController extends EntityController {
 
 	public boolean isRight() {
 		return right;
+	}
+
+	public void damageEnemy() {
+				
+		if(currentDirection == UP) {
+			attackHitbox.y = hitbox.y - attackHitbox.height;
+			attackHitbox.x = hitbox.x;
+		}
+		else if(currentDirection == DOWN) {
+			attackHitbox.x = hitbox.x;
+			attackHitbox.y = hitbox.y + hitbox.height;
+		}
+		else if(currentDirection == LEFT) {
+			attackHitbox.y = hitbox.y;
+			attackHitbox.x = hitbox.x - attackHitbox.width;
+		}
+		else if(currentDirection == RIGHT) {
+			attackHitbox.y = hitbox.y;
+			attackHitbox.x = hitbox.x + hitbox.width;
+		}
+		
+		EnemyController target = play.getCollisionChecker().isCollisionDuringPlayerAttack(attackHitbox);
+		if(target != null) 
+			target.hitted(attack, currentDirection, true);
 	}
 }
 

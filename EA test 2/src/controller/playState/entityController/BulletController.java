@@ -109,13 +109,13 @@ public class BulletController {
 		if(hit) {
 			//se si è schiantato contro una entità, se non è un npc, abbassa la sua vita
 			if(target != null) {
-				if(target.typeOfTarget.compareTo("enemy") == 0) {
+				if(target.typeOfTarget.compareTo("enemy") == 0 && owner.typeOfTarget.compareTo("player") == 0) {
 					EnemyController enemy = (EnemyController)target;
-					enemy.hitted(10);
+					enemy.hitted(10, direction,false);
 				}
 				
 				else if(target.typeOfTarget.compareTo("player") == 0) {
-					play.getPlayer().hitted(10);
+					play.getPlayer().hitted(10, direction);
 				}
 			}
 			

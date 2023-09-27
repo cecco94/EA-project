@@ -9,7 +9,7 @@ public class PathFinder {
 
 	private Node[][] graph;
 	//open, vuol dire che è nella lista ma non sono stati ancora inseriti i suoi vicini
-	private ArrayList<Node> openList, pathiList;
+	private ArrayList<Node> openList, pathList;
 	private PlayStateController play;
 	private Node startNode, goalNode, currentNode;
 	private boolean goalReached = false;
@@ -19,7 +19,7 @@ public class PathFinder {
 	public PathFinder(PlayStateController p, int maxRow, int maxCol) {
 		play = p;
 		openList = new ArrayList<>();
-		pathiList = new ArrayList<>();
+		pathList = new ArrayList<>();
 		roomCol = maxCol;
 		roomRow = maxRow;
 		createGraph();
@@ -27,11 +27,6 @@ public class PathFinder {
 	}
 	
 	private void createGraph() {
-		//invece di cercare il percorso in tutta la mappa, cerca il percorso solo all'interno della
-		//finestra di gioco, questo perchè l'algoritomo ci serve solo per inseguire/scappare dal player
-		//quindi possiamo risparmiare risorse creando un grafo più piccolo
-		
-		//per ora lo testo sulla bilioteca
 		graph = new Node[roomRow][roomCol];
 		
 		for(int row = 0; row < roomRow; row++)
@@ -50,7 +45,7 @@ public class PathFinder {
 			}
 		
 		openList.clear();
-		pathiList.clear();
+		pathList.clear();
 		goalReached = false;
 		steps = 0;
 	}
@@ -98,28 +93,6 @@ public class PathFinder {
 			}
 		}
 		
-		//prendiamo dalla mappa solo la sottomatrice dei tiles nella finestra di gioco, aggiungiamo questi a row, col
-		//int firstColInFrame = (int)(play.getPlayer().getHitbox().x)/play.getController().getTileSize() - 10;
-		//int firstRowInFrame = (int)(play.getPlayer().getHitbox().y)/play.getController().getTileSize() - 7;
-
-//		int col = 0;
-//		int row = 0;
-//			
-//		while(col < colonne && row < righe) {
-//			//set solid
-//			int tileNum = play.getController().getModel().getMap().getLayer(play.getCurrentroomIndex(), 2)[row][col];
-//			if(play.getController().getModel().getTilesetModel().getTile(tileNum).isSolid())
-//				graph[row][col].setSolid(true);
-//			
-//			stCostOfAllNodes(graph[row][col]);
-//			
-//			col++;
-//			if(col == colonne) {
-//				col = 0;
-//				row++;
-//			}
-//			
-//		}
 	}
 
 	private void setCostOfThisNode(Node node) {
@@ -137,16 +110,11 @@ public class PathFinder {
 		node.setCompleteDistance(node.getDistanceFromStart() + node.getDistanceFromGoal());
 	}
 	
-	public boolean search(int startCol, int startRow, int goalCol, int goalRow, boolean isEnemy) {
+	public boolean existPath(int startCol, int startRow, int goalCol, int goalRow, boolean isEnemy) {
 		setNodes(startCol, startRow, goalCol, goalRow, isEnemy);
 		
-		//se il nodo di partenza o di arrivo non sono validi, si ferma subito
-//		if(graph[startRow][startCol].isSolid()) {
-//			System.out.println("nodo di partenza solido");
-//			return false;
-//		}
+		//se il nodo di arrivo non è valido, si ferma subito
 		if(graph[goalRow][goalCol].isSolid()) {
-			System.out.println("nodo di arrivo solido");
 			return false;
 		}
 		
@@ -170,7 +138,7 @@ public class PathFinder {
 			steps++;
 		}
 		
-		drawGraph();
+	//	printPathList();
 		return goalReached;
 	}
 	
@@ -229,20 +197,10 @@ public class PathFinder {
 		}
 	}
 	
-	public void drawGraph() {
-//		for(int row = 0; row < graph.length; row++) {
-//			for(int col = 0; col < graph[0].length; col++) {
-//				System.out.print(graph[row][col].getDistanceFromGoal() + " ");
-//				if(graph[row][col].isSolid())
-//					System.out.print(1);
-//				else
-//					System.out.print(0);
-//			}
-//			System.out.println();
-//		}
+	public void printPathList() {
 		System.out.println("goal found " + goalReached + ", in " + steps + " steps");
-		for(int i = 0; i < pathiList.size(); i++) {
-			System.out.println(pathiList.get(i).getColInGraph() + ", " + pathiList.get(i).getRowInGraph());
+		for(int i = 0; i < pathList.size(); i++) {
+			System.out.println(pathList.get(i).getColInGraph() + ", " + pathList.get(i).getRowInGraph());
 		}
 		System.out.println("-----------------------------------------");
 	}
@@ -250,16 +208,22 @@ public class PathFinder {
 	private void trackThePath() {
 		Node current = goalNode;
 		while(current != startNode) {
-			pathiList.add(0, current);
+			pathList.add(0, current);
 			current = current.getParent();
 		}
 	}
 	
-	public ArrayList<Node> getPathList(){
-		return pathiList;
+	//questa restituisce il riferimento
+	public ArrayList<Node> getPathList() {
+		return pathList;
 	}
 	
-	
+	//questa prende il percorso di una entità e lo riscrive
+	public void getPathToEntity(ArrayList<Node> entityPath) {
+		for(int index = 0; index < pathList.size(); index++) {
+			entityPath.add(pathList.get(index));
+		}
+	}
 	
 	
 	

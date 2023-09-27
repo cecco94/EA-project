@@ -33,20 +33,19 @@ public abstract class EntityController {
 	//questa stringa serve per capire se il proiettile si è schiantato su un npc, su un nemico o sul player
 	protected String typeOfTarget;
 	
-	//quando l'entità viene creata, si segna la posizione in righe & colonne
-	//ogni volta che si muove, controlla se ha cambiato tile
-	//se ha cambiato tile, aggiorna la mappa della posizione dei personaggi
-	//segnando true sul nuovo quadratino e false su quello vecchio
-	//infine mette la nuova posizione su quella vecchia
+	//quando l'entità viene creata, si segna la posizione in righe & colonne. ogni volta che si muove,
+	//controlla se ha cambiato tile. se ha cambiato tile, aggiorna la mappa della posizione dei personaggi
+	//segnando true sul nuovo quadratino e false su quello vecchio infine salva la nuova posizione su quella vecchia
 	protected int savedCol;
 	protected int savedRow;
+	
 	//percorso che l'entità deve seguire
 	protected ArrayList<Node> path;
 	protected int currentPathIndex = 0;
 	
 	//per gestire gli npc ed i nemici come macchine a stati
-	protected final int RANDOM_MOVE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2, KO_STATE = 3; 
-	protected int currentState = RANDOM_MOVE;
+	protected final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2; 
+	protected int currentState = NORMAL_STATE;
 	
 	public EntityController (int ind, String type, Hitbox r, PlayStateController p) {
 		index = ind;
@@ -75,6 +74,7 @@ public abstract class EntityController {
 		
 		currentDirection = DOWN;
 		currentAction = IDLE;
+		currentState = NORMAL_STATE;
 
 	}
 	
@@ -95,31 +95,6 @@ public abstract class EntityController {
 	}
 	
 	public abstract void update();
-	
-	public String getType() {
-		return type;
-	}
-	
-	public Hitbox getHitbox() {
-		return hitbox;
-	}
-	
-	public int getCurrentAction() {
-		return currentAction;		
-	}
-	
-	//quando l'entità è ferma, tutti i booleans sono false e ritorna right di default
-	public int getCurrentDirection() {
-		return currentDirection;
-	}
-	
-	public int getIndex() {
-		return index;
-	}
-	
-	public String toString() {
-		return "( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
-	}
 	
 	// molti npc si muovono a caso nella stanza usando questo medoto
 	public void randomMove() {
@@ -259,8 +234,19 @@ public abstract class EntityController {
 		}	
 	}
 
+	protected void goToYourDestination(int goalCol, int goalRow, boolean isEnemy) {
+		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
+		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
+		
+		if(play.getPathFinder().existPath(startCol, startRow, goalCol, goalRow, isEnemy)) {
+			currentState = GO_TO_FIRST_TILE;	
+			play.getPathFinder().getPathToEntity(path);
+		}
+	}
+	
 	protected void goTrhoughtSelectedPath() {
 		
+		boolean canFollowThePath = true;
 		//se è arrivato ad un tile del percorso, va al successivo
 		if(hitbox.x == path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() &&
 		   hitbox.y == path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize()) {
@@ -287,93 +273,125 @@ public abstract class EntityController {
 				else if(xDistance < 0)
 					directionToCheck = RIGHT;
 			}
-
-			//capita la direzione da prendere, entra in questo switch
-				switch (directionToCheck) {
-				case DOWN:
-					checkDown(yDistance);
-					break;
-	
-				case UP:
-					checkUp(yDistance);
-					break;
-				
-				case RIGHT:
-					checkRight(xDistance);
-					break;
-					
-				case LEFT:
-					checkLeft(xDistance);
-					break;
-				}
 			
+			//capita la direzione da prendere, entra in questo switch
+			switch (directionToCheck) {
+			case DOWN:
+				canFollowThePath = goDown(yDistance);
+				break;
+
+			case UP:
+				canFollowThePath = goUp(yDistance);
+				break;
+			
+			case RIGHT:
+				canFollowThePath = goRight(xDistance);
+				break;
+				
+			case LEFT:
+				canFollowThePath = goLeft(xDistance);
+				break;
+			}
 		}
+		//se per qualche ragione il percorso che deve seguire è bloccato, smette di andarci
+		if(canFollowThePath == false) {
+			currentAction = IDLE;
+			currentState = NORMAL_STATE;
+			path.clear();
+			currentPathIndex = 0;
+		}
+		
 	}
 
-	protected void checkDown(float yDistance) {
+	protected boolean goDown(float yDistance) {
 		//se la distanza è maggiore di un passo, fai un passo (se non ti schianti contro qualcun altro)
+		currentDirection = DOWN;
+		boolean canGo = true;
+		
 		if(Math.abs(yDistance) > speed) {
-			currentDirection = DOWN;
-			tempHitboxForCheck.y = hitbox.y + speed;
-			tempHitboxForCheck.x = hitbox.x;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			if(canMove()) 
 				hitbox.y += speed;
+				
+			//se ti schianti contro qualcuno, o qualcosa, rivedi il percorso che devi fare
+			else 
+				canGo = false;			
 		}
 		//se invece la distanza è <= un passo, spostati direttamente lì
 		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();	
+		
+		return canGo;
 	}
 
-	protected void checkUp(float yDistance) {
-			
+	protected boolean goUp(float yDistance) {
+		currentDirection = UP;
+		boolean canGo = true;
+
 		if (Math.abs(yDistance) > speed) {
-			currentDirection = UP;
-			tempHitboxForCheck.y = hitbox.y - speed;
-			tempHitboxForCheck.x = hitbox.x;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			if(canMove())
 				hitbox.y -= speed;
+			
+			else 
+				canGo = false;
+			
+				
 		}
 		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 			hitbox.y = path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
+		
+		return canGo;
 	}
 		
-	protected void checkRight(float xDistance) {
-		
+	protected boolean goRight(float xDistance) {
+		currentDirection = RIGHT;
+		boolean canGo = true;
+
 		if(Math.abs(xDistance) > speed) {
-			currentDirection = RIGHT;
-			tempHitboxForCheck.x = hitbox.x + speed;
-			tempHitboxForCheck.y = hitbox.y;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			if(canMove())
 				hitbox.x += speed;
+			
+			else 
+				canGo = false;
+			
 		}
 		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+		
+		return canGo;
 	}
 
-	protected void checkLeft(float xDistance) {
-			
+	protected boolean goLeft(float xDistance) {
+		currentDirection = LEFT;
+		boolean canGo = true;
+
 		if(Math.abs(xDistance) > speed) {
-			currentDirection = LEFT;
-			tempHitboxForCheck.x = hitbox.x - speed;
-			tempHitboxForCheck.y = hitbox.y;
-			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+			if(canMove())
 				hitbox.x -= speed;
+			
+			else 
+				canGo = false;
+			
 		}
 		else if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();	
+			hitbox.x = path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();
+		
+		return canGo;
 	}
 	
-	//possiamo renderlo più efficace facendolo andare non sul tile dove si trova ma sul primo tile dove deve andare
-	//così può anche partire da un tile mezzo solido
 	protected void goToEdgeOfTile() {
 		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
 		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
 
 		//se sta troppo a destra, si sposta a sinistra fino ad arrivare vicinissimo al bordo del tile, poi la hitbox si attacca al bordo
 		if(hitbox.x > startCol*play.getController().getTileSize()) {
+			
 			if((hitbox.x - startCol*play.getController().getTileSize()) > speed) {
 				currentDirection = LEFT;
-				hitbox.x -= speed;
+				tempHitboxForCheck.x  = hitbox.x - speed;
+				tempHitboxForCheck.y = hitbox.y;
+				//prima di spostarsi, controlla se si sta schiantando contro una creatura
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+					hitbox.x = tempHitboxForCheck.x;
 			}
 			else {
 				hitbox.x = (int)(startCol*play.getController().getTileSize());
@@ -382,9 +400,13 @@ public abstract class EntityController {
 		
 		//se sta troppo in basso
 		else if(hitbox.y > startRow*play.getController().getTileSize()) {
+			
 			if((hitbox.y - startRow*play.getController().getTileSize()) > speed) {
 				currentDirection = UP;
-				hitbox.y -= speed;
+				tempHitboxForCheck.y = hitbox.y - speed;
+				tempHitboxForCheck.x = hitbox.x;
+				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+					hitbox.y = tempHitboxForCheck.y;
 			}
 			else {
 				hitbox.y = (int)(startRow*play.getController().getTileSize());	
@@ -394,5 +416,33 @@ public abstract class EntityController {
 		if(hitbox.x == startCol*play.getController().getTileSize() && hitbox.y == startRow*play.getController().getTileSize()) {
 			currentState = IN_WAY;	
 		}
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public Hitbox getHitbox() {
+		return hitbox;
+	}
+	
+	public int getCurrentAction() {
+		return currentAction;		
+	}
+	
+	public int getCurrentDirection() {
+		return currentDirection;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+	
+	public String toString() {
+		return "( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
+	}
+	
+	public int getCurrenState() {
+		return currentState;
 	}
 }

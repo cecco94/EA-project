@@ -146,7 +146,7 @@ public class PlayerView extends EntityView {
 			}
 			
 			for(int i = 0; i < 2; i++) {
-				temp = image.getSubimage(i*28, 34, 28, 33);
+				temp = image.getSubimage(i*29, 34, 29, 33);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZO][PARRY][RIGHT][i] = temp;
 			}
@@ -286,25 +286,25 @@ public class PlayerView extends EntityView {
 			image = ImageIO.read(getClass().getResourceAsStream("/player/attaccoRagazzo.png"));
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*26, 0, 26, 40);
+				temp = image.getSubimage(i*26, 0, 26, 42);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZO][ATTACK][DOWN][i] = temp;
 			}
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*35, 40, 35, 33);
+				temp = image.getSubimage(i*35, 42, 35, 36);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZO][ATTACK][RIGHT][i] = temp;
 			}
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*35, 40 + 33, 35, 33);
+				temp = image.getSubimage(i*35, 80, 35, 36);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZO][ATTACK][LEFT][i] = temp;
 			}
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*24, 40 + 33 + 33, 24, 36);
+				temp = image.getSubimage(i*24, 119, 24, 38);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZO][ATTACK][UP][i] = temp;
 			}
@@ -315,28 +315,28 @@ public class PlayerView extends EntityView {
 		
 		playerAnimation [RAGAZZA][ATTACK] = new BufferedImage[4][5];
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/player/attackGirlbook.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/player/attaccoRagazza.png"));
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*25, 0, 25, 41);
+				temp = image.getSubimage(i*25, 0, 25, 43);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZA][ATTACK][DOWN][i] = temp;
 			}
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*37, 41, 37, 32);
+				temp = image.getSubimage(i*37, 44, 37, 36);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZA][ATTACK][RIGHT][i] = temp;
 			}
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*37, 41 + 32, 37, 32);
+				temp = image.getSubimage(i*37, 83, 37, 35);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZA][ATTACK][LEFT][i] = temp;
 			}
 			
 			for(int i = 0; i < 5; i++) {
-				temp = image.getSubimage(i*29, 41 + 32 + 32, 29, 36);
+				temp = image.getSubimage(i*29, 118, 29, 37);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.2f*GamePanel.SCALE, temp.getHeight()*1.2f*GamePanel.SCALE);
 				playerAnimation [RAGAZZA][ATTACK][UP][i] = temp;
 			}

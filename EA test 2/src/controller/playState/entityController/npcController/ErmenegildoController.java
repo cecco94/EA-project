@@ -22,7 +22,7 @@ public class ErmenegildoController extends EntityController {
 	@Override
 	public void update() {
 		switch(currentState){
-		case RANDOM_MOVE:
+		case NORMAL_STATE:
 			float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
 			float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			
@@ -31,9 +31,10 @@ public class ErmenegildoController extends EntityController {
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 				
 				if(play.getPlayer().isInteracting()) {
-					goToYourDestination();
-				//	tunrToInteract();
-				//	play.getPlayer().speak(index);
+					goToYourDestination(27, 9, false);
+					play.getPlayer().setInteracting(false);
+//					tunrToInteract();
+//					play.getPlayer().speak(index);
 				}
 			}
 			else 
@@ -48,23 +49,13 @@ public class ErmenegildoController extends EntityController {
 		case IN_WAY:			
 			if(currentPathIndex == path.size()) {
 				currentAction = IDLE;
-				currentState = RANDOM_MOVE;
+				currentState = NORMAL_STATE;
 				currentPathIndex = 0;
-				System.out.println("giunto a destinazione");
+				path.clear();
 			}
 			else
 				goTrhoughtSelectedPath();
 			break;
-		}
-	}
-
-	private void goToYourDestination() {
-		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
-		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
-		
-		if(play.getPathFinder().search(startCol, startRow, 27, 9, false)) {
-			currentState = GO_TO_FIRST_TILE;	
-			path = play.getPathFinder().getPathList();
 		}
 	}
 	

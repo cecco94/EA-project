@@ -8,8 +8,9 @@ public abstract class EnemyController extends EntityController{
 
 	protected int life, attack, defense;
 	protected final int maxLife = 100;
-	public static final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2, DYING = 3;
-	protected int bulletCounter, dyingCounter;
+	public static final int KO_STATE = 3, HITTED = 4;
+	protected int bulletCounter, dyingCounter, hittedCounter;
+	protected int stateBeforeHitted;
 	
 	public EnemyController(int ind, String type, Hitbox r, PlayStateController p) {
 		super(ind, type, r, p);
@@ -18,14 +19,61 @@ public abstract class EnemyController extends EntityController{
 	
 	public abstract void update();
 
-	public void hitted(int damage) {
+	//il nemico reagisce diversamente in base al tipo di attacco, ravvicinato o meno
+	public void hitted(int damage, int direction, boolean isNearAttack) {
+		stateBeforeHitted = currentState;
+		currentState = HITTED;
 		int realDamage = damage - defense;
-		System.out.println(realDamage);
 		if(realDamage > 0)
 			life -= realDamage;
+		
+		//quando viene colpito, si sposta leggermente nella direzione del colpo
+		if(direction == UP) {
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y - 2*speed;
+			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y = tempHitboxForCheck.y;
+		}
+		
+		else if(direction == DOWN) {
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y + 2*speed;
+			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.y = tempHitboxForCheck.y;
+		}
+		
+		else if (direction == RIGHT) {
+			tempHitboxForCheck.y = hitbox.y;
+			tempHitboxForCheck.x = hitbox.x + 2*speed;
+			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x = tempHitboxForCheck.x;
+		}
+		
+		else if (direction == LEFT) {
+			tempHitboxForCheck.y = hitbox.y;
+			tempHitboxForCheck.x = hitbox.x - 2*speed;
+			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck) &&
+			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x = tempHitboxForCheck.x;
+		}
+	}
+		
+	protected void goToPlayerPosition() {	
+		//il nemico insegue il giocatore, quindi la riga e colonna di arrivo coincidono con la posizione del giocatore
+		int playerCol = (int)(play.getPlayer().getHitbox().x)/play.getController().getTileSize();
+		int playerRow = (int)(play.getPlayer().getHitbox().y)/play.getController().getTileSize();
+		goToYourDestination(playerCol, playerRow, true);
 	}
 	
-	public void colpisci() {
+	public void decreaseIndexInList() {
+		this.index--;
+		
+	}
+
+	public void hit() {
 
 	}
 
@@ -52,79 +100,5 @@ public abstract class EnemyController extends EntityController{
 	public void setDefense(int defense) {
 		this.defense = defense;
 	}
-	
-	//possimao migliorarlo facendo capire al personaggio la posizione delle entità
-	//così può scegliere un percorso che schivi anche loro
-	protected void goToYourDestination() {
-		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
-		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
-		
-		//il nemico insegue il giocatore, quindi la riga e colonna di arrivo coincidono con la posizione del giocatore
-		int playerCol = (int)(play.getPlayer().getHitbox().x)/play.getController().getTileSize();
-		int playerRow = (int)(play.getPlayer().getHitbox().y)/play.getController().getTileSize();
-		
-		if(play.getPathFinder().search(startCol, startRow, playerCol, playerRow, true)) {
-			currentState = GO_TO_FIRST_TILE;	
-			path = play.getPathFinder().getPathList();
-		}
-	}
-	
-	protected void goTrhoughtSelectedPath() {
-		
-		//se è arrivato ad un tile del percorso, va al successivo
-		if(hitbox.x == path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize() &&
-		   hitbox.y == path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize()) {
-				currentPathIndex++;
-		}
-		else {
-			//per andare al successivo, vede quale direzione prendere
-			float yDistance = hitbox.y - path.get(currentPathIndex).getRowInGraph()*play.getController().getTileSize();
-			float xDistance = hitbox.x - path.get(currentPathIndex).getColInGraph()*play.getController().getTileSize();
-			
-			int directionToCheck = 999;
-			//prima controlla se deve salire o scendere
-			if(yDistance < 0)
-				directionToCheck = DOWN;
-			
-			else if(yDistance > 0)
-				directionToCheck = UP;
-			
-			//se non deve salire o scendere, vede se deve andare a destra o a sinistra
-			else if(yDistance == 0) {
-								
-				if(xDistance > 0)
-					directionToCheck = LEFT;
-				
-				else if(xDistance < 0)
-					directionToCheck = RIGHT;
-			}
-
-			//capita la direzione da prendere, entra in questo switch
-				switch (directionToCheck) {
-				case DOWN:
-					checkDown(yDistance);
-					break;
-	
-				case UP:
-					checkUp(yDistance);
-					break;
-				
-				case RIGHT:
-					checkRight(xDistance);
-					break;
-					
-				case LEFT:
-					checkLeft(xDistance);
-					break;
-				}
-			
-		}
-	}
-
-	public void decreaseIndexInList() {
-		this.index--;
-		
-	}
-
 
 }
