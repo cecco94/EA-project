@@ -220,13 +220,17 @@ public class PlayUI {
 		if(exclamationOn) {
 			exclamationCounter++;
 			if(exclamationCounter <= 100) {
-				int exclamationHeight = exclamation.getHeight();
-				
-				int xpos =  play.getRoom(play.getView().getCurrentRoomIndex()).getEnemy(indexEntityExclaming).getxPosOnScreen();
-				int ypos =  play.getRoom(play.getView().getCurrentRoomIndex()).getEnemy(indexEntityExclaming).getyPosOnScreen();
-	
-				g2.drawImage(exclamation, xpos, ypos - exclamationHeight, null);
-				
+				try {
+					int exclamationHeight = exclamation.getHeight();
+					
+					int xpos =  play.getRoom(play.getView().getCurrentRoomIndex()).getEnemy(indexEntityExclaming).getxPosOnScreen();
+					int ypos =  play.getRoom(play.getView().getCurrentRoomIndex()).getEnemy(indexEntityExclaming).getyPosOnScreen();
+		
+					g2.drawImage(exclamation, xpos, ypos - exclamationHeight, null);
+				}
+				catch(IndexOutOfBoundsException iobe) {
+					System.out.println("problema negli indici dei nemici nella ui");
+				}
 			}
 			else {
 				exclamationOn = false;

@@ -15,12 +15,12 @@ public class ErmenegildoController extends EntityController {
 		speed = play.getController().getGameScale()*0.3f;	
 		path = new ArrayList<>();
 		
-		this.typeOfTarget = "npc";
+		typeOfTarget = EntityController.NPC;
 
 	}
 
 	@Override
-	public void update() {
+	public void update(float playerX, float playerY) {
 		switch(currentState){
 		case NORMAL_STATE:
 			float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
@@ -31,22 +31,23 @@ public class ErmenegildoController extends EntityController {
 				play.getController().getView().getPlay().getUI().setShowMessage(true);
 				
 				if(play.getPlayer().isInteracting()) {
-					goToYourDestination(27, 9, false);
-					play.getPlayer().setInteracting(false);
-//					tunrToInteract();
-//					play.getPlayer().speak(index);
+//					searchThePath(27, 9);
+					tunrToInteract();
+					play.getPlayer().speak(index);
 				}
 			}
 			else 
 				randomMove();
 			break;
 			
-		case GO_TO_FIRST_TILE:
-			currentAction = MOVE;
-			goToEdgeOfTile();
+		case GOAL_REACHED:
+			path.clear();
+			currentPathIndex = 0;
+			currentState = NORMAL_STATE;
 			break;
 				
-		case IN_WAY:			
+		case IN_WAY:		
+			currentAction = MOVE;
 			if(currentPathIndex == path.size()) {
 				currentAction = IDLE;
 				currentState = NORMAL_STATE;

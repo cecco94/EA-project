@@ -21,10 +21,10 @@ public class CatController extends EntityController {
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
 		speed = play.getController().getGameScale()*1.2f;
 		
-		this.typeOfTarget = "npc";
+		typeOfTarget = EntityController.NPC;
 	}
 	
-	public void update() {
+	public void update(float playerX, float playerY) {
 		
 //		switch(currentState) {
 //		//quando è tranquillo controlla se il giovìcatore è vicino, in caso affermativo inizia a scappare, altrimenti si muove a caso

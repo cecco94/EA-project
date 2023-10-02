@@ -17,11 +17,11 @@ public class PlayerController extends EntityController {
 	
 	//il giocatore ha dei booleani per descrivere il suo stato perchè può fare più cose contemporaneamente e può muoversi in più
 	//direzioni allo stesso tempo. gli npc per semplicità non possono farlo
-	private boolean parry, throwing, interacting, moving, idle, attacking, up, down, left, right;
+	private boolean parry, throwing, interacting, moving, idle, attacking, giaStatoColpito, up, down, left, right;
 	
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
-	private int attackCounter; 	
+	private int attackCounter, hittedcounter; 	
 	
 	//hitbox che serve per quando il player attacca da vicino, se la hitbox di un nemico si interseca con essa, viene colpito
 	private Hitbox attackHitbox;
@@ -29,11 +29,11 @@ public class PlayerController extends EntityController {
 	public PlayerController(Hitbox r, PlayStateController p) {
 		//BRUTTO, DA CAMBIARE
 		super(-1, "player", r, p);
-		this.typeOfTarget = "player";
+		typeOfTarget = EntityController.PLAYER;
 		
 		resetBooleans();
 		
-		int hitboxWidth = (int)(play.getController().getTileSize()*0.75);
+		int hitboxWidth = (int)(play.getController().getTileSize()*0.72);
 		int hitboxHeight = play.getController().getTileSize()/2;
 		super.setBounds((int)r.x, (int)r.y, hitboxWidth, hitboxHeight);	
 		
@@ -55,23 +55,31 @@ public class PlayerController extends EntityController {
 			life = 100;					//la ragazza ha più concentrazione 
 			notes = 10;
 			attack = 10;
-			defense = 5;
+			defense = 3;
 			speed = play.getController().getGameScale()*1.3f;
 		}
 	}
 	
-	public void update() {
+	public void update(float playerX, float playerY) {
 		updatePos();
 		isAbovePassage();
 		isNearEvent();
 		
+		countaDopoEssereColpito();
+	}
+
+	private void countaDopoEssereColpito() {
+		//mettiamo questo counter per evitare che il player muoia dopo una raffica di colpi super veloci
+		if(giaStatoColpito) {
+			hittedcounter++;
+			if(hittedcounter >= 100) {
+				hittedcounter = 0;
+				giaStatoColpito = false;
+			}
+		}
 	}
 
 	private void updatePos() {
-		
-		//System.out.println(hitbox.x/play.getController().getTileSize() + " " + hitbox.x/play.getController().getTileSize());
-		//System.out.println(direction + " " + moving);
-		
 		
 		//durante l'intervallo mentre attacca, la velocità del personaggio diminuisce
 		setPlayerSpeedDuringAttack();
@@ -120,17 +128,6 @@ public class PlayerController extends EntityController {
 					setMoving(true);
 				}
 			}
-		}
-		
-		//ogni volta che si muove, vede se ha cambiato tile, in tal caso aggiorna i dati nella mappa e la posizione precedente
-		int currentCol = (int)(hitbox.x)/play.getController().getTileSize();
-		int currentRow = (int)(hitbox.y)/play.getController().getTileSize();
-
-		if(moving && (savedCol != currentCol || savedRow != currentRow)) {
-			play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[savedRow][savedCol]	= 0;
-			play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[currentRow][currentCol]	= 2;
-			savedRow = currentRow;
-			savedCol = currentCol;
 		}
 	}
 	
@@ -233,9 +230,9 @@ public class PlayerController extends EntityController {
 		if(passageIndex >= 0) {
 			if(play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).isOpen()) {
 				play.getController().getModel().saveNewRoomData();
-				//per evitare errori, resettiamo il valore della posizione dentro la mappa che salva le posizioni delle entità per il pathfinding	
-				savedCol = 0;
-				savedRow = 0;
+				resetBooleans();
+				idle = true;
+				currentAction = IDLE;
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
 				play.getController().setGameState(Gamestate.TRANSITION_STATE);
@@ -275,50 +272,31 @@ public class PlayerController extends EntityController {
 		interacting = false;
 	}
 	
-	public void setParry(boolean b) {
-		parry = b;	
-	}
-
-	public boolean isParring() {
-		return parry;
-	}
-
-	public boolean isThrowing() {
-		return throwing;
-	}
-
-	public void setThrowing(boolean throwing) {
-		this.throwing = throwing;
-	}	
-	
-	public String toString() {
-		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
-	}
-
-	public void setInteracting(boolean b) {
-		interacting = b;	
-	}
-	
-	public boolean isInteracting() {
-		return interacting;
-	}
-
-	public int getLife() {
-		return life;
-	}
-
-	public void hitted(int damage, int direction) {
+	public void hitted(int damage, int direction) {		
 		//se si para nella giusta direzione non subisce danni
 		if(isParring()) {
-			if(direction == UP && currentDirection == DOWN || direction == DOWN && currentDirection == UP || 
-			   direction == LEFT && currentDirection == RIGHT || direction == RIGHT && currentDirection == LEFT) {
-				damage = 0;
+			if(direction == UP && isDown() || direction == DOWN && isUp() || 
+			   direction == LEFT && isRight() || direction == RIGHT && isLeft()) {
+					damage = 0;
 			}
 		}
-		int realDamage = damage - defense;
-		if(realDamage > 0) 
-			life -= realDamage;	
+		//se è stato colpito recentemente, il danno non c'è
+		else if(giaStatoColpito == true) {
+			damage = 0;
+		}
 		
+		else {
+			giaStatoColpito = true;
+			int realDamage = damage - defense;
+			if(realDamage > 0) 
+				life -= realDamage;	
+		}
+		
+		moveToTheDirectionOfHit(direction);
+		
+	}
+
+	private void moveToTheDirectionOfHit(int direction) {
 		//quando viene colpito, si sposta leggermente nella direzione del colpo
 		if(direction == UP) {
 			tempHitboxForCheck.x = hitbox.x;
@@ -352,6 +330,38 @@ public class PlayerController extends EntityController {
 				hitbox.x = tempHitboxForCheck.x;
 		}
 		
+	}
+
+	public void setParry(boolean b) {
+		parry = b;	
+	}
+
+	public boolean isParring() {
+		return parry;
+	}
+
+	public boolean isThrowing() {
+		return throwing;
+	}
+
+	public void setThrowing(boolean throwing) {
+		this.throwing = throwing;
+	}	
+	
+	public String toString() {
+		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
+	}
+
+	public void setInteracting(boolean b) {
+		interacting = b;	
+	}
+	
+	public boolean isInteracting() {
+		return interacting;
+	}
+
+	public int getLife() {
+		return life;
 	}
 	
 	public void setLife(int life) {

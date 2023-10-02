@@ -12,14 +12,14 @@ public class NerdController extends EntityController{
 		super(i, type, new Hitbox(xPos, yPos, hitboxWidth, hitboxHeight), p);
 		speed = (int)(play.getController().getGameScale()*0.7f);
 		
-		this.typeOfTarget = "npc";
+		typeOfTarget = EntityController.NPC;
 
 	}
 	
 	@Override
-	public void update() {
-		float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
-		float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
+	public void update(float playerX, float playerY) {
+		float xDistance = Math.abs(hitbox.x - playerX);
+		float yDistance = Math.abs(hitbox.y - playerY);
 		
 		if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) {			
 			play.getController().getView().getPlay().getUI().setMessage("premi E per parlare");

@@ -8,8 +8,23 @@
 
 +cfu, 12, 24, 32, 32, cfu
 
-/robot, robot, 22, 21
+/robot, robot, 15, 15
 
-robot, robot, 14, 12
+/robot, robot, 14, 21
 
-/robot, robot, 26, 10
+/robot, robot, 23, 17
+
+
+robot, robot, 17, 8
+
+robot, robot, 13, 24
+
+robot, robot, 25, 24
+
+robot, robot, 14, 14
+
+robot, robot, 21, 8
+
+robot, robot, 27, 8
+
+robot, robot, 17, 22

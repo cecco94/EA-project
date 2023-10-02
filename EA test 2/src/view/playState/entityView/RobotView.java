@@ -110,11 +110,10 @@ public class RobotView extends EntityView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
+		//questo è da cambiare, c'è un numero magico
 		int state = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrenState();
-		if(state == 4)
+		if(state == 5)
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-		
-		
 		
 		animationCounter++;
 		setAction(this);

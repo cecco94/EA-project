@@ -95,9 +95,11 @@ public class SoundManager {
 		    	
 		    	if(v < 0.015f)
 		    		gainControl.setValue(gainControl.getMinimum());
+		    	
 		    }
 	    	catch(IllegalArgumentException iae) {
 	    		iae.printStackTrace();
+	    		System.out.println("problemi con i suond effects");
 	    	}
 		}
 	}

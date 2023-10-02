@@ -9,6 +9,7 @@ public class BulletController {
 	private boolean hit = false;
 	private int indexInList;
 	private int direction;
+	private int damage;
 	private Hitbox hitbox;
 	private float speed;
 	private PlayStateController play;
@@ -21,7 +22,7 @@ public class BulletController {
 		setHitbox(e);
 		speed = play.getController().getGameScale()*1.3f;
 		indexInList = index;
-		
+		damage = 10;
 		direction = e.currentDirection;
 		owner = e;
 	}
@@ -38,7 +39,28 @@ public class BulletController {
 
 	public void update() {
 		checkCollision();
+		checkHit();
 		updatePosition();
+	}
+
+	private void checkHit() {
+		if(hit) {
+			//se si è schiantato contro una entità, se non è un npc, abbassa la sua vita
+			if(target != null) {
+				if(target.typeOfTarget == EntityController.ENEMY && owner.typeOfTarget == EntityController.PLAYER) {
+					EnemyController enemy = (EnemyController)target;
+					enemy.hitted(damage, direction, false);
+				}
+				
+				else if(target.typeOfTarget == EntityController.PLAYER) {
+					play.getPlayer().hitted(damage, direction);
+				}
+			}
+			
+			play.getController().getView().getPlay().removeBullet(indexInList);
+			play.removeBullets(indexInList);
+		}		
+		
 	}
 
 	private void checkCollision() {
@@ -106,22 +128,6 @@ public class BulletController {
 			System.out.println("fuori dai bordi");
 		}
 							
-		if(hit) {
-			//se si è schiantato contro una entità, se non è un npc, abbassa la sua vita
-			if(target != null) {
-				if(target.typeOfTarget.compareTo("enemy") == 0 && owner.typeOfTarget.compareTo("player") == 0) {
-					EnemyController enemy = (EnemyController)target;
-					enemy.hitted(10, direction,false);
-				}
-				
-				else if(target.typeOfTarget.compareTo("player") == 0) {
-					play.getPlayer().hitted(10, direction);
-				}
-			}
-			
-			play.getController().getView().getPlay().removeBullet(indexInList);
-			play.removeBullets(indexInList);
-		}		
 	}
 
 	private void updatePosition() {

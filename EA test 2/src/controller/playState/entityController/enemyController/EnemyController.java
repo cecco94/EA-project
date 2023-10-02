@@ -8,29 +8,46 @@ public abstract class EnemyController extends EntityController{
 
 	protected int life, attack, defense;
 	protected final int maxLife = 100;
-	public static final int KO_STATE = 3, HITTED = 4;
+	public static final int KO_STATE = 4, HITTED = 5;
 	protected int bulletCounter, dyingCounter, hittedCounter;
-	protected int stateBeforeHitted;
+	protected int stateBeforeHitted, velocitaAllontanamentoDopoColpo = 2, timeOfBlockBeforeHitted = 100;
 	
 	public EnemyController(int ind, String type, Hitbox r, PlayStateController p) {
 		super(ind, type, r, p);
-		this.typeOfTarget = "enemy";
+		typeOfTarget = EntityController.ENEMY;
 	}
 	
-	public abstract void update();
-
 	//il nemico reagisce diversamente in base al tipo di attacco, ravvicinato o meno
 	public void hitted(int damage, int direction, boolean isNearAttack) {
-		stateBeforeHitted = currentState;
-		currentState = HITTED;
+		//se viene colpito due volte, anche lo stato prima di essere colpito diventa hitted, per evitarlo, usiamo questo if
+		if(currentState != HITTED) {
+			stateBeforeHitted = currentState;
+			currentState = HITTED;
+		}
 		int realDamage = damage - defense;
 		if(realDamage > 0)
 			life -= realDamage;
 		
+		if(isNearAttack) {
+			velocitaAllontanamentoDopoColpo = 10;
+			timeOfBlockBeforeHitted = 200;
+		}
+		
+		else {
+			velocitaAllontanamentoDopoColpo = 4;
+			timeOfBlockBeforeHitted = 100;
+		}
+		
+		allontanatiDopoColpito(direction);
+		
+		
+	}
+		
+	private void allontanatiDopoColpito(int direction) {
 		//quando viene colpito, si sposta leggermente nella direzione del colpo
 		if(direction == UP) {
 			tempHitboxForCheck.x = hitbox.x;
-			tempHitboxForCheck.y = hitbox.y - 2*speed;
+			tempHitboxForCheck.y = hitbox.y - velocitaAllontanamentoDopoColpo*speed;
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.y = tempHitboxForCheck.y;
@@ -38,7 +55,7 @@ public abstract class EnemyController extends EntityController{
 		
 		else if(direction == DOWN) {
 			tempHitboxForCheck.x = hitbox.x;
-			tempHitboxForCheck.y = hitbox.y + 2*speed;
+			tempHitboxForCheck.y = hitbox.y + velocitaAllontanamentoDopoColpo*speed;
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.y = tempHitboxForCheck.y;
@@ -46,7 +63,7 @@ public abstract class EnemyController extends EntityController{
 		
 		else if (direction == RIGHT) {
 			tempHitboxForCheck.y = hitbox.y;
-			tempHitboxForCheck.x = hitbox.x + 2*speed;
+			tempHitboxForCheck.x = hitbox.x + velocitaAllontanamentoDopoColpo*speed;
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.x = tempHitboxForCheck.x;
@@ -54,18 +71,27 @@ public abstract class EnemyController extends EntityController{
 		
 		else if (direction == LEFT) {
 			tempHitboxForCheck.y = hitbox.y;
-			tempHitboxForCheck.x = hitbox.x - 2*speed;
+			tempHitboxForCheck.x = hitbox.x - velocitaAllontanamentoDopoColpo*speed;
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.x = tempHitboxForCheck.x;
 		}
+
 	}
-		
-	protected void goToPlayerPosition() {	
+
+	public void die() {
+		int colToFree = (int)hitbox.x/play.getController().getTileSize();
+		int rawToFree = (int)hitbox.y/play.getController().getTileSize();
+
+		play.getController().getView().getPlay().removeEnemy(index);
+		play.removeEnemy(index, colToFree, rawToFree);
+	}
+	
+	protected void searchPathToPlayer(float playerX, float playerY) {	
 		//il nemico insegue il giocatore, quindi la riga e colonna di arrivo coincidono con la posizione del giocatore
-		int playerCol = (int)(play.getPlayer().getHitbox().x)/play.getController().getTileSize();
-		int playerRow = (int)(play.getPlayer().getHitbox().y)/play.getController().getTileSize();
-		goToYourDestination(playerCol, playerRow, true);
+		int playerCol = (int)(playerX)/play.getController().getTileSize();
+		int playerRow = (int)(playerY)/play.getController().getTileSize();
+		searchThePath(playerCol, playerRow);
 	}
 	
 	public void decreaseIndexInList() {
@@ -73,32 +99,9 @@ public abstract class EnemyController extends EntityController{
 		
 	}
 
-	public void hit() {
-
-	}
-
 	public int getLife() {
 		return life;
 	}
-
-	public void setLife(int life) {
-		this.life = life;
-	}
-
-	public int getAttack() {
-		return attack;
-	}
-
-	public void setAttack(int attack) {
-		this.attack = attack;
-	}
-
-	public int getDefense() {
-		return defense;
-	}
-
-	public void setDefense(int defense) {
-		this.defense = defense;
-	}
+	
 
 }

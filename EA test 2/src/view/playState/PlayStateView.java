@@ -45,7 +45,6 @@ public class PlayStateView {
 		
 		bulletsInRoom = new ArrayList<>();
 		
-
 		roomsView = new RoomView[Rooms.numStanze];
 		roomsView[Rooms.BIBLIOTECA.mapIndex] = new RoomView(this, Rooms.BIBLIOTECA.mapIndex);
 		roomsView[Rooms.AULA_STUDIO.mapIndex] = new RoomView(this, Rooms.AULA_STUDIO.mapIndex);
@@ -149,26 +148,28 @@ public class PlayStateView {
 	private void addNPCandPlayer(ArrayList<SortableElement> drawOrder, int xPlayerPos, int yPlayerPos) {
 		
 		//aggiungiamo solo gli npc e i nemici nella stanza vicino al giocatore
-		switch(Rooms.currentRoom) {
-		case AULA_STUDIO:
-			roomsView[Rooms.AULA_STUDIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-			break;
-		case BIBLIOTECA:
-			roomsView[Rooms.BIBLIOTECA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-			break;
-		case TENDA:
-			roomsView[Rooms.TENDA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-			break;
-		case LABORATORIO:
-			roomsView[Rooms.LABORATORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-			break;
-		case STUDIO_PROF:
-			roomsView[Rooms.STUDIO_PROF.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-			break;
-		case DORMITORIO:
-			roomsView[Rooms.DORMITORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-			break;
-		}
+		roomsView[Rooms.currentRoom.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
+		
+//		switch(Rooms.currentRoom) {
+//		case AULA_STUDIO:
+//			roomsView[Rooms.AULA_STUDIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
+//			break;
+//		case BIBLIOTECA:
+//			roomsView[Rooms.BIBLIOTECA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
+//			break;
+//		case TENDA:
+//			roomsView[Rooms.TENDA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
+//			break;
+//		case LABORATORIO:
+//			roomsView[Rooms.LABORATORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
+//			break;
+//		case STUDIO_PROF:
+//			roomsView[Rooms.STUDIO_PROF.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
+//			break;
+//		case DORMITORIO:
+//			roomsView[Rooms.DORMITORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
+//			break;
+//		}
 		
 		player.setMapPositionForSort(xPlayerPos, yPlayerPos);
 		drawOrder.add(player);
@@ -180,19 +181,7 @@ public class PlayStateView {
 			drawOrder.get(i).draw(g2, xPlayerPos, yPlayerPos);
 		
 	}
-	
-	public PlayerView getPlayer() {
-		return player;
-	}
-	
-	public IView getView() {
-		return view;
-	}
-	
-	public PlayUI getUI() {
-		return ui;
-	}
-	
+		
 	public void addBullet() {
 		bulletsInRoom.add(new BulletView(bulletsInRoom.size(), view));
 		view.playSE(SoundManager.FUOCO);
@@ -213,6 +202,10 @@ public class PlayStateView {
 		}
 	}
 	
+	public void removeEnemy(int index) {
+		roomsView[Rooms.currentRoom.mapIndex].removeEnemy(index);
+	}
+	
 	public ArrayList<BulletView> getBullets() {
 		return bulletsInRoom;
 	}
@@ -221,9 +214,18 @@ public class PlayStateView {
 		return roomsView[index];	
 	}
 
-	public void removeEnemy(int index) {
-		roomsView[Rooms.currentRoom.mapIndex].removeEnemy(index);
+	public PlayerView getPlayer() {
+		return player;
 	}
+	
+	public IView getView() {
+		return view;
+	}
+	
+	public PlayUI getUI() {
+		return ui;
+	}
+	
 }
 
 	

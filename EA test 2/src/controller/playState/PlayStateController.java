@@ -19,20 +19,15 @@ public class PlayStateController {
 	private Collisions collisionCheck;
 	private IController controller;	
 	private ArrayList<BulletController> bulletsInRoom;
-	private RoomController[] stanzeController;
-	private PathFinder pathFinder;
-	
+	private RoomController[] stanzeController;	
 	
 	public PlayStateController(IController c) {
 		controller = c;
 		collisionCheck = new Collisions(c); 		
-		Hitbox r = new Hitbox(18, 19, 0, 0);
-		playerController = new PlayerController(r, this);
+		Hitbox playerHitbox = new Hitbox(20, 23, 0, 0);
+		playerController = new PlayerController(playerHitbox, this);
 		bulletsInRoom = new ArrayList<>();
 		initRooms();
-		
-		//per ora il pathfinder ha un grafo grande quanto la stanza più grande
-		pathFinder = new PathFinder(this, 50, 50);
 	
 	}
 
@@ -49,45 +44,20 @@ public class PlayStateController {
 
 	public void update() {
 		//aggiorna il personaggio
-		playerController.update();		
+		playerController.update(0, 0);		
 		
 		//aggiorna i proiettili
 		updateBullets();
-				
+		
 		//aggiorna gli altri elementi del gioco in base alla stanza dove si trova il giovatore
-		//Per rendere la cosa più leggera, possiamo aggiornare solo quelli all'interno dell'area visibile
-		switch(Rooms.currentRoom) {
-		case DORMITORIO:
-			stanzeController[Rooms.DORMITORIO.mapIndex].update();		
-			break;
-		case BIBLIOTECA:
-			stanzeController[Rooms.BIBLIOTECA.mapIndex].update();		
-			break;
-		case AULA_STUDIO:
-			stanzeController[Rooms.AULA_STUDIO.mapIndex].update();	
-			break;
-		case TENDA:
-			stanzeController[Rooms.TENDA.mapIndex].update();	
-			break;
-		case LABORATORIO:
-			stanzeController[Rooms.LABORATORIO.mapIndex].update();	
-			break;
-		case STUDIO_PROF: 
-			stanzeController[Rooms.STUDIO_PROF.mapIndex].update();
-			break;
-		default:
-			break;
-		}
+		float playerX = playerController.getHitbox().x;
+		float playerY = playerController.getHitbox().y;
+		stanzeController[Rooms.currentRoom.mapIndex].update(playerX, playerY);
 	}
 	
 	private void updateBullets() {
 		for(int index = 0; index < bulletsInRoom.size(); index++)
 			bulletsInRoom.get(index).update();	
-	}
-
-	public void setPlayerPos(int x, int y) {
-		playerController.getHitbox().x = x;
-		playerController.getHitbox().y = y;	
 	}
 
 	public void resumeGameAfterTransition() {
@@ -114,6 +84,11 @@ public class PlayStateController {
 		playerController.setParry(true);
 	}
 	
+	public void stopPlayerParring() {
+		playerController.setParry(false);
+		controller.getView().getPlay().getPlayer().resetParry();
+	}
+
 	public void startPlayerThrowing() {
 		if(!playerController.isParring()) {
 			
@@ -125,24 +100,6 @@ public class PlayStateController {
 				controller.getView().getPlay().getUI().setShowMessage(true);
 			}
 		}
-	}
-	
-	public void startPlayerInteract() {
-		if(!playerController.isParring())
-			playerController.setInteracting(true);
-	}
-	
-
-	public void stopPlayerAttacking() {
-		if (!playerController.isParring()) {
-			playerController.setAttacking(false);
-			playerController.damageEnemy();
-		}
-	}
-	
-	public void stopPlayerParring() {
-		playerController.setParry(false);
-		controller.getView().getPlay().getPlayer().resetParry();
 	}
 	
 	public void stopPlayerThrowing() {
@@ -158,23 +115,23 @@ public class PlayStateController {
 		}
 	}
 	
+	public void startPlayerInteract() {
+		if(!playerController.isParring())
+			playerController.setInteracting(true);
+	}
+	
 	public void stopPlayerInteracting() {
 		if(!playerController.isParring())
 			playerController.setInteracting(false);
 	}
 	
-	public PlayerController getPlayer() {
-		return playerController;
+	public void stopPlayerAttacking() {
+		if (!playerController.isParring()) {
+			playerController.setAttacking(false);
+			playerController.damageEnemy();
+		}
 	}
-	
-	public Collisions getCollisionChecker() {
-		return collisionCheck;
-	}
-	
-	public IController getController() {
-		return controller;
-	}
-	
+					
 	public void addBullets(EntityController owner) {
 		bulletsInRoom.add(new BulletController(this, bulletsInRoom.size(), owner));
 	}
@@ -209,16 +166,23 @@ public class PlayStateController {
 	}
 
 	public PathFinder getPathFinder() {
-		return pathFinder;
+		return stanzeController[getCurrentroomIndex()].getPathFinder();
 	}
 
-	public void printMatriceEntita() {
-		for(RoomController room : stanzeController)
-			room.printMatriceEntita();
+	public PlayerController getPlayer() {
+		return playerController;
+	}
+	
+	public Collisions getCollisionChecker() {
+		return collisionCheck;
+	}
+	
+	public IController getController() {
+		return controller;
 	}
 
-	public void removeEnemy(int index) {
-		stanzeController[getCurrentroomIndex()].removeEnemy(index);	
+	public void removeEnemy(int index, int colToFree, int rawToFree) {
+		stanzeController[getCurrentroomIndex()].removeEnemy(index, colToFree, rawToFree);	
 	}
 	
 	public int getTileSize() {

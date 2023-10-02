@@ -10,6 +10,8 @@ import controller.playState.pathfinding.Node;
 public abstract class EntityController {
 
 	//il punto in alto a sinistra della hitbox è la posizione dell'entità nella mappa
+	//tempHitboxForCheck serve per le collisioni, prima di cambiare la hitbox, cambiamo questa
+	//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
 	protected Hitbox hitbox, tempHitboxForCheck;
 	protected float speed;
 	
@@ -30,21 +32,16 @@ public abstract class EntityController {
 	//l'indice nella lista delle entità
 	protected int index;
 	
-	//questa stringa serve per capire se il proiettile si è schiantato su un npc, su un nemico o sul player
-	protected String typeOfTarget;
-	
-	//quando l'entità viene creata, si segna la posizione in righe & colonne. ogni volta che si muove,
-	//controlla se ha cambiato tile. se ha cambiato tile, aggiorna la mappa della posizione dei personaggi
-	//segnando true sul nuovo quadratino e false su quello vecchio infine salva la nuova posizione su quella vecchia
-	protected int savedCol;
-	protected int savedRow;
+	//questi int servono per capire se il proiettile si è schiantato su un npc, su un nemico o sul player
+	protected int typeOfTarget;
+	public static final int PLAYER = 0, NPC = 1, ENEMY = 2;
 	
 	//percorso che l'entità deve seguire
 	protected ArrayList<Node> path;
 	protected int currentPathIndex = 0;
 	
 	//per gestire gli npc ed i nemici come macchine a stati
-	protected final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2; 
+	protected final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2, GOAL_REACHED = 3; 
 	protected int currentState = NORMAL_STATE;
 	
 	public EntityController (int ind, String type, Hitbox r, PlayStateController p) {
@@ -56,20 +53,14 @@ public abstract class EntityController {
 		hitbox = r;
 		
 		//settiamo la posizione nella mappa e scaliamo la dimensione
-		//siccome stiamo usando i float per definire la posizione, forse servirebbe un cast a int 
-		//perchè prima era tutto in int e non vorrei sminchiare la posizione delle entità
 		hitbox.x *= play.getController().getTileSize(); 
 		hitbox.y *= play.getController().getTileSize(); 
 		
 		hitbox.width  *= play.getController().getGameScale();
 		hitbox.height *= play.getController().getGameScale();
 		
-		//hitbox che serve per le collisioni, prima di cambiare la hitbox, cambiamo questa
-		//se controllando le collisioni va tutto bene, cambiamo anche la hitbox
 		tempHitboxForCheck = new Hitbox((int)hitbox.x, (int)hitbox.y, hitbox.width, hitbox.height);
 		
-		savedCol = (int)(hitbox.x)/play.getController().getTileSize();
-		savedRow = (int)(hitbox.y)/play.getController().getTileSize();
 		path = new ArrayList<>();
 		
 		currentDirection = DOWN;
@@ -94,7 +85,7 @@ public abstract class EntityController {
 		
 	}
 	
-	public abstract void update();
+	public abstract void update(float playerX, float playerY);
 	
 	// molti npc si muovono a caso nella stanza usando questo medoto
 	public void randomMove() {
@@ -122,15 +113,15 @@ public abstract class EntityController {
 			
 			//ogni volta che si muove, vede se ha cambiato tile, in tal caso aggiorna i dati nella mappa e la posizione precedente
 			//si può migliorare, perchè una hitbox può essere a cavallo tra due o più tile
-			int currentCol = (int)(hitbox.x)/play.getController().getTileSize();
-			int currentRow = (int)(hitbox.y)/play.getController().getTileSize();
-
-			if(savedCol != currentCol || savedRow != currentRow) {
-				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[savedRow][savedCol]	= 0;
-				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[currentRow][currentCol]	= 1;
-				savedRow = currentRow;
-				savedCol = currentCol;
-			}
+//			int currentCol = (int)(hitbox.x)/play.getController().getTileSize();
+//			int currentRow = (int)(hitbox.y)/play.getController().getTileSize();
+//
+//			if(savedCol != currentCol || savedRow != currentRow) {
+//				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[savedRow][savedCol]	= 0;
+//				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[currentRow][currentCol]	= 1;
+//				savedRow = currentRow;
+//				savedCol = currentCol;
+//			}
 		}
 		else
 			currentAction = IDLE;
@@ -234,14 +225,16 @@ public abstract class EntityController {
 		}	
 	}
 
-	protected void goToYourDestination(int goalCol, int goalRow, boolean isEnemy) {
-		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
-		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
+	//metodi usati per seguire il percorso trovato
+	protected void searchThePath(int goalCol, int goalRow) {
+		int startCol = (int)(hitbox.x)/play.getTileSize();
+		int startRow = (int)(hitbox.y)/play.getTileSize();
 		
-		if(play.getPathFinder().existPath(startCol, startRow, goalCol, goalRow, isEnemy)) {
-			currentState = GO_TO_FIRST_TILE;	
+		if(play.getPathFinder().existPath(startCol, startRow, goalCol, goalRow)) {
+			currentState = IN_WAY;
 			play.getPathFinder().getPathToEntity(path);
 		}
+		
 	}
 	
 	protected void goTrhoughtSelectedPath() {
@@ -296,7 +289,7 @@ public abstract class EntityController {
 		//se per qualche ragione il percorso che deve seguire è bloccato, smette di andarci
 		if(canFollowThePath == false) {
 			currentAction = IDLE;
-			currentState = NORMAL_STATE;
+			currentState = GOAL_REACHED;
 			path.clear();
 			currentPathIndex = 0;
 		}
@@ -309,8 +302,10 @@ public abstract class EntityController {
 		boolean canGo = true;
 		
 		if(Math.abs(yDistance) > speed) {
-			if(canMove()) 
-				hitbox.y += speed;
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y + speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
+				hitbox.y = tempHitboxForCheck.y;
 				
 			//se ti schianti contro qualcuno, o qualcosa, rivedi il percorso che devi fare
 			else 
@@ -328,8 +323,10 @@ public abstract class EntityController {
 		boolean canGo = true;
 
 		if (Math.abs(yDistance) > speed) {
-			if(canMove())
-				hitbox.y -= speed;
+			tempHitboxForCheck.x = hitbox.x;
+			tempHitboxForCheck.y = hitbox.y - speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck)) 
+				hitbox.y = tempHitboxForCheck.y;
 			
 			else 
 				canGo = false;
@@ -347,8 +344,10 @@ public abstract class EntityController {
 		boolean canGo = true;
 
 		if(Math.abs(xDistance) > speed) {
-			if(canMove())
-				hitbox.x += speed;
+			tempHitboxForCheck.y = hitbox.y;
+			tempHitboxForCheck.x = hitbox.x + speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x = tempHitboxForCheck.x;
 			
 			else 
 				canGo = false;
@@ -365,8 +364,10 @@ public abstract class EntityController {
 		boolean canGo = true;
 
 		if(Math.abs(xDistance) > speed) {
-			if(canMove())
-				hitbox.x -= speed;
+			tempHitboxForCheck.y = hitbox.y;
+			tempHitboxForCheck.x = hitbox.x - speed;
+			if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
+				hitbox.x = tempHitboxForCheck.x;
 			
 			else 
 				canGo = false;
@@ -377,46 +378,7 @@ public abstract class EntityController {
 		
 		return canGo;
 	}
-	
-	protected void goToEdgeOfTile() {
-		int startCol = (int)(hitbox.x)/play.getController().getTileSize();
-		int startRow = (int)(hitbox.y)/play.getController().getTileSize();
 
-		//se sta troppo a destra, si sposta a sinistra fino ad arrivare vicinissimo al bordo del tile, poi la hitbox si attacca al bordo
-		if(hitbox.x > startCol*play.getController().getTileSize()) {
-			
-			if((hitbox.x - startCol*play.getController().getTileSize()) > speed) {
-				currentDirection = LEFT;
-				tempHitboxForCheck.x  = hitbox.x - speed;
-				tempHitboxForCheck.y = hitbox.y;
-				//prima di spostarsi, controlla se si sta schiantando contro una creatura
-				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-					hitbox.x = tempHitboxForCheck.x;
-			}
-			else {
-				hitbox.x = (int)(startCol*play.getController().getTileSize());
-			}
-		}
-		
-		//se sta troppo in basso
-		else if(hitbox.y > startRow*play.getController().getTileSize()) {
-			
-			if((hitbox.y - startRow*play.getController().getTileSize()) > speed) {
-				currentDirection = UP;
-				tempHitboxForCheck.y = hitbox.y - speed;
-				tempHitboxForCheck.x = hitbox.x;
-				if(!play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-					hitbox.y = tempHitboxForCheck.y;
-			}
-			else {
-				hitbox.y = (int)(startRow*play.getController().getTileSize());	
-			}
-		}
-				
-		if(hitbox.x == startCol*play.getController().getTileSize() && hitbox.y == startRow*play.getController().getTileSize()) {
-			currentState = IN_WAY;	
-		}
-	}
 	
 	public String getType() {
 		return type;

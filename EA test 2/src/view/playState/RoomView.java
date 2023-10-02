@@ -82,7 +82,7 @@ public class RoomView {
 		return NPCviewList.get(index);
 	}
 	
-	public EntityView getEnemy(int index) {
+	public EntityView getEnemy(int index) throws IndexOutOfBoundsException{
 		return enemyView.get(index);
 	}
 
@@ -90,9 +90,11 @@ public class RoomView {
 		
 		for(int i = index; i < enemyView.size(); i++)
 			enemyView.get(i).decreaseIndexInList();
+		
 		try {
 			enemyView.remove(index);
 		}
+		
 		catch(IndexOutOfBoundsException iobe) {
 			iobe.printStackTrace();
 		}		

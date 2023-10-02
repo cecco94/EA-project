@@ -10,6 +10,7 @@ import controller.playState.entityController.npcController.DocController;
 import controller.playState.entityController.npcController.ErmenegildoController;
 import controller.playState.entityController.npcController.NerdController;
 import controller.playState.entityController.npcController.PupaController;
+import controller.playState.pathfinding.PathFinder;
 
 public class RoomController {
 
@@ -19,10 +20,9 @@ public class RoomController {
 	//quante righe e quante colonne ha la stanza
 	private int rowRoom, colRoom;
 	
-	//ogni stanza ha una matrice di booleani, ogni entità segna sul quadratino dove si trova true.
-	//quando lascisa il quadratino, segna false e segna true su quello che oppurà
-	//prima o poi finirànel model
-	private int[][] entityPositionsForPathFinding;
+	private PathFinder pathFinder;
+
+
 	
 	
 	public RoomController(PlayStateController p, int righe, int colonne) {
@@ -32,29 +32,22 @@ public class RoomController {
 		
 		rowRoom = righe;
 		colRoom = colonne;
-		entityPositionsForPathFinding = new int[righe][colonne];
-		resetMatriceEntita();
+		
+		pathFinder = new PathFinder(play, rowRoom, colRoom);
+
 
 	}
 
-	public void update() {
+	public void update(float playerX, float playerY) {
 				
 		for(int i = 0; i < NPC.size(); i++) {
-			NPC.get(i).update();
+			NPC.get(i).update(playerX, playerY);
 		}
 		
 		for(int i = 0; i < enemy.size(); i++) {
-			enemy.get(i).update();
+			enemy.get(i).update(playerX, playerY);
 		}
 	}
-	
-//	public void removeEnemy(int index) {
-//		enemy.remove(index);
-//	}
-//	
-//	public void removeNPC(int index) {
-//		NPC.remove(index);
-//	}
 	
 	public ArrayList<EnemyController> getEnemy(){
 		return enemy;
@@ -77,9 +70,12 @@ public class RoomController {
 		enemy.add(new RobotController(enemy.size(), type, xPos, yPos, play));
 	}
 	
-	public void removeEnemy(int index) {
+	//rimuove il nemico e libera la sua posizione per migliorare il pathfinding
+	public void removeEnemy(int index, int colToFree, int rawToFree) {
+		
 		for(int i = index; i < enemy.size(); i++)
 			enemy.get(i).decreaseIndexInList();
+		
 		try {
 			enemy.remove(index);
 		}
@@ -88,7 +84,7 @@ public class RoomController {
 		}
 	}
 
-	public void addNPC (String type, int xPos, int yPos) {
+	public void addNPC(String type, int xPos, int yPos) {
 		
 		if(type.compareTo("gatto") == 0) 	//se la stringa dentro al file è uguale a "-gatto"
 			NPC.add(new CatController(NPC.size(), type, xPos, yPos, play));	
@@ -104,42 +100,9 @@ public class RoomController {
 	    
 		else if(type.compareTo("pupa") == 0) 
 			NPC.add(new PupaController(NPC.size(), type, xPos, yPos, play));
-		
-		int colNumber = (int)(NPC.get(NPC.size() - 1).getHitbox().x)/play.getController().getTileSize();
-		int rowNumber = (int)(NPC.get(NPC.size() - 1).getHitbox().y)/play.getController().getTileSize();
-		entityPositionsForPathFinding[rowNumber][colNumber] = 1;
 	}
 	
-	public int[][] getEntityPositionsForPathFinding(){
-		return entityPositionsForPathFinding;
+	public PathFinder getPathFinder() {
+		return pathFinder;
 	}
-	
-	public void resetMatriceEntita() {
-		//inizializza matrice della posizione dei personaggi
-		for(int i = 0; i < rowRoom; i++) {
-			for (int j = 0; j < colRoom; j++) {
-				entityPositionsForPathFinding[i][j] = 0;
-			}
-		}
-		
-	}
-	
-	public void printMatriceEntita() {
-		int colonnaTrue = -1;
-		int rigaTrue = -1;
-		for(int row = 0; row < rowRoom; row++) {
-			for(int col = 0; col < colRoom; col++) {
-				System.out.print(entityPositionsForPathFinding[row][col] + " ");
-				if(entityPositionsForPathFinding[row][col] > 0) {
-					colonnaTrue = col;
-					rigaTrue = row;
-					System.out.print("QUI");
-				}
-			}
-			System.out.println();
-
-		}
-		System.out.println(colonnaTrue + ", " + rigaTrue);
-	}
-	
 }
