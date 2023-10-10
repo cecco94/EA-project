@@ -22,3 +22,5 @@ per gli NPC l'ordine è tipo posx posy
 -prof, prof, 29, 8
 
 -pupa, pupa, 36, 39
+
+/nullafacente, nullafacente, 29, 31

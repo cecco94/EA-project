@@ -1,5 +1,6 @@
 package view.playState.entityView;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -13,12 +14,15 @@ import view.main.GamePanel;
 
 public class NullaFacenteView extends EntityView {
 	
-
-	private final int DIE = 2;
+	//definiamo la costantre DIE = 3 per evitare il problema di out of bound 
+	//perchè sennò eredita da entity DIE = 5 mentre il nostro array delle azioni è lungo 4
+	private final int DIE = 3;
 	private Rectangle lifeRect;
 	
 	public NullaFacenteView(IView v, int index) {
 		super(v, index);
+		
+		this.type = "enemy";
 		
 		loadImages();
 		
@@ -33,7 +37,7 @@ public class NullaFacenteView extends EntityView {
 		BufferedImage image = null;
 		BufferedImage temp = null;
 		
-		animation = new BufferedImage[1][3][][];		
+		animation = new BufferedImage[1][4][][];		
 		
 		animation[0][MOVE] = new BufferedImage[4][3];	//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		animation[0][IDLE] = new BufferedImage[4][1];	//ci sono 4 direzioni, ogni direzione ha 1 immagine
@@ -48,7 +52,7 @@ public class NullaFacenteView extends EntityView {
 	}
 	private void loadRunImages(BufferedImage image, BufferedImage temp) {
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/entity/enemy1.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/nullafacente.png"));
 				
 			for(int img = 0; img < 3; img++) {
 				temp = image.getSubimage(img*16, 0, 16, 24);
@@ -91,7 +95,7 @@ public class NullaFacenteView extends EntityView {
 	
 	private void loadDieImages(BufferedImage image, BufferedImage temp) {
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/entity/enemy1.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/nullafacente.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -120,7 +124,7 @@ public class NullaFacenteView extends EntityView {
 	
 	private void loadAttackImages(BufferedImage image, BufferedImage temp) {
 		try {
-			image = ImageIO.read(getClass().getResourceAsStream("/entity/enemy1.png"));
+			image = ImageIO.read(getClass().getResourceAsStream("/entity/nullafacente.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,6 +153,12 @@ public class NullaFacenteView extends EntityView {
 		temp = image.getSubimage(12, 118 + 24, 16, 23);
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 		animation[0][ATTACK][LEFT][1] = temp;
+		
+		for(int img = 0; img < 2; img++) {
+			temp = image.getSubimage(img*17, 118 + 24 + 24, 17, 24);
+			temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
+			animation[0][ATTACK][UP][img] = temp;
+		}
 			
 	}
 
@@ -156,7 +166,67 @@ public class NullaFacenteView extends EntityView {
 
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
-		g2.drawImage(animation[0][IDLE][RIGHT][0], 0, 0, null);
+		animationCounter++;
+		setAction(this);
+		setDirection(this);
+		
+		if (animationCounter > animationSpeed) {
+			numSprite ++;	
+			
+			if(numSprite >= getAnimationLenght())
+				numSprite = 0;	
+			
+			animationCounter = 0;
+		}
+		
+		//distanza nella mappa tra il punto in alto a sinistra della hitbox 
+		//del player ed il punto in alto a sinistra della hitbox del gatto
+		int distanceX = xPlayerMap - xPosMapForSort + xOffset;
+		int distanceY = yPlayerMap - yPosMapForSort + yOffset;
+		
+		//ci serve un offset perchè la distanza del gatto nella mappa rispetto al player è riferita al punto in
+		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
+		int xPosOnScreen = PlayerView.xOnScreen - distanceX - xOffset + PlayerView.getXOffset();
+		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
+		
+		try {
+			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
+			
+			//quadrato dove viene disegnato il gatto
+			g2.setColor(Color.red);
+			g2.drawRect(xPosOnScreen, yPosOnScreen, 48, 48);
+			
+			//quadrato della hitbox
+			g2.setColor(Color.black);
+			g2.drawRect(xPosOnScreen + 3*xOffset,
+						yPosOnScreen + 3*yOffset,
+						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().width,
+						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().height);
+
+		}
+		catch (ArrayIndexOutOfBoundsException a) {
+			a.printStackTrace();
+		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
+		}
+		
+	}
+	
+	
+	private int getAnimationLenght() {
+		if(currentAction == IDLE)
+			return 1;
+		
+		else if(currentAction == MOVE)
+			return 3;
+		
+		else if(currentAction == DIE)
+			return 2;
+		
+		else if(currentAction == ATTACK)
+			return 2;
+		
+		else
+			return 0;
 	}
 
 }

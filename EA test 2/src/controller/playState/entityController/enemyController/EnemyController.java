@@ -78,13 +78,10 @@ public abstract class EnemyController extends EntityController{
 		}
 
 	}
-
+	//il metodo rimuove dalla due liste (view e controller) il nemico di indicce indicato
 	public void die() {
-		int colToFree = (int)hitbox.x/play.getController().getTileSize();
-		int rawToFree = (int)hitbox.y/play.getController().getTileSize();
-
 		play.getController().getView().getPlay().removeEnemy(index);
-		play.removeEnemy(index, colToFree, rawToFree);
+		play.removeEnemy(index);
 	}
 	
 	protected void searchPathToPlayer(float playerX, float playerY) {	

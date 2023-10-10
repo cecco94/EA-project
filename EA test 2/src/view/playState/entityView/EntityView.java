@@ -10,6 +10,7 @@ import view.playState.drawOrder.SortableElement;
 public abstract class EntityView extends SortableElement {
 
 	protected IView view;
+	//tipo,azione,direzione,sprite
 	protected BufferedImage[][][][] animation;
 	//questo indice deve essere uguale nella lista di entità del view e del controller
 	protected int index;

@@ -181,8 +181,8 @@ public class PlayStateController {
 		return controller;
 	}
 
-	public void removeEnemy(int index, int colToFree, int rawToFree) {
-		stanzeController[getCurrentroomIndex()].removeEnemy(index, colToFree, rawToFree);	
+	public void removeEnemy(int index) {
+		stanzeController[getCurrentroomIndex()].removeEnemy(index);	
 	}
 	
 	public int getTileSize() {

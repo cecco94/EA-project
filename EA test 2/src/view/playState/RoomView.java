@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import view.playState.drawOrder.SortableElement;
 import view.playState.entityView.EntityView;
+import view.playState.entityView.NullaFacenteView;
 import view.playState.entityView.RobotView;
 import view.playState.entityView.npcview.CatView;
 import view.playState.entityView.npcview.DocView;
@@ -15,13 +16,13 @@ import view.playState.entityView.npcview.PupaView;
 public class RoomView {
 
 	private ArrayList<NPCView> NPCviewList;
-	private ArrayList<EntityView> enemyView;
+	private ArrayList<EntityView> enemyViewList;
 	private PlayStateView play;
 	
 	public RoomView(PlayStateView p, int index) {
 		play = p;
 		NPCviewList = new ArrayList<>();
-		enemyView = new ArrayList<>();
+		enemyViewList = new ArrayList<>();
 		
 		//ciascuna roomview deve leggere nella roomcontroller corrispondente
 		//quali NPC/nemici ci sono e li aggiunge alla propria lista
@@ -41,17 +42,21 @@ public class RoomView {
 		}
 	}
 
-	public void addEnemy(String type, int index) {
-		enemyView.add(new RobotView(play.getView(), index));
+	public void addEnemy(String type, int index) {		
+		if(type.compareTo("robot") == 0) {
+			enemyViewList.add(new RobotView(play.getView(), index));
+		}
+		
+		else if(type.compareTo("nullafacente") == 0) 
+			enemyViewList.add(new NullaFacenteView(play.getView(), index));
 	}
 	
 	
 	public void addNPC(String type, int index) {
-		if(type.compareTo("gatto") == 0) {
+		if(type.compareTo("gatto") == 0) 
 			NPCviewList.add(new CatView(play.getView(), index));
-		}
 		
-		if(type.compareTo("vecchio") == 0) 
+		else if(type.compareTo("vecchio") == 0) 
 			NPCviewList.add(new ErmenegildoView(play.getView(), index));
 		
 		else if(type.compareTo("prof") == 0)
@@ -73,9 +78,9 @@ public class RoomView {
 			if(NPCviewList.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "npc"))
 				drawOrder.add(NPCviewList.get(i));
 		
-		for(int i = 0; i < enemyView.size(); i++)
-			if(enemyView.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "enemy"))
-				drawOrder.add(enemyView.get(i));
+		for(int i = 0; i < enemyViewList.size(); i++)
+			if(enemyViewList.get(i).isInGameFrame(posizPlayerX, posizPlayerY, "enemy"))
+				drawOrder.add(enemyViewList.get(i));
 	}
 
 	public NPCView getNPC(int index) {	
@@ -83,16 +88,16 @@ public class RoomView {
 	}
 	
 	public EntityView getEnemy(int index) throws IndexOutOfBoundsException{
-		return enemyView.get(index);
+		return enemyViewList.get(index);
 	}
 
 	public void removeEnemy(int index) {
 		
-		for(int i = index; i < enemyView.size(); i++)
-			enemyView.get(i).decreaseIndexInList();
+		for(int i = index; i < enemyViewList.size(); i++)
+			enemyViewList.get(i).decreaseIndexInList();
 		
 		try {
-			enemyView.remove(index);
+			enemyViewList.remove(index);
 		}
 		
 		catch(IndexOutOfBoundsException iobe) {

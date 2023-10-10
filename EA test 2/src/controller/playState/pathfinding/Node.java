@@ -5,7 +5,7 @@ public class Node {
 	private Node parent;
 	private int col, row;
 	private int distanceFromStart, distanceFromGoal, completeDistance;
-	private boolean solid, open, checked;
+	private boolean solid, inListOfNodesToExplore, explored;
 	
 	public Node(int row, int col) {
 		this.col = col;
@@ -60,19 +60,19 @@ public class Node {
 		this.solid = solid;
 	}
 
-	public boolean isOpen() {
-		return open;
+	public boolean isInListOfNodesToExplore() {
+		return inListOfNodesToExplore;
 	}
 
-	public void setOpen(boolean open) {
-		this.open = open;
+	public void setInListOfNodesToExplore(boolean open) {
+		this.inListOfNodesToExplore = open;
 	}
 
-	public boolean isChecked() {
-		return checked;
+	public boolean isExplored() {
+		return explored;
 	}
 
-	public void setChecked(boolean checked) {
-		this.checked = checked;
+	public void setExplored(boolean checked) {
+		this.explored = checked;
 	}
 }

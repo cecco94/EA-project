@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.enemyController.EnemyController;
+import controller.playState.entityController.enemyController.NullaFacenteController;
 import controller.playState.entityController.enemyController.RobotController;
 import controller.playState.entityController.npcController.CatController;
 import controller.playState.entityController.npcController.DocController;
@@ -67,11 +68,16 @@ public class RoomController {
 	}
 
 	public void addEnemy(String type, int xPos, int yPos) {
-		enemy.add(new RobotController(enemy.size(), type, xPos, yPos, play));
+		if(type.compareTo("robot") == 0) 	
+			enemy.add(new RobotController(enemy.size(), type, xPos, yPos, play));
+		
+		else if(type.compareTo("nullafacente") == 0) 
+			enemy.add(new NullaFacenteController(enemy.size(), type, xPos, yPos, play));
+		
 	}
 	
 	//rimuove il nemico e libera la sua posizione per migliorare il pathfinding
-	public void removeEnemy(int index, int colToFree, int rawToFree) {
+	public void removeEnemy(int index) {
 		
 		for(int i = index; i < enemy.size(); i++)
 			enemy.get(i).decreaseIndexInList();

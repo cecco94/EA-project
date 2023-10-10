@@ -7,10 +7,11 @@ import model.mappa.Map;
 
 public class PathFinder {
 
-	private Node[][] graph;
-	//open, vuol dire che è nella lista ma non sono stati ancora inseriti i suoi vicini
-	private ArrayList<Node> openList, pathList;
 	private PlayStateController play;
+
+	private Node[][] graph;
+	private ArrayList<Node> nodesToExplore, pathList;
+	
 	private Node startNode, goalNode, currentNode;
 	private boolean goalReached = false;
 	private int steps;
@@ -18,7 +19,7 @@ public class PathFinder {
 	
 	public PathFinder(PlayStateController p, int maxRow, int maxCol) {
 		play = p;
-		openList = new ArrayList<>();
+		nodesToExplore = new ArrayList<>();
 		pathList = new ArrayList<>();
 		roomCol = maxCol;
 		roomRow = maxRow;
@@ -39,12 +40,12 @@ public class PathFinder {
 		
 		for(int row = 0; row < roomRow; row++)
 			for(int col = 0; col < roomCol; col++) {
-				graph[row][col].setOpen(false);
-				graph[row][col].setChecked(false);
+				graph[row][col].setInListOfNodesToExplore(false);
+				graph[row][col].setExplored(false);
 				graph[row][col].setSolid(false);
 			}
 		
-		openList.clear();
+		nodesToExplore.clear();
 		pathList.clear();
 		goalReached = false;
 		steps = 0;
@@ -53,21 +54,19 @@ public class PathFinder {
 	private void setNodes(int startCol, int startRow, int goalCol, int goalRow) {
 		resetNodes();
 		
-		//occhio a come definiamo questi valori di partenza: valori nella finestra != valori nella mappa
-		//penso che basti dividere valore nella mappa per numero di col/row nella finestra
 		startNode = graph[startRow][startCol];
 		currentNode = startNode;
 		goalNode = graph[goalRow][goalCol];
 		
 		//all'inizio la lista contiene solo il nodo di partenza
-		openList.add(currentNode);
+		nodesToExplore.add(currentNode);
 		
-		//setta il costo di tutti i nodi
-		for(int row = 0; row < roomRow; row++) {
-			for(int col = 0; col < roomCol; col++) {
+		//setta il costo di tutti i nodi, saltando quelli fuori dalle mura
+		for(int row = 7; row < roomRow - 7; row++) {
+			for(int col = 10; col < roomCol - 10; col++) {
 				int tileIndex = play.getController().getModel().getMap().getLayer(play.getCurrentroomIndex(), Map.THIRD_LAYER)[row][col];
 				
-				if(play.getController().getModel().getTilesetModel().getTile(tileIndex).isSolid())
+				if(play.getController().getModel().getTilesetModel().getTile(tileIndex).isSolid()) 
 					graph[row][col].setSolid(true);
 				
 				else 
@@ -79,17 +78,15 @@ public class PathFinder {
 	}
 
 	private void setCostOfThisNode(Node node) {
-		//g cost, distanza di ciascun nodo dalla partenza 
 		int xDistance = Math.abs(node.getColInGraph() - startNode.getColInGraph());
 		int yDistance = Math.abs(node.getRowInGraph() - startNode.getRowInGraph());
+		
 		node.setDistanceFromStart(xDistance + yDistance);
 		
-		//h cost, distanza di ciasun nodo dall'arrivo
 		xDistance = Math.abs(node.getColInGraph() - goalNode.getColInGraph());
 		yDistance = Math.abs(node.getRowInGraph() - goalNode.getRowInGraph());
 		node.setDistanceFromGoal(xDistance + yDistance);
 		
-		//f costo generale del nodo
 		node.setCompleteDistance(node.getDistanceFromStart() + node.getDistanceFromGoal());
 	}
 	
@@ -106,7 +103,7 @@ public class PathFinder {
 			int col = currentNode.getColInGraph();
 			int row = currentNode.getRowInGraph();
 			
-			checkCurrentNode(col, row);
+			exploreCurrentNode(col, row);
 			
 			findTheBestNode();
 			
@@ -116,67 +113,67 @@ public class PathFinder {
 			}
 			
 			//if there is no node to check and we aree not in the goal, there is no more to do
-			if(openList.isEmpty())
+			if(nodesToExplore.isEmpty())
 				return false;
 			
 			steps++;
 		}
 		
-	//	printPathList();
+		//printPathList();
 		return goalReached;
 	}
 	
-	private void checkCurrentNode(int col, int row) {
-		currentNode.setChecked(true);
-		openList.remove(currentNode);
-		
+	private void exploreCurrentNode(int col, int row) {
 		//open the up Node
 		if(row - 1 >= 0)
-			openNode(graph[row -1][col]);
+			addNodeToListOfNodesToExlpore(graph[row -1][col]);
 		
 		//open the down Node
 		if(row + 1 < roomRow)
-			openNode(graph[row + 1][col]);
+			addNodeToListOfNodesToExlpore(graph[row + 1][col]);
 		
 		//open the left Node
 		if(col - 1 >= 0)
-			openNode(graph[row][col - 1]);
+			addNodeToListOfNodesToExlpore(graph[row][col - 1]);
 		
 		//open the right Node
 		if(row + 1 < roomCol)
-			openNode(graph[row][col + 1]);
+			addNodeToListOfNodesToExlpore(graph[row][col + 1]);
 			
+		currentNode.setExplored(true);
+		nodesToExplore.remove(currentNode);
 	}
 
 	private void findTheBestNode() {
 		int bestNodeIndex = 0;
 		int bestNodeCost = 999;
 		
-		if(openList.size() > 1) { 
+		if(nodesToExplore.size() >= 1) { 
 			
-			for(int i = 0; i < openList.size(); i++) {
+			for(int i = 0; i < nodesToExplore.size(); i++) {
 				//first, check the f cost
-				if(openList.get(i).getCompleteDistance() < bestNodeCost) {
+				if(nodesToExplore.get(i).getCompleteDistance() < bestNodeCost) {
 					bestNodeIndex = i;
-					bestNodeCost = openList.get(i).getCompleteDistance();
+					bestNodeCost = nodesToExplore.get(i).getCompleteDistance();
 				}
 				//if i cost is equal, check the g cost
-				else if(openList.get(i).getCompleteDistance() == bestNodeCost) {
-					if(openList.get(i).getDistanceFromStart() < openList.get(bestNodeIndex).getDistanceFromStart())
+				else if(nodesToExplore.get(i).getCompleteDistance() == bestNodeCost) {
+					if(nodesToExplore.get(i).getDistanceFromStart() < nodesToExplore.get(bestNodeIndex).getDistanceFromStart())
 						bestNodeIndex = i;
 				}		
 			}
 			//if the openList.size = 0, we have no exception, because we use this command only if size > 1
-			currentNode = openList.get(bestNodeIndex);
+			currentNode = nodesToExplore.get(bestNodeIndex);
 		}
 
 	}
 
-	private void openNode(Node node) {
-		if(node.isOpen() == false && node.isChecked() == false && node.isSolid() == false) {
-			node.setOpen(true);
+	private void addNodeToListOfNodesToExlpore(Node node) {
+		if(node.isInListOfNodesToExplore() == false && node.isExplored() == false && node.isSolid() == false) {
+			nodesToExplore.add(node);
+			node.setInListOfNodesToExplore(true);
+
 			node.setParent(currentNode);
-			openList.add(node);
 		}
 	}
 	
@@ -201,6 +198,12 @@ public class PathFinder {
 			System.out.println(pathList.get(i).getColInGraph() + ", " + pathList.get(i).getRowInGraph());
 		}
 		System.out.println("-----------------------------------------");
+//		for(int row = 0; row < roomRow; row++) {
+//			for(int col = 0; col < roomCol; col++) {
+//				System.out.print(graph[row][col].getDistanceFromStart() + "   " );
+//			}
+//			System.out.println();
+//		}
 	}
 	
 }

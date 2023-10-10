@@ -27,9 +27,9 @@ public abstract class EntityController {
 	protected Random randomGenerator = new Random();
 	protected int randomAction, randomDirection;
 	
-	//per capire, se è un NPC quale sia
+	//per capire quale entità è
 	protected String type;   
-	//l'indice nella lista delle entità
+	//l'indice nella lista delle entità, deve essere uguale anche nel view
 	protected int index;
 	
 	//questi int servono per capire se il proiettile si è schiantato su un npc, su un nemico o sul player

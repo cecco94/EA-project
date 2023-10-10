@@ -8,7 +8,7 @@
 
 +cfu, 12, 24, 32, 32, cfu
 
-/robot, robot, 15, 15
+/robot, robot, 11, 15
 
 /robot, robot, 14, 21
 

@@ -17,6 +17,7 @@ import view.playState.entityView.PlayerView;
 
 import view.playState.mappaView.TilesetView;
 import view.playState.entityView.BulletView;
+import view.playState.entityView.NullaFacenteView;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
 public class PlayStateView {
@@ -32,8 +33,7 @@ public class PlayStateView {
 	private RoomView[] roomsView;
 	
 	private PlayUI ui;	
-	
-	
+			
 	public PlayStateView(TilesetView t, IView v) {
 		view = v;
 		tileset = t;
@@ -92,7 +92,7 @@ public class PlayStateView {
 		
 		//disegna la ui sopra a tutto il resto
 		ui.draw(g2);
-		
+				
 	}			
 
 	//disegna i primi due starti della mappa
