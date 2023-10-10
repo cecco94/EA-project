@@ -16,8 +16,10 @@ public class NullaFacenteView extends EntityView {
 	
 	//definiamo la costantre DIE = 3 per evitare il problema di out of bound 
 	//perchè sennò eredita da entity DIE = 5 mentre il nostro array delle azioni è lungo 4
-	private final int DIE = 3;
+//	private final int DIE = 3;
 	private Rectangle lifeRect;
+	private boolean firstDeathSprite;
+
 	
 	public NullaFacenteView(IView v, int index) {
 		super(v, index);
@@ -36,7 +38,7 @@ public class NullaFacenteView extends EntityView {
 		BufferedImage image = null;
 		BufferedImage temp = null;
 		
-		animation = new BufferedImage[1][4][][];		
+		animation = new BufferedImage[1][6][][];		
 		
 		animation[0][MOVE] = new BufferedImage[4][3];	//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		animation[0][IDLE] = new BufferedImage[4][1];	//ci sono 4 direzioni, ogni direzione ha 1 immagine
@@ -95,29 +97,30 @@ public class NullaFacenteView extends EntityView {
 	private void loadDieImages(BufferedImage image, BufferedImage temp) {
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/nullafacente.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
-		temp = image.getSubimage(0*15, 166, 15, 20);
+		temp = image.getSubimage(0, 190, 15, 20);
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 		animation[0][DIE][DOWN][0] = temp;
-		animation[0][DIE][RIGHT][0] = temp;
-		
-		temp = image.getSubimage(0*15, 166 + 20, 15, 20);
-		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 		animation[0][DIE][LEFT][0] = temp;
-		animation[0][DIE][UP][0] = temp;
 		
-		temp = image.getSubimage(1*24, 166, 24, 20);
+		temp = image.getSubimage(15, 190, 24, 20);
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 		animation[0][DIE][DOWN][1] = temp;
-		animation[0][DIE][RIGHT][1] = temp;
-
-		temp = image.getSubimage(1*24, 166 + 20 , 24, 20);
-		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 		animation[0][DIE][LEFT][1] = temp;
+		
+		temp = image.getSubimage(0, 210, 15, 20);
+		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
+		animation[0][DIE][RIGHT][0] = temp;
+		animation[0][DIE][UP][0] = temp;
+		
+		temp = image.getSubimage(15, 210, 24, 20);
+		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
+		animation[0][DIE][RIGHT][1] = temp;
 		animation[0][DIE][UP][1] = temp;
+
 	}
 	
 	
@@ -172,6 +175,7 @@ public class NullaFacenteView extends EntityView {
 		
 		if (animationCounter > animationSpeed) {
 			numSprite ++;	
+			setDyingAniIndex();
 			
 			if(numSprite >= getAnimationLenght())
 				numSprite = 0;	
@@ -192,6 +196,8 @@ public class NullaFacenteView extends EntityView {
 		try {
 			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
 			
+			
+			
 			//quadrato dove viene disegnato il gatto
 			g2.setColor(Color.red);
 			g2.drawRect(xPosOnScreen, yPosOnScreen, 48, 48);
@@ -206,11 +212,27 @@ public class NullaFacenteView extends EntityView {
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 			a.printStackTrace();
-		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
+			System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
 		
 	}
 	
+	private void setDyingAniIndex() {
+//		System.out.println("metodo chiamato");
+//		if(currentAction == EntityView.DIE)
+//			currentAction = DIE;
+		
+		if(currentAction == DIE) {
+			if(firstDeathSprite) {
+				numSprite--;
+				firstDeathSprite = false;
+			}
+			else {
+				numSprite = getAnimationLenght() - 1;
+			}
+		}
+		
+	}
 	
 	private int getAnimationLenght() {
 		if(currentAction == IDLE)
