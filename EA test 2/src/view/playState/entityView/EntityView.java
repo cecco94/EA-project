@@ -37,14 +37,6 @@ public abstract class EntityView extends SortableElement {
 
 	//per distinguere tra npc e enemy
 	protected String type;
-	
-	public int getxPosOnScreen() {
-		return xPosOnScreen;
-	}
-
-	public int getyPosOnScreen() {
-		return yPosOnScreen;
-	}
 
 	//quando avremo finito con i rettangoli delle hitbox, possiamo mettere qui il metodo draw, che tanto è uguale per tutti
 	public EntityView(IView v, int index) {
@@ -79,18 +71,6 @@ public abstract class EntityView extends SortableElement {
 		yPosMapForSort = hitboxEntity.y - yOffset;
 	}
 	
-	public static int getRun() {
-		return MOVE;
-	}
-
-	public static int getIDLE() {
-		return IDLE;
-	}
-
-	public static int getDOWN() {
-		return DOWN;
-	}
-	
 	//vede nel controller la direzione dell'entità e cambia currentDirection
 	protected void setDirection(EntityView entity) {
 		if(entity.type.compareTo("npc") == 0)
@@ -120,7 +100,24 @@ public abstract class EntityView extends SortableElement {
 		
 	}
 	
-	
+	public static int getRun() {
+		return MOVE;
+	}
 
+	public static int getIDLE() {
+		return IDLE;
+	}
+
+	public static int getDOWN() {
+		return DOWN;
+	}
+
+	public int getxPosOnScreen() {
+		return xPosOnScreen;
+	}
+
+	public int getyPosOnScreen() {
+		return yPosOnScreen;
+	}
 		
 }

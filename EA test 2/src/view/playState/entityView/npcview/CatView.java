@@ -20,9 +20,7 @@ public class CatView extends NPCView {
 	private int color;
 
 	public CatView(IView v, int index) {
-		
 		super(v, index);
-
 		this.type = "npc";
 		
 		loadImages();	

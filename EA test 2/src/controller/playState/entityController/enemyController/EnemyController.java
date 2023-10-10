@@ -8,7 +8,7 @@ public abstract class EnemyController extends EntityController{
 
 	protected int life, attack, defense;
 	protected final int maxLife = 100;
-	public static final int KO_STATE = 4, HITTED = 5;
+	public static final int KO_STATE = 3, HITTED = 4, PLAYER_IN_RANGE = 5;
 	protected int bulletCounter, dyingCounter, hittedCounter;
 	protected int stateBeforeHitted, velocitaAllontanamentoDopoColpo = 2, timeOfBlockBeforeHitted = 100;
 	

@@ -41,7 +41,7 @@ public abstract class EntityController {
 	protected int currentPathIndex = 0;
 	
 	//per gestire gli npc ed i nemici come macchine a stati
-	protected final int NORMAL_STATE = 0, GO_TO_FIRST_TILE = 1, IN_WAY = 2, GOAL_REACHED = 3; 
+	protected final int NORMAL_STATE = 0, IN_WAY = 1, GOAL_REACHED = 2; 
 	protected int currentState = NORMAL_STATE;
 	
 	public EntityController (int ind, String type, Hitbox r, PlayStateController p) {

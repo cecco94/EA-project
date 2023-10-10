@@ -460,7 +460,7 @@ public class PlayerController extends EntityController {
 			attackHitbox.y = hitbox.y;
 			attackHitbox.x = hitbox.x + hitbox.width;
 		}
-		
+		//se la attackhitbox si interseca con la hitbox di una entità, salviamo il riferimento di quella entità
 		EnemyController target = play.getCollisionChecker().isCollisionDuringPlayerAttack(attackHitbox);
 		if(target != null) 
 			target.hitted(attack, currentDirection, true);

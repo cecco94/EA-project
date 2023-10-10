@@ -22,7 +22,6 @@ public class RobotView extends EntityView {
 	
 	public RobotView(IView v, int index) {
 		super(v, index);
-		
 		this.type = "enemy";
 		
 		loadImages();

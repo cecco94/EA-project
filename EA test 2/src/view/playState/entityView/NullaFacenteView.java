@@ -21,7 +21,6 @@ public class NullaFacenteView extends EntityView {
 	
 	public NullaFacenteView(IView v, int index) {
 		super(v, index);
-		
 		this.type = "enemy";
 		
 		loadImages();
@@ -61,13 +60,13 @@ public class NullaFacenteView extends EntityView {
 				}
 			
 			for(int img = 0; img < 3; img++) {
-				temp = image.getSubimage(img*15, 24, 15, 23);
+				temp = image.getSubimage(img*16, 24, 16, 23);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 				animation[0][MOVE][RIGHT][img] = temp;
 				}
 			
 			for(int img = 0; img < 3; img++) {
-				temp = image.getSubimage(img*15, 24 + 23, 15, 23);
+				temp = image.getSubimage(img*16, 24 + 23, 16, 23);
 				temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 				animation[0][MOVE][LEFT][img] = temp;
 				}
@@ -125,8 +124,8 @@ public class NullaFacenteView extends EntityView {
 	private void loadAttackImages(BufferedImage image, BufferedImage temp) {
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/nullafacente.png"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		
@@ -144,7 +143,6 @@ public class NullaFacenteView extends EntityView {
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 		animation[0][ATTACK][RIGHT][1] = temp;
 		
-
 		
 		temp = image.getSubimage(0, 118 + 24, 12, 24);
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
@@ -154,15 +152,17 @@ public class NullaFacenteView extends EntityView {
 		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
 		animation[0][ATTACK][LEFT][1] = temp;
 		
-		for(int img = 0; img < 2; img++) {
-			temp = image.getSubimage(img*17, 118 + 24 + 24, 17, 24);
-			temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
-			animation[0][ATTACK][UP][img] = temp;
-		}
+		
+		temp = image.getSubimage(0, 118 + 24 + 24, 16, 24);
+		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
+		animation[0][ATTACK][UP][0] = temp;
+
+		temp = image.getSubimage(16, 118 + 24 + 24, 17, 24);
+		temp = ViewUtils.scaleImage(temp, temp.getWidth()*1.8f*GamePanel.SCALE, temp.getHeight()*1.8f*GamePanel.SCALE);
+		animation[0][ATTACK][UP][1] = temp;
 			
 	}
 
-	
 
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
@@ -186,8 +186,8 @@ public class NullaFacenteView extends EntityView {
 		
 		//ci serve un offset perchè la distanza del gatto nella mappa rispetto al player è riferita al punto in
 		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanceX - xOffset + PlayerView.getXOffset();
-		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
+		xPosOnScreen = PlayerView.xOnScreen - distanceX - xOffset + PlayerView.getXOffset();
+		yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
 		
 		try {
 			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
