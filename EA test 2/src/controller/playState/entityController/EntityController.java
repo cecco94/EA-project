@@ -32,6 +32,13 @@ public abstract class EntityController {
 	//l'indice nella lista delle entità, deve essere uguale anche nel view
 	protected int index;
 	
+	
+	
+	
+	
+	
+	
+	//possiamo usare type of target al posto del type?
 	//questi int servono per capire se il proiettile si è schiantato su un npc, su un nemico o sul player
 	protected int typeOfTarget;
 	public static final int PLAYER = 0, NPC = 1, ENEMY = 2;
@@ -111,17 +118,6 @@ public abstract class EntityController {
 				hitbox.y += speed;
 			}
 			
-			//ogni volta che si muove, vede se ha cambiato tile, in tal caso aggiorna i dati nella mappa e la posizione precedente
-			//si può migliorare, perchè una hitbox può essere a cavallo tra due o più tile
-//			int currentCol = (int)(hitbox.x)/play.getController().getTileSize();
-//			int currentRow = (int)(hitbox.y)/play.getController().getTileSize();
-//
-//			if(savedCol != currentCol || savedRow != currentRow) {
-//				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[savedRow][savedCol]	= 0;
-//				play.getRoom(play.getCurrentroomIndex()).getEntityPositionsForPathFinding()[currentRow][currentCol]	= 1;
-//				savedRow = currentRow;
-//				savedCol = currentCol;
-//			}
 		}
 		else
 			currentAction = IDLE;
@@ -141,7 +137,6 @@ public abstract class EntityController {
 	
 	protected void choseDirection() {		
 	//mettendo un counter anche qui, il gatto cambia direzione anche se sta fermo, muove il muso
-	//	if(actionCounter >= 400) {
 		randomDirection = randomGenerator.nextInt(4);
 		
 		if(randomDirection == 0) { 
@@ -161,7 +156,6 @@ public abstract class EntityController {
 		}
 		
 		actionCounter = 0;
-	//	}
 	}
 	
 	protected boolean canMove() {

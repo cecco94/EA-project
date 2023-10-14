@@ -20,11 +20,8 @@ public class RoomController {
 	private PlayStateController play;
 	//quante righe e quante colonne ha la stanza
 	private int rowRoom, colRoom;
-	
+	//ogni stanza ha un suo pathfinder con le dimensioni della stanza
 	private PathFinder pathFinder;
-
-
-	
 	
 	public RoomController(PlayStateController p, int righe, int colonne) {
 		play = p;
@@ -33,21 +30,18 @@ public class RoomController {
 		
 		rowRoom = righe;
 		colRoom = colonne;
-		
 		pathFinder = new PathFinder(play, rowRoom, colRoom);
-
 
 	}
 
 	public void update(float playerX, float playerY) {
 				
-		for(int i = 0; i < NPC.size(); i++) {
+		for(int i = 0; i < NPC.size(); i++) 
 			NPC.get(i).update(playerX, playerY);
-		}
 		
-		for(int i = 0; i < enemy.size(); i++) {
+		for(int i = 0; i < enemy.size(); i++) 
 			enemy.get(i).update(playerX, playerY);
-		}
+		
 	}
 	
 	public ArrayList<EnemyController> getEnemy(){
@@ -58,15 +52,6 @@ public class RoomController {
 		return NPC;
 	}
 	
-	public void printData() {
-		for(EntityController n :enemy) 
-			System.out.println(n.toString());
-			
-		for(EntityController a : NPC) 
-			System.out.println(a.toString());	
-		
-	}
-
 	public void addEnemy(String type, int xPos, int yPos) {
 		if(type.compareTo("robot") == 0) 	
 			enemy.add(new RobotController(enemy.size(), type, xPos, yPos, play));
@@ -92,7 +77,7 @@ public class RoomController {
 
 	public void addNPC(String type, int xPos, int yPos) {
 		
-		if(type.compareTo("gatto") == 0) 	//se la stringa dentro al file è uguale a "-gatto"
+		if(type.compareTo("gatto") == 0)
 			NPC.add(new CatController(NPC.size(), type, xPos, yPos, play));	
 		
 		else if(type.compareTo("vecchio") == 0) 
@@ -110,5 +95,14 @@ public class RoomController {
 	
 	public PathFinder getPathFinder() {
 		return pathFinder;
+	}
+	
+	public void printData() {
+		for(EntityController n :enemy) 
+			System.out.println(n.toString());
+			
+		for(EntityController a : NPC) 
+			System.out.println(a.toString());	
+		
 	}
 }

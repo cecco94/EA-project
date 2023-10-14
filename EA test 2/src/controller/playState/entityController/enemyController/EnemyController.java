@@ -100,5 +100,10 @@ public abstract class EnemyController extends EntityController{
 		return life;
 	}
 	
-
+	public boolean isHitted() {
+		if(currentState == HITTED)
+			return true;
+		else 
+			return false;
+	}
 }

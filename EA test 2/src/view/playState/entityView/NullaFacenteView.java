@@ -1,5 +1,6 @@
 package view.playState.entityView;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -14,11 +15,9 @@ import view.main.GamePanel;
 
 public class NullaFacenteView extends EntityView {
 	
-	//definiamo la costantre DIE = 3 per evitare il problema di out of bound 
-	//perchè sennò eredita da entity DIE = 5 mentre il nostro array delle azioni è lungo 4
-//	private final int DIE = 3;
 	private Rectangle lifeRect;
 	private boolean firstDeathSprite;
+	private int maxLifeWidth;
 
 	
 	public NullaFacenteView(IView v, int index) {
@@ -30,6 +29,8 @@ public class NullaFacenteView extends EntityView {
 		xOffset = (int)(0*GamePanel.SCALE); 
 		yOffset = (int)(0*GamePanel.SCALE); 
 		animationSpeed = 30;
+		
+		maxLifeWidth = animation[0][0][0][0].getWidth();
 		lifeRect = new Rectangle(0,0, animation[0][0][0][0].getWidth(), (int)(2*GamePanel.SCALE));
 			
 	}
@@ -93,7 +94,6 @@ public class NullaFacenteView extends EntityView {
 		
 	}
 	
-	
 	private void loadDieImages(BufferedImage image, BufferedImage temp) {
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream("/entity/nullafacente.png"));
@@ -122,7 +122,6 @@ public class NullaFacenteView extends EntityView {
 		animation[0][DIE][UP][1] = temp;
 
 	}
-	
 	
 	private void loadAttackImages(BufferedImage image, BufferedImage temp) {
 		try {
@@ -166,9 +165,11 @@ public class NullaFacenteView extends EntityView {
 			
 	}
 
-
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
+		if(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).isHitted())
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+		
 		animationCounter++;
 		setAction(this);
 		setDirection(this);
@@ -209,27 +210,39 @@ public class NullaFacenteView extends EntityView {
 						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().width,
 						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().height);
 
+			drawLife(g2);			
+
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 			a.printStackTrace();
 			System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
 		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+		
 	}
 	
-	private void setDyingAniIndex() {
-//		System.out.println("metodo chiamato");
-//		if(currentAction == EntityView.DIE)
-//			currentAction = DIE;
+	private void drawLife(Graphics2D g2) {
+		g2.setColor(Color.green);
+		lifeRect.x = xPosOnScreen;
+		lifeRect.y = yPosOnScreen - lifeRect.height;
 		
+		//la lunghezza del rettangolo deve essere proporzionale alla vita dell robot, la vita è già in percentuale
+		int life = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getLife();
+		lifeRect.width = life*maxLifeWidth/100;
+		
+		g2.fillRect(lifeRect.x, lifeRect.y, lifeRect.width, lifeRect.height);
+		
+	}
+	
+	private void setDyingAniIndex() {		
 		if(currentAction == DIE) {
 			if(firstDeathSprite) {
 				numSprite--;
 				firstDeathSprite = false;
 			}
-			else {
+			else 
 				numSprite = getAnimationLenght() - 1;
-			}
 		}
 		
 	}

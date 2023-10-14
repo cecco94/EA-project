@@ -32,8 +32,7 @@ public class PathFinder {
 		
 		for(int row = 0; row < roomRow; row++)
 			for(int col = 0; col < roomCol; col++)
-				graph[row][col] = new Node(row, col);
-		
+				graph[row][col] = new Node(row, col);	
 	}
 	
 	private void resetNodes() {
@@ -43,8 +42,11 @@ public class PathFinder {
 				graph[row][col].setInListOfNodesToExplore(false);
 				graph[row][col].setExplored(false);
 				graph[row][col].setSolid(false);
-			}
-		
+				
+				graph[row][col].setDistanceFromGoal(999);
+				graph[row][col].setDistanceFromStart(999);
+				graph[row][col].setCompleteDistance(999);
+			}	
 		nodesToExplore.clear();
 		pathList.clear();
 		goalReached = false;
@@ -55,11 +57,7 @@ public class PathFinder {
 		resetNodes();
 		
 		startNode = graph[startRow][startCol];
-		currentNode = startNode;
 		goalNode = graph[goalRow][goalCol];
-		
-		//all'inizio la lista contiene solo il nodo di partenza
-		nodesToExplore.add(currentNode);
 		
 		//setta il costo di tutti i nodi, saltando quelli fuori dalle mura
 		for(int row = 7; row < roomRow - 7; row++) {
@@ -72,9 +70,14 @@ public class PathFinder {
 				else 
 					setCostOfThisNode(graph[row][col]);
 				}
-
 			}
 		
+		startNode.setSolid(false);
+		setCostOfThisNode(startNode);
+		currentNode = startNode;
+		
+		//all'inizio la lista contiene solo il nodo di partenza
+		nodesToExplore.add(currentNode);
 	}
 
 	private void setCostOfThisNode(Node node) {
@@ -94,9 +97,8 @@ public class PathFinder {
 		setNodes(startCol, startRow, goalCol, goalRow);
 		
 		//se il nodo di arrivo non è valido, si ferma subito
-		if(graph[goalRow][goalCol].isSolid()) {
+		if(graph[goalRow][goalCol].isSolid()) 
 			return false;
-		}
 		
 		while(goalReached == false && steps < 300) {
 			
@@ -112,7 +114,6 @@ public class PathFinder {
 				trackThePath();
 			}
 			
-			//if there is no node to check and we aree not in the goal, there is no more to do
 			if(nodesToExplore.isEmpty())
 				return false;
 			
@@ -148,7 +149,7 @@ public class PathFinder {
 		int bestNodeIndex = 0;
 		int bestNodeCost = 999;
 		
-		if(nodesToExplore.size() >= 1) { 
+		if(nodesToExplore.size() > 0) { 
 			
 			for(int i = 0; i < nodesToExplore.size(); i++) {
 				//first, check the f cost
@@ -198,6 +199,8 @@ public class PathFinder {
 			System.out.println(pathList.get(i).getColInGraph() + ", " + pathList.get(i).getRowInGraph());
 		}
 		System.out.println("-----------------------------------------");
+		System.out.println("startcol " + startNode.getColInGraph() + " startrow " +startNode.getRowInGraph() + " node solid " + startNode.isSolid());
+		System.out.println("cost of start node " + startNode.getCompleteDistance());
 //		for(int row = 0; row < roomRow; row++) {
 //			for(int col = 0; col < roomCol; col++) {
 //				System.out.print(graph[row][col].getDistanceFromStart() + "   " );

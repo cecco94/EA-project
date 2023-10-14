@@ -189,68 +189,47 @@ public class Collisions {
 		}
 		
 		//infine controlla anche se collide col player
-		if(hitboxEntity.intersects(control.getPlay().getPlayer().getHitbox())) {
-			numCollision++;			
-		}		
+		if(hitboxEntity.intersects(control.getPlay().getPlayer().getHitbox())) 
+			numCollision++;				
 		
 		//se il numero di collisioni è uno, vuol dire che l'entità collide solo con se stessa quindi va bene
 		//altrimenti vuol dire che collide
-		if(numCollision > 1) {
+		if(numCollision > 1) 
 			return true;
-		}
 		
 		return false;
 	}
 	
-	//metodo usato dai proiettili per vedere se ha colpito qualcuno
+	//metodo usato dai proiettili per vedere se hanno colpito qualcuno
 	public EntityController bulletHittedEntity(Hitbox hitboxEntity, EntityController owner) {
 		int roomIndex = control.getPlay().getCurrentroomIndex();
-	//	int numCollision = 0;
 		EntityController target = null;
 		
 		ArrayList<EntityController> npc = control.getPlay().getRoom(roomIndex).getNPC();
 		for(int i = 0; i < npc.size(); i++) {
 			if(hitboxEntity.intersects(npc.get(i).getHitbox()))
-				if(npc.get(i) != owner)	{	//se colpisce chi ha lanciato il proiettile non succede nulla
-			//		numCollision++;
-					target = npc.get(i);
-				}
+				if(npc.get(i) != owner)		
+					target = npc.get(i);	
 		}
 		
 		ArrayList<EnemyController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
 		for(int i = 0; i < enemy.size(); i++) {
 			if(hitboxEntity.intersects(enemy.get(i).getHitbox()))
-				if(enemy.get(i) != owner) {
-			//		numCollision++;
+				if(enemy.get(i) != owner) 
 					target = enemy.get(i);
-				}
 		}	
 		
 		if(hitboxEntity.intersects(control.getPlay().getPlayer().getHitbox())) 
-			if(control.getPlay().getPlayer() != owner) {
-		//		numCollision++;
+			if(control.getPlay().getPlayer() != owner) 
 				target = control.getPlay().getPlayer();
-			}
 		
 		return target;
-		
-//		if(numCollision > 0) {
-//			return true;
-//		}
-//		
-//		return false;
 	}
 		
 	//usato quando il giocatore attacca, ritorna il nemico colpito
 	public EnemyController isCollisionDuringPlayerAttack(Hitbox attackHitbox) {
 		int roomIndex = control.getPlay().getCurrentroomIndex();
 		EnemyController target = null;
-		
-//		ArrayList<EntityController> npc = control.getPlay().getRoom(roomIndex).getNPC();
-//		for(int i = 0; i < npc.size(); i++) {
-//			if(attackHitbox.intersects(npc.get(i).getHitbox()))
-//				target = npc.get(i);
-//		}
 		
 		ArrayList<EnemyController> enemy = control.getPlay().getRoom(roomIndex).getEnemy();
 		for(int i = 0; i < enemy.size(); i++) {

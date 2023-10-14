@@ -109,9 +109,7 @@ public class RobotView extends EntityView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
-		//questo è da cambiare, c'è un numero magico
-		int state = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrenState();
-		if(state == 5)
+		if(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).isHitted())
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 		
 		animationCounter++;
@@ -153,18 +151,14 @@ public class RobotView extends EntityView {
 						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox().width,
 						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox().height);
 
-
-
-			drawLife(g2);
-			
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-			
+			drawLife(g2);			
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 			a.printStackTrace();
 		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
-		
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
+
 	}
 
 	private void drawLife(Graphics2D g2) {
