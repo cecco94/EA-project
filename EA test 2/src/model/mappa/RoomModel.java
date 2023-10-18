@@ -50,7 +50,7 @@ public class RoomModel {
 						int xPos = Integer.parseInt(datiNellaRiga[2]);
 						int yPos = Integer.parseInt(datiNellaRiga[3]);
 						
-						model.getController().getPlay().getRoom(index).addEnemy(type, xPos, yPos);
+						model.getController().addEnemy(index, xPos, yPos, type);
 					}
 					
 					else if(rigaLetta.contains("-")) {		//il trattino indica npc
@@ -59,7 +59,7 @@ public class RoomModel {
 						int xPos = Integer.parseInt(datiNellaRiga[2]);
 						int yPos = Integer.parseInt(datiNellaRiga[3]);
 
-						model.getController().getPlay().getRoom(index).addNPC(type, xPos, yPos);
+						model.getController().addNPC(index, xPos, yPos, type);
 						//sarebbe bello aggiungere qui anche le roomview, ma la view viene inizializzata dopo
 					}
 					

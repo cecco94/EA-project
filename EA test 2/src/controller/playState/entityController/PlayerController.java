@@ -5,7 +5,7 @@ import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.enemyController.EnemyController;
 
-public class PlayerController extends EntityController {
+public class PlayerController extends EnemyController {
 
 	public static final int INTERACT = 10;
 	private int RAGAZZO = 0 , RAGAZZA = 1;
@@ -17,7 +17,7 @@ public class PlayerController extends EntityController {
 	
 	//il giocatore ha dei booleani per descrivere il suo stato perchè può fare più cose contemporaneamente e può muoversi in più
 	//direzioni allo stesso tempo. gli npc per semplicità non possono farlo
-	private boolean parry, throwing, interacting, moving, idle, attacking, giaStatoColpito, up, down, left, right;
+	private boolean parry, throwing, interacting, moving, idle, attacking, hitted, up, down, left, right;
 	
 	//ci servono per non far iniziare un'altra animazione durante l'attacco
 	private boolean isAttackAnimation;
@@ -65,16 +65,16 @@ public class PlayerController extends EntityController {
 		isAbovePassage();
 		isNearEvent();
 		
-		countaDopoEssereColpito();
+		waitAfterHitted();
 	}
 
-	private void countaDopoEssereColpito() {
-		//mettiamo questo counter per evitare che il player muoia dopo una raffica di colpi super veloci
-		if(giaStatoColpito) {
+	//mettiamo questo counter per evitare che il player muoia dopo una raffica di colpi super veloci
+	private void waitAfterHitted() {
+		if(hitted) {
 			hittedcounter++;
 			if(hittedcounter >= 100) {
 				hittedcounter = 0;
-				giaStatoColpito = false;
+				hitted = false;
 			}
 		}
 	}
@@ -216,11 +216,11 @@ public class PlayerController extends EntityController {
 	
 	public void setMoving(boolean m) {
 		moving = m;
-}
+	}
 		
 	public boolean isMoving() {
-	return moving;
-}
+		return moving;
+	}
 	
 	public void isAbovePassage() {
 		// il player vede in che stanza è, vede la lista dei passaggi, e li controlla tutti
@@ -275,20 +275,20 @@ public class PlayerController extends EntityController {
 	public void hitted(int damage, int direction) {		
 		//se si para nella giusta direzione non subisce danni
 		if(isParring()) {
-			if(direction == UP && isDown() || direction == DOWN && isUp() || 
-			   direction == LEFT && isRight() || direction == RIGHT && isLeft()) {
+			if((direction == UP && isDown()) || (direction == DOWN && isUp()) || 
+			   (direction == LEFT && isRight()) || (direction == RIGHT && isLeft())) {
 					damage = 0;
 			}
 		}
 		//se è stato colpito recentemente, il danno non c'è
-		else if(giaStatoColpito == true) {
+		else if(hitted == true) {
 			damage = 0;
 		}
 		
 		else {
-			giaStatoColpito = true;
+			hitted = true;
 			int realDamage = damage - defense;
-			if(realDamage > 0) 
+			if(realDamage > 0 && realDamage < 100) 
 				life -= realDamage;	
 		}
 		
@@ -296,42 +296,7 @@ public class PlayerController extends EntityController {
 		
 	}
 
-	private void moveToTheDirectionOfHit(int direction) {
-		//quando viene colpito, si sposta leggermente nella direzione del colpo
-		if(direction == UP) {
-			tempHitboxForCheck.x = hitbox.x;
-			tempHitboxForCheck.y = hitbox.y - 2*speed;
-			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck) &&
-			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.y = tempHitboxForCheck.y;
-		}
-		
-		else if(direction == DOWN) {
-			tempHitboxForCheck.x = hitbox.x;
-			tempHitboxForCheck.y = hitbox.y + 2*speed;
-			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck) &&
-			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.y = tempHitboxForCheck.y;
-		}
-		
-		else if (direction == RIGHT) {
-			tempHitboxForCheck.y = hitbox.y;
-			tempHitboxForCheck.x = hitbox.x + 2*speed;
-			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck) &&
-			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.x = tempHitboxForCheck.x;
-		}
-		
-		else if (direction == LEFT) {
-			tempHitboxForCheck.y = hitbox.y;
-			tempHitboxForCheck.x = hitbox.x - 2*speed;
-			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck) &&
-			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
-				hitbox.x = tempHitboxForCheck.x;
-		}
-		
-	}
-
+	
 	public void setParry(boolean b) {
 		parry = b;	
 	}

@@ -1,12 +1,15 @@
 package view;
 
 
+import java.io.IOException;
 import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SoundManager {
 	//il volume è un numero da 0 a 1
@@ -45,7 +48,19 @@ public class SoundManager {
 			music = AudioSystem.getClip();
 			music.open(ais);
 		}
-		catch(Exception e) {
+		catch(LineUnavailableException e) {
+			e.printStackTrace();
+			music.close();
+			System.out.println("problemi gravi con la musica");
+		} 
+		catch (IOException e) {
+			music.close();
+			System.out.println("problemi gravi con la musica");
+			e.printStackTrace();
+		} 
+		catch (UnsupportedAudioFileException e) {
+			music.close();
+			System.out.println("problemi gravi con la musica");
 			e.printStackTrace();
 		}
 	}
@@ -57,7 +72,19 @@ public class SoundManager {
 			soundEffect = AudioSystem.getClip();
 			soundEffect.open(ais);
 		}
-		catch(Exception e) {
+		catch(LineUnavailableException e) {
+			e.printStackTrace();
+			soundEffect.close();
+			System.out.println("problemi gravi col sound effect");
+		} 
+		catch (IOException e) {
+			soundEffect.close();
+			System.out.println("problemi gravi col sound effect");
+			e.printStackTrace();
+		} 
+		catch (UnsupportedAudioFileException e) {
+			soundEffect.close();
+			System.out.println("problemi gravi col sound effect");
 			e.printStackTrace();
 		}
 	}
@@ -107,19 +134,25 @@ public class SoundManager {
 	
 	// metodo che funziona bene
 	public void setMusicVolume(float v) {
-	    if (v > 0f && v < 1f) {
-			this.musicVolume = v;
-	    	
-	    	FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);   
-	    	
-	    	float controlValue = 20f * (float) Math.log10(v); // siccome il suono è in decibel, bisogna convertirlo in lineare
-	    	
-	    	if(controlValue > -80)		//per controllo, sennò viene un numero troppo basso
-	    		gainControl.setValue(controlValue);	
-	    	
-	    	if(v < 0.015f)
-	    		gainControl.setValue(gainControl.getMinimum());
-	    }
+		try {
+			if (v > 0f && v < 1f) {
+				this.musicVolume = v;
+		    	
+		    	FloatControl gainControl = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);   
+		    	
+		    	float controlValue = 20f * (float) Math.log10(v); // siccome il suono è in decibel, bisogna convertirlo in lineare
+		    	
+		    	if(controlValue > -80)		//per controllo, sennò viene un numero troppo basso
+		    		gainControl.setValue(controlValue);	
+		    	
+		    	if(v < 0.015f)
+		    		gainControl.setValue(gainControl.getMinimum());
+		    }
+		}
+		catch(IllegalArgumentException iae) {
+    		iae.printStackTrace();
+    		System.out.println("problemi con il volume della musica");
+    	}
 	}
 
 	public float getMusicVolume() {

@@ -31,14 +31,14 @@ public class RoomView {
 	
 	private void getDataFromController(int roomIndex) {
 		
-		int temp = play.getView().getController().getPlay().getRoom(roomIndex).getNPC().size();
+		int temp = play.getView().getController().getNumberOfNpcInRoom(roomIndex);
 		for(int index = 0; index < temp; index++) {
-			addNPC(play.getView().getController().getPlay().getRoom(roomIndex).getNPC().get(index).getType(), index);
+			addNPC(play.getView().getController().getNpcType(roomIndex, index), index);
 		}
 		
-		int temp2 = play.getView().getController().getPlay().getRoom(roomIndex).getEnemy().size();
+		int temp2 = play.getView().getController().getNumberOfEnemiesInRoom(roomIndex);
 		for(int index = 0; index < temp2; index++) {
-			addEnemy(play.getView().getController().getPlay().getRoom(roomIndex).getEnemy().get(index).getType(), index);
+			addEnemy(play.getView().getController().getEnemyType(roomIndex, index), index);
 		}
 	}
 

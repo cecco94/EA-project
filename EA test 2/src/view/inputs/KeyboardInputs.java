@@ -50,16 +50,16 @@ public class KeyboardInputs implements KeyListener {
 				view.getController().getPlay().stopPlayerAttacking();
 				break;
 			case KeyEvent.VK_SPACE:
-				view.getController().getPlay().stopPlayerParring();
+				view.getController().stopPlayerParring();
 				break;
 			case KeyEvent.VK_P:
-				view.getController().getPlay().stopPlayerThrowing();
+				view.getController().stopPlayerThrowing();
 				break;
 			case KeyEvent.VK_E:
-				view.getController().getPlay().stopPlayerInteracting();
+				view.getController().stopPlayerInteracting();
 				break;	
 			default:
-				view.getController().getPlay().getPlayer().resetDirection(getActionAssociatedToKey(e));
+				view.getController().resetPlayerDirection(getActionAssociatedToKey(e));
 				break;
 		}
 	}
@@ -102,22 +102,25 @@ public class KeyboardInputs implements KeyListener {
 			case PLAYING:
 				handleKeypressedDuringPlayState(e);
 				break;
+				
 			case PAUSE:
 				view.getPause().keyPressed(e.getKeyCode());
 				break;
+				
 			case DIALOGUE:
 				if(e.getKeyCode() == KeyEvent.VK_ESCAPE ||
 				   e.getKeyCode() == KeyEvent.VK_D || e.getKeyCode() == KeyEvent.VK_A ||
 				   e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_W) {
 					
 					view.changeGameState(Gamestate.PLAYING);
-					view.getController().getPlay().getPlayer().resetBooleans();
+					view.getController().resetPlayerBooleans();
 				}
 				else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					int index = view.getController().getPlay().getPlayer().getIndexOfEntityInteract();
+					int index = view.getController().getIndexOfInteractingEntity();
 					view.getPlay().getRoom(view.getCurrentRoomIndex()).getNPC(index).nextDialogueLine();
 				}
 				break;
+				
 			default:
 				break;
 		}
@@ -126,22 +129,22 @@ public class KeyboardInputs implements KeyListener {
 	private void handleKeypressedDuringPlayState(KeyEvent e) {
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_ENTER:
-				view.getController().getPlay().startPlayerAttacking();
+				view.getController().startPlayerAttack();
 				break;
 			case KeyEvent.VK_SPACE:
-				view.getController().getPlay().startPlayerParring();
+				view.getController().startPlayerParry();
 				break;
 			case KeyEvent.VK_ESCAPE:
-				view.getController().getPlay().goToPauseState();
+				view.getController().goToPauseState();
 				break;
 			case KeyEvent.VK_P:
-				view.getController().getPlay().startPlayerThrowing();
+				view.getController().startPlayerThrow();
 				break;
 			case KeyEvent.VK_E:
-				view.getController().getPlay().startPlayerInteract();
+				view.getController().startPlayerInteract();
 				break;	
 			default:
-				view.getController().getPlay().getPlayer().choiceDirection(getActionAssociatedToKey(e));
+				view.getController().changePlayerDirection(getActionAssociatedToKey(e));
 				break;
 		}
 		

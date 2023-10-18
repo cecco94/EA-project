@@ -57,7 +57,7 @@ public class BulletController {
 				}
 			}
 			
-			play.getController().getView().getPlay().removeBullet(indexInList);
+			play.getController().getView().removeBulletView(indexInList);
 			play.removeBullets(indexInList);
 		}		
 		
@@ -123,7 +123,7 @@ public class BulletController {
 			}		
 		}
 		catch(ArrayIndexOutOfBoundsException obe) {
-			play.getController().getView().getPlay().removeBullet(indexInList);
+			play.getController().getView().removeBulletView(indexInList);
 			play.removeBullets(indexInList);
 			System.out.println("fuori dai bordi");
 		}
@@ -148,7 +148,7 @@ public class BulletController {
 		//il proiettile dopo qualche metro si ferma
 		distanzaPercorsa += speed; 
 		if(distanzaPercorsa >= 3*play.getController().getTileSize()) {
-			play.getController().getView().getPlay().removeBullet(indexInList);
+			play.getController().getView().removeBulletView(indexInList);
 			play.removeBullets(indexInList);
 		}
 			

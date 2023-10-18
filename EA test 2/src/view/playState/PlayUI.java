@@ -24,6 +24,7 @@ public class PlayUI {
 	private int yPosPlayerData = (int)(5*GamePanel.SCALE);
 	private int xPosPlayerData = (int)(20*GamePanel.SCALE);
 	
+	//questi servono per disegnare il dormitorio buio... si può fare di meglio
 	private boolean dark = true;
 	private final int DORMITORIO = 1;
 	
@@ -120,7 +121,7 @@ public class PlayUI {
 	}
 	
 	private void drawPoints(Graphics2D g2, String s) {
-		int cfu = play.getView().getController().getPlay().getPlayer().getCfu();
+		int cfu = play.getView().getController().getPlayerCfu();
 		s = "" + cfu;
 
 		xPosPlayerData = GamePanel.GAME_WIDTH - cfuIcon.getWidth() - (int)(60*GamePanel.SCALE);
@@ -131,7 +132,7 @@ public class PlayUI {
 	}
 
 	private void drawNotes(Graphics2D g2, String s) {
-		int notes = play.getView().getController().getPlay().getPlayer().getNotes();
+		int notes = play.getView().getController().getPlayerNotes();
 		s = "" + notes;
 
 		xPosPlayerData = ViewUtils.getCenteredXPos(noteIcon.getWidth());
@@ -203,7 +204,7 @@ public class PlayUI {
 						   GamePanel.GAME_WIDTH - (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/4 - (int)(10*GamePanel.SCALE), 30, 30);
 		
 		//prende l'indice dell'npc con cui parla il player, va nella stanza e prende quell'npc, prende le stringhe di dialogo da lì, poi le disegna
-		int index = play.getView().getController().getPlay().getPlayer().getIndexOfEntityInteract();
+		int index = play.getView().getController().getIndexOfInteractingEntity();
 		String text = play.getRoom(play.getView().getCurrentRoomIndex()).getNPC(index).getCurrentDialogue();
 		g2.setFont(fontDisplay);
 		

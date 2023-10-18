@@ -40,7 +40,6 @@ public class SplashScreenGame extends JFrame implements Runnable {
 	@Override
 	public void run() {
 		createAndShowGUI();
-	//	System.out.println("thread dove si mostra splash screen " + Thread.currentThread().getId());
 	}
 
 	private void createAndShowGUI() {
@@ -79,7 +78,6 @@ public class SplashScreenGame extends JFrame implements Runnable {
 	}
 	
 	public void showProgress(int i) {
-	//	System.out.println("thread di modifica barra " + Thread.currentThread().getId());
 	    progressBar.setValue(i);
 	}
 }

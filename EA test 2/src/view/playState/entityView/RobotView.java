@@ -109,7 +109,7 @@ public class RobotView extends EntityView {
 	@Override
 	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
 		
-		if(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).isHitted())
+		if(view.getController().isEnemyHitted(index))
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
 		
 		animationCounter++;
@@ -139,24 +139,12 @@ public class RobotView extends EntityView {
 				
 		try {
 			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
-			
-			//quadrato dove viene disegnato il gatto
-			g2.setColor(Color.red);
-			g2.drawRect(xPosOnScreen, yPosOnScreen, (int)(16*GamePanel.SCALE*1.8f), (int)(24*GamePanel.SCALE*1.8f));
-			
-			//quadrato della hitbox
-			g2.setColor(Color.black);
-			g2.drawRect(xPosOnScreen + 3*xOffset,
-						yPosOnScreen + 3*yOffset,
-						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox().width,
-						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox().height);
-
 			drawLife(g2);			
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 			a.printStackTrace();
-		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
+		
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
 
 	}
@@ -167,7 +155,7 @@ public class RobotView extends EntityView {
 		lifeRect.y = yPosOnScreen - lifeRect.height;
 		
 		//la lunghezza del rettangolo deve essere proporzionale alla vita dell robot, la vita è già in percentuale
-		int life = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getLife();
+		int life = view.getController().getEnemyLife(index);
 		lifeRect.width = life*maxLifeWidth/100;
 		
 		g2.fillRect(lifeRect.x, lifeRect.y, lifeRect.width, lifeRect.height);
@@ -193,9 +181,8 @@ public class RobotView extends EntityView {
 				numSprite--;
 				firstDeathSprite = false;
 			}
-			else {
+			else 
 				numSprite = getAnimationLenght() - 1;
-			}
 		}
 		
 	}

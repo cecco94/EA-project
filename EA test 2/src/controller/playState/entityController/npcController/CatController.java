@@ -26,42 +26,41 @@ public class CatController extends EntityController {
 	
 	public void update(float playerX, float playerY) {
 		
-//		switch(currentState) {
-//		//quando è tranquillo controlla se il giovìcatore è vicino, in caso affermativo inizia a scappare, altrimenti si muove a caso
-//		case NORMAL_STATE:	
-//			
-//			float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
-//			float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
-//			if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) 
-//				currentState = CHOSE_DIRECTION;		
-//			else 
-//				randomMove();
-//			break;
-//			
-//		//se il giocatore è vicino, sceglie una direzione dove scappare e aumenta la velocità
-//		case CHOSE_DIRECTION:	 
-//			setRunAwayDirection();
-//			speed = play.getController().getGameScale()*1.5f;
-//			currentState = RUNNING;
-//			break;
-//			
-//		//corre per mezzo secondo nella direzione scelta
-//		case RUNNING:	
-//			handleRunningState();
-//			break;
-//			
-//		//se è catturato, puoi parlarci
-//		case CAUGHT:
-//			handleCaughtState();
-//			break;	
-//			
-//		}
+		switch(currentState) {
+		//quando è tranquillo controlla se il giovìcatore è vicino, in caso affermativo inizia a scappare, altrimenti si muove a caso
+		case NORMAL_STATE:	
+			
+			float xDistance = Math.abs(hitbox.x - play.getPlayer().getHitbox().x);
+			float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
+			if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) 
+				currentState = CHOSE_DIRECTION;		
+			else 
+				randomMove();
+			break;
+			
+		//se il giocatore è vicino, sceglie una direzione dove scappare e aumenta la velocità
+		case CHOSE_DIRECTION:	 
+			setRunAwayDirection();
+			speed = play.getController().getGameScale()*1.5f;
+			currentState = RUNNING;
+			break;
+			
+		//corre per mezzo secondo nella direzione scelta
+		case RUNNING:	
+			handleRunningState();
+			break;
+			
+		//se è catturato, puoi parlarci
+		case CAUGHT:
+			handleCaughtState();
+			break;	
+			
+		}
 		
 	}
 
 	private void handleCaughtState() {
-		play.getController().getView().getPlay().getUI().setMessage("premi E per parlare");
-		play.getController().getView().getPlay().getUI().setShowMessage(true);
+		play.getController().getView().setMessageToShowInUI("premi E per parlare");
 		
 		if(play.getPlayer().isInteracting()) {		
 			tunrToInteract();
@@ -70,8 +69,7 @@ public class CatController extends EntityController {
 			if(hardDisk) {
 				hardDisk = false;
 				play.getPlayer().addCFU(30);
-				play.getController().getView().getPlay().getUI().setMessage("hai trovato l'hard disk del nerd, quest completata!");
-				play.getController().getView().getPlay().getUI().setShowMessage(true);
+				play.getController().getView().setMessageToShowInUI("hai trovato l'hard disk del nerd, quest completata!");
 			}
 		}
 		

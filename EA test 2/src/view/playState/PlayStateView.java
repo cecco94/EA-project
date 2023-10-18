@@ -17,7 +17,6 @@ import view.playState.entityView.PlayerView;
 
 import view.playState.mappaView.TilesetView;
 import view.playState.entityView.BulletView;
-import view.playState.entityView.NullaFacenteView;
 
 //si occuperà di disegnare tutto ciò che si trova nello stato play
 public class PlayStateView {
@@ -59,10 +58,12 @@ public class PlayStateView {
 	//ad un tile sembri stare davanti a quel tile e viceversa. stiamo aggiungendo tridimensionalità al gioco
 	public void draw(Graphics2D g2) {
 		int roomIndex = view.getCurrentRoomIndex();
+		
 		//prendiamo la posizione del player nella mappa (in quale tile tile si trova il punto in alto a sinitra della hitbox)
 		//contiamo a sinistra -10 e a destra +10, in su -7 e in giù +7 e prendiamo solo le parti della matrice con questi numeri
-		int playerMapX = (int)view.getController().getPlay().getPlayer().getHitbox().x;
-		int playerMapY = (int)view.getController().getPlay().getPlayer().getHitbox().y;
+		int playerMapX = (int)view.getController().getPlayerHitbox().x;
+		int playerMapY = (int)view.getController().getPlayerHitbox().y;
+		
 		//da dove iniziare a prendere i numeri della mappa nelle matrici
 		int firstTileInFrameCol = playerMapX/GamePanel.TILES_SIZE - 10;
 		int firstTileInFrameRow = playerMapY/GamePanel.TILES_SIZE - 8;
@@ -121,7 +122,7 @@ public class PlayStateView {
 							
 					BufferedImage tileToDraw = tileset.getTile(tileNumber).getImage();
 					g2.drawImage(tileToDraw, xScreenTile, yScreenTile, null);
-					}
+				}
 			}			
 	}
 
@@ -149,27 +150,6 @@ public class PlayStateView {
 		
 		//aggiungiamo solo gli npc e i nemici nella stanza vicino al giocatore
 		roomsView[Rooms.currentRoom.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-		
-//		switch(Rooms.currentRoom) {
-//		case AULA_STUDIO:
-//			roomsView[Rooms.AULA_STUDIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-//			break;
-//		case BIBLIOTECA:
-//			roomsView[Rooms.BIBLIOTECA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-//			break;
-//		case TENDA:
-//			roomsView[Rooms.TENDA.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-//			break;
-//		case LABORATORIO:
-//			roomsView[Rooms.LABORATORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-//			break;
-//		case STUDIO_PROF:
-//			roomsView[Rooms.STUDIO_PROF.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-//			break;
-//		case DORMITORIO:
-//			roomsView[Rooms.DORMITORIO.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
-//			break;
-//		}
 		
 		player.setMapPositionForSort(xPlayerPos, yPlayerPos);
 		drawOrder.add(player);

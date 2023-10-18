@@ -1,7 +1,5 @@
 package model.mappa.events;
 
-
-
 import controller.playState.Hitbox;
 import model.IModel;
 import view.SoundManager;
@@ -19,8 +17,7 @@ public class Notes extends Event {
 		model.getController().getPlay().getPlayer().addNotes();
 		
 		model.getView().playSE(SoundManager.APPUNTI);
-		model.getView().getPlay().getUI().setMessage(message);
-		model.getView().getPlay().getUI().setShowMessage(true);
+		model.getView().setMessageToShowInUI(message);
 		
 		endInteraction = true;
 	}

@@ -23,4 +23,4 @@ per gli NPC l'ordine è tipo posx posy
 
 -pupa, pupa, 36, 39
 
-/nullafacente, nullafacente, 10, 27
+/nullafacente, nullafacente, 11, 27

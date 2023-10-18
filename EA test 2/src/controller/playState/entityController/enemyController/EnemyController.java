@@ -38,16 +38,16 @@ public abstract class EnemyController extends EntityController{
 			timeOfBlockBeforeHitted = 100;
 		}
 		
-		allontanatiDopoColpito(direction);
+		moveToTheDirectionOfHit(direction);
 		
 		
 	}
 		
-	private void allontanatiDopoColpito(int direction) {
+	protected void moveToTheDirectionOfHit(int direction) {
 		//quando viene colpito, si sposta leggermente nella direzione del colpo
 		if(direction == UP) {
 			tempHitboxForCheck.x = hitbox.x;
-			tempHitboxForCheck.y = hitbox.y - velocitaAllontanamentoDopoColpo*speed;
+			tempHitboxForCheck.y = hitbox.y - 2*speed;
 			if(play.getCollisionChecker().canMoveUp(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.y = tempHitboxForCheck.y;
@@ -55,7 +55,7 @@ public abstract class EnemyController extends EntityController{
 		
 		else if(direction == DOWN) {
 			tempHitboxForCheck.x = hitbox.x;
-			tempHitboxForCheck.y = hitbox.y + velocitaAllontanamentoDopoColpo*speed;
+			tempHitboxForCheck.y = hitbox.y + 2*speed;
 			if(play.getCollisionChecker().canMoveDown(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.y = tempHitboxForCheck.y;
@@ -63,7 +63,7 @@ public abstract class EnemyController extends EntityController{
 		
 		else if (direction == RIGHT) {
 			tempHitboxForCheck.y = hitbox.y;
-			tempHitboxForCheck.x = hitbox.x + velocitaAllontanamentoDopoColpo*speed;
+			tempHitboxForCheck.x = hitbox.x + 2*speed;
 			if(play.getCollisionChecker().canMoveRight(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.x = tempHitboxForCheck.x;
@@ -71,16 +71,17 @@ public abstract class EnemyController extends EntityController{
 		
 		else if (direction == LEFT) {
 			tempHitboxForCheck.y = hitbox.y;
-			tempHitboxForCheck.x = hitbox.x - velocitaAllontanamentoDopoColpo*speed;
+			tempHitboxForCheck.x = hitbox.x - 2*speed;
 			if(play.getCollisionChecker().canMoveLeft(tempHitboxForCheck) &&
 			   !play.getCollisionChecker().isCollisionInEntityList(tempHitboxForCheck))
 				hitbox.x = tempHitboxForCheck.x;
 		}
-
+		
 	}
+
 	//il metodo rimuove dalla due liste (view e controller) il nemico di indicce indicato
 	public void die() {
-		play.getController().getView().getPlay().removeEnemy(index);
+		play.getController().getView().removeEnemy(index);
 		play.removeEnemy(index);
 	}
 	

@@ -4,7 +4,6 @@ package controller.playState;
 import java.util.ArrayList;
 
 import controller.IController;
-import controller.main.Gamestate;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
 import controller.playState.pathfinding.PathFinder;
@@ -68,11 +67,7 @@ public class PlayStateController {
 		playerController.resetBooleans();
 		
 		bulletsInRoom.clear();
-		controller.getView().getPlay().getBullets().clear();
-	}
-	
-	public void goToPauseState() {
-		controller.setGameState(Gamestate.PAUSE);
+		controller.getView().clearBulletView();
 	}
 	
 	public void startPlayerAttacking() {
@@ -86,7 +81,7 @@ public class PlayStateController {
 	
 	public void stopPlayerParring() {
 		playerController.setParry(false);
-		controller.getView().getPlay().getPlayer().resetParry();
+		controller.getView().resetPlayerParring();
 	}
 
 	public void startPlayerThrowing() {
@@ -95,10 +90,8 @@ public class PlayStateController {
 			if(playerController.getNotes() > 0) 
 				playerController.setThrowing(true);
 			
-			else {
-				controller.getView().getPlay().getUI().setMessage("appunti finiti");
-				controller.getView().getPlay().getUI().setShowMessage(true);
-			}
+			else 
+				controller.getView().setMessageToShowInUI("appunti finiti");
 		}
 	}
 	
@@ -109,7 +102,7 @@ public class PlayStateController {
 				playerController.decreaseBulletsNumber();
 				playerController.setThrowing(false);
 				addBullets(playerController);
-				controller.getView().getPlay().addBullet();
+				controller.getView().addBulletView();
 			}
 			
 		}
@@ -147,7 +140,7 @@ public class PlayStateController {
 		}
 		catch(IndexOutOfBoundsException iobe) {
 			bulletsInRoom.clear();
-			controller.getView().getPlay().getBullets().clear();
+			controller.getView().clearBulletView();
 			System.out.println("problemi appunti controller");
 		//	iobe.printStackTrace();
 		}

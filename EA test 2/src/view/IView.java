@@ -223,4 +223,32 @@ public class IView {
 		return Rooms.currentRoom.musicIndex;
 	}
 	
+	public void clearBulletView() {
+		play.getBullets().clear();
+	}
+	
+	public void resetPlayerParring() {
+		play.getPlayer().resetParry();
+	}
+	
+	public void setMessageToShowInUI(String text) {
+		play.getUI().setMessage(text);
+		play.getUI().setShowMessage(true);
+	}
+	
+	public void addBulletView() {
+		play.addBullet();
+	}
+	
+	public void removeBulletView(int index) {
+		play.removeBullet(index);
+	}
+	
+	public void drawExclamationAboveEnemy(int index) {
+		play.getUI().activeExclamation(index);
+	}
+	
+	public void removeEnemy(int index) {
+		play.removeEnemy(index);
+	}
 }

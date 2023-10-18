@@ -15,7 +15,7 @@ public class Map {
 	
 	
 	private String[] roomPath = {"/mappe/biblioteca.txt", "/mappe/dormitorio.txt",
-										"/mappe/aulaStudio.txt", "/mappe/tenda.txt", "/mappe/laboratorio.txt", "/mappe/studioProf.txt"};
+								 "/mappe/aulaStudio.txt", "/mappe/tenda.txt", "/mappe/laboratorio.txt", "/mappe/studioProf.txt"};
 	
 	public Map() {	
 		map = new int[ROOMS_NUMBERS][LAYERS_NUMBER][][];
@@ -60,37 +60,28 @@ public class Map {
 						
 						room[layerNumber][row][maxCol -1] = lastNumber;		//aggiunge l'ultimo
 					}
+					
 					else {	
 						for(int j = 0; j < maxCol; j++) 
 							room[layerNumber][row][j] = Integer.parseInt(numbersInLine[j]);
 					}
 					row++;
 				}
+				
 				else if(readLine.contains("/")) {		//serve per capire quando è finito lo strato
 					layerNumber++;
 					row = 0;
 				}
 			}	
-			br.close();	
-		//	printStanza(maxRow, maxCol, stanza);
 			
+			br.close();				
 			}
 		catch(Exception e) {
 			e.printStackTrace();			
 		}										
 		return room;
 	}
-		
-	/*public void printStanza(int maxRow, int maxCol, int[][][] stanza){			//for debugging
-		for(int strato = 0; strato < LAYERS_NUMBER; strato++) {		
-			for(int riga = 0; riga < maxRow; riga++) {
-				for(int colonna = 0; colonna < maxCol; colonna++) 
-					System.out.print(stanza[strato][riga][colonna] + " ");
-				System.out.println();						
-				}		
-			System.out.println();		
-		}
-	}*/
+
 
 	public int[][] getLayer(int stanza, int strato){
 		return map[stanza][strato];

@@ -30,7 +30,7 @@ public class NullaFacenteController extends EnemyController {
 		switch(currentState) {
 		case NORMAL_STATE:
 			if(xDistance < play.getController().getTileSize()*5 && yDistance < play.getController().getTileSize()*5) {
-				play.getController().getView().getPlay().getUI().activeExclamation(this.index);
+				play.getController().getView().drawExclamationAboveEnemy(index);
 				
 				if(xDistance <= play.getController().getTileSize() && yDistance <= play.getController().getTileSize())
 					currentState = PLAYER_IN_RANGE;

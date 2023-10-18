@@ -1,6 +1,5 @@
 package view.playState.entityView.npcview;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -170,27 +169,14 @@ public class CatView extends NPCView {
 		
 		try {
 			g2.drawImage(animation[color][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
-			
-			//quadrato dove viene disegnato il gatto
-			g2.setColor(Color.red);
-			g2.drawRect(xPosOnScreen, yPosOnScreen, 48, 48);
-			
-			//quadrato della hitbox
-			g2.setColor(Color.black);
-			g2.drawRect(xPosOnScreen + 3*xOffset,
-						yPosOnScreen + 3*yOffset,
-						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().width,
-						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().height);
-
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
 			a.printStackTrace();
-		//	System.out.println("azione " + currentAction + " direzione " + currentDirection+ " sprite " + numSprite);
 		}
 		
 	}
 
-	private int getAnimationLenght() {
+	protected int getAnimationLenght() {
 		if(currentAction == IDLE)
 			return 1;
 		

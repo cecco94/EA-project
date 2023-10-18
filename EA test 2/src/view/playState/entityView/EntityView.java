@@ -44,15 +44,16 @@ public abstract class EntityView extends SortableElement {
 		view = v;
 		this.index = index;
 	}
-	
+		
 	//controlla se l'oggetto è abbastanza vicino al giocatore da poter apparire sullo schermo
 	public boolean isInGameFrame(int posizPlayerX, int posizPlayerY, String type) {
 		//prende la hitbox dell'entità
 		Rectangle hitboxController = null;
+		
 		if(type.compareTo("npc") == 0)
-			hitboxController = IView.fromHitboxToRectangle(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox()); 
+			hitboxController = IView.fromHitboxToRectangle(view.getController().getNPCHitbox(index)); 
 		else
-			 hitboxController = IView.fromHitboxToRectangle(view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getHitbox()); 
+			 hitboxController = IView.fromHitboxToRectangle(view.getController().getEnemyHitbox(index)); 
 	
 		//controlla la distanza dal giocatore
 		if(Math.abs(hitboxController.x - posizPlayerX)  > GamePanel.GAME_WIDTH/2)
@@ -74,18 +75,17 @@ public abstract class EntityView extends SortableElement {
 	//vede nel controller la direzione dell'entità e cambia currentDirection
 	protected void setDirection(EntityView entity) {
 		if(entity.type.compareTo("npc") == 0)
-			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentDirection();
+			currentDirection = view.getController().getNpcDirection(index);
 		else
-			currentDirection = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentDirection();
-
+			currentDirection = view.getController().getEnemyDirection(index);
 	}
 	
 	//vede nel controller cosa fa l'entità e cambia currentAction
 	protected void setAction(EntityView entity) {
 		if(entity.type.compareTo("npc") == 0)
-			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getCurrentAction();
+			currentAction = view.getController().getNpcAction(index);
 		else
-			currentAction = view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getEnemy().get(index).getCurrentAction();
+			currentAction = view.getController().getEnemyAction(index);
 		
 		//questo ci serve perchè così quando cambia azione si resetta il contatore delle sprite
 		if(currentAction != previousAction) {

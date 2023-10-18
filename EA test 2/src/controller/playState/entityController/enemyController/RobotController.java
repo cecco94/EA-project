@@ -30,7 +30,7 @@ public class RobotController extends EnemyController {
 			float yDistance = Math.abs(hitbox.y - playerY);
 			
 			if(xDistance < play.getController().getTileSize()*6 && yDistance < play.getController().getTileSize()*6) {
-				play.getController().getView().getPlay().getUI().activeExclamation(index);
+				play.getController().getView().drawExclamationAboveEnemy(index);
 				searchPathToPlayer(playerX, playerY);
 			}
 			else 
@@ -63,7 +63,7 @@ public class RobotController extends EnemyController {
 			}
 			
 			else if(xDistance < play.getController().getTileSize()*6 && yDistance < play.getController().getTileSize()*6) {
-				play.getController().getView().getPlay().getUI().activeExclamation(index);
+				play.getController().getView().drawExclamationAboveEnemy(index);
 				searchPathToPlayer(playerX, playerY);
 			}
 			else 
@@ -87,8 +87,7 @@ public class RobotController extends EnemyController {
 				numberOfRobots--;
 			}
 			if(numberOfRobots <= 0) {
-				play.getController().getView().getPlay().getUI().setMessage("hai eliminato tutti i robot!");
-				play.getController().getView().getPlay().getUI().setShowMessage(true);
+				play.getController().getView().setMessageToShowInUI("hai eliminato tutti i robot!");
 				play.getPlayer().addCFU(60);
 			}
 			break;			
@@ -141,13 +140,13 @@ public class RobotController extends EnemyController {
 			if(playerCol == enemyCol) {
 				//spara up, down
 				play.addBullets(this);
-				play.getController().getView().getPlay().addBullet();
+				play.getController().getView().addBulletView();
 			}
 			
 			else if(playerRow == enemyRow) {
 				//spara di lato
 				play.addBullets(this);
-				play.getController().getView().getPlay().addBullet();
+				play.getController().getView().addBulletView();
 			}
 			
 			bulletCounter = 0;

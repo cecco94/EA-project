@@ -23,8 +23,8 @@ public class BulletView {
 	private int xOffset;
 	private int yOffset;
 	
-	int width;
-	int height;
+//	int width;
+//	int height;
 	
 	public BulletView(int index, IView v) {
 		this.index = index;
@@ -32,8 +32,8 @@ public class BulletView {
 		direction = v.getController().getPlay().getBulletsInRoom().get(index).getDirection();
 		animation = new BufferedImage[2];	//1 direzione, ciascuna con due immagini
 		loadAnimation();
-		width = view.getController().getPlay().getPlayer().getHitbox().width;
-		height  = view.getController().getPlay().getPlayer().getHitbox().height;
+//		width = view.getController().getPlay().getPlayer().getHitbox().width;
+//		height  = view.getController().getPlay().getPlayer().getHitbox().height;
 	}
 	
 	private void loadAnimation() {
@@ -102,19 +102,18 @@ public class BulletView {
 			counter = 0;
 		}
 		
-		try {
-			//decidiamo dove disegnarlo
-			int xposInMap = (int)view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().x;
-			int yposInMap = (int)view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().y;
-			
-			int distanzaX = playerx - xposInMap;
-			int distanzaY = playery - yposInMap;
-			
-			int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset + PlayerView.getXOffset();
-			int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset + PlayerView.getYOffset();
-			
+		//decidiamo dove disegnarlo
+		int xposInMap = (int)view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().x;
+		int yposInMap = (int)view.getController().getPlay().getBulletsInRoom().get(index).getHitbox().y;
+		
+		int distanzaX = playerx - xposInMap;
+		int distanzaY = playery - yposInMap;
+		
+		int xPosOnScreen = PlayerView.xOnScreen - distanzaX + xOffset + PlayerView.getXOffset();
+		int yPosOnScreen = PlayerView.yOnScreen - distanzaY + yOffset + PlayerView.getYOffset();
+		
+			try {
 			g2.drawImage(animation[animationIndex], xPosOnScreen, yPosOnScreen, null);
-			g2.drawRect(xPosOnScreen + xOffset, yPosOnScreen + yOffset, width, height);
 			
 		}
 		catch (IndexOutOfBoundsException obe) {

@@ -72,7 +72,7 @@ public class TransitionState {
 		
 		//se sta cambiando stanza
 		else if(next == Gamestate.PLAYING && prev == Gamestate.PLAYING) {
-			view.getController().getPlay().resumeGameAfterTransition();
+			view.getController().resumeGameAfterTransition();
 			view.playMusic(view.getCurrentRoomMusicIndex());
 			view.changeGameState(next);
 		}

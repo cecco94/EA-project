@@ -1,7 +1,6 @@
 package view.playState.entityView.npcview;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -10,7 +9,6 @@ import javax.imageio.ImageIO;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
-import view.playState.entityView.PlayerView;
 
 public class NerdView extends NPCView {
 	
@@ -80,56 +78,9 @@ public class NerdView extends NPCView {
 		dialogues[4] = "sto programmando un videogioco per una esame, \n ma un gatto mi ha rubato l'hard disk con il codice sorgente!";
 		dialogues[5] = "se lo trovi, portamenlo e \n condividerò con te la mia conoscenza nerdosa";
 		dialogues[6] = "uscirei io stesso a cercarlo, ma ci sono troppi \n esseri umani in giro per i miei gusti";
-
-		
-	}
-	@Override
-	public void draw(Graphics2D g2, int xPlayerMap, int yPlayerMap) {
-		
-		animationCounter++;
-		setAction(this);
-		setDirection(this);
-		
-		if (animationCounter > animationSpeed) {
-			numSprite ++;	
-			
-			if(numSprite >= getAnimationLenght())
-				numSprite = 0;	
-			
-			animationCounter = 0;
-		}
-		
-		//distanza nella mappa tra il punto in alto a sinistra della hitbox 
-		//del player ed il punto in alto a sinistra della hitbox del gatto
-		int distanceX = xPlayerMap - xPosMapForSort + xOffset;
-		int distanceY = yPlayerMap - yPosMapForSort + yOffset;
-		
-		//ci serve un offset perchè la distanza del gatto nella mappa rispetto al player è riferita al punto in
-		//alto a sinistra della hitbox. Per mantenere la stessa distanza, dobbiamo aggiungere questo offset
-		int xPosOnScreen = PlayerView.xOnScreen - distanceX - xOffset + PlayerView.getXOffset();
-		int yPosOnScreen = PlayerView.yOnScreen - distanceY - yOffset + PlayerView.getYOffset();
-		
-		try {
-			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
-			
-			//quadrato dove viene disegnato il gatto
-			g2.setColor(Color.red);
-			g2.drawRect(xPosOnScreen, yPosOnScreen, (int)(24*1.5), (int)(34*1.5));
-			
-			//quadrato della hitbox
-			g2.setColor(Color.black);
-			g2.drawRect(xPosOnScreen + 3*xOffset,
-						yPosOnScreen + 3*yOffset,
-						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().width,
-						view.getController().getPlay().getRoom(view.getCurrentRoomIndex()).getNPC().get(index).getHitbox().height);
-
-		}
-		catch (ArrayIndexOutOfBoundsException a) {
-			a.printStackTrace();
-		}
 	}
 	
-	private int getAnimationLenght() {
+	protected int getAnimationLenght() {
 		if(currentAction == IDLE)
 			return 1;
 		
