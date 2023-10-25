@@ -13,7 +13,7 @@ public class Light extends Event {
 	}
 
 	@Override
-	public void Interact() {
+	public void interact() {
 		model.getView().getPlay().getUI().setDark(false);
 		model.getView().getPlay().getUI().setMessage(message);
 		model.getView().getPlay().getUI().setShowMessage(true);

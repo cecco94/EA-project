@@ -27,7 +27,7 @@ public class PupaController extends EntityController {
 		float yDistance = Math.abs(hitbox.y - playerY);
 		
 		if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) {			
-			play.getController().getView().setMessageToShowInUI("premi E per parlare");
+			play.getController().getView().showMessageInUI("premi E per parlare");
 			
 			if(play.getPlayer().isInteracting()) {
 				tunrToInteract();

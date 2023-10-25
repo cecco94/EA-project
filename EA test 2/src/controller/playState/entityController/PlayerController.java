@@ -4,13 +4,12 @@ import controller.main.Gamestate;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.enemyController.EnemyController;
-import model.mappa.Rooms;
 
 public class PlayerController extends EnemyController {
 
 	public static final int INTERACT = 10;
 	private int RAGAZZO = 0 , RAGAZZA = 1;
-	private int attack, defense, life, cfu = 1, notes;
+	private int attack, defense, life, cfu = 180, notes;
 
 	//quando il player parla con qualcuno, si salva l'indice nella lista di quell'entità
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
@@ -162,6 +161,7 @@ public class PlayerController extends EnemyController {
 		setAttacking(false);
 		setParry(false);
 		setThrowing(false);
+		
 	}
 	
 	public Hitbox getHitbox() {
@@ -225,57 +225,22 @@ public class PlayerController extends EnemyController {
 	
 	public void isAbovePassage() {
 		// il player vede in che stanza è, vede la lista dei passaggi, e li controlla tutti
-		// se si trova su un passaggio, cambia mappa e posiz del player
 		int passageIndex = play.getController().getModel().checkPassagge(hitbox);
 		
-		if(passageIndex >= 0) {
-			if(play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).isOpen()) {
-				play.getController().getModel().saveNewRoomData();
-				resetBooleans();
-				idle = true;
-				currentAction = IDLE;
-				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
-				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
-				play.getController().setGameState(Gamestate.TRANSITION_STATE);	
-			}
-			else {
-//				if(cfu >= 180) {
-//					play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).setOpen(true);
-//					play.getController().getView().setMessageToShowInUI("passaggio aperto!");
-//				}
-//				else {
-					//se passaggio è chiuso, il passaggio stesso restituisce una stringa che viene stampata a video
-					String s = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).getMessage();
-					play.getController().getView().getPlay().getUI().setMessage(s);
-					play.getController().getView().getPlay().getUI().setShowMessage(true);
-//				}
-			}
-		}		
+		// se si trova su un passaggio e questo è aperto, cambia stanza e posiz del player
+		if(passageIndex >= 0) 	
+			play.getController().getModel().faiQuelloCHeDeviFareColPassaggio(passageIndex, cfu);
+				
 	}
 	
 	public void isNearEvent() {
 		//il player vede in che stanza è, vede la lista degli eventi, controlla se è vicino ad un evento.
-		//in caso positivo, deve apparire il messaggio. infine se preme E parte l'interazione
 		int eventIndex = play.getController().getModel().checkEvent(hitbox);
 		
-		if(eventIndex >= 0) {
-			if(Rooms.currentRoom != Rooms.STUDIO_PROF) {
-				boolean alreadyInteracted = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).isEndInteraction();
-				if(!alreadyInteracted) {
-					play.getController().getView().getPlay().getUI().setMessage("premi E per interagire");
-					play.getController().getView().getPlay().getUI().setShowMessage(true);
-					
-					if(interacting) {
-						play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).Interact();
-						interacting = false;
-					}
-				}
-				
-//				//non vogliamo che quando siamo davanti al prof, dobbiamo per forza premere E, lo fa in automatico
-//				else 
-//					play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).Interact();	
-			}
-		}
+		//in caso positivo, deve apparire il messaggio. infine se preme E parte l'interazione
+		if(eventIndex >= 0) 
+			play.getController().getModel().faiQuelloCHeDeviFareConEvento(eventIndex, interacting);		
+		
 	}
 	
 	public void speak(int index) {
@@ -442,6 +407,13 @@ public class PlayerController extends EnemyController {
 		if(target != null) 
 			target.hitted(attack, currentDirection, true);
 	}
+	
+	public void setPlayerActionInNewRoom() {
+		resetBooleans();
+		idle = true;
+		currentAction = IDLE;
+	}
+	
 }
 
 

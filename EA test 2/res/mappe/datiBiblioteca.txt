@@ -1,4 +1,7 @@
-;passaggio all'aula studio, 26, 9, 32, 32, 34, 8, 2, true
+per i passaggi l'ordine è posx posy larghezza altezza nuovax nuovay indiceStanza e cfu richiesti
+per gli NPC l'ordine è tipo posx posy 
+
+;passaggio all'aula studio, 26, 9, 32, 32, 34, 8, 2, 0
 
 -ermenegildo, vecchio, 17, 12
 

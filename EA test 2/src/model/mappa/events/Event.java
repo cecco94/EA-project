@@ -10,7 +10,7 @@ public abstract class Event {
 	protected Hitbox bounds;
 	protected IModel model;
 	protected String message;
-	protected boolean interact, endInteraction;
+	protected boolean endInteraction;
 	
 	
 	public Event(Hitbox r, IModel m) {
@@ -24,7 +24,7 @@ public abstract class Event {
 		bounds.height *= model.getController().getGameScale();
 	}
 	
-	public abstract void Interact();
+	public abstract void interact();
 	
 	public Hitbox getBounds() {
 		return bounds;

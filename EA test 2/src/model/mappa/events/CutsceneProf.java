@@ -12,7 +12,7 @@ public class CutsceneProf extends Event {
 	}
 
 	@Override
-	public void Interact() {
+	public void interact() {
 		model.getController().getPlay().getPlayer().setCfu(0);
 		model.getController().setGameState(Gamestate.BOSS_CUTSCENE);
 	}

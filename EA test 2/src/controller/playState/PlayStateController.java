@@ -4,6 +4,7 @@ package controller.playState;
 import java.util.ArrayList;
 
 import controller.IController;
+import controller.main.Gamestate;
 import controller.playState.entityController.EntityController;
 import controller.playState.entityController.PlayerController;
 import controller.playState.pathfinding.PathFinder;
@@ -91,7 +92,7 @@ public class PlayStateController {
 				playerController.setThrowing(true);
 			
 			else 
-				controller.getView().setMessageToShowInUI("appunti finiti");
+				controller.getView().showMessageInUI("appunti finiti");
 		}
 	}
 	
@@ -181,4 +182,14 @@ public class PlayStateController {
 	public int getTileSize() {
 		return controller.getTileSize();
 	}
+
+	//usato dalla classe player controller, quando si trova su un passaggio
+	public void handlePassageTransition() {
+		getController().getModel().saveNewRoomData();
+		getController().getView().getTransition().setPrev(Gamestate.PLAYING);
+		getController().setGameState(Gamestate.TRANSITION_STATE);		
+	}
+	
+	
+	
 }

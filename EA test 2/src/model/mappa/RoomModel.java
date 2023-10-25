@@ -19,7 +19,6 @@ public class RoomModel {
 	private ArrayList<Passage> passaggi;
 	private ArrayList<Event> eventi;
 	private IModel model;
-
 		
 		
 	public RoomModel(String percorsoFile, IModel m, int index) {
@@ -74,7 +73,7 @@ public class RoomModel {
 						
 						int newRoom = Integer.parseInt(datiNellaRiga[7]);
 						
-						boolean open = Boolean.parseBoolean(datiNellaRiga[8]);
+						int open = Integer.parseInt(datiNellaRiga[8]);
 						String s = "";
 						try {
 							s = datiNellaRiga[9];
@@ -83,7 +82,7 @@ public class RoomModel {
 							//se non c'è niente da scrivere l'array è più piccolo
 						}
 						
-						passaggi.add(new Passage(open, s,prewX, prewY, width, height, newX, newY, Rooms.getRoomLinkedToNumber(newRoom)));
+						passaggi.add(new Passage(model, open, s,prewX, prewY, width, height, newX, newY, Rooms.getRoomLinkedToNumber(newRoom)));
 					}	
 					
 					else if(rigaLetta.contains("+")) {		//il + indica eventi

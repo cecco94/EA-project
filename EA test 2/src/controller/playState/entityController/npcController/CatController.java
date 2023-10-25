@@ -60,7 +60,7 @@ public class CatController extends EntityController {
 	}
 
 	private void handleCaughtState() {
-		play.getController().getView().setMessageToShowInUI("premi E per parlare");
+		play.getController().getView().showMessageInUI("premi E per parlare");
 		
 		if(play.getPlayer().isInteracting()) {		
 			tunrToInteract();
@@ -69,7 +69,7 @@ public class CatController extends EntityController {
 			if(hardDisk) {
 				hardDisk = false;
 				play.getPlayer().addCFU(30);
-				play.getController().getView().setMessageToShowInUI("hai trovato l'hard disk del nerd, quest completata!");
+				play.getController().getView().showMessageInUI("hai trovato l'hard disk del nerd, quest completata!");
 			}
 		}
 		

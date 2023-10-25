@@ -13,11 +13,11 @@ public class Notes extends Event {
 	}
 
 	@Override
-	public void Interact() {
+	public void interact() {
 		model.getController().getPlay().getPlayer().addNotes();
 		
 		model.getView().playSE(SoundManager.APPUNTI);
-		model.getView().setMessageToShowInUI(message);
+		model.getView().showMessageInUI(message);
 		
 		endInteraction = true;
 	}

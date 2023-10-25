@@ -1,7 +1,5 @@
 package model;
 
-
-
 import controller.IController;
 import controller.playState.Hitbox;
 import model.mappa.Map;
@@ -54,9 +52,15 @@ public class IModel {
 	//	controller.getPlay().printMatriceEntita();
 	}
 	
+//	public boolean isPassageOpen(int passageIndex) {
+//		return getRoom(Rooms.currentRoom.mapIndex).getPassaggi().get(passageIndex).isOpen();
+//	}
+	
+	//siccome il model si crea prima del view, quando il view viene creato, il model aggiunge un riferimento al view
 	public void addView(IView v) {
 		view = v;
 	}
+	
 
 	public Map getMap() {
 		return map;
@@ -80,7 +84,7 @@ public class IModel {
 	public void saveNewRoomData() {
 		newXPos = rooms[Rooms.currentRoom.mapIndex].getPassaggi().get(indexCurrentPassage).getNextX();
 		newYPos = rooms[Rooms.currentRoom.mapIndex].getPassaggi().get(indexCurrentPassage).getNextY();
-		newRoom = rooms[Rooms.currentRoom.mapIndex].getPassaggi().get(indexCurrentPassage).getNewMap();
+		newRoom = rooms[Rooms.currentRoom.mapIndex].getPassaggi().get(indexCurrentPassage).getNextRoom();
 	}
 	
 	public void setNewRoom() {
@@ -117,6 +121,26 @@ public class IModel {
 	
 	public static float getGameScale() {
 		return GamePanel.SCALE;
+	}
+
+	//metodo richiamato dal player controller quando sta sopra un passaggio
+	public void faiQuelloCHeDeviFareColPassaggio(int passageIndex, int cfu) {
+		getRoom(Rooms.currentRoom.mapIndex).getPassaggi().get(passageIndex).handleRoomChanging(cfu);
+		
+	}
+
+	public void faiQuelloCHeDeviFareConEvento(int eventIndex, boolean isPlayerInteracting) {
+		
+		boolean alreadyInteracted = getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).isEndInteraction();
+		if(!alreadyInteracted) {
+			view.showMessageInUI("premi E per interagire");
+			
+			if(isPlayerInteracting) {
+				getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).interact();
+				controller.getPlay().getPlayer().setInteracting(false);
+			}
+			
+		}		
 	}
 	
 }

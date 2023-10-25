@@ -1,6 +1,9 @@
-;passaggio all'aula studio, 19, 25, 96, 32, 15, 8, 2, true
+per i passaggi l'ordine è posx posy larghezza altezza nuovax nuovay indiceStanza e cfu richiesti
+per gli NPC l'ordine è tipo posx posy 
 
-;passaggio allo studio prof, 14, 7, 32, 34, 26, 32, 5, false, non sei ancora degno di essere ricevuto dal prof
+;passaggio all'aula studio, 19, 25, 96, 32, 15, 8, 2, 0
+
+;passaggio allo studio prof, 14, 7, 32, 34, 26, 32, 5, 180, non sei ancora degno di essere ricevuto dal prof
 
 +caffe, 11, 19, 32, 32, caffe
 

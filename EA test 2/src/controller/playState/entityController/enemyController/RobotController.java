@@ -87,7 +87,7 @@ public class RobotController extends EnemyController {
 				numberOfRobots--;
 			}
 			if(numberOfRobots <= 0) {
-				play.getController().getView().setMessageToShowInUI("hai eliminato tutti i robot!");
+				play.getController().getView().showMessageInUI("hai eliminato tutti i robot!");
 				play.getPlayer().addCFU(60);
 			}
 			break;			

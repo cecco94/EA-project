@@ -14,7 +14,7 @@ public class Caffe extends Event{
 	}
 
 	@Override
-	public void Interact() {
+	public void interact() {
 		model.getController().getPlay().getPlayer().addLife();
 		
 		model.getView().playSE(SoundManager.CAFFE);

@@ -231,7 +231,7 @@ public class IView {
 		play.getPlayer().resetParry();
 	}
 	
-	public void setMessageToShowInUI(String text) {
+	public void showMessageInUI(String text) {
 		play.getUI().setMessage(text);
 		play.getUI().setShowMessage(true);
 	}
@@ -251,4 +251,5 @@ public class IView {
 	public void removeEnemy(int index) {
 		play.removeEnemy(index);
 	}
+	
 }

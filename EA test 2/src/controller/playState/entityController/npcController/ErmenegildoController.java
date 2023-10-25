@@ -27,7 +27,7 @@ public class ErmenegildoController extends EntityController {
 			float yDistance = Math.abs(hitbox.y - play.getPlayer().getHitbox().y);
 			
 			if(xDistance < play.getController().getTileSize()*1.5 && yDistance < play.getController().getTileSize()*1.5) {			
-				play.getController().getView().setMessageToShowInUI("premi E per parlare");
+				play.getController().getView().showMessageInUI("premi E per parlare");
 				
 				if(play.getPlayer().isInteracting()) {
 //					searchThePath(27, 9);
