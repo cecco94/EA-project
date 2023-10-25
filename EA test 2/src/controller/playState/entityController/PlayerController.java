@@ -4,12 +4,13 @@ import controller.main.Gamestate;
 import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.enemyController.EnemyController;
+import model.mappa.Rooms;
 
 public class PlayerController extends EnemyController {
 
 	public static final int INTERACT = 10;
 	private int RAGAZZO = 0 , RAGAZZA = 1;
-	private int attack, defense, life, cfu, notes;
+	private int attack, defense, life, cfu = 1, notes;
 
 	//quando il player parla con qualcuno, si salva l'indice nella lista di quell'entità
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
@@ -235,14 +236,19 @@ public class PlayerController extends EnemyController {
 				currentAction = IDLE;
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
 				play.getController().getView().getTransition().setPrev(Gamestate.PLAYING);
-				play.getController().setGameState(Gamestate.TRANSITION_STATE);
-				
+				play.getController().setGameState(Gamestate.TRANSITION_STATE);	
 			}
 			else {
-				//se passaggio è chiuso, il passaggio stesso restituisce una stringa che viene stampata a video
-				String s = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).getMessage();
-				play.getController().getView().getPlay().getUI().setMessage(s);
-				play.getController().getView().getPlay().getUI().setShowMessage(true);
+//				if(cfu >= 180) {
+//					play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).setOpen(true);
+//					play.getController().getView().setMessageToShowInUI("passaggio aperto!");
+//				}
+//				else {
+					//se passaggio è chiuso, il passaggio stesso restituisce una stringa che viene stampata a video
+					String s = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getPassaggi().get(passageIndex).getMessage();
+					play.getController().getView().getPlay().getUI().setMessage(s);
+					play.getController().getView().getPlay().getUI().setShowMessage(true);
+//				}
 			}
 		}		
 	}
@@ -253,15 +259,21 @@ public class PlayerController extends EnemyController {
 		int eventIndex = play.getController().getModel().checkEvent(hitbox);
 		
 		if(eventIndex >= 0) {
-			boolean alreadyInteracted = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).isEndInteraction();
-			if(!alreadyInteracted) {
-				play.getController().getView().getPlay().getUI().setMessage("premi E per interagire");
-				play.getController().getView().getPlay().getUI().setShowMessage(true);
-				
-				if(interacting) {
-					play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).Interact();
-					interacting = false;
+			if(Rooms.currentRoom != Rooms.STUDIO_PROF) {
+				boolean alreadyInteracted = play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).isEndInteraction();
+				if(!alreadyInteracted) {
+					play.getController().getView().getPlay().getUI().setMessage("premi E per interagire");
+					play.getController().getView().getPlay().getUI().setShowMessage(true);
+					
+					if(interacting) {
+						play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).Interact();
+						interacting = false;
+					}
 				}
+				
+//				//non vogliamo che quando siamo davanti al prof, dobbiamo per forza premere E, lo fa in automatico
+//				else 
+//					play.getController().getModel().getRoom(play.getCurrentroomIndex()).getEventi().get(eventIndex).Interact();	
 			}
 		}
 	}

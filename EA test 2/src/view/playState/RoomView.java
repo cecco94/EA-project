@@ -3,6 +3,7 @@ package view.playState;
 import java.util.ArrayList;
 
 import view.playState.drawOrder.SortableElement;
+import view.playState.entityView.BossView;
 import view.playState.entityView.EntityView;
 import view.playState.entityView.NullaFacenteView;
 import view.playState.entityView.RobotView;
@@ -49,6 +50,9 @@ public class RoomView {
 		
 		else if(type.compareTo("nullafacente") == 0) 
 			enemyViewList.add(new NullaFacenteView(play.getView(), index));
+		
+		else if(type.compareTo("boss") == 0) 
+			enemyViewList.add(new BossView(play.getView(), index));
 	}
 	
 	

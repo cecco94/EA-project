@@ -3,6 +3,7 @@ package controller.playState;
 import java.util.ArrayList;
 
 import controller.playState.entityController.EntityController;
+import controller.playState.entityController.enemyController.BossController;
 import controller.playState.entityController.enemyController.EnemyController;
 import controller.playState.entityController.enemyController.NullaFacenteController;
 import controller.playState.entityController.enemyController.RobotController;
@@ -59,6 +60,8 @@ public class RoomController {
 		else if(type.compareTo("nullafacente") == 0) 
 			enemy.add(new NullaFacenteController(enemy.size(), type, xPos, yPos, play));
 		
+		else if(type.compareTo("boss") == 0) 
+			enemy.add(new BossController(enemy.size(), type, xPos, yPos, play));
 	}
 	
 	//rimuove il nemico e libera la sua posizione per migliorare il pathfinding

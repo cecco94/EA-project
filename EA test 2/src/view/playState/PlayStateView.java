@@ -32,6 +32,7 @@ public class PlayStateView {
 	private RoomView[] roomsView;
 	
 	private PlayUI ui;	
+	
 			
 	public PlayStateView(TilesetView t, IView v) {
 		view = v;
@@ -93,7 +94,7 @@ public class PlayStateView {
 		
 		//disegna la ui sopra a tutto il resto
 		ui.draw(g2);
-				
+			
 	}			
 
 	//disegna i primi due starti della mappa

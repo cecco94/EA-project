@@ -4,6 +4,7 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -16,6 +17,8 @@ import view.main.GamePanel;
 public class PlayUI {
 
 	private Font fontDisplay = new Font("Arial", Font.PLAIN, (int)(20*GamePanel.SCALE));
+	private Font fontBossName = new Font("Arial", Font.PLAIN, (int)(10*GamePanel.SCALE));
+
 	private String message = "";
 	
 	private BufferedImage darkEffect, noteIcon, cfuIcon, exclamation;
@@ -244,4 +247,19 @@ public class PlayUI {
 		exclamationOn = true;
 		indexEntityExclaming = index;
 	}
+	
+	public void drawBossLife(Graphics2D g2, Rectangle lifeRect, int actualLife) {
+		
+		g2.setColor(Color.black);
+		g2.drawRect(lifeRect.x, lifeRect.y, lifeRect.width, lifeRect.height);
+		
+		g2.setFont(fontBossName);
+		g2.drawString("Prof Luke Crickets", lifeRect.x, lifeRect.y - GamePanel.SCALE);
+		
+		g2.setColor(Color.red);
+		int redRectWidth= actualLife*lifeRect.width/100;
+		g2.fillRect(lifeRect.x, lifeRect.y, redRectWidth, lifeRect.height);
+
+	}
+	
 }

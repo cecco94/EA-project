@@ -29,7 +29,6 @@ public class RoomModel {
 		aggiungiPassaggiCreatureEventi(percorsoFile, index);
 	}
 	
-	
 	// per non dividere le informazioni, tutti i dati di una stanza sono messi in un solo file
 	// quindi nel file mettiamo anche informazoni per il controller.
 	// leggendo il file una volta sola, qui finiscono anche cose relative al controller 

@@ -1,1 +1,2 @@
-;passaggio al laboratorio, 24, 32, 32, 32, 14, 9, 4, true
+;passaggio al laboratorio, 24, 32, 32, 32, 14, 9, 4, false, sei arrivato fin qui.. non puoi tirarti indietro adesso
+/boss, boss, 24, 16

@@ -39,7 +39,7 @@ public class NullaFacenteView extends EntityView {
 		BufferedImage image = null;
 		BufferedImage temp = null;
 		
-		animation = new BufferedImage[1][6][][];		
+		animation = new BufferedImage[1][6][][];	//data la numerazione delle azioni, l'array ha dimensione 6 invece che 4	
 		
 		animation[0][MOVE] = new BufferedImage[4][3];	//ci sono 4 direzioni, ogni direzione ha 3 immagini
 		animation[0][IDLE] = new BufferedImage[4][1];	//ci sono 4 direzioni, ogni direzione ha 1 immagine
