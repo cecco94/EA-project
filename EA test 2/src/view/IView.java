@@ -41,6 +41,7 @@ public class IView {
 	private PlayStateView play;
 	private TransitionState transition;
 	private PauseScreen pause;
+	private CutsceneView cutscene;
 	//mappa e tiles
 	private TilesetView tileset;
 	
@@ -64,6 +65,7 @@ public class IView {
 		play = new PlayStateView(tileset, this);
 		transition = new TransitionState(Gamestate.SELECT_AVATAR, Gamestate.PLAYING, this);
 		pause = new PauseScreen(this);
+		cutscene = new CutsceneView(this);
 		
 		//inizializza le cose più delicate
 		gw = new GameWindow(gp, this);
@@ -123,6 +125,10 @@ public class IView {
 		case DIALOGUE:
 			play.draw(g2);
 			play.getUI().drawDialogue(g2);
+			break;
+		case BOSS_CUTSCENE:
+			cutscene.drawCutscene(g2);
+			break;
 		default:
 			break;			
 		}

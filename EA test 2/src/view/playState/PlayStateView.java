@@ -80,7 +80,7 @@ public class PlayStateView {
 		addTilesToSortList(drawOrder, roomIndex, firstTileInFrameCol, firstTileInFrameRow);
 		
 		//aggiorna xpos e ypos del player e lo aggiunge, poi aggiunge le entità nella stanza vicino al giocatore
-		addNPCandPlayer(drawOrder, playerMapX, playerMapY);
+		addEntityesAndPlayer(drawOrder, playerMapX, playerMapY);
 					
 		//collections è una classe di utilità che implementa un algoritmo veloce di ordinamento
 		Collections.sort(drawOrder);
@@ -147,7 +147,7 @@ public class PlayStateView {
 		
 	}
 
-	private void addNPCandPlayer(ArrayList<SortableElement> drawOrder, int xPlayerPos, int yPlayerPos) {
+	private void addEntityesAndPlayer(ArrayList<SortableElement> drawOrder, int xPlayerPos, int yPlayerPos) {
 		
 		//aggiungiamo solo gli npc e i nemici nella stanza vicino al giocatore
 		roomsView[Rooms.currentRoom.mapIndex].addEntitiesInFrameForSort(xPlayerPos, yPlayerPos, drawOrder);
@@ -205,6 +205,39 @@ public class PlayStateView {
 	
 	public PlayUI getUI() {
 		return ui;
+	}
+	
+	//questo metodo viene usato per disegnare la cutscene, si trova qui perchè è molto simile al metodo per disegnare il playstate
+	public void drawCutSceneBackground(Graphics2D g2, int cameraXPos, int cameraYPos) {
+		int roomIndex = view.getCurrentRoomIndex();	
+		
+		//da dove iniziare a prendere i numeri della mappa nelle matrici
+		int firstTileInFrameCol = cameraXPos/GamePanel.TILES_SIZE - 10;
+		int firstTileInFrameRow = cameraYPos/GamePanel.TILES_SIZE - 8;
+		
+		//il pavimento viene sempre disegnato sotto a tutto
+		drawFloor(g2, roomIndex, firstTileInFrameCol, firstTileInFrameRow, cameraXPos, cameraYPos);
+		
+		//aggiungi nella lista gli elementi degli ultimi due strati
+		addTilesToSortList(drawOrder, roomIndex, firstTileInFrameCol, firstTileInFrameRow);
+		
+		addBoss(drawOrder, cameraXPos,  cameraYPos);
+		
+		//collections è una classe di utilità che implementa un algoritmo veloce di ordinamento
+		Collections.sort(drawOrder);
+		
+		//richiama il metodo draw su ogni elemento in ordine
+		//per capire dove disegnare gli elementi nello schermo, ci serve la posizione del giocatore
+		drawAllElementsAboveFloor(g2, cameraXPos,  cameraYPos);
+		
+		//svuota la lista per ricominciare il frame successivo
+		drawOrder.clear();
+		
+	}
+
+	private void addBoss(ArrayList<SortableElement> drawOrder2, int cameraXPos, int cameraYPos) {
+
+		roomsView[Rooms.currentRoom.mapIndex].addEntitiesInFrameForSort(cameraXPos, cameraYPos, drawOrder);
 	}
 	
 }

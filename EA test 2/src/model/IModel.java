@@ -131,16 +131,29 @@ public class IModel {
 
 	public void faiQuelloCHeDeviFareConEvento(int eventIndex, boolean isPlayerInteracting) {
 		
+		//prima di tutto, vediamo se il giocatore ha già interagito con l'evento
 		boolean alreadyInteracted = getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).isEndInteraction();
-		if(!alreadyInteracted) {
-			view.showMessageInUI("premi E per interagire");
-			
-			if(isPlayerInteracting) {
+		
+		switch(Rooms.currentRoom) {
+		//nel caso della cutscene non c'è bisogno di premere E per attivare l'evento
+		case STUDIO_PROF:
+			if(!alreadyInteracted) 
 				getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).interact();
-				controller.getPlay().getPlayer().setInteracting(false);
-			}
+			break;
 			
-		}		
+		//tutti gli altri eventi si attivano solo se il giocatore preme E
+		default:
+			if(!alreadyInteracted) {
+				view.showMessageInUI("premi E per interagire");
+				
+				if(isPlayerInteracting) {
+					getRoom(Rooms.currentRoom.mapIndex).getEventi().get(eventIndex).interact();
+					controller.getPlay().getPlayer().setInteracting(false);
+				}
+			}
+			break;			
+		}	
+		
 	}
 	
 }

@@ -8,13 +8,13 @@ public class CutsceneProf extends Event {
 
 	public CutsceneProf(Hitbox r, IModel m) {
 		super(r, m);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void interact() {
-		model.getController().getPlay().getPlayer().setCfu(0);
+		//potremmo mettere la musica del combattimento
 		model.getController().setGameState(Gamestate.BOSS_CUTSCENE);
+		endInteraction = true;
 	}
 
 }

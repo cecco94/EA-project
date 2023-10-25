@@ -41,8 +41,7 @@ public class RoomController {
 			NPC.get(i).update(playerX, playerY);
 		
 		for(int i = 0; i < enemy.size(); i++) 
-			enemy.get(i).update(playerX, playerY);
-		
+			enemy.get(i).update(playerX, playerY);		
 	}
 	
 	public ArrayList<EnemyController> getEnemy(){

@@ -10,6 +10,7 @@ import controller.playState.Hitbox;
 import model.IModel;
 import model.mappa.events.CFU;
 import model.mappa.events.Caffe;
+import model.mappa.events.CutsceneProf;
 import model.mappa.events.Event;
 import model.mappa.events.Light;
 import model.mappa.events.Notes;
@@ -120,6 +121,9 @@ public class RoomModel {
 		
 		else if(s.compareTo("cfu") == 0)
 			eventi.add(new CFU(r, model));
+		
+		else if(s.compareTo("cutscene") == 0)
+			eventi.add(new CutsceneProf(r, model));
 	}
 
 

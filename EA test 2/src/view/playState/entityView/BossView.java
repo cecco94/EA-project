@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import controller.main.Gamestate;
 import view.IView;
 import view.ViewUtils;
 import view.main.GamePanel;
@@ -233,7 +234,8 @@ public class BossView extends EntityView{
 		
 		try {
 			g2.drawImage(animation[0][currentAction][currentDirection][numSprite], xPosOnScreen, yPosOnScreen, null);
-			drawLife(g2);			
+			if(Gamestate.state != Gamestate.BOSS_CUTSCENE)
+				drawLife(g2);			
 
 		}
 		catch (ArrayIndexOutOfBoundsException a) {
