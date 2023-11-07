@@ -121,6 +121,17 @@ public class KeyboardInputs implements KeyListener {
 				}
 				break;
 				
+			case BOSS_CUTSCENE:
+				if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					view.getController().resetPlayerBooleans();
+					view.changeGameState(Gamestate.PLAYING);
+				}
+				else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					//l'indice è sempre zero, perchè il boss è l'unico NPC della stanza
+					view.getPlay().getRoom(view.getCurrentRoomIndex()).getBossView().nextDialogueLine();
+				}
+				break;
+				
 			default:
 				break;
 		}

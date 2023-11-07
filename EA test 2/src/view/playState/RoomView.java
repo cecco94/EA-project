@@ -69,7 +69,6 @@ public class RoomView {
 		else if(type.compareTo("nerd") == 0)
 			NPCviewList.add(new NerdView(play.getView(), index));
 		
-
 		else if(type.compareTo("pupa") == 0) 
 			NPCviewList.add(new PupaView(play.getView(), index));
 		
@@ -94,6 +93,11 @@ public class RoomView {
 	public EntityView getEnemy(int index) throws IndexOutOfBoundsException{
 		return enemyViewList.get(index);
 	}
+	
+	public BossView getBossView() {
+		return (BossView)enemyViewList.get(0);
+	}
+	
 
 	public void removeEnemy(int index) {
 		

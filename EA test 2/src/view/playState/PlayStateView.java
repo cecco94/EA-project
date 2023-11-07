@@ -208,6 +208,7 @@ public class PlayStateView {
 	}
 	
 	//questo metodo viene usato per disegnare la cutscene, si trova qui perchè è molto simile al metodo per disegnare il playstate
+	//disegna il gioco senza il pesonaggio
 	public void drawCutSceneBackground(Graphics2D g2, int cameraXPos, int cameraYPos) {
 		int roomIndex = view.getCurrentRoomIndex();	
 		
@@ -236,7 +237,7 @@ public class PlayStateView {
 	}
 
 	private void addBoss(ArrayList<SortableElement> drawOrder2, int cameraXPos, int cameraYPos) {
-
+		//prende l'unica entità nella stanza a parte il giocatore
 		roomsView[Rooms.currentRoom.mapIndex].addEntitiesInFrameForSort(cameraXPos, cameraYPos, drawOrder);
 	}
 	

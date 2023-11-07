@@ -10,12 +10,15 @@ import javax.imageio.ImageIO;
 
 import controller.main.Gamestate;
 import view.IView;
+import view.SoundManager;
 import view.ViewUtils;
 import view.main.GamePanel;
 
-public class BossView extends EntityView{
+public class BossView extends EntityView {
 
 	private Rectangle lifeRect;
+	protected int dialogueIndex;
+	protected String[] dialogues;
 
 	public BossView(IView v, int index) {
 		super(v, index);
@@ -32,7 +35,9 @@ public class BossView extends EntityView{
 		int maxlifeX = GamePanel.GAME_WIDTH/2 - lifeRectWidth/2;
 		int maxlifeY = GamePanel.GAME_HEIGHT/4 - (int)(60*GamePanel.SCALE);
 		lifeRect = new Rectangle(maxlifeX, maxlifeY, lifeRectWidth, maxlifeHeight);
-
+		
+		setDialogues();
+		
 	}
 
 	private void loadImages() {
@@ -268,5 +273,31 @@ public class BossView extends EntityView{
 		else
 			return 0;
 	}
+	
+	public String getCurrentDialogue() {
+		return dialogues[dialogueIndex];
+	}
+	
+	// dopo che ha detto una frase, va alla frase successiva, se sono finite le frasi esce dallo stato dialogue
+	public void nextDialogueLine() {
+		view.playSE(SoundManager.CAFFE);
 
+		dialogueIndex++;
+		if(dialogueIndex >= dialogues.length) {
+			dialogueIndex--;
+			view.changeGameState(Gamestate.PLAYING);
+			view.getController().resetPlayerBooleans();
+			view.stopMusic();
+			view.playMusic(SoundManager.BOSS_SECOND_PHASE);
+		}
+	}
+
+	protected void setDialogues() {
+		dialogues = new String[4];
+		dialogues[0] = "Ti stavo aspettando";
+		dialogues[1] = "Sono il famigerato Professor Luke Crickets";
+		dialogues[2] = "Pensi veramente di essere in grado di sconfiggermi?";
+		dialogues[3] = "Prima dovrai assaggiare la potenza del mio framework!";
+		
+	}
 }

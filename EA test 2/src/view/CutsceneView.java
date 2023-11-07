@@ -27,8 +27,11 @@ public class CutsceneView {
 			if(cameraY <= 15*GamePanel.TILES_SIZE)
 				currentPhase = PHASE_1;
 			break;
+			
+		//la telecamera si ferma sul boss, che parla
 		case PHASE_1:
-			System.out.println("fase 1");
+			view.getPlay().drawCutSceneBackground(g2, cameraX, cameraY);
+			view.getPlay().getUI().drawDialogueBoss(g2);
 			break;
 		}
 	}

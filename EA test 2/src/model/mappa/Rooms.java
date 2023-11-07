@@ -9,7 +9,7 @@ public enum Rooms {
 	AULA_STUDIO(Rooms.INDEX_AULA_STUDIO, SoundManager.AULA_STUDIO),
 	TENDA(Rooms.INDEX_TENDA, SoundManager.TENDA),
 	LABORATORIO(Rooms.INDEX_LABORATORIO,SoundManager.LABORATORIO),
-	STUDIO_PROF(Rooms.INDEX_STUDIO_PROF, SoundManager.BOSS);
+	STUDIO_PROF(Rooms.INDEX_STUDIO_PROF, SoundManager.BOSS_FIRTST_PHASE);
 	
 	Rooms(int i, int music) {
 		mapIndex = i;
