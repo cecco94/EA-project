@@ -206,9 +206,17 @@ public class PlayUI {
 		g2.drawRoundRect((int)(5*GamePanel.SCALE), GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(5*GamePanel.SCALE),
 						   GamePanel.GAME_WIDTH - (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/4 - (int)(10*GamePanel.SCALE), 30, 30);
 		
-		//prende l'indice dell'npc con cui parla il player, va nella stanza e prende quell'npc, prende le stringhe di dialogo da lì, poi le disegna
-		int index = play.getView().getController().getIndexOfInteractingEntity();
-		String text = play.getRoom(play.getView().getCurrentRoomIndex()).getNPC(index).getCurrentDialogue();
+		String text = null;
+		//non serve l'indice perchè il boss è l'unica entità della stanza oltre al player
+		if(play.getView().getCurrentRoomName().compareTo("studioProf") == 0) 
+			text = play.getRoom(play.getView().getCurrentRoomIndex()).getBossView().getCurrentDialogue();
+			
+		else {
+			//prende l'indice dell'npc con cui parla il player, va nella stanza e prende quell'npc, prende le stringhe di dialogo da lì, poi le disegna
+			int index = play.getView().getController().getIndexOfInteractingEntity();
+			text = play.getRoom(play.getView().getCurrentRoomIndex()).getNPC(index).getCurrentDialogue();
+		}
+		
 		g2.setFont(fontDisplay);
 		
 		int y = GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(30*GamePanel.SCALE);
@@ -260,31 +268,6 @@ public class PlayUI {
 		int redRectWidth= actualLife*lifeRect.width/100;
 		g2.fillRect(lifeRect.x, lifeRect.y, redRectWidth, lifeRect.height);
 
-	}
-	
-	//fa le stesse cose di drawDialog, solo che non posso modificare direttamente drawdialogue perchè per controllare il gamestate, mi serve una import del controller
-	public void drawDialogueBoss(Graphics2D g2) {
-		
-		g2.setColor(Color.black);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
-		g2.fillRoundRect(0, GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4, GamePanel.GAME_WIDTH, GamePanel.GAME_HEIGHT/4, 30, 30);
-		
-		g2.setColor(Color.white);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-		g2.drawRoundRect((int)(5*GamePanel.SCALE), GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(5*GamePanel.SCALE),
-						   GamePanel.GAME_WIDTH - (int)(10*GamePanel.SCALE), GamePanel.GAME_HEIGHT/4 - (int)(10*GamePanel.SCALE), 30, 30);
-		
-		//prende l'indice dell'npc con cui parla il player, va nella stanza e prende quell'npc, prende le stringhe di dialogo da lì, poi le disegna
-		String text = play.getRoom(play.getView().getCurrentRoomIndex()).getBossView().getCurrentDialogue();
-		g2.setFont(fontDisplay);
-		
-		int y = GamePanel.GAME_HEIGHT/2 + GamePanel.GAME_HEIGHT/4 + (int)(30*GamePanel.SCALE);
-		
-		for(String line : text.split("\n ")) {			
-			g2.drawString(line, (int)(10*GamePanel.SCALE), y);
-			y += 40;
-		}
-	
 	}
 	
 }

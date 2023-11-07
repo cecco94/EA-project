@@ -225,6 +225,10 @@ public class IView {
 		return Rooms.currentRoom.mapIndex;
 	}
 	
+	public String getCurrentRoomName() {
+		return Rooms.currentRoom.roomName;
+	}
+	
 	public int getCurrentRoomMusicIndex() {
 		return Rooms.currentRoom.musicIndex;
 	}
