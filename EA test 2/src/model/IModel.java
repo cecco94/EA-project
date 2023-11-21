@@ -155,5 +155,14 @@ public class IModel {
 		}	
 		
 	}
+
+	public void saveData() {
+		// crea un file di testo
+		// per ogni stanza, salva i dati di ogni evento
+		// chiedi al controller di salvare i dati di ogni stanza
+		// per ogni stanza deve salvare i dati dei nemici e degni npc presenti
+		
+		
+	}
 	
 }

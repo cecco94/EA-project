@@ -18,7 +18,7 @@ public enum Rooms {
 		roomName = name;
 	}
 
-	public static Rooms currentRoom = STUDIO_PROF;
+	public static Rooms currentRoom = AULA_STUDIO;
 	public final static int numStanze = 6;
 	public static final int INDEX_BIBLIOTECA = 0,  INDEX_DORMITORIO = 1, INDEX_AULA_STUDIO = 2, 
 							INDEX_TENDA = 3, INDEX_LABORATORIO = 4, INDEX_STUDIO_PROF = 5;

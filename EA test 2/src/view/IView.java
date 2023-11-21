@@ -261,5 +261,10 @@ public class IView {
 	public void removeEnemy(int index) {
 		play.removeEnemy(index);
 	}
+
+	public void startSaveData() {
+		model.saveData();
+		
+	}
 	
 }

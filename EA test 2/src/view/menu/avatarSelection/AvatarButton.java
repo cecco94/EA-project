@@ -75,6 +75,7 @@ public class AvatarButton extends AbstractMenuButton {
 		view.getPlay().getPlayer().resetAnimation();
 		view.changeGameState(newState);
 		view.getController().getPlay().getPlayer().setGender(type);
+		
 	}
 
 	@Override

@@ -9,7 +9,7 @@ public class PlayerController extends EnemyController {
 
 	public static final int INTERACT = 10;
 	private int RAGAZZO = 0 , RAGAZZA = 1;
-	private int attack, defense, life, cfu = 180, notes;
+	private int attack, defense, life, cfu = 180, notes, genderChoice;
 
 	//quando il player parla con qualcuno, si salva l'indice nella lista di quell'entità
 	//la view andrà a vedere nella lista del view quali dialoghi contiene l'entità con tale indice
@@ -58,6 +58,8 @@ public class PlayerController extends EnemyController {
 			defense = 3;
 			speed = play.getController().getGameScale()*1.3f;
 		}
+		
+		genderChoice = gender;
 	}
 	
 	public void update(float playerX, float playerY) {
@@ -289,10 +291,6 @@ public class PlayerController extends EnemyController {
 	public void setThrowing(boolean throwing) {
 		this.throwing = throwing;
 	}	
-	
-	public String toString() {
-		return "player ( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " + hitbox.height + " )";
-	}
 
 	public void setInteracting(boolean b) {
 		interacting = b;	
@@ -412,6 +410,25 @@ public class PlayerController extends EnemyController {
 		resetBooleans();
 		idle = true;
 		currentAction = IDLE;
+	}
+	
+	//metodo usato per salvare i dati del player in un file: vita, appunti, cfu, gender, posizione
+	public String toString() {
+		String dataPlayer = "PlayerData, ";
+		
+		dataPlayer = dataPlayer + String.valueOf(life);
+		
+		dataPlayer = dataPlayer + ", " + String.valueOf(notes);
+		
+		dataPlayer = dataPlayer + ", " + String.valueOf(cfu);
+
+		dataPlayer = dataPlayer + ", " + String.valueOf(genderChoice);
+
+		dataPlayer = dataPlayer + ", " + String.valueOf(hitbox.x);
+		
+		dataPlayer = dataPlayer + ", " + String.valueOf(hitbox.y);
+
+		return dataPlayer;
 	}
 	
 }

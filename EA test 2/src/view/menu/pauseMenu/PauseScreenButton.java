@@ -53,6 +53,9 @@ public class PauseScreenButton extends AbstractMenuButton {
 	@Override
 	public void reactToMouse(MouseEvent e) {
 		if(isHome) {
+			//quando il giocatore torna al menu dal play state, i dati di gioco vengono salvati. 
+			//il view chiede al controller e al model di fare un tostring di tutti i dati dentro le stanze
+			view.startSaveData();
 			view.getTransition().setNext(Gamestate.MAIN_MENU);
 			view.getTransition().setPrev(Gamestate.PLAYING);
 			view.changeGameState(Gamestate.TRANSITION_STATE);
