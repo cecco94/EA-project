@@ -5,7 +5,7 @@ import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.EntityController;
 
-public class CatController extends EntityController {
+public class CatController extends NPCcontroller {
 	
 	private static int hitboxWidth = 28, hitboxHeight = 20;
 	private static boolean hardDisk = true;

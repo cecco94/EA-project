@@ -110,20 +110,30 @@ public class RoomModel {
 	
 	private void addEvent(Hitbox r, String s) {
 		
-		if(s.compareTo("luce") == 0)
-			eventi.add(new Light(r, model));
+		if(s.compareTo("luce") == 0) {
+			int index = eventi.size();
+			eventi.add(new Light(r, model, index));
+		}
 		
-		else if(s.compareTo("caffe") == 0)
-			eventi.add(new Caffe(r, model));
+		else if(s.compareTo("caffe") == 0) {
+			int index = eventi.size();
+			eventi.add(new Caffe(r, model, index));
+		}
 		
-		else if(s.compareTo("appunti") == 0)
-			eventi.add(new Notes(r, model));
+		else if(s.compareTo("appunti") == 0) {
+			int index = eventi.size();
+			eventi.add(new Notes(r, model, index));
+		}
 		
-		else if(s.compareTo("cfu") == 0)
-			eventi.add(new CFU(r, model));
+		else if(s.compareTo("cfu") == 0) {
+			int index = eventi.size();
+			eventi.add(new CFU(r, model, index));
+		}
 		
-		else if(s.compareTo("cutscene") == 0)
-			eventi.add(new CutsceneProf(r, model));
+		else if(s.compareTo("cutscene") == 0) {
+			int index = eventi.size();
+			eventi.add(new CutsceneProf(r, model, index));
+		}
 	}
 
 

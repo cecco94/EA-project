@@ -6,8 +6,8 @@ import view.SoundManager;
 
 public class Notes extends Event {
 
-	public Notes(Hitbox r, IModel m) {
-		super(r, m);
+	public Notes(Hitbox r, IModel m, int i) {
+		super(r, m, i);
 		message = "hai trovato degli appunti!";
 
 	}

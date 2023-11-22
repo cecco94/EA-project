@@ -4,7 +4,7 @@ import controller.playState.Hitbox;
 import controller.playState.PlayStateController;
 import controller.playState.entityController.EntityController;
 
-public class DocController extends EntityController {
+public class DocController extends NPCcontroller {
 	
 	private static int hitboxWidth = (int)(18*1.5), hitboxHeight = (int)(13*1.5);
 

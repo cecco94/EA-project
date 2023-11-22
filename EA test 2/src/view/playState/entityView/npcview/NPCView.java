@@ -72,4 +72,7 @@ public abstract class NPCView extends EntityView {
 	
 	protected abstract int getAnimationLenght();
 	
+	public int getDialogueIndex() {
+		return dialogueIndex;
+	}
 }

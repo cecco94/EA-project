@@ -93,8 +93,7 @@ public abstract class EnemyController extends EntityController{
 	}
 	
 	public void decreaseIndexInList() {
-		this.index--;
-		
+		this.index--;	
 	}
 
 	public int getLife() {
@@ -106,5 +105,10 @@ public abstract class EnemyController extends EntityController{
 			return true;
 		else 
 			return false;
+	}
+	
+	public String toString() {
+		String dataEnemy = "EnemyData, " + index + ", " + life + ", " + currentState + ", " + currentAction + ", " + currentDirection + ", " + hitbox.x + ", " + hitbox.y;
+		return dataEnemy;
 	}
 }

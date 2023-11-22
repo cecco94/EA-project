@@ -8,8 +8,8 @@ import view.SoundManager;
 
 public class Caffe extends Event{
 
-	public Caffe(Hitbox r, IModel m) {
-		super(r, m);
+	public Caffe(Hitbox r, IModel m, int i) {
+		super(r, m, i);
 		message = "il caffe' aumenta la tua concentrazione!";
 	}
 

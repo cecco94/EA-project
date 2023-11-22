@@ -8,8 +8,8 @@ import view.SoundManager;
 
 public class CFU extends Event{
 
-	public CFU(Hitbox r, IModel m) {
-		super(r, m);
+	public CFU(Hitbox r, IModel m, int i) {
+		super(r, m, i);
 		message = "ti stai avvicinando alla laurea!";
 
 	}

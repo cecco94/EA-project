@@ -32,12 +32,6 @@ public abstract class EntityController {
 	//l'indice nella lista delle entità, deve essere uguale anche nel view
 	protected int index;
 	
-	
-	
-	
-	
-	
-	
 	//possiamo usare type of target al posto del type?
 	//questi int servono per capire se il proiettile si è schiantato su un npc, su un nemico o sul player
 	protected int typeOfTarget;
@@ -196,27 +190,6 @@ public abstract class EntityController {
 		
 		return canMove;
 		
-	}
-	
-	protected void tunrToInteract() {
-		
-		currentAction = IDLE;
-		
-		if(play.getPlayer().getCurrentDirection() == DOWN) {
-			currentDirection = UP;
-		}
-		
-		else if(play.getPlayer().getCurrentDirection() == UP) {
-			currentDirection = DOWN;
-		}
-		
-		else if(play.getPlayer().getCurrentDirection() == RIGHT) {
-			currentDirection = LEFT;
-		}
-		
-		else if(play.getPlayer().getCurrentDirection() == LEFT) {
-			currentDirection = RIGHT;
-		}	
 	}
 
 	//metodi usati per seguire il percorso trovato
@@ -395,7 +368,8 @@ public abstract class EntityController {
 	}
 	
 	public String toString() {
-		return "( " + hitbox.x + ", " + hitbox.y + ", " + hitbox.width + ", " +  hitbox.height + " )";
+		String dataEntity =  "DataEntity" + hitbox.x + ", " + hitbox.y;
+		return dataEntity;
 	}
 	
 	public int getCurrenState() {

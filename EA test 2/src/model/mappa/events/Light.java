@@ -7,8 +7,8 @@ import model.IModel;
 public class Light extends Event {
 
 	
-	public Light(Hitbox r, IModel m) {
-		super(r, m);
+	public Light(Hitbox r, IModel m, int i) {
+		super(r, m, i);
 		message = "hai acceso la luce, quest completata!";		
 	}
 

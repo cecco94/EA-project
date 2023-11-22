@@ -6,8 +6,8 @@ import model.IModel;
 
 public class CutsceneProf extends Event {
 
-	public CutsceneProf(Hitbox r, IModel m) {
-		super(r, m);
+	public CutsceneProf(Hitbox r, IModel m, int i) {
+		super(r, m, i);
 	}
 
 	@Override

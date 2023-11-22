@@ -7,15 +7,17 @@ import model.IModel;
 
 public abstract class Event {
 
+	protected int index;
 	protected Hitbox bounds;
 	protected IModel model;
 	protected String message;
 	protected boolean endInteraction;
 	
 	
-	public Event(Hitbox r, IModel m) {
+	public Event(Hitbox r, IModel m, int ind) {
 		bounds = r;
 		model = m;
+		index = ind;
 		
 		bounds.x *= model.getController().getTileSize();
 		bounds.y *= model.getController().getTileSize();
@@ -36,5 +38,10 @@ public abstract class Event {
 	
 	public boolean checkPlayer(Hitbox hitbox) {
 		return hitbox.intersects(bounds);
+	}
+	
+	public String toString() {
+		String dataEvent = "dataEvent " + endInteraction + ", " + index;
+		return dataEvent;
 	}
 }

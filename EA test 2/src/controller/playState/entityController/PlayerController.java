@@ -414,20 +414,7 @@ public class PlayerController extends EnemyController {
 	
 	//metodo usato per salvare i dati del player in un file: vita, appunti, cfu, gender, posizione
 	public String toString() {
-		String dataPlayer = "PlayerData, ";
-		
-		dataPlayer = dataPlayer + String.valueOf(life);
-		
-		dataPlayer = dataPlayer + ", " + String.valueOf(notes);
-		
-		dataPlayer = dataPlayer + ", " + String.valueOf(cfu);
-
-		dataPlayer = dataPlayer + ", " + String.valueOf(genderChoice);
-
-		dataPlayer = dataPlayer + ", " + String.valueOf(hitbox.x);
-		
-		dataPlayer = dataPlayer + ", " + String.valueOf(hitbox.y);
-
+		String dataPlayer = "PlayerData, " + life + ", " + notes + ", " + cfu + ", " + genderChoice + ", " + hitbox.x + ", " + hitbox.y;
 		return dataPlayer;
 	}
 	
